@@ -1,48 +1,66 @@
-# Wordpress - ignore core, configuration, examples, uploads and logs.
-# https://github.com/github/gitignore/blob/main/WordPress.gitignore
-
-# Core
-#
-# Note: if you want to stage/commit WP core files
-# you can delete this whole section/until Configuration.
-/wp-admin/
-/wp-content/index.php
-/wp-content/languages
-/wp-content/plugins/index.php
-/wp-content/themes/index.php
-/wp-includes/
-/index.php
-/license.txt
-/readme.html
-/wp-*.php
-/xmlrpc.php
-
-# Configuration
-wp-config.php
-
-# Example themes
-/wp-content/themes/twenty*/
-
-# Example plugin
-/wp-content/plugins/hello.php
-
-# Uploads
-/wp-content/uploads/
-
-# Log files
+# Generally Ignore
+.htaccess
 *.log
 
-# htaccess
-/.htaccess
+# ==================
+# Windows detritus
+# ==================
 
-# All plugins
-#
-# Note: If you wish to whitelist plugins,
-# uncomment the next line
-#/wp-content/plugins
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
 
-# All themes
-#
-# Note: If you wish to whitelist themes,
-# uncomment the next line
-#/wp-content/themes
+# Folder config file
+Desktop.ini
+
+# Recycle Bin used on file shares
+$RECYCLE.BIN/
+
+# Mac Crap
+.DS_Store
+
+# SASS Cache
+.sass-cache
+
+# Compiled Files
+/assets/dist/**
+/assets/dist/
+
+.idea/
+.vscode
+
+# Gulp/NPM stuff
+node_modules
+build
+*.node
+coverage
+*.orig
+.idea
+sandbox
+test/out-fixtures/*
+test/watch-*.txt
+gulp.1
+yarn-error.log
+
+# Composer
+/vendor/
+
+# Allow Build within Assets
+!*/vendor/*/build
+
+# Yarn
+.pnp.*
+.yarn/*
+!.yarn/patches
+!.yarn/plugins
+!.yarn/releases
+!.yarn/sdks
+!.yarn/versions
+
+# Backstop Files
+/backstop_data/*
+!/backstop_data/bitmaps_reference
+!/backstop_data/engine_scripts
+
+# Storybook - don't commit built files
+/storybook-static/
