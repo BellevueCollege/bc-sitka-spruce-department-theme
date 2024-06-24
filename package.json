@@ -1,0 +1,30 @@
+{
+  "name": "bc-sitka-spruce-department-theme",
+  "version": "0.0.0",
+  "description": "Bellevue College Theme for Level 3 Department Sites",
+  "main": "theme.json",
+ "scripts": {
+		"start": "wp-scripts start --webpack-src-dir=src --output-path=assets/dist",
+		"build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist"
+	},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/BellevueCollege/bc-sitka-spruce-department-theme.git"
+  },
+  "keywords": [
+    "wordpress",
+    "theme",
+    "bellevuecollege"
+  ],
+  "author": "ITS Integration Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/BellevueCollege/bc-sitka-spruce-department-theme/issues"
+  },
+  "homepage": "https://github.com/BellevueCollege/bc-sitka-spruce-department-theme#readme",
+  "devDependencies": {
+    "@wordpress/scripts": "^28.1.0",
+    "path": "^0.12.7",
+    "webpack-remove-empty-scripts": "^1.0.4"
+  }
+}
