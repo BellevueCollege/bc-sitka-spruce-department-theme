@@ -1,0 +1,14 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/bc-brand-bar",
+    "title": "BC Brand Bar",
+    "category": "widgets",
+    "icon": "star",
+    "description": "Brand Bar used in Header",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./style.css",
+    "render": "file:./render.php"
+}

@@ -1,6 +1,15 @@
 <?php
 namespace bcSitkaSpruce;
 
+// Make Timber available.
+use Timber;
+
+// Load Composer dependencies.
+require_once __DIR__ . '/vendor/autoload.php';
+
+// Initialize Timber.
+Timber\Timber::init();
+
 /**
  * Register Menus
  */
@@ -15,6 +24,15 @@ function register_menus() {
 }
 add_action( 'init', __NAMESPACE__ . '\register_menus' );
 
+/**
+ * Register Blocks
+ * 
+ * Any blocks that are part of the theme should be registered here.
+ */
+function register_blocks() {
+	register_block_type( __DIR__ . '/assets/dist/blocks/bc-brand-bar' );
+}
+add_action( 'init', __NAMESPACE__ . '\register_blocks' );
 
 /**
  * Enqueue Assets
