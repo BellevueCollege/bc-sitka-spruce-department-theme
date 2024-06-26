@@ -1,0 +1,9 @@
+{
+    "name": "bellevuecollege/bc-sitka-spruce-department-theme",
+    "description": "Bellevue College Theme for Level 3 Department Sites",
+    "type": "project",
+    "require": {
+        "psr/container": "^2.0",
+        "timber/timber": "^2.0.0"
+    }
+}
