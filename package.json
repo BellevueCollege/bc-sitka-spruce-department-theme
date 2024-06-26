@@ -3,10 +3,10 @@
   "version": "0.0.0",
   "description": "Bellevue College Theme for Level 3 Department Sites",
   "main": "theme.json",
- "scripts": {
-		"start": "wp-scripts start --webpack-src-dir=src --output-path=assets/dist",
-		"build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist"
-	},
+  "scripts": {
+    "start": "wp-scripts start --webpack-src-dir=src --output-path=assets/dist",
+    "build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/BellevueCollege/bc-sitka-spruce-department-theme.git"
@@ -26,5 +26,9 @@
     "@wordpress/scripts": "^28.1.0",
     "path": "^0.12.7",
     "webpack-remove-empty-scripts": "^1.0.4"
+  },
+  "dependencies": {
+    "bootstrap": "^5.3.3",
+    "twig-loader": "^0.5.5"
   }
 }
