@@ -8,3 +8,6 @@
 - `src/` - Source SCSS and JS files. Built to `assets/dist/`
 - `templates/` - WordPress HTML Page Templates
 - `vendor/` - Composer dependencies. Not tracked in git.
+
+## Build Commands
+- `npm run storybook` - Builds specified files in storybook (great for tetsing!)
