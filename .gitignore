@@ -64,3 +64,4 @@ yarn-error.log
 
 # Storybook - don't commit built files
 /storybook-static/
+*storybook.log

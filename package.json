@@ -5,7 +5,9 @@
   "main": "theme.json",
   "scripts": {
     "start": "wp-scripts start --webpack-src-dir=src --output-path=assets/dist",
-    "build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist"
+    "build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build"
   },
   "repository": {
     "type": "git",
@@ -23,12 +25,26 @@
   },
   "homepage": "https://github.com/BellevueCollege/bc-sitka-spruce-department-theme#readme",
   "devDependencies": {
+    "@chromatic-com/storybook": "^1.5.0",
+    "@storybook/addon-a11y": "^8.1.10",
+    "@storybook/addon-essentials": "^8.1.10",
+    "@storybook/addon-interactions": "^8.1.10",
+    "@storybook/addon-links": "^8.1.10",
+    "@storybook/addon-styling-webpack": "^1.0.0",
+    "@storybook/addon-webpack5-compiler-babel": "^3.0.3",
+    "@storybook/addon-webpack5-compiler-swc": "^1.0.4",
+    "@storybook/blocks": "^8.1.10",
+    "@storybook/html": "^8.1.10",
+    "@storybook/html-webpack5": "^8.1.10",
+    "@storybook/test": "^8.1.10",
     "@wordpress/scripts": "^28.1.0",
     "path": "^0.12.7",
+    "storybook": "^8.1.10",
     "webpack-remove-empty-scripts": "^1.0.4"
   },
   "dependencies": {
     "bootstrap": "^5.3.3",
     "twig-loader": "^0.5.5"
-  }
+  },
+  "packageManager": "pnpm@8.13.1+sha1.90f9b2bb3ed58632bcb7b13c3902d6873ee9501c"
 }
