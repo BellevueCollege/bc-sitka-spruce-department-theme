@@ -1,0 +1,19 @@
+<div class="contact-item">
+    <div class="row">
+        <div class="col-md-7">
+            <h3>{{ first_name }} {{ last_name }}</h3>
+            <p>{{ position }}</p>
+        </div>
+        <div class="col-md-5">
+            {% if phone %}
+                <p><i class="fas fa-phone" aria-hidden="true"></i> <a href="tel:{{ phone }}">{{ phone }}</a></p>
+            {% endif %}
+            {% if email %}
+                <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:{{ email }}">{{ email }}</a></p>
+            {% endif %}
+            {% if scheduling_link %}
+                <p><a class="btn btn-primary" href="{{ scheduling_link }}">{{ scheduling_text }}</a></p>
+            {% endif %}
+        </div>
+    </div>
+</div>
