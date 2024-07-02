@@ -1,0 +1,39 @@
+{#
+/**
+ * @file
+ * Bellevue template for the announcement banner component.
+ */
+#}
+<section class="announcement global-margin--12x container-xl">
+    <div class="row">
+        <div class="col">
+            <article class="announcement--item padding-6x oho-animate oho-animate-single fade-in-up">
+                {% if image %}
+                    <div class="announcement__image">
+                        <figure class="aspect-ratio-frame" style="--aspect-ratio: 174/260">
+                        {{ image }}
+                        </figure>
+                    </div>
+                {% endif %}
+                <div class="announcement__text text-margin-reset">
+                    <h2>{{ title }}</h2>
+                    {{ description }}
+
+                    <div>
+                        {% if links %}
+                            {% for link in links %}
+                                <a href="{{ link.url }}" class='link-arrow'>{{ link.text }}</a>
+                            {% endfor %}
+                        {% endif %}
+                    </div>
+
+                    <div>
+                        {% if button %}
+                            <a class='btn btn-primary' href="{{ button.url }}">{{button.text}}</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+        </div>
+    </div>
+</section>
