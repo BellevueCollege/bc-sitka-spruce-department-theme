@@ -1,0 +1,70 @@
+$white: #fff;
+$accent-navy: red;
+
+
+.diffs {
+  border-top: 1px solid $white;
+
+  &--container {
+    // @include global-spacing(12x, padding-bottom);
+  }
+
+  &.curved-top {
+    position: relative;
+    padding-top: 10vw;
+
+    .arch-shape {
+      clip-path: url(#diffs--arch-shape--path);
+    }
+  }
+
+  .section-heading {
+    // @include global-spacing(4x, padding-top);
+  }
+}
+
+.diff {
+  &--item {
+    overflow: hidden;
+    height: 100%;
+    border-radius: 8px;
+    background-color: $white;
+
+    h3 {
+      // @include secondary-typeface(b22-card-title-small);
+    }
+
+    p {
+      margin-top: 16px;
+    }
+  }
+
+  &--hero:not(.diff--hero__photo) {
+    // @include global-spacing(6x, padding-top);
+    // @include global-spacing(4x, padding-right padding-left);
+  }
+
+  &--hero__photo {
+    padding: 0;
+  }
+
+  &--hero {
+    [class^="fa-"],
+    [class^="fas-"] {
+      color: $accent-navy;
+      font-size: 72px;
+    }
+  }
+
+  &__number {
+    color: $accent-navy;
+
+    // @include secondary-typeface(stat);
+  }
+}
+
+@media screen and (min-width: 576px) and (max-width: 767px) {
+  .diffs--container .col-sm-6:nth-child(3) {
+    margin-top: 40px;
+  }
+}

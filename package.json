@@ -37,7 +37,7 @@
     "@storybook/html": "^8.1.10",
     "@storybook/html-webpack5": "^8.1.10",
     "@storybook/test": "^8.1.10",
-    "@wordpress/scripts": "^28.1.0",
+    "@wordpress/scripts": "^27.0.0",
     "path": "^0.12.7",
     "storybook": "^8.1.10",
     "webpack-remove-empty-scripts": "^1.0.4"

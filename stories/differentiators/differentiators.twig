@@ -1,0 +1,35 @@
+{#
+/**
+* @file
+* Bellevue template for the differentiators section component.
+*/
+#}
+<section class="diffs curved-top global-margin--12x">
+  <svg class="arch-shape--svg">
+    <clipPath id="diffs--arch-shape--path" clippathunits="objectBoundingBox">
+      <path d="M0,0.634 C0.384,-0.226,0.603,-0.196,1,0.634 V1 H0 V0.634"></path>
+    </clipPath>
+  </svg>
+  <div class="arch-shape"></div>
+  <div class="diffs--container bg-navy">
+    {# {% include '/views/stories/section-heading/section-heading.twig' with {
+      classes: ['dark-bg'],
+    } %} #}
+    <div class="container-xl global-spacing--6x oho-animate-sequence">
+      <div class="row justify-content-sm-center gy-3">
+        {% for differentiator in differentiators %}
+          {% include '/stories/differentiators/differentiator.twig' with {
+            top_layout: differentiator.top_layout,
+            top_text: differentiator.top_text,
+            top_superscript: differentiator.top_superscript,
+            top_icon: differentiator.top_icon,
+            top_image: differentiator.top_image,
+            title: differentiator.title,
+            text: differentiator.text,
+            link: differentiator.link,
+          } %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
