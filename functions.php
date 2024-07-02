@@ -33,6 +33,7 @@ function register_blocks() {
 	$blocks = [
 		'bc-brand-bar',
 		'differentiators',
+		'section-heading',
 	];
 
 	block_registration_helper( $blocks );
