@@ -3,6 +3,7 @@ namespace BcSitkaSpruce;
 
 // Make Timber available.
 use Timber;
+use BcSitkaSpruce\Library\Theme;
 
 // Load Composer dependencies.
 require_once __DIR__ . '/vendor/autoload.php';
@@ -33,12 +34,12 @@ function register_blocks() {
 	$blocks = [
 		'bc-brand-bar',
 		'differentiators',
+		'differentiator-group',
+		'differentiator',
 		'section-heading',
 	];
 
 	block_registration_helper( $blocks );
-	// register_block_type( __DIR__ .'/assets/dist/blocks/bc-brand-bar' );
-	// register_block_type( __DIR__ .'/assets/dist/blocks/differentiators' );
 }
 add_action( 'init', __NAMESPACE__ . '\register_blocks' );
 
@@ -80,7 +81,7 @@ add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_assets' );
  */
 function pass_multisite_paths_to_blocks() {
 	$blocks = [
-		'differentiators'
+		'differentiator',
 	];
 	$namespace = 'bc-sitka-spruce';
 	foreach ( $blocks as $block ) {
