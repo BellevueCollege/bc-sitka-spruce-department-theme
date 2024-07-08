@@ -40,7 +40,7 @@ registerBlockType( 'bc-sitka-spruce/differentiator', {
         return (
             <div { ...blockProps }>
                 { ! areDiffsLoaded && <p>Loading...</p> }
-                { ( areDiffsLoaded && props.isSelected)  && (
+                { ( areDiffsLoaded && ( props.isSelected || ! props.attributes.differentiatorPostId ))  && (
                     <Card>
                         <CardHeader>
                             <h2>Select Differentiator to Display</h2>
@@ -55,11 +55,12 @@ registerBlockType( 'bc-sitka-spruce/differentiator', {
                         </CardBody>
                     </Card>
                 )}
-                
-                <ServerSideRender
-                    block="bc-sitka-spruce/differentiator"
-                    attributes={ props.attributes }
-                />
+                {( props.attributes.differentiatorPostId ) && (
+                    <ServerSideRender
+                        block="bc-sitka-spruce/differentiator"
+                        attributes={ props.attributes }
+                    />
+                )}
             </div>
         );
     },
