@@ -8,7 +8,8 @@
     },
     "autoload": {
         "psr-4": {
-            "BCSitkaSpruce\\Library\\": "src/library"
+            "BcSitkaSpruce\\Library\\": "src/library",
+            "BcSitkaSpruce\\Controllers\\": "src/controllers"
         }
     }
 }
