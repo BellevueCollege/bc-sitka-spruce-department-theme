@@ -13,3 +13,12 @@ const preview = {
 };
 
 export default preview;
+
+/**
+ * Mock the WordPress __ Function in Timber
+ * 
+ * Return the input, ignore namespace. __() is used to provide localization.
+ */
+Twig.extendFunction("__", (input, namespace) => {
+  return input;
+});
