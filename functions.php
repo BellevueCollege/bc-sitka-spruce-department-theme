@@ -83,3 +83,12 @@ function pass_multisite_paths_to_blocks() {
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\pass_multisite_paths_to_blocks' );
 
+
+/**
+ * Load Block Editor Styles
+ */
+$block_editor = Theme::blockEditor();
+$block_editor->addStylesheet('editor', 'assets/dist/css/editor.css');
+$block_editor->useGlobally(true);
+
+
