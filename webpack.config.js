@@ -34,6 +34,8 @@ const customPaths = Object.assign( {}, defaultConfig, {
 	entry: {
 		...scssEntryPoint( 'main' ),
 		...scssEntryPoint( 'editor' ),
+		...scssEntryPoint( 'mayflower-blocks-alert', true ),
+		...scssEntryPoint( 'mayflower-blocks-panel', true ),
 	}
 } );
 

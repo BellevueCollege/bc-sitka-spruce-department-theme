@@ -92,3 +92,31 @@ $block_editor->addStylesheet('editor', 'assets/dist/css/editor.css');
 $block_editor->useGlobally(true);
 
 
+/**
+ * Register Custom Styles for non-bundled blocks
+ */
+
+function enqueue_block_styles() {
+    // Add the block name (with namespace) for each style.
+    $blocks = array(
+		'mayflower-blocks/alert',
+		'mayflower-blocks/panel',
+    );
+
+    // Loop through each block and enqueue its styles.
+    foreach ( $blocks as $block ) {
+
+        // Replace slash with hyphen for filename.
+        $slug = str_replace( '/', '-', $block );
+		$asset = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $slug . '.asset.php' );
+
+        wp_enqueue_block_style( $block, array(
+            'handle' => "bc-sitka-spruce-block-{$slug}",
+            'src'    => get_theme_file_uri( "assets/dist/css/blocks/{$slug}.css" ),
+            'path'   => get_theme_file_path( "assets/dist/css/blocks/{$slug}.css" ),
+			'deps'   => $asset['dependencies'],
+			'ver'    => $asset['version'],
+        ) );
+    }
+}
+add_action( 'init', __NAMESPACE__ . '\enqueue_block_styles' );
