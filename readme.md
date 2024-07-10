@@ -23,3 +23,20 @@
 - `npm run build` - Build SCSS and JS using production settings
 - `npm start` - Build SCSS and JS using dev settings, and watch for changes
 - `npm run storybook` - Builds specified files in storybook (great for testing!)
+
+
+## Documentation
+
+### Adding styles to a non-bundled block (aka from Core or Mayflower Bocks)
+1. Create a new SCSS file in `src/scss/blocks`, using the naming convention `[namespace]-[block-name].scss`. Example: `mayflower-blocks/alert` would be `mayflower-blocks-alert.scss`
+  - If you are adding Bootstrap styles to a block, within the block SCSS file first import `block-styles`, then the Bootstrap component styles for that block. For example: 
+  
+  ```scss
+  @import '/src/scss/block-styles';
+  @import "~bootstrap/scss/alert";
+
+  // any other styles here!
+  ```
+
+1. In `webpack.config.js`, add a new entry point, setting the `block` flag to `true`, and passing in the file name without the extension. Example: `...scssEntryPoint( 'mayflower-blocks-alert', true ),`
+1. In `functions.php`, enqueue the style by adding the block to the array within the `enqueue_block_styles()` function
