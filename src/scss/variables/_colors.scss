@@ -1,0 +1,67 @@
+////
+/// @group colors
+/// Site-wide colors.
+////
+
+/// Color Definitions
+/// -----------------
+
+/// White and black. Using variables because sometimes these can be slightly
+/// lighter or darker than the absolute values, on a per-project basis.
+/// @type Color
+$white: #ffffff;
+$black: #000000;
+
+/// The color of text.
+/// @type Color
+$text-color: $black;
+
+/// The theme grays.
+/// @type Color
+$gray: #a7a9ac;
+$gray--dark: mix(#000000, #ffffff, 85%);
+$gray--medium: mix(#000000, #ffffff, 65%);
+$gray--light: #d7dade;
+$gray--xlight: #ebeef2;
+
+/// The theme primary colors.
+/// @type Color
+$primary-blue: #003d79;
+$primary-color: $primary-blue;
+$primary-color--dark: darken($primary-color, 20%);
+$primary-color--light: lighten($primary-color, 10%);
+
+/// Custom accent colors.
+/// @type Color
+$accent-navy: #162f57;
+$accent-green: #aab720;
+$accent-gold: #f2c01e;
+$accent-fountain-blue: #00aeef;
+
+/// Custom accent NEW colors.
+/// @type Color
+$accent-link-blue: #0055b8;
+$accent-navy-dark: #0c2244;
+$accent-green-light: #ccdb25;
+$accent-fountain-blue-light: #afe6fa;
+$accent-fountain-blue-extralight: #dcf2fa;
+
+/// Custom TREE colors.
+/// @type Color
+$accent-trees-dark: #c0e2f0;
+$accent-trees-light: #ebf6fa;
+
+/// Theme accent colors.
+/// @type Color
+$accent-orange: #E36F1E;
+$accent-red: #C4122F;
+$accent-yellow: #F2C01E;
+
+/// Theme message colors.
+/// @type Color
+$message-success: #3c763d;
+$message-alert: #a94442;
+
+/// Color Aliases
+/// -------------
+$link-color: $accent-link-blue;

@@ -56,22 +56,13 @@ function block_registration_helper( array $blocks ) {
 	}
 }
 
-/**
- * Enqueue Assets
- * 
- * Enqueue CSS and JS assets.
- */
-function enqueue_assets() {
-	$asset = include get_parent_theme_file_path( 'assets/dist/css/main.asset.php' );
 
-	wp_enqueue_style(
-		'bc-sitka-spruce-style',
-		get_parent_theme_file_uri( 'assets/dist/css/main.css' ),
-		$asset['dependencies'],
-		$asset['version']
-	);
-}
-add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_assets' );
+$enqueuer = Theme::enqueuer();
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
+$enqueuer->addStyle(handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css');
+$enqueuer->addStyle('bc-sitka-spruce-icons', '/node_modules/@fortawesome/fontawesome-pro/css/all.css', [], get_template_directory_uri());
+$enqueuer->addScript('bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js');
+
 
 /**
  * Pass Multisite Paths to Blocks
@@ -94,3 +85,40 @@ function pass_multisite_paths_to_blocks() {
 }
 add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\pass_multisite_paths_to_blocks' );
 
+
+/**
+ * Load Block Editor Styles
+ */
+$block_editor = Theme::blockEditor();
+$block_editor->addStylesheet('editor', 'assets/dist/css/editor.css');
+$block_editor->useGlobally(true);
+
+
+/**
+ * Register Custom Styles for non-bundled blocks
+ */
+
+function enqueue_block_styles() {
+    // Add the block name (with namespace) for each style.
+    $blocks = array(
+		'mayflower-blocks/alert',
+		'mayflower-blocks/panel',
+    );
+
+    // Loop through each block and enqueue its styles.
+    foreach ( $blocks as $block ) {
+
+        // Replace slash with hyphen for filename.
+        $slug = str_replace( '/', '-', $block );
+		$asset = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $slug . '.asset.php' );
+
+        wp_enqueue_block_style( $block, array(
+            'handle' => "bc-sitka-spruce-block-{$slug}",
+            'src'    => get_theme_file_uri( "assets/dist/css/blocks/{$slug}.css" ),
+            'path'   => get_theme_file_path( "assets/dist/css/blocks/{$slug}.css" ),
+			'deps'   => $asset['dependencies'],
+			'ver'    => $asset['version'],
+        ) );
+    }
+}
+add_action( 'init', __NAMESPACE__ . '\enqueue_block_styles' );

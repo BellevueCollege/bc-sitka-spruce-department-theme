@@ -29,7 +29,23 @@ class Enqueuer implements EnqueuerInterface {
   /**
    * @inheritDoc
    */
-  public function addScript(string $handle, string $src, array $dependencies = [], $base_path = '', $version = null, bool $footer = true): void {
+  public function addScript(
+      string $handle, 
+      string $src, 
+      array $dependencies = [], 
+      $base_path = '', 
+      $version = null, 
+      bool $footer = true,
+      bool $use_asset_file = false
+    ): void {
+    
+    if ( $use_asset_file ) {
+      $asset = include get_parent_theme_file_path( ltrim( $src, '/' ) );
+      $src = str_replace( '.asset.php', '.css', $src );
+      $version = $asset['version'];
+      $dependencies = array_merge($dependencies, $asset['dependencies']);
+    }
+    
     $this->scripts = array_merge($this->scripts, [
       $handle => [
         'src' => $this->convertLocalSrc($src, $base_path),
@@ -55,7 +71,13 @@ class Enqueuer implements EnqueuerInterface {
   /**
    * @inheritDoc
    */
-  public function addStyle(string $handle, string $src, array $dependencies = [], $base_path = '', $version = null, string $media = 'all'): void {
+  public function addStyle(string $handle, string $src, array $dependencies = [], $base_path = '', $version = null, string $media = 'all', bool $use_asset_file = false): void {
+    if ( $use_asset_file ) {
+      $asset = include get_parent_theme_file_path( ltrim( $src, '/' ) );
+      $src = str_replace( '.asset.php', '.css', $src );
+      $version = $asset['version'];
+      $dependencies = array_merge($dependencies, $asset['dependencies']);
+    }
     $this->styles = array_merge($this->styles, [
       $handle => [
         'src' => $this->convertLocalSrc($src, $base_path),
