@@ -60,6 +60,8 @@ function block_registration_helper( array $blocks ) {
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
 $enqueuer->addStyle(handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css');
+$enqueuer->addStyle('bc-sitka-spruce-icons', '/node_modules/@fortawesome/fontawesome-pro/css/all.css', [], get_template_directory_uri());
+$enqueuer->addScript('bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js');
 
 
 /**
