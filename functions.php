@@ -56,22 +56,11 @@ function block_registration_helper( array $blocks ) {
 	}
 }
 
-/**
- * Enqueue Assets
- * 
- * Enqueue CSS and JS assets.
- */
-function enqueue_assets() {
-	$asset = include get_parent_theme_file_path( 'assets/dist/css/main.asset.php' );
 
-	wp_enqueue_style(
-		'bc-sitka-spruce-style',
-		get_parent_theme_file_uri( 'assets/dist/css/main.css' ),
-		$asset['dependencies'],
-		$asset['version']
-	);
-}
-add_action( 'wp_enqueue_scripts', __NAMESPACE__ . '\enqueue_assets' );
+$enqueuer = Theme::enqueuer();
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
+$enqueuer->addStyle(handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css');
+
 
 /**
  * Pass Multisite Paths to Blocks

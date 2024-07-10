@@ -25,6 +25,8 @@ interface EnqueuerInterface {
    *   self::appendVersion.
    * @param bool $footer
    *   Load the script in the footer.
+   * @param bool $use_asset_file
+   *   Load the script using version and dependencies from an asset file.
    */
   public function addScript(
     string $handle,
@@ -32,7 +34,8 @@ interface EnqueuerInterface {
     array $dependencies = [],
     $base_path = '',
     $version = null,
-    bool $footer = TRUE
+    bool $footer = TRUE,
+    bool $use_asset_file = false
   ): void;
 
   /**
@@ -61,6 +64,8 @@ interface EnqueuerInterface {
    *   value of self::appendVersion.
    * @param string $media
    *   A CSS media query string on which to load the stylesheet.
+   * @param bool $use_asset_file
+   *   Load the stylesheet using version and dependencies from an asset file.
    */
   public function addStyle(
     string $handle,
@@ -68,7 +73,8 @@ interface EnqueuerInterface {
     array $dependencies = [],
     $base_path = '',
     $version = null,
-    string $media = 'all'
+    string $media = 'all',
+    bool $use_asset_file = false
   ): void;
 
   /**
