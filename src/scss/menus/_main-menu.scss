@@ -9,7 +9,8 @@
   $menu-link-color: css_color('bc-brutus-blue');
   $menu-active-trail-background-color: $menu-background-color;
   $menu-open-background-color: css_color('accent-fountain-blue-extralight');
-  $menu-open-background-color-hover: css_color('accent-fountain-blue-light');
+  $menu-submenu-background-color: $menu-background-color;
+  $menu-submenu-background-color-hover: css_color('accent-fountain-blue-extralight');
   $menu-open-link-color: $menu-link-color;
 
 
@@ -36,6 +37,7 @@
     text-decoration: underline;
     text-decoration-color: css_color('bc-rain-garden-green');
     text-decoration-thickness: 3px;
+    text-underline-offset: .33rem;
   }
 
   // Mobile
@@ -98,7 +100,7 @@
       background-color: $menu-open-background-color;
 
       li+li {
-        border-top: 1px solid css_color('bc-fountain-blue');
+        border-top: 1px solid css_color('gray--light');
       }
 
       a {
@@ -197,14 +199,15 @@
         width: auto;
         min-width: 16rem;
         border-radius: 0 0 .25rem .25rem;
-        background-color: $menu-open-background-color;
+        background-color: $menu-submenu-background-color;
+        padding: 0;
 
         li+li {
-          border-top: 1px solid css_color('bc-fountain-blue');
+          border-top: 1px solid css_color('gray--light');
         }
 
         li:hover>a {
-          background-color: $menu-open-background-color-hover;
+          background-color: $menu-submenu-background-color-hover;
         }
 
         a {
@@ -217,13 +220,14 @@
           line-height: 1.7rem;
 
           &:focus {
-            background-color: $menu-open-background-color-hover;
+            background-color: $menu-submenu-background-color-hover;
           }
         }
       }
     }
 
-    &>ul.menu>li:hover {
+    &>ul.menu>li:hover,
+    &>ul.menu>li.menu-item--open {
 
       ul {
         display: block;
