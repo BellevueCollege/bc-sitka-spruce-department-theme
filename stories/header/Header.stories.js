@@ -14,7 +14,8 @@ const Template = ( {
     site_title,
     logo_url,
     search_expanded,
-    menu_expanded
+    menu_expanded,
+    menu
  }) =>
     bcHeader({
         core_homepage_url,
@@ -22,7 +23,8 @@ const Template = ( {
         site_title,
         logo_url,
         search_expanded,
-        menu_expanded
+        menu_expanded,
+        menu
     });
 
 export const Default = Template.bind({});
@@ -32,5 +34,6 @@ Default.args = {
     site_title: "Sample Site",
     logo_url: logo,
     search_expanded: false,
-    menu_expanded: false
+    menu_expanded: false,
+    menu: ''
 };

@@ -28,13 +28,15 @@
                     </button>
                 </div>
             </div>
-            <nav id="site-header--main-nav" class="col-md-auto flex-grow-1">
-                {# This should use OHO Accessible Menu markup, not Bootstrap #}
-                <ul class="nav justify-content-end flex-column flex-md-row justify-content-md-end">
-                    <li class="nav-item"><a href="#" class="nav-link">Menu Item 1</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Menu Item 2</a></li>
-                    <li class="nav-item"><a href="#" class="nav-link">Menu Item 3</a></li>
-                </ul>
+            <nav
+                id="site-header--main-nav"
+                aria-label="{{ __('Main Menu', 'bellevue_2022') }}"
+                class="col-md-auto flex-grow-1 main-menu accessible-menu"
+                data-item-open-text="{{ __('Open the %s menu', 'bellevue_2022') }}"
+                data-item-close-text="{{ __('Close the %s menu', 'bellevue_2022') }}"
+                data-menu-has-items-selector=".menu-item-has-children > a"
+            >
+                {{ menu }}
             </nav>
             <div id="site-header--cta" class="col-md-2 text-md-end">
                 {#  Move to a component #}<a class="btn btn-info" href="#">Apply Now!</a>

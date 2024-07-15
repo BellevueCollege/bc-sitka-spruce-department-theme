@@ -10,5 +10,10 @@
 
 @import "lib/bootstrap";
 
+@import "lib/fontawesome";
+
+// Front-end only components
+@import "menus";
+
 // Stories that should be included globally
 @import "stories/header";

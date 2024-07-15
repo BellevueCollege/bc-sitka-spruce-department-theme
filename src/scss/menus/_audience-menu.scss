@@ -1,0 +1,303 @@
+////
+/// @group menus
+/// Audience menu styles.
+////
+
+.audience-menu {
+  --bs-body-line-height: 1.4rem;
+
+  // All Breakpoints
+  // ---------------
+  a,
+  li,
+  span {
+    display: block;
+
+  }
+
+  a,
+  span {
+    font-family: $sans-serif;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  span {
+    cursor: default;
+  }
+
+  // Mobile
+  // ------
+  @include media-breakpoint-down(lg) {
+    order: -1;
+
+    // All Levels
+    // ----------
+
+    &>ul.menu {
+      overflow: hidden;
+      margin: .5rem .625rem 0;
+      border: 1px solid css_color('bc-fountain-blue');
+      border-radius: .5rem;
+    }
+
+    span {
+      opacity: 0;
+    }
+
+    .menu-item--open>span {
+      padding: 0;
+    }
+
+    .menu-item__button {
+      width: 100%;
+
+      &::before {
+        padding-right: 6px;
+        content: '\f107';
+        text-align: right;
+        color: $black;
+        font-size: 1.5rem;
+        font-weight: 100;
+        line-height: 1;
+      }
+
+      &::after {
+        position: absolute;
+        top: 4px;
+        left: 0;
+        width: 100%;
+        padding: 0.625rem 1rem;
+        content: 'Information For';
+        text-align: left;
+        color: css_color('bc-brutus-blue');
+        font-size: 1rem;
+      }
+    }
+
+    .menu-item--open>.menu-item__button::before {
+      content: '\f106';
+      text-align: right;
+      color: $black;
+      font-size: 1.625rem;
+      font-weight: 100;
+      line-height: 1;
+    }
+
+    a,
+    span {
+      padding: .5em 3em .5em .5em;
+      text-decoration: none;
+      font-size: 1.125rem;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    // Open State
+    // ------------
+
+    &>ul.menu>.menu-item--open {
+      padding: 0.75rem 1rem;
+      background-color: css_color('accent-fountain-blue-extralight');
+    }
+
+    // Second Level
+    // ------------
+    ul ul {
+      display: none;
+
+      li {
+        padding: 0.625rem 0;
+      }
+
+      li+li {
+        border-top: 1px solid css_color('bc-fountain-blue');
+      }
+
+      a {
+        padding: 0;
+        color: css_color('black');
+        font-size: 1rem;
+        font-weight: 400;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+          color: css_color('bc-brutus-blue');
+        }
+      }
+    }
+  }
+
+  // Desktop
+  // -----
+  @include media-breakpoint-up(lg) {
+    z-index: 2;
+    margin-right: 2rem;
+    margin-left: 1rem;
+
+
+
+    // All Levels
+    // ----------
+    ul {
+      display: flex;
+    }
+
+    &>ul.menu>li {
+      border: 1px solid css_color('bc-fountain-blue');
+      border-radius: 0.5rem;
+
+      &:hover {
+        border-radius: 0.5rem 0.5rem 0 0;
+        background-color: css_color('accent-fountain-blue-extralight');
+
+        >a,
+        >span {}
+      }
+    }
+
+    &>ul.menu>li.menu-item--open {
+      border-radius: 0.5rem 0.5rem 0 0;
+      background-color: css_color('accent-fountain-blue-extralight');
+    }
+
+    span {
+      padding: 0.563rem 3.875rem .5rem 1rem;
+      font-weight: 700;
+    }
+
+    a {
+      padding: .75em 1em;
+      color: $link-color;
+      line-height: 1;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    &.accessible-menu .menu-item__button {
+      right: -36px;
+      bottom: 22%;
+      left: unset;
+      transition: none;
+      opacity: 1;
+
+      &::before {
+        content: '\f107';
+        text-align: right;
+        opacity: 1;
+        color: $black;
+        font-size: 1.25rem;
+        font-weight: 100;
+        line-height: 1;
+      }
+    }
+
+    &.accessible-menu .menu-item--open>.menu-item__button::before {
+      content: '\f106';
+    }
+
+    &.accessible-menu .menu-item__button {
+      top: 5px;
+      right: -16px;
+      width: 1.625rem;
+      height: 1.625rem;
+      padding: 0;
+      border-radius: 7px;
+
+      &:focus {
+        background-color: css_color('accent-fountain-blue-light');
+      }
+    }
+
+
+
+    &>.menu-item--open~ul.menu>li {
+      border-radius: rem-calc(8 8 0 0);
+    }
+
+    // Second Level
+    // ------------
+    ul ul {
+      position: absolute;
+      z-index: 1;
+      right: -1px;
+      display: none;
+      overflow: hidden;
+      min-width: calc(100% + 2px);
+      padding: rem-calc(12 16);
+      border: 1px solid css_color('bc-fountain-blue');
+      border-top: none;
+      border-radius: rem-calc(0 0 8 8);
+      background-color: css_color('accent-fountain-blue-extralight');
+
+      li {
+        padding: rem-calc(10 0);
+      }
+
+      li+li {
+        border-top: 1px solid css_color('bc-fountain-blue');
+      }
+
+      a {
+        padding: 0;
+        color: css_color('black');
+        font-size: 1rem;
+        font-weight: 400;
+
+        &:hover,
+        &:focus {
+          text-decoration: underline;
+          color: css_color('bc-brutus-blue');
+        }
+
+        @include media-breakpoint-up(lg) {
+          width: fit-content;
+        }
+      }
+    }
+  }
+}
+
+@include media-breakpoint-up(lg) {
+  .main-menu>ul.menu>li>.menu-item__button {
+    pointer-events: none;
+  }
+}
+
+
+.no-touchevents .audience-menu .menu-item--expanded:hover>ul {
+  @include media-breakpoint-up(lg) {
+    display: block;
+  }
+}
+
+// Touchevents based navigation
+.touchevents {
+
+  .audience-menu.accessible-menu {
+    @include media-breakpoint-up(lg) {
+
+      .menu-item__button {
+        right: 0;
+        width: 1.25rem;
+      }
+
+      .menu-item--expanded>a,
+      .menu-item--expanded>span {
+        padding-right: rem-calc(40);
+      }
+    }
+  }
+}

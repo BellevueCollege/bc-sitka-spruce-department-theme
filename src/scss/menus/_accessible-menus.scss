@@ -1,0 +1,113 @@
+////
+/// @group menus
+/// Styles for the accessible menu JavaScript.
+////
+
+.accessible-menu {
+
+  li {
+    position: relative;
+  }
+
+  .menu-item {
+
+    &__button {
+      position: absolute;
+      border: none;
+      background-color: transparent;
+
+      @include media-breakpoint-down(lg) {
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: 2em;
+        height: 2em;
+        margin: 0;
+        padding: .375em;
+        color: transparent;
+        font-size: 1.5rem;
+
+        &::before {
+          display: inline-block;
+          width: 100%;
+          content: fa-content($fa-var-plus);
+          color: css_color('white');
+          font-family: $font-awesome;
+        }
+      }
+
+      @include media-breakpoint-up(lg) {
+        position: absolute;
+        bottom: 0;
+        left: 50%;
+        width: 1.5rem;
+        height: 1rem;
+        transition: opacity $primary-transition;
+        transform: translateX(-50%);
+        opacity: 0;
+        font-size: 0;
+
+        &::before {
+          width: 100%;
+          content: fa-content($fa-var-chevron-circle-down);
+          color: css_color('white');
+          font-family: $font-awesome;
+          font-size: 16px;
+        }
+
+        &:focus {
+          opacity: 1;
+        }
+      }
+    }
+
+    &--open {
+
+      > ul {
+        display: block;
+      }
+
+      @include media-breakpoint-down(lg) {
+
+        > .menu-item__button::before {
+          content: fa-content($fa-var-minus);
+        }
+      }
+
+      @include media-breakpoint-up(lg) {
+
+        > .menu-item__button::before {
+          content: fa-content($fa-var-chevron-circle-up);
+        }
+      }
+    }
+  }
+}
+
+// Touchevents based navigation
+.touchevents {
+
+  .accessible-menu {
+    @include media-breakpoint-up(lg) {
+
+      .menu-item-has-children > a {
+        padding-right: 30px;
+      }
+
+      .menu-item__button {
+        top: 0rem;
+        right: -20px;
+        left: auto;
+        width: calc( 1rem + 2px ) !important;
+        height: 100%;
+        padding: 0;
+        opacity: 1;
+      }
+
+      .menu-item--expanded > a,
+      .menu-item--expanded > span {
+        padding-right: 1.56rem;
+      }
+    }
+  }
+}

@@ -1,0 +1,70 @@
+////
+/// @group menus
+/// Utility menu styles.
+////
+
+.utility-menu {
+
+  // All Breakpoints
+  // ---------------
+  a,
+  li {
+    display: block;
+  }
+
+  a {
+    text-decoration: none;
+    font-family: $sans-serif;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  // Mobile
+  // ------
+  @include media-breakpoint-down(lg) {
+    margin: rem-calc(24 10 0);
+
+    li {
+      display: inline-block;
+    }
+
+    a {
+      padding: .5em;
+      text-align: left;
+      text-decoration: none;
+      color: css_color('bc-brutus-blue');
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    li:last-child {
+      display: block;
+      margin-top: 1.5rem;
+
+      a {
+        @include button(small, 'default', true);
+        display: block;
+        text-align: center;
+      }
+    }
+  }
+
+  // Desktop
+  // -----
+  @include media-breakpoint-up(lg) {
+
+    ul {
+      display: flex;
+    }
+
+    a {
+      padding: 0 1em;
+      color: css_color('bc-brutus-blue');
+    }
+  }
+}

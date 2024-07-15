@@ -1,0 +1,386 @@
+{#
+/**
+ * @file
+ * Macros for Bellevue.
+ *
+ * Available macros:
+ * - render_flexible_content: Render a flexible content field.
+ * - image: Display a responsive image.
+ * - link: Display a link from an Advanced Custom Field link field.
+ * - links: Print an Advanced Custom Field repeater containing a link field.
+ * - text_optional_link: Display text optionally linked from an Advanced Custom Field link field.
+ * - email: Display an email as a link.
+ * - phone_number: Display a phone number as a link.
+ * - link_list: Print an Advanced Custom Field repeater containing a link field as a list.
+ * - term_list: Print an array of \WP_Term objects as a list.
+ * - text_list: Print an Advanced Custom Field repeater containing a text field as a list.
+ * - item_list: Print an Advanced Custom Field repeater containing a subcomponent as a list.
+ * - wrap_items: Wrap an array of items in a tag.
+ * - wrap_item: Wrap an item in a tag.
+ * - social_links: Print an Advanced Custom Field repeater containing a social links as a list.
+ */
+#}
+
+{#
+/**
+ * Render a flexible content field.
+ *
+ * @param string namespace
+ *   The namespace string.
+ * @param array fcfield
+ *   The flexible content field array.
+ */
+#}
+{% macro render_flexible_content(namespace, fcfield) %}
+  {%- if fcfield -%}
+    {% for component in fcfield %}
+      {% include 'components/' ~ component.acf_fc_layout ~ '.twig' with {
+        acf: component|apply_filters(namespace ~ '/component/' ~ component.acf_fc_layout, component),
+      } %}
+    {% endfor %}
+  {%- endif -%}
+{% endmacro %}
+
+{#
+/**
+ * Display a responsive image.
+ *
+ * @param array image
+ *   The image object.
+ * @param string src_size
+ *   Optional image size, from sizes registered with WordPress.
+ * @param array srcset_sizes
+ *   Optional sizes to build as srcset, from sizes registerd with WordPress.
+ * @param array sizes
+ *   Optional sizes for the sizes attribute.
+ * @param array attribtues
+ *   An additional associative array of attributes to added to the image.
+ */
+#}
+{# {% macro image(image, src_size = '', srcset_sizes = [], sizes = [], attributes = {}) %}
+  {%- if image -%}
+    <img {{ image_attr(image, src_size, srcset_sizes, sizes, attributes) }}>
+  {%- endif -%}
+{% endmacro %} #}
+
+{#
+/**
+ * Display a link from an Advanced Custom Field link field.
+ *
+ * The field must be configured to return an array. You may override the link
+ * text by setting link.content on the passed link. Do not override the title,
+ * as the title is used for creating aria-labels.
+ *
+ * @param array link
+ *   The link field array.
+ * @param string class
+ *   Optional classes to add to the <a> element.
+ */
+#}
+{% macro link(link, class = '') %}
+  {% if link %}
+    <a
+      href="{{ link.url }}"
+      {% if link.target %}target="{{ link.target }}"{% endif %}
+      {% if link.target == '_blank' %}aria-label="{{ __('%s (opens in a new window)', 'bellevue_2022')|format(link.title) }}"
+        {% elseif link.label %}aria-label="{{ link.label }}"{% endif %}
+      {% if class %} class="{{ class }}"{% endif %}
+    >{% if link.content %}{{ link.content }}{% else %}{{ link.title }}{% endif %}</a>
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Print an Advanced Custom Field repeater containing a link field.
+ *
+ * The field must be configured to return an array.
+ *
+ * @param array links
+ *   The repeater field containing the list.
+ * @param string field_name
+ *   The link field name in the repeater.
+ * @param string class
+ *   Optional classes to add to the <a> element.
+ */
+#}
+{% macro links(links, field_name = 'link', class = '') %}
+  {% import _self as macros %}
+  {% if links %}
+    {% for link in links %}
+      {{ macros.link(link[field_name], class) }}
+    {% endfor %}
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Display text optionally linked from an Advanced Custom Field link field.
+ *
+ * The link field must be configured to return an array.
+ *
+ * @param string text
+ *   The text string.
+ * @param array link
+ *   The link field array.
+ * @param string class
+ *   Optional classes to add to the <a> element if there is a link.
+ */
+#}
+{% macro text_optional_link(text, optional_link, link_class = '') %}
+  {% if optional_link %}
+    {{ _self.link(optional_link|merge({ title: text }), link_class) }}
+  {% else %}
+    {{ text }}
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Display an email as a link.
+ *
+ * @param string address
+ *   The link field array.
+ * @param string text
+ *   Optional link text. If no text is passed, the address is used.
+ * @param string class
+ *   Optional classes to add to the <a> element.
+ */
+#}
+{% macro email(address, text = '', class = '') %}
+  {% if address %}
+    <a
+      href="mailto:{{ address }}"
+      {% if class %} class="{{ class }}"{% endif %}
+    >{{ text ?: address }}</a>
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Display a phone number as a link.
+ *
+ * @param string phone_number
+ *   The phone number field array.
+ * @param string text
+ *   Optional link text. If no text is passed, the phone number is used.
+ * @param string class
+ *   Optional classes to add to the <a> element.
+ */
+#}
+{% macro phone_number(phone_number, text = '', class = '') %}
+  {% if phone_number %}
+    {% set number = phone_number|replace({
+      '(': '',
+      ')': '',
+      '-': '',
+      '.': '',
+      ' ':'',
+    }) %}
+    <a
+      href="tel:{{ number }}"
+      {% if class %} class="{{ class }}"{% endif %}
+    >{{ text ?: phone_number }}</a>
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Print an Advanced Custom Field repeater containing a link field as a list.
+ *
+ * @param array repeater
+ *   The repeater field containing the list.
+ * @param string field_name
+ *   The link field name in the repeater.
+ * @param string ul_class
+ *   Optional classes to add to the <ul> element.
+ * @param string li_class
+ *   Optional classes to add to the <li> elements.
+ * @param string link_class
+ *   Optional classes to add to the <a> elements.
+ */
+#}
+{% macro link_list(links, field_name = 'link', ul_class = '', li_class = '', link_class = '') %}
+  {% import _self as macros %}
+  {% if links %}
+    <ul{% if ul_class %} class="{{ ul_class }}"{% endif %}>
+      {% for link in links %}
+        {{ macros.wrap_item(macros.link(link[field_name], link_class), 'li', li_class) }}
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Print an array of \WP_Term objects as a list.
+ *
+ * @param \WP_Terms[] terms
+ *   The terms.
+ * @param string ul_class
+ *   Optional classes to add to the <ul> element.
+ * @param string li_class
+ *   Optional classes to add to the <li> elements.
+ * @param string link_class
+ *   Optional classes to add to the <a> elements, if it is linked.
+ * @param string link_path
+ *   If the listing path is passed, the terms will be linked to the listing page
+ *   pre-filtered.
+ */
+#}
+{% macro term_list(terms, ul_class = '', li_class = '', link_class = '', link_path = '') %}
+  {% import _self as macros %}
+  {% if terms %}
+    <ul{% if ul_class %} class="{{ ul_class }}"{% endif %}>
+    {% for term in terms %}
+      {% if link_path %}
+        {% set item = macros.term_link(term, link_path, link_class) %}
+      {% else %}
+        {% set item = term.name %}
+      {% endif %}
+      {{ macros.wrap_item(item, 'li', li_class) }}
+    {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Print a \WP_Term object as a prefilterd link.
+ *
+ * @param \WP_Term term
+ *   The term.
+ * @param string link_path
+ *   If the listing path is passed, the terms will be linked to the listing page
+ *   pre-filtered.
+ * @param string link_class
+ *   Optional classes to add to the <a> elements.
+ */
+#}
+{% macro term_link(term, link_path, link_class = '') %}
+  <a href="{{ link_path }}?{{ term.taxonomy }}={{ term.term_id }}"{% if link_class %} class="{{ link_class }}"{% endif %}>{{ term.name }}</a>
+{% endmacro %}
+
+{#
+/**
+ * Print an Advanced Custom Field repeater containing a text field as a list.
+ *
+ * @param array repeater
+ *   The repeater field containing the list.
+ * @param string field_name
+ *   The text field name in the repeater.
+ * @param string list_class
+ *   Optional classes to add to the <ul> or <ol> element.
+ * @param string li_class
+ *   Optional classes to add to the <li> elements.
+ * @param string type
+ *   The type of list to print, either 'ul' or 'ol'.
+ */
+#}
+{% macro text_list(items, field_name, list_class = '', li_class = '', type = 'ul') %}
+  {% import _self as macros %}
+  {% if items %}
+    <{{ type }}{% if list_class %} class="{{ list_class }}"{% endif %}>
+    {% for item in items %}
+      {{ macros.wrap_item(item[field_name], 'li', class) }}
+    {% endfor %}
+    </{{ type }}>
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Print an Advanced Custom Field repeater containing a subcomponent as a list.
+ *
+ * @param array items
+ *   The repeater field containing the list.
+ * @param string layout
+ *   The layout template name.
+ * @param string list_class
+ *   Optional classes to add to the <ul> or <ol> element.
+ * @param string li_class
+ *   Optional classes to add to the <li> elements.
+ * @param string type
+ *   The type of list to print, either 'ul' or 'ol'.
+ */
+#}
+{% macro item_list(items, layout, list_class = '', li_class = '', type = 'ul') %}
+  {% import _self as macros %}
+  {% if items %}
+    <{{ type }}{% if list_class %} class="{{ list_class }}"{% endif %}>
+    {% for item in items %}
+      {% set item_output %}
+        {% include 'layouts/' ~ layout ~ '.twig' with {
+          acf: item,
+        } %}
+      {% endset %}
+      {{ macros.wrap_item(item_output, 'li', class) }}
+    {% endfor %}
+    </{{ type }}>
+  {% endif %}
+{% endmacro %}
+
+{#
+/**
+ * Wrap an array of items in a tag.
+ *
+ * @param array items
+ *   The items array.
+ * @param string tag
+ *   The element tag to wrap items with.
+ * @param string class
+ *   Optional classes to add to the wrapping element.
+ */
+#}
+{% macro wrap_items(items, tag, class = '') %}
+  {% for item in items %}
+    <{{ tag }}{% if class %} class="{{ class }}"{% endif %}>{{ item }}</{{ tag }}>
+  {% endfor %}
+{% endmacro %}
+
+{#
+/**
+ * Wrap an item in a tag.
+ *
+ * @param string item
+ *   The item.
+ * @param string tag
+ *   The element tag to wrap the item with.
+ * @param string class
+ *   Optional classes to add to the wrapping element.
+ */
+#}
+{% macro wrap_item(item, tag, class = '') %}
+  <{{ tag }}{% if class %} class="{{ class }}"{% endif %}>{{ item }}</{{ tag }}>
+{% endmacro %}
+
+{#
+/**
+ * Print an Advanced Custom Field repeater containing a social links as a list.
+ *
+ * @param array social_links
+ *   The repeater field containing the social links.
+ * @param string ul_class
+ *   Optional classes to add to the <ul> element.
+ * @param string li_class
+ *   Optional classes to add to the <li> elements.
+ * @param string link_class
+ *   Optional classes to add to the <a> elements.
+ * @param string link_field
+ *   Field name for the link field in the repeater.
+ * @param string icon_field
+ *   Field name for the icon field in the repeater.
+ */
+#}
+{% macro social_links(social_links, ul_class = '', li_class = '', link_class = '', link_field = 'link', icon_field = 'icon') %}
+  {% import _self as macros %}
+  {% if social_links %}
+    <ul{% if ul_class %} class="{{ ul_class }}"{% endif %}>
+      {% for social_link in social_links %}
+        <li{% if li_class %} class="{{ li_class }}"{% endif %}>
+          {% set link = social_link[link_field]|merge({content: social_link[icon_field], label: social_link[link_field].title}) %}
+          {{ macros.link(link, link_class) }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}

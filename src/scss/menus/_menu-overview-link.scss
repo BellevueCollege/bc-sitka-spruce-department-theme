@@ -1,0 +1,32 @@
+////
+/// @group menus
+/// Overview link styles.
+////
+
+.menu-item {
+
+  &--disabled {
+
+    > a {
+      cursor: default;
+
+      button {
+        left: 0;
+        width: auto;
+        padding-right: .625em;
+        text-align: right;
+        background-color: transparent;
+      }
+    }
+  }
+
+  &--overview {
+    // Overview links should always be hidden.
+    display: none !important; // stylelint-disable-line
+  }
+
+  &--disabled &--overview {
+    // Ovenview links should always be displayed if the menu item is disabled.
+    display: block !important; // stylelint-disable-line
+  }
+}
