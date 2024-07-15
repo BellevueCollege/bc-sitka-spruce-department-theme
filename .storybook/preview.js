@@ -1,7 +1,7 @@
 /** @type { import('@storybook/html').Preview } */
 import Twig from "twig";
 import '../assets/dist/css/main.css';
-import '/node_modules/@fortawesome/fontawesome-pro/css/all.css'
+// import '/node_modules/@fortawesome/fontawesome-pro/css/all.css'
 const preview = {
   parameters: {
     controls: {
