@@ -41,7 +41,7 @@ class Enqueuer implements EnqueuerInterface {
     
     if ( $use_asset_file ) {
       $asset = include get_parent_theme_file_path( ltrim( $src, '/' ) );
-      $src = str_replace( '.asset.php', '.css', $src );
+      $src = str_replace( '.asset.php', '.js', $src );
       $version = $asset['version'];
       $dependencies = array_merge($dependencies, $asset['dependencies']);
     }

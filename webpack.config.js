@@ -29,7 +29,7 @@ const scssEntryPoint = ( handle, block = false ) => {
 
 // Thanks to https://wordpress.org/support/topic/wordpress-scripts-not-building-both-blocks-and-index-js-simultaneously/
 // The recommended method from WP didn't let blocks build correctly- this does!
-const customPaths = Object.assign( {}, defaultConfig, {
+const customSCSSPaths = Object.assign( {}, defaultConfig, {
 	name: 'scss',
 	entry: {
 		...scssEntryPoint( 'main' ),
@@ -39,5 +39,12 @@ const customPaths = Object.assign( {}, defaultConfig, {
 	}
 } );
 
+const customJSPaths = Object.assign( {}, defaultConfig, {
+	name: 'scss',
+	entry: {
+		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' )
+	}
+} );
+
 // Add any new entry points by extending the webpack config.
-module.exports = [defaultConfig, customPaths];
+module.exports = [defaultConfig, customSCSSPaths, customJSPaths];
