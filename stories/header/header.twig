@@ -1,2 +1,47 @@
 <div id="header-wrapper">
+    <header 
+        id="site-header"
+        class="site-header container-xl 
+            {% if search_expanded %}search-expanded{% endif %}
+            {% if menu_expanded %}menu-expanded{% endif %}
+    ">
+        <div id="site-header--logo" class="">
+            <a href="{{ core_homepage_url }}"><img class="img-fluid" src="{{ logo_url }}" alt="{{ __('Bellevue College - Link to college homepage', 'bc-sitka-spruce') }}"></a>
+        </div>
+        <nav id="site-header--utility-nav" class="">
+            <ul class="nav justify-content-end flex-column flex-md-row justify-content-md-end">
+                <li class="nav-item"><a href="#" class="nav-link">Link 1</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Link 2</a></li>
+                <li class="nav-item"><a href="#" class="nav-link">Link 3</a></li>
+                <li class="nav-item d-none d-md-inline">
+                    <a href="#" class="nav-link"><span class="visually-hidden">Search</span><i class="far fa-search" aria-hidden="true"></i></a>
+                </li>
+            </ul>
+        </nav>
+        <div id="site-header--site-navbar" class="row">
+            <div id="site-header--site-title" class="col col-md-auto d-flex ">
+                <div class="h1 flex-grow-1"><a href="{{ site_homepage_url }}">{{ site_title }}</a></div>
+                <div class="d-md-none">
+                    <button class="btn btn-light">
+                        <span class="visually-hidden">{{ __('Menu', 'bc-sitka-spruce') }}</span>
+                        <i class="fas fa-bars" aria-hidden="true"></i>
+                    </button>
+                </div>
+            </div>
+            <nav id="site-header--main-nav" class="col-md-auto flex-grow-1">
+                {# This should use OHO Accessible Menu markup, not Bootstrap #}
+                <ul class="nav justify-content-end flex-column flex-md-row justify-content-md-end">
+                    <li class="nav-item"><a href="#" class="nav-link">Menu Item 1</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Menu Item 2</a></li>
+                    <li class="nav-item"><a href="#" class="nav-link">Menu Item 3</a></li>
+                </ul>
+            </nav>
+            <div id="site-header--cta" class="col-md-2 text-md-end">
+                {#  Move to a component #}<a class="btn btn-info" href="#">Apply Now!</a>
+            </div>
+        </div>
+        <div id="site-header--search" class="">
+            {% include '/stories/site-search-form/site-search-form.twig' %}
+        </div>
+    </header>
 </div>

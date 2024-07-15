@@ -12,6 +12,16 @@
 {% block wrapper %}
 
 	{% block header %}
+		{% include '/stories/header/header.twig' with {
+			core_homepage_url: '#',
+			site_homepage_url: '#',
+			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
+			site_title: site.blogname,
+			search_expanded: false,
+			menu_expanded: false
+		}
+		
+		%}
 	{% endblock %}
 
 	<main id="main-content" class="main-content">

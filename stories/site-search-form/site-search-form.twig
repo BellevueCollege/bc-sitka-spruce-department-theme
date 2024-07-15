@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Bellevue template for the site search form.
+ */
+#}
+<form
+	action="/search-results/"
+	method="get"
+	role="search"
+	aria-label="{{ __('Search Site', 'bellevue_2022') }}"
+>
+	<div class="form-item">
+	<label for="college-search-field" class="visually-hidden">{{ __('Search Site', 'bellevue_2022') }}</label>
+	<input
+		id="college-search-field"
+		class="form-text"
+		type="search"
+		placeholder="{{ __('Search bellevuecollege.edu', 'bellevue_2022') }}"
+		name="txtQuery"
+		value=""
+		size="60"
+		maxlength="128"
+	>
+	<button
+		id="college-search-submit"
+		class="btn btn-primary js-form-submit form-submit"
+		type="submit"
+	>
+		{{ __('Go', 'bellevue_2022') }}
+	</button>
+	</div>
+</form>
