@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Bellevue template for the page wrapper.
+ *
+ * Available variables:
+ * - menus: All menus registered on the site, keyed by menu slug.
+ */
+#}
+{% extends 'system/html.twig' %}
+
+{% block wrapper %}
+
+	{% block header %}
+	{% endblock %}
+
+	<main id="main-content" class="main-content">
+		{% block content %}
+		
+		{% endblock %}
+	</main>
+
+	{% block sock %}
+	{% endblock %}
+
+	{% block footer %}
+		{% include 'system/footer.twig' %}
+	{% endblock %}
+
+
+	{{ function('wp_footer') }}
+{% endblock %}
+
