@@ -263,12 +263,12 @@
 }
 
 .no-touchevents .main-menu .menu-item--expanded:hover>ul {
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(md) {
     display: block;
   }
 }
 
-@include media-breakpoint-up(lg) {
+@include media-breakpoint-up(md) {
 
   .touchevents .main-menu>ul.menu>li>.menu-item__button {
     right: 6px;

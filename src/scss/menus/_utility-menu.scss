@@ -36,12 +36,40 @@
 			color: css_color('bc-rainy-night-blue');
 			text-decoration-color: css_color('bc-brutus-blue');
 
-			.far::before {
-				text-decoration: underline;
-				text-decoration-color: css_color('bc-fountain-blue');
-				text-decoration-thickness: 2px;
-				text-underline-offset: .33rem;
+		}
+	}
+
+	.search-toggle {
+		a {
+			font-size: 1.25em;
+			position: relative;
+			top: -0.125em;
+			padding: 0 0.5em;
+			text-decoration: none;
+
+			&:hover,
+			&:focus {
+				background: css_color('accent-fountain-blue-light');
+				color: css_color('black');
+				text-decoration: none;
+
+				.far::before {
+					color: css_color('black');
+				}
 			}
+		}
+	}
+	.search-expanded & .search-toggle a {
+		background-color: css_color('bc-brutus-blue');
+		color: css_color('white');
+
+		.far::before {
+			color: css_color('white');
+		}
+
+		&:hover,
+		&:focus {
+			background-color: css_color('bc-rainy-night-blue');
 		}
 	}
 
@@ -62,7 +90,7 @@
 
 	// Desktop
 	// -----
-	@include media-breakpoint-up(lg) {
+	@include media-breakpoint-up(md) {
 
 		ul {
 			margin-top: 1rem;
