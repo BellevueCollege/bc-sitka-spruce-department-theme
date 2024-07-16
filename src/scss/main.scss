@@ -4,6 +4,8 @@
 @import 'variables/animation';
 @import 'variables/bootstrap';
 
+
+
 @import "lib/gerillass";
 
 @import "variables/spacing";
@@ -12,8 +14,10 @@
 
 @import "lib/fontawesome";
 
+// Stories that should be included globally
+$header-tablet-breakpoint: sm;
+$header-desktop-breakpoint: lg;
+@import "stories/header";
+
 // Front-end only components
 @import "menus";
-
-// Stories that should be included globally
-@import "stories/header";

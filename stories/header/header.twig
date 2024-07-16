@@ -17,7 +17,7 @@
                 <li class="menu-item"><a href="#">Link 1 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
                 <li class="menu-item"><a href="#">Link 2 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
                 <li class="menu-item"><a href="#">Link 3 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item d-none d-md-block search-toggle">
+                <li class="menu-item d-none d-lg-block search-toggle">
                     <a
                         href="#"
                         class="button-toggle"
@@ -32,13 +32,13 @@
             </ul>
         </nav>
         <div id="site-header--site-navbar" class="row">
-            <div id="site-header--site-title" class="col col-md-auto d-flex ">
+            <div id="site-header--site-title" class="col col-lg-auto d-flex ">
                 <div class="site-title h1 flex-grow-1"><a href="{{ site_homepage_url }}">{{ site_title }}</a></div>
                 <button
-                    class="btn btn-link button-toggle menu-toggle d-md-none"
+                    class="btn btn-link button-toggle menu-toggle d-lg-none"
                     data-button-open-class="menu-expanded"
                     data-button-open-class-element="header"
-                    data-button-disable-at="768"
+                    data-button-disable-at="1025"
                     aria-expanded="false"
                     aria-controls="site-header--main-nav site-header--utility-nav site-header--cta site-header--search"
                 >
@@ -49,14 +49,14 @@
             <nav
                 id="site-header--main-nav"
                 aria-label="{{ __('Main Menu', 'bellevue_2022') }}"
-                class="col-md-auto flex-grow-1 main-menu accessible-menu"
+                class="col-lg-auto flex-grow-1 main-menu accessible-menu"
                 data-item-open-text="{{ __('Open the %s menu', 'bellevue_2022') }}"
                 data-item-close-text="{{ __('Close the %s menu', 'bellevue_2022') }}"
                 data-menu-has-items-selector=".menu-item-has-children > a"
             >
                 {{ menu }}
             </nav>
-            <div id="site-header--cta" class="col-md-2 text-md-end">
+            <div id="site-header--cta" class="col-lg-2 text-lg-end">
                 {#  Move to a component #}<a class="btn btn-info" href="#">Apply Now!</a>
             </div>
         </div>

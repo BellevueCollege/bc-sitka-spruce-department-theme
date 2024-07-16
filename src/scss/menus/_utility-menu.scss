@@ -75,7 +75,7 @@
 
 	// Mobile
 	// ------
-	@include media-breakpoint-down(md) {
+	@include media-breakpoint-down($header-desktop-breakpoint) {
 
 		ul {
 			flex-direction: column;
@@ -90,7 +90,7 @@
 
 	// Desktop
 	// -----
-	@include media-breakpoint-up(md) {
+	@include media-breakpoint-up($header-desktop-breakpoint) {
 
 		ul {
 			margin-top: 1rem;

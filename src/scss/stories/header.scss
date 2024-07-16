@@ -1,3 +1,4 @@
+
 #header-wrapper {
     background: css_color('white');
     background: linear-gradient(180deg, css_color('gray--xlight') 60px, css_color('white') 60px);
@@ -21,9 +22,10 @@
         "navbar navbar navbar navbar navbar navbar"
         "utilitynav utilitynav utilitynav utilitynav utilitynav utilitynav"
         "search search search search search search";
+
     
     // Desktop Header Layout
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up($header-desktop-breakpoint) {
         grid-template-areas:
             "logo logo utilitynav utilitynav utilitynav utilitynav"
             "navbar navbar navbar navbar navbar navbar"
@@ -76,17 +78,22 @@
     } 
 
     // Hide and display Search Box based on screen size and expanded state
-    @include media-breakpoint-up(md) {
+    @include media-breakpoint-up($header-desktop-breakpoint) {
         &--search {
             display: none;
         }
         &.search-expanded &--search {
             display: block;
         }
+
+        &--main-nav,
+        &--cta {
+            padding-top: 0.5rem;
+        }
     }
 
     // Hide and display menus on mobile
-    @include media-breakpoint-down(md) {
+    @include media-breakpoint-down($header-desktop-breakpoint) {
 
         &--site-title {
             padding-right: 0;

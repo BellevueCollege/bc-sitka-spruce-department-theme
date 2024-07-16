@@ -42,7 +42,7 @@
 
   // Mobile
   // -----
-  @include media-breakpoint-down(md) {
+  @include media-breakpoint-down($header-desktop-breakpoint) {
 
     // Remove default padding from row to allow edge-to-edge divider lines
     & {
@@ -134,7 +134,7 @@
 
   // Desktop
   // -----
-  @include media-breakpoint-up(md) {
+  @include media-breakpoint-up($header-desktop-breakpoint) {
     z-index: 3;
 
     // All Levels
