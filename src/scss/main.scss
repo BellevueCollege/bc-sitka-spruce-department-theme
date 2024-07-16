@@ -1,5 +1,6 @@
 @import 'variables/type';
 @import 'variables/colors';
+@import 'variables/css';
 @import 'variables/animation';
 @import 'variables/bootstrap';
 
@@ -8,3 +9,6 @@
 @import "variables/spacing";
 
 @import "lib/bootstrap";
+
+// Stories that should be included globally
+@import "stories/header";

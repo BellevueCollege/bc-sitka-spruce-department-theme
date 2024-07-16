@@ -185,7 +185,16 @@ class ThemeOptions implements ThemeOptionsInterface {
     }
     add_theme_support('post-formats', $this->allowedPostFormats);
     add_theme_support('post-thumbnails', $this->postThumbnails);
-    add_theme_support( 'editor-styles' );
+    //add_theme_support( 'editor-styles' ); <- probably not needed, since we are using a different style loading method
+    add_theme_support( 'custom-logo' );
+    add_theme_support( 'automatic-feed-links' );
+    add_theme_support( 'align-wide' );
+    add_theme_support( 'disable-custom-font-sizes' );
+    add_theme_support( 'disable-custom-colors' );
+    add_theme_support( 'disable-custom-gradients' );
+    remove_theme_support( 'core-block-patterns' );
+    add_theme_support( 'responsive-embeds' );
+    add_theme_support( 'block-template-parts' );
   }
 
 }

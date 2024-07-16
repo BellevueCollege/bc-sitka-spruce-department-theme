@@ -7,7 +7,7 @@ namespace BcSitkaSpruce\Library\Twig;
  */
 class Templates implements TemplatesInterface {
 
-  public string $subfolder = 'controllers';
+  public string $subfolder = 'src/controllers/page-templates';
 
   public function __construct() {
     add_action('init', [$this, 'setupTemplatesFolder'], 10, 0);

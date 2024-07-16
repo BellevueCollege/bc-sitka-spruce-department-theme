@@ -15,14 +15,14 @@ $enable-negative-margins: true;
 $enable-dark-mode: false;
 
 // Colors
-$primary: $primary-blue;
-$secondary: $gray--medium;
-$info: $accent-fountain-blue-light;
+$primary: get_color($brand-colors, 'bc-brutus-blue');
+$secondary: get_color($sitka-colors, 'gray--medium');
+$info: get_color($sitka-colors, 'accent-fountain-blue-light');
 $success: #317131;
-$warning: $accent-gold;
-$danger: $accent-red;
-$light: $gray--xlight;
-$dark: $gray--dark;
+$warning: get_color($brand-colors, 'bc-beehive-gold');
+$danger: get_color($brand-colors, 'bc-fall-maple-red');
+$light: get_color($sitka-colors, 'gray--xlight');
+$dark: get_color($sitka-colors, 'gray--dark');
 
 // Fonts
 $font-family-sans-serif: $sans-serif;
@@ -46,7 +46,7 @@ $h6-font-size: 1rem;
 $border-radius: .5rem;
 
 // Tables
-$table-border-color: $gray;
+$table-border-color: get_color($brand-colors, 'bc-bulldog-silver');
 $table-cell-padding-x: 1.25rem;
 $table-cell-padding-y: 1rem;
 
@@ -66,7 +66,7 @@ $btn-font-size-sm: $btn-font-size;
 $btn-font-size-lg: 1.188rem;
 $input-btn-line-height: 1.2;
 $btn-transition: color .5s $bezier-ease, background .5s $bezier-ease, border .5s $bezier-ease;
-$btn-color: $white;
+$btn-color: get_color($sitka-colors, 'white');
 $btn-padding-y: .625rem;
 $btn-padding-x: 1.125rem;
 $btn-padding-y-sm: $btn-padding-y;
@@ -79,7 +79,7 @@ $btn-padding-x-lg: 4rem;
 //$form-label-font-size:                  null !default;
 //$form-label-font-style:                 null !default;
 $form-label-font-weight: 700;
-$form-label-color: $gray--dark;
+$form-label-color: get_color($sitka-colors, 'gray--dark');;
 
 $input-border-radius: 4px;
 $input-padding-x: 1.125rem;
@@ -89,11 +89,11 @@ $input-font-family: $myriad-pro;
 $input-font-weight: 600;
 $input-line-height: 1.2;
 
-$input-bg: $white;
-$input-color: $text-color;
-$input-border-color: $gray;
-$input-focus-border-color: $primary-blue;
-$input-focus-box-shadow:  0 0 2px $primary-blue;
+$input-bg: get_color($sitka-colors, 'white');
+$input-color: get_color($sitka-colors, 'black');
+$input-border-color: get_color($brand-colors, 'bc-bulldog-silver');
+$input-focus-border-color: get_color($brand-colors, 'bc-brutus-blue');
+$input-focus-box-shadow:  0 0 2px get_color($brand-colors, 'bc-brutus-blue');;
 
 
 // Accordions
@@ -109,9 +109,9 @@ $input-focus-box-shadow:  0 0 2px $primary-blue;
 $accordion-padding-x: 1rem; //0.625rem;
 $accordion-padding-y: 1.25rem; // 0.5rem;
 $accordion-button-active-bg: $primary;
-$accordion-button-active-color: $white;
+$accordion-button-active-color: get_color($sitka-colors, 'white');
 $accordion-icon-transform: none;
 $accordion-icon-color: $dark;
-$accordion-icon-active-color: $accent-green-light;
+$accordion-icon-active-color: get_color($sitka-colors, 'accent-green-light');
 $accordion-button-icon: accordion-icon-open($accordion-icon-color);
 $accordion-button-active-icon: accordion-icon-close($accordion-icon-active-color);

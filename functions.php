@@ -10,7 +10,6 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Initialize Timber.
 Timber\Timber::init();
-
 /**
  * Register Menus
  */
@@ -122,3 +121,25 @@ function enqueue_block_styles() {
     }
 }
 add_action( 'init', __NAMESPACE__ . '\enqueue_block_styles' );
+/**
+ * Prevent Unlocking of Locked Blocks by non-Super Admins
+ * 
+ * Thanks to https://fullsiteediting.com/how-to-lock-blocks-and-templates/
+ */
+add_filter( 'block_editor_settings_all',  static function ( $settings, $context ) {
+	// Allow for the Editor role and above.
+	$settings['canLockBlocks'] = current_user_can( 'manage_network' );
+
+	// Only enable for specific user(s).
+	// $user = wp_get_current_user();
+	// if ( in_array( $user->user_email, array( 'user@example.com' ), true ) ) {
+	// 	$settings['canLockBlocks'] = false;
+	// }
+
+	// Disable for posts/pages.
+	// if ( $context->post && $context->post->post_type === 'page' ) {
+	// 	$settings['canLockBlocks'] = false;
+	// }
+
+	return $settings;
+}, 10, 2 );

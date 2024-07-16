@@ -1,0 +1,8 @@
+:root {
+    @each $name, $value in $brand-colors {
+        --#{$name}: #{$value};
+    }
+    @each $name, $value in $sitka-colors {
+        --#{$name}: #{$value};
+    }
+}

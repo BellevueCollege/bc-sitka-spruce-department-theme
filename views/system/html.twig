@@ -1,0 +1,22 @@
+{#
+/**
+ * @file
+ * Bellevue template for all pages.
+ */
+#}
+<!DOCTYPE html>
+<html lang="{{ site.language|replace({'_': '-'}) }}">
+  <head>
+    <meta charset="{{ site.charset }}">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="apple-touch-icon" sizes="180x180" href="{{ theme.link }}/assets/favicons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="{{ theme.link }}/assets/favicons/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="{{ theme.link }}/assets/favicons/favicon-16x16.png">
+    <link rel="manifest" href="{{ theme.link }}/assets/favicons/site.webmanifest">
+    <link rel="shortcut icon" href="{{ theme.link }}/assets/favicons/favicon.ico">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="msapplication-TileImage" content="{{ theme.link }}/assets/favicons/mstile-144x144.png">
+    {{ function('wp_head') }}
+  </head>
+  <body class="{{ body_class }}">{% block wrapper %}{% endblock %}</body>
+</html>
