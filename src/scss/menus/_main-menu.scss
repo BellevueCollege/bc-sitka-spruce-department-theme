@@ -42,17 +42,31 @@
 
   // Mobile
   // -----
-  @include media-breakpoint-down(lg) {
+  @include media-breakpoint-down(md) {
+
+    // Remove default padding from row to allow edge-to-edge divider lines
+    & {
+      padding: 0;
+    }
 
     // All Levels
     // ----------
     ul {
       width: 100%;
+      padding: 0;
+
+      li {
+        border-top: 1px solid css_color('gray--light');
+
+        &:last-child {
+          border-bottom: 1px solid css_color('gray--light');
+        }
+      }
     }
 
     // first level anchor
     a {
-      padding: 1rem 2.75rem 1rem 1rem;
+      padding: calc(var(--bs-gutter-x) * 0.25) 2.75rem calc(var(--bs-gutter-x) * 0.25) calc(var(--bs-gutter-x) * 0.5);
       color: $menu-link-color;
       background-color: $menu-background-color;
       font-family: $menu-font-family;
@@ -63,18 +77,18 @@
     }
 
     &>ul.menu>li.menu-item--open>a {
-      color: $menu-open-link-color;
-      background-color: $menu-open-background-color;
+      color: css_color('white');
+      background-color: css_color('bc-brutus-blue');
     }
 
     // first level button
     .menu-item__button {
       height: auto;
-      padding: 1rem;
+      padding: 0.25rem;
 
       &::before {
         transition: transform .3s ease-in-out;
-        color: $black;
+        color: css_color('black');
         font-weight: 100;
       }
 
@@ -96,11 +110,15 @@
     // ------------
     ul ul {
       display: none;
-      padding: 0.25rem 1rem;
+      padding: 0rem calc(var(--bs-gutter-x) * 0.5);
       background-color: $menu-open-background-color;
 
       li+li {
-        border-top: 1px solid css_color('gray--light');
+        border-top: 1px solid css_color('bc-fountain-blue');
+
+        &:last-child {
+          border-bottom: none;
+        }
       }
 
       a {
@@ -116,7 +134,7 @@
 
   // Desktop
   // -----
-  @include media-breakpoint-up(lg) {
+  @include media-breakpoint-up(md) {
     z-index: 3;
 
     // All Levels
