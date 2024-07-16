@@ -8,29 +8,6 @@
         <div id="site-header--logo" class="">
             <a href="{{ core_homepage_url }}"><img class="img-fluid" src="{{ logo_url }}" alt="{{ __('Bellevue College - Link to college homepage', 'bc-sitka-spruce') }}"></a>
         </div>
-        <nav
-            id="site-header--utility-nav"
-            class="utility-menu accessible-menu"
-            data-menu-has-items-selector=".menu-item-has-children > a"
-        >
-            <ul class="menu justify-content-end">
-                <li class="menu-item"><a href="#">Link 1 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item"><a href="#">Link 2 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item"><a href="#">Link 3 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item d-none d-lg-block search-toggle">
-                    <a
-                        href="#"
-                        class="button-toggle"
-                        data-button-open-class="search-expanded"
-                        data-button-open-class-element="header"
-                        aria-expanded="false"
-                        aria-controls="college-search-field"
-                    >
-                        <span class="visually-hidden">Search</span><i class="far fa-search" aria-hidden="true"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
         <div id="site-header--site-navbar" class="row">
             <div id="site-header--site-title" class="col col-lg-auto d-flex ">
                 <div class="site-title h1 flex-grow-1"><a href="{{ site_homepage_url }}">{{ site_title }}</a></div>
@@ -60,6 +37,29 @@
                 {#  Move to a component #}<a class="btn btn-info" href="#">Apply Now!</a>
             </div>
         </div>
+        <nav
+            id="site-header--utility-nav"
+            class="utility-menu accessible-menu"
+            data-menu-has-items-selector=".menu-item-has-children > a"
+        >
+            <ul class="menu justify-content-end">
+                <li class="menu-item"><a href="#">Link 1 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
+                <li class="menu-item"><a href="#">Link 2 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
+                <li class="menu-item"><a href="#">Link 3 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
+                <li class="menu-item d-none d-lg-block search-toggle">
+                    <a
+                        href="#"
+                        class="button-toggle"
+                        data-button-open-class="search-expanded"
+                        data-button-open-class-element="header"
+                        aria-expanded="false"
+                        aria-controls="college-search-field"
+                    >
+                        <span class="visually-hidden">Search</span><i class="far fa-search" aria-hidden="true"></i>
+                    </a>
+                </li>
+            </ul>
+        </nav>
         <div id="site-header--search" class="">
             {% include '/stories/site-search-form/site-search-form.twig' %}
         </div>
