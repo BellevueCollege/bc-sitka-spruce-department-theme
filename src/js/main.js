@@ -7,4 +7,5 @@ import AccessibleMenu from './modules/accessible-menu';
      */
     const accessibleMainMenu = new AccessibleMenu();
     accessibleMainMenu.add('.main-menu').run();
+    accessibleMainMenu.add('.utility-menu').run();
 })()

@@ -1,70 +1,75 @@
-////
-/// @group menus
-/// Utility menu styles.
-////
+	////
+	/// @group menus
+	/// Utility menu styles.
+	////
 
 .utility-menu {
 
-  // All Breakpoints
-  // ---------------
-  a,
-  li {
-    display: block;
-  }
+	// All Breakpoints
+	// ---------------
+	ul {
+		display: flex;
+		padding: 0;
+	}
 
-  a {
-    text-decoration: none;
-    font-family: $sans-serif;
+	a,
+	li {
+		display: block;
+	}
 
-    &:hover {
-      text-decoration: underline;
-    }
-  }
+	a {
+		font-family: $sans-serif;
+		color: css_color('accent-link-blue');
+		font-weight: 600; 
 
-  // Mobile
-  // ------
-  @include media-breakpoint-down(lg) {
-    margin: rem-calc(24 10 0);
+		text-decoration: underline;
+		text-decoration-color: css_color('bc-fountain-blue');
+		text-decoration-thickness: 2px;
+		text-underline-offset: .33rem;
 
-    li {
-      display: inline-block;
-    }
+		.far::before {
+			color: css_color('bc-brutus-blue');
+		}
 
-    a {
-      padding: .5em;
-      text-align: left;
-      text-decoration: none;
-      color: css_color('bc-brutus-blue');
-      font-weight: 500;
+		&:hover,
+		&:focus {
+			color: css_color('bc-rainy-night-blue');
+			text-decoration-color: css_color('bc-brutus-blue');
 
-      &:hover {
-        text-decoration: underline;
-      }
-    }
+			.far::before {
+				text-decoration: underline;
+				text-decoration-color: css_color('bc-fountain-blue');
+				text-decoration-thickness: 2px;
+				text-underline-offset: .33rem;
+			}
+		}
+	}
 
-    li:last-child {
-      display: block;
-      margin-top: 1.5rem;
+	// Mobile
+	// ------
+	@include media-breakpoint-down(md) {
 
-      a {
-        @include button(small, 'default', true);
-        display: block;
-        text-align: center;
-      }
-    }
-  }
+		ul {
+			flex-direction: column;
+		}
 
-  // Desktop
-  // -----
-  @include media-breakpoint-up(lg) {
+		a {
+			padding: .5em;
+			text-align: left;
+		}
+	}
 
-    ul {
-      display: flex;
-    }
 
-    a {
-      padding: 0 1em;
-      color: css_color('bc-brutus-blue');
-    }
-  }
+	// Desktop
+	// -----
+	@include media-breakpoint-up(lg) {
+
+		ul {
+			margin-top: 1rem;
+		}
+
+		a {
+			padding: 0 1em;
+		}
+	}
 }
