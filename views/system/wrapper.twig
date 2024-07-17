@@ -9,6 +9,16 @@
 #}
 {% extends 'system/html.twig' %}
 
+{% set main_menu %}
+	{% include 'system/menu.twig' with {
+		items: menu_main_menu.items,
+		depth: 2,
+		ul_class: 'menu',
+		li_active_class: 'menu-item--active-trail menu-item--expanded',
+		li_has_children_class: 'menu-item--expanded',
+	} %}
+{% endset %}
+
 {% block wrapper %}
 
 	{% block header %}
@@ -18,7 +28,8 @@
 			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
 			site_title: site.blogname,
 			search_expanded: false,
-			menu_expanded: false
+			menu_expanded: false,
+			menu: main_menu
 		}
 		
 		%}

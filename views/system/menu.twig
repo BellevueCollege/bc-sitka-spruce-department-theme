@@ -1,0 +1,61 @@
+{#
+/**
+ * @file
+ * Base include for printing menus.
+ * This template defines a macro, which calls itself recursively to build menu
+ * markup.
+ *
+ * Available variables:
+ * - items: Menu items to print.
+ * - depth: The maximum depth to print.
+ * - ul_class: Classes to add to the <ul> elements.
+ * - link_class: Classes to add to the <a> elements.
+ */
+#}
+{% import _self as menus %}
+
+{#
+/**
+ * Recursively print a menu.
+ *
+ * @param \Timber\MenuItem[] items
+ *   Menu items to print.
+ * @param int depth
+ *   Optional maximum depth.
+ * @param string ul_class
+ *   Optional classes to add to the <ul> elements.
+ * @param string li_class
+ *   Optional classes to add to the <li> elements.
+ * @param string li_active_class
+ *   Optional classes to add to the <li> elements when it's the active link.
+ * @param string a_class
+ *   Optional classes to add to the <a> elements.
+ */
+#}
+{% macro links(items, depth = 2, ul_class = 'menu', li_class = '', li_active_class = '', a_class = '') %}
+  {% import _self as menus %}
+  {% import '/views/includes/bellevue-macros.twig' as bellevue_macros %}
+  {% if items and depth > 0 %}
+    <ul{% if ul_class %} class="{{ ul_class }}"{% endif %}>
+      {% for item in items %}
+        {% set li_classes = item.classes|merge([li_class]) %}
+        {# Add "active" class if WP active class is present. #}
+        {% if li_active_class and ('current-menu-item' in li_classes) %}
+          {% set li_classes = li_classes|merge([li_active_class]) %}
+        {% endif %}
+        {# Remove the "menu-item-has-children" WP class if there is not enough depth to print children. #}
+        {% if depth < 2 and ('menu-item-has-children' in li_classes) %}
+          {% set li_classes = li_classes|filter(v => v != 'menu-item-has-children') %}
+        {% endif %}
+        <li class="{{ li_classes|join(' ') }}">
+          {{ bellevue_macros.link(item, a_class) }}
+          {% if item.children %}
+             {{ menus.links(item.children, depth - 1, ul_class, li_class, li_active_class, a_class) }}
+          {% endif %}
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+{% endmacro %}
+
+{{ menus.links(items, depth, ul_class, li_class, li_active_class, a_class) }}

@@ -13,16 +13,8 @@ Timber\Timber::init();
 /**
  * Register Menus
  */
-function register_menus() {
-	register_nav_menus(
-		array(
-			'main-menu' => __( 'Main Menu' ),
-			'cta-menu' => __( 'Call-to-Action Menu' ),
-			'footer-menu' => __( 'Footer Menu' )
-		)
-	);
-}
-add_action( 'init', __NAMESPACE__ . '\register_menus' );
+$menus = Theme::menus();
+$menus->addMenu('main-menu', __('Main Menu', 'bc-sitka-spruce'));
 
 /**
  * Register Blocks
@@ -59,7 +51,8 @@ function block_registration_helper( array $blocks ) {
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
 $enqueuer->addStyle(handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css');
-$enqueuer->addStyle('bc-sitka-spruce-icons', '/node_modules/@fortawesome/fontawesome-pro/css/all.css', [], get_template_directory_uri());
+// $enqueuer->addStyle('bc-sitka-spruce-icons', '/node_modules/@fortawesome/fontawesome-pro/css/all.css', [], get_template_directory_uri());
+$enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
 $enqueuer->addScript('bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js');
 
 

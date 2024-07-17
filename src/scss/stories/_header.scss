@@ -1,0 +1,119 @@
+
+#header-wrapper {
+    background: css_color('white');
+    background: linear-gradient(180deg, css_color('gray--xlight') 60px, css_color('white') 60px);
+    
+    // Toggle Menu Button Styles
+    &.menu-expanded .menu-toggle {
+        background-color: css_color('bc-brutus-blue');
+        color: css_color('white');
+    } 
+
+    // Show and hide menus based on screen size and expanded state
+    @include media-breakpoint-down($header-desktop-breakpoint) {
+        #site-header--site-title {
+            padding-right: 0;
+        }
+
+        #site-header--utility-nav,
+        #site-header--main-nav,
+        #site-header--cta,
+        #site-header--search {
+            display: none;
+        }
+        &.menu-expanded #site-header--utility-nav,
+        &.menu-expanded #site-header--main-nav,
+        &.menu-expanded #site-header--cta,
+        &.menu-expanded #site-header--search {
+            display: block;
+        }
+    }
+
+    // Hide and display Search Box based on screen size and expanded state
+    @include media-breakpoint-up($header-desktop-breakpoint) {
+        #site-header--search {
+            display: none;
+        }
+        &.search-expanded #site-header--search {
+            display: block;
+        }
+    }
+
+    #site-header--search {
+        background-color: css_color('accent-fountain-blue-light');
+    }
+}
+
+#site-header {
+    // Highlight all elements - temporary
+    // & > div,
+    // & > nav {
+    //     border: 3px solid green;
+    //     margin: .25em;
+    // }
+
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: auto;
+
+    // Mobile Header Layout
+    grid-template-areas:
+        "logo logo logo logo logo logo"
+        "navbar navbar navbar navbar navbar navbar"
+        "utilitynav utilitynav utilitynav utilitynav utilitynav utilitynav";
+
+    
+    // Desktop Header Layout
+    @include media-breakpoint-up($header-desktop-breakpoint) {
+        grid-template-areas:
+            "logo logo utilitynav utilitynav utilitynav utilitynav"
+            "navbar navbar navbar navbar navbar navbar";
+    }
+
+
+    &--logo { 
+        grid-area: logo;
+
+        img {
+            height: 40px;
+            width: auto;
+            margin: 10px 1rem 10px 0;
+        }
+    }
+    &--utility-nav {
+        grid-area: utilitynav;
+    }
+    &--site-navbar {
+        grid-area: navbar;
+    }
+
+    // Hamburger Menu
+    .menu-toggle {
+        border-radius: 0;
+        padding: 0 0.25em;
+        font-size: 1.75em;
+
+        .fas-bars::before {
+            color: css_color('bc-brutus-blue');
+        }
+    }
+
+    .site-title {
+        margin-top: 0.5rem;
+
+        a {
+            text-decoration: none;
+            color: css_color('black');
+        }
+    }
+
+
+
+    // Hide and display Search Box based on screen size and expanded state
+    @include media-breakpoint-up($header-desktop-breakpoint) {
+        &--main-nav,
+        &--cta {
+            padding-top: 0.5rem;
+        }
+    }
+}

@@ -1,0 +1,276 @@
+////
+/// @group menus
+/// Main menu styles.
+
+
+.main-menu {
+  $menu-font-family: $myriad-pro;
+  $menu-background-color: css_color('white');
+  $menu-link-color: css_color('bc-brutus-blue');
+  $menu-active-trail-background-color: $menu-background-color;
+  $menu-open-background-color: css_color('accent-fountain-blue-extralight');
+  $menu-submenu-background-color: $menu-background-color;
+  $menu-submenu-background-color-hover: css_color('accent-fountain-blue-extralight');
+  $menu-open-link-color: $menu-link-color;
+
+
+  // All Breakpoints
+  // ---------------
+  li,
+  a {
+    display: block;
+  }
+
+  a {
+    text-decoration: none;
+    font-family: $sans-serif;
+    font-size: 1.125rem;
+    font-weight: 600;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .menu-item--active-trail>a {
+    background-color: $menu-active-trail-background-color;
+    text-decoration: underline;
+    text-decoration-color: css_color('bc-rain-garden-green');
+    text-decoration-thickness: 3px;
+    text-underline-offset: .33rem;
+  }
+
+  // Mobile
+  // -----
+  @include media-breakpoint-down($header-desktop-breakpoint) {
+
+    // Remove default padding from row to allow edge-to-edge divider lines
+    & {
+      padding: 0;
+    }
+
+    // All Levels
+    // ----------
+    ul {
+      width: 100%;
+      padding: 0;
+
+      li {
+        border-top: 1px solid css_color('gray--light');
+
+        &:last-child {
+          border-bottom: 1px solid css_color('gray--light');
+        }
+      }
+    }
+
+    // first level anchor
+    a {
+      padding: calc(var(--bs-gutter-x) * 0.25) 2.75rem calc(var(--bs-gutter-x) * 0.25) calc(var(--bs-gutter-x) * 0.5);
+      color: $menu-link-color;
+      background-color: $menu-background-color;
+      font-family: $menu-font-family;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+
+    &>ul.menu>li.menu-item--open>a {
+      color: css_color('white');
+      background-color: css_color('bc-brutus-blue');
+    }
+
+    // first level button
+    .menu-item__button {
+      height: auto;
+      padding: 0.25rem;
+
+      &::before {
+        transition: transform .3s ease-in-out;
+        color: css_color('black');
+        font-weight: 100;
+      }
+
+      &:hover,
+      &:focus {
+
+        &::before {
+          transform: scale(1.1);
+          transform-origin: center;
+        }
+      }
+    }
+
+    &>ul.menu>li.menu-item--open>.menu-item__button::before {
+      color: css_color('white'); // not sure what this is? TT 2024-07-15
+    }
+
+    // Second Level
+    // ------------
+    ul ul {
+      display: none;
+      padding: 0rem calc(var(--bs-gutter-x) * 0.5);
+      background-color: $menu-open-background-color;
+
+      li+li {
+        border-top: 1px solid css_color('bc-fountain-blue');
+
+        &:last-child {
+          border-bottom: none;
+        }
+      }
+
+      a {
+        padding: 0.75rem 0;
+        color: $menu-open-link-color;
+        background-color: transparent;
+        font-family: $sans-serif;
+        font-size: 1.06rem;
+        font-weight: 400;
+      }
+    }
+  }
+
+  // Desktop
+  // -----
+  @include media-breakpoint-up($header-desktop-breakpoint) {
+    z-index: 3;
+
+    // All Levels
+    // ----------
+    &>ul {
+      display: flex;
+      justify-content: flex-end;
+      width: 100%;
+    }
+
+    &>ul.menu>li>a {
+      padding: 0.625rem 0.75rem;
+      color: $menu-link-color;
+      font-family: $menu-font-family;
+    }
+
+    &>ul.menu>li {
+      flex: 0 0 auto;
+
+      &:hover {
+
+        >a {
+          color: $menu-open-link-color;
+          background-color: $menu-open-background-color;
+        }
+      }
+    }
+
+    a {
+      text-align: center;
+
+      &:focus {
+        color: css_color('black');
+      }
+    }
+
+    &>ul.menu>li>.menu-item__button {
+      top: 15px;
+      right: .25rem;
+      bottom: 23%;
+      left: initial;
+      width: calc(1rem + 2px);
+      transform: none;
+      padding: 0;
+      height: 1rem;
+
+      &::before {
+        content: fa-content($fa-var-chevron-circle-down);
+        color: $menu-link-color;
+        background: $menu-background-color;
+        border-radius: .5rem;
+        border: 1px solid $menu-background-color;
+        top: -5px;
+        position: relative;
+      }
+
+      &:focus::before {
+        border-color: css_color('bc-fountain-blue');
+        outline: none;
+      }
+    }
+
+    &>ul.menu>li.menu-item--open>.menu-item__button::before {
+      content: fa-content($fa-var-chevron-circle-up);
+    }
+
+    // Second Level
+    // ------------
+    ul {
+
+      // Change the number here to include more right side dropdowns.
+      >li:nth-last-child(-n+1)>ul {
+        right: 0;
+      }
+
+      ul {
+        position: absolute;
+        display: none;
+        overflow: hidden;
+        width: auto;
+        min-width: 16rem;
+        border-radius: 0 0 .25rem .25rem;
+        background-color: $menu-submenu-background-color;
+        padding: 0;
+
+        li+li {
+          border-top: 1px solid css_color('gray--light');
+        }
+
+        li:hover>a {
+          background-color: $menu-submenu-background-color-hover;
+        }
+
+        a {
+          padding: 0.75rem 1.5rem;
+          text-align: left;
+          color: css_color('black');
+          font-family: $sans-serif;
+          font-size: 1.06rem;
+          font-weight: 400;
+          line-height: 1.7rem;
+
+          &:focus {
+            background-color: $menu-submenu-background-color-hover;
+          }
+        }
+      }
+    }
+
+    &>ul.menu>li:hover,
+    &>ul.menu>li.menu-item--open {
+
+      ul {
+        display: block;
+        box-shadow: -1px 5px 10px -4px rgba(0, 61, 121, .5);
+      }
+    }
+  }
+
+  @include breakpoint(min, 1210px) {
+
+    &>ul.menu>li>a {
+      padding: 0.625rem 1.5rem;
+    }
+  }
+}
+
+.no-touchevents .main-menu .menu-item--expanded:hover>ul {
+  @include media-breakpoint-up(md) {
+    display: block;
+  }
+}
+
+@include media-breakpoint-up(md) {
+
+  .touchevents .main-menu>ul.menu>li>.menu-item__button {
+    right: 6px;
+  }
+}

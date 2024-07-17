@@ -4,30 +4,41 @@
  * Bellevue template for the site search form.
  */
 #}
-<form
-	action="/search-results/"
-	method="get"
-	role="search"
-	aria-label="{{ __('Search Site', 'bellevue_2022') }}"
->
-	<div class="form-item">
-	<label for="college-search-field" class="visually-hidden">{{ __('Search Site', 'bellevue_2022') }}</label>
-	<input
-		id="college-search-field"
-		class="form-text"
-		type="search"
-		placeholder="{{ __('Search bellevuecollege.edu', 'bellevue_2022') }}"
-		name="txtQuery"
-		value=""
-		size="60"
-		maxlength="128"
-	>
-	<button
-		id="college-search-submit"
-		class="btn btn-primary js-form-submit form-submit"
-		type="submit"
-	>
-		{{ __('Go', 'bellevue_2022') }}
-	</button>
+<div class="row justify-content-end g-0">
+	<div class="col-lg-auto">
+		<form
+			action="/search-results/"
+			method="get"
+			role="search"
+			aria-label="{{ __('Search Site', 'bc-sitka-spruce') }}"
+			class="site-search-form"
+		>
+			<div class="form-item">
+				<label for="college-search-field" class="visually-hidden">{{ __('Search Bellevue College', 'bc-sitka-spruce') }}</label>
+				<input
+					id="college-search-field"
+					class="form-text"
+					type="search"
+					placeholder="{{ __('Search bellevuecollege.edu', 'bc-sitka-spruce') }}"
+					name="txtQuery"
+					value=""
+					size="60"
+					maxlength="128"
+				>
+				<button
+					id="college-search-submit"
+					class="btn btn-primary js-form-submit form-submit"
+					type="submit"
+				>
+					{{ __('Go', 'bc-sitka-spruce') }}
+				</button>
+			</div>
+		</form>
 	</div>
-</form>
+	<div class="d-none d-lg-block col-lg-auto">
+		<button id="search-collapse"class="search-collapse btn btn-link" aria-expanded="true" aria-controls="college-search-field">
+			<i class="fa-regular fa-xmark" aria-hidden="true"></i>
+			<span class="visually-hidden">{{ __('Close Search', 'bc-sitka-spruce') }}</span>
+		</button>
+	</div>
+</div>

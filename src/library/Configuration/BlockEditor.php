@@ -317,7 +317,7 @@ class BlockEditor implements BlockEditorInterface {
     array_splice($block_categories, 1, 0, [
       [
         'slug' => 'bellevue',
-        'title' => __('Bellevue', 'bellevue_2022'),
+        'title' => __('Bellevue', 'bc-sitka-spruce'),
         'icon' => null,
       ],
     ]);

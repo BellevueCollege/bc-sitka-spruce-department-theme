@@ -4,11 +4,21 @@
 @import 'variables/animation';
 @import 'variables/bootstrap';
 
+
+
 @import "lib/gerillass";
 
 @import "variables/spacing";
 
 @import "lib/bootstrap";
 
+@import "lib/fontawesome";
+
 // Stories that should be included globally
+$header-tablet-breakpoint: sm;
+$header-desktop-breakpoint: lg;
 @import "stories/header";
+@import "stories/site-search-form";
+
+// Front-end only components
+@import "menus";
