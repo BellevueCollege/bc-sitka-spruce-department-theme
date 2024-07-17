@@ -31,6 +31,12 @@
 
 .search-collapse {
     font-size: 2em;
-    padding: .125em;
-    margin-top: .25em;
+    padding: .12em .33em;
+    margin-top: .3em;
+    border-radius: 0;
+
+    &:hover,
+    &:focus {
+        background-color: css_color('bc-fountain-blue');
+    }
 }
