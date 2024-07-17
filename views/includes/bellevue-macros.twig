@@ -82,7 +82,7 @@
     <a
       href="{{ link.url }}"
       {% if link.target %}target="{{ link.target }}"{% endif %}
-      {% if link.target == '_blank' %}aria-label="{{ __('%s (opens in a new window)', 'bellevue_2022')|format(link.title) }}"
+      {% if link.target == '_blank' %}aria-label="{{ __('%s (opens in a new window)', 'bc-sitka-spruce')|format(link.title) }}"
         {% elseif link.label %}aria-label="{{ link.label }}"{% endif %}
       {% if class %} class="{{ class }}"{% endif %}
     >{% if link.content %}{{ link.content }}{% else %}{{ link.title }}{% endif %}</a>

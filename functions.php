@@ -14,7 +14,7 @@ Timber\Timber::init();
  * Register Menus
  */
 $menus = Theme::menus();
-$menus->addMenu('main-menu', __('Main Menu', 'bellevue_2022'));
+$menus->addMenu('main-menu', __('Main Menu', 'bc-sitka-spruce'));
 
 /**
  * Register Blocks

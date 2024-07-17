@@ -47,4 +47,12 @@ Styles for blocks live in two different places, depending on if they are blocks 
 
 - For bundled blocks, the styles are with the block definition, in `src/blocks/[block-name]/style.scss` and `src/blocks/[block-name]/editor.scss`
 - For external blocks and core blocks, theme provided styles are in `src/scss/blocks`, with the naming convention of `namespace-name.scss`
-- For block-specific styles that are loaded globally (not sure why this would be needed, but just in case), they are also in `src/scss/blocks`, but the file names are proceeded by a `_`, aka `_namespace-name.scss`, to indicate that they are partial files.  
+- For block-specific styles that are loaded globally (not sure why this would be needed, but just in case), they are also in `src/scss/blocks`, but the file names are proceeded by a `_`, aka `_namespace-name.scss`, to indicate that they are partial files.
+
+### Registering a Bundled Block
+
+Some Block Editor blocks are bundled as part of the theme. These blocks are located in `src/blocks/[block-name]`
+
+Each block folder should include a `block.json` that defines the block and calls any stylesheets, render files, and scripts. 
+
+Once the block has been created, ensure that it is registered in `functions.php`

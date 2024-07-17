@@ -87,7 +87,7 @@ class TwigExtensions {
       $attributes['aria-label'] = __(sprintf(
         '%1$s (opens in a new window)',
         $link['title']
-      ), 'bellevue_2022');
+      ), 'bc-sitka-spruce');
     }
 
     return sprintf(
