@@ -1,5 +1,5 @@
-<div id="header-wrapper">
-    <header 
+<header id="header-wrapper">
+    <div 
         id="site-header"
         class="site-header container-xl
             {% if search_expanded %}search-expanded{% endif %}
@@ -25,10 +25,10 @@
             </div>
             <nav
                 id="site-header--main-nav"
-                aria-label="{{ __('Main Menu', 'bellevue_2022') }}"
+                aria-label="{{ __('Main Menu', 'bc-sitka-spruce') }}"
                 class="col-lg-auto flex-grow-1 main-menu accessible-menu"
-                data-item-open-text="{{ __('Open the %s menu', 'bellevue_2022') }}"
-                data-item-close-text="{{ __('Close the %s menu', 'bellevue_2022') }}"
+                data-item-open-text="{{ __('Open the %s menu', 'bc-sitka-spruce') }}"
+                data-item-close-text="{{ __('Close the %s menu', 'bc-sitka-spruce') }}"
                 data-menu-has-items-selector=".menu-item-has-children > a"
             >
                 {{ menu }}
@@ -48,6 +48,7 @@
                 <li class="menu-item"><a href="#">Link 3 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
                 <li class="menu-item d-none d-lg-block search-toggle">
                     <a
+                        id="site-header--search-toggle-btn"
                         href="#"
                         class="button-toggle"
                         data-button-open-class="search-expanded"
@@ -60,8 +61,12 @@
                 </li>
             </ul>
         </nav>
-        <div id="site-header--search" class="">
+    </div>
+    <div id="site-header--search" class="">
+        <div class="container-xl">
+
             {% include '/stories/site-search-form/site-search-form.twig' %}
+
         </div>
-    </header>
-</div>
+    </div>
+</header>

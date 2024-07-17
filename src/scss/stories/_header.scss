@@ -2,6 +2,46 @@
 #header-wrapper {
     background: css_color('white');
     background: linear-gradient(180deg, css_color('gray--xlight') 60px, css_color('white') 60px);
+    
+    // Toggle Menu Button Styles
+    &.menu-expanded .menu-toggle {
+        background-color: css_color('bc-brutus-blue');
+        color: css_color('white');
+    } 
+
+    // Show and hide menus based on screen size and expanded state
+    @include media-breakpoint-down($header-desktop-breakpoint) {
+        #site-header--site-title {
+            padding-right: 0;
+        }
+
+        #site-header--utility-nav,
+        #site-header--main-nav,
+        #site-header--cta,
+        #site-header--search {
+            display: none;
+        }
+        &.menu-expanded #site-header--utility-nav,
+        &.menu-expanded #site-header--main-nav,
+        &.menu-expanded #site-header--cta,
+        &.menu-expanded #site-header--search {
+            display: block;
+        }
+    }
+
+    // Hide and display Search Box based on screen size and expanded state
+    @include media-breakpoint-up($header-desktop-breakpoint) {
+        #site-header--search {
+            display: none;
+        }
+        &.search-expanded #site-header--search {
+            display: block;
+        }
+    }
+
+    #site-header--search {
+        background-color: css_color('accent-fountain-blue-light');
+    }
 }
 
 #site-header {
@@ -20,16 +60,14 @@
     grid-template-areas:
         "logo logo logo logo logo logo"
         "navbar navbar navbar navbar navbar navbar"
-        "utilitynav utilitynav utilitynav utilitynav utilitynav utilitynav"
-        "search search search search search search";
+        "utilitynav utilitynav utilitynav utilitynav utilitynav utilitynav";
 
     
     // Desktop Header Layout
     @include media-breakpoint-up($header-desktop-breakpoint) {
         grid-template-areas:
             "logo logo utilitynav utilitynav utilitynav utilitynav"
-            "navbar navbar navbar navbar navbar navbar"
-            ". . . search search search";
+            "navbar navbar navbar navbar navbar navbar";
     }
 
 
@@ -47,9 +85,6 @@
     }
     &--site-navbar {
         grid-area: navbar;
-    }
-    &--search {
-        grid-area: search;
     }
 
     // Hamburger Menu
@@ -72,44 +107,13 @@
         }
     }
 
-    &.menu-expanded .menu-toggle {
-        background-color: css_color('bc-brutus-blue');
-        color: css_color('white');
-    } 
+
 
     // Hide and display Search Box based on screen size and expanded state
     @include media-breakpoint-up($header-desktop-breakpoint) {
-        &--search {
-            display: none;
-        }
-        &.search-expanded &--search {
-            display: block;
-        }
-
         &--main-nav,
         &--cta {
             padding-top: 0.5rem;
-        }
-    }
-
-    // Hide and display menus on mobile
-    @include media-breakpoint-down($header-desktop-breakpoint) {
-
-        &--site-title {
-            padding-right: 0;
-        }
-
-        &--utility-nav,
-        &--main-nav,
-        &--cta,
-        &--search {
-            display: none;
-        }
-        &.menu-expanded &--utility-nav,
-        &.menu-expanded &--main-nav,
-        &.menu-expanded &--cta,
-        &.menu-expanded &--search {
-            display: block;
         }
     }
 }

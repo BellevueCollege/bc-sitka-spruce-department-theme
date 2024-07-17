@@ -18,6 +18,7 @@
 $header-tablet-breakpoint: sm;
 $header-desktop-breakpoint: lg;
 @import "stories/header";
+@import "stories/site-search-form";
 
 // Front-end only components
 @import "menus";

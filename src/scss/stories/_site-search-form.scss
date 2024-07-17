@@ -1,0 +1,36 @@
+.site-search-form {
+    position: relative;
+    width: 100%;
+    padding: 0.625rem;
+
+    .form-item {
+        margin-top: 0;
+    }
+
+    input {
+        width: 100%;
+        margin: 0;
+        padding: 0.75rem 2.75rem 0.75rem 1rem;
+        border: 0;
+        border-radius: var(--bs-border-radius);
+
+        @include placeholder {
+            color: css_color('gray--dark');
+        }
+    }
+
+    button {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+        bottom: 1rem;
+        margin: 0;
+        padding: 0.25rem 1rem;
+    }
+}
+
+.search-collapse {
+    font-size: 2em;
+    padding: .125em;
+    margin-top: .25em;
+}
