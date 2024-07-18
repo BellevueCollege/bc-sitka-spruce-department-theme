@@ -36,6 +36,7 @@ const customSCSSPaths = Object.assign( {}, defaultConfig, {
 		...scssEntryPoint( 'editor' ),
 		...scssEntryPoint( 'mayflower-blocks-alert', true ),
 		...scssEntryPoint( 'mayflower-blocks-panel', true ),
+		...scssEntryPoint( 'card', true ),
 	}
 } );
 
