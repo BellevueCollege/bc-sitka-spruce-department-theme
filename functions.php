@@ -28,6 +28,8 @@ function register_blocks() {
 		'differentiator-group',
 		'differentiator',
 		'section-heading',
+		'content-and-location',
+		'template-homepage',
 	];
 
 	block_registration_helper( $blocks );
