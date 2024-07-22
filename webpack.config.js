@@ -8,6 +8,12 @@ const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
 // Utilities.
 const path = require( 'path' );
 
+// Modify DefaultConfig to add new rules
+defaultConfig.module.rules.push( {
+	test: /\.twig$/,
+	loader: 'twig-loader',
+} );
+
 /**
  * Defines the entry point for compiling SCSS files based on the handle provided.
  *
@@ -27,25 +33,22 @@ const scssEntryPoint = ( handle, block = false ) => {
 	}
 }
 
+
+
 // Thanks to https://wordpress.org/support/topic/wordpress-scripts-not-building-both-blocks-and-index-js-simultaneously/
 // The recommended method from WP didn't let blocks build correctly- this does!
-const customSCSSPaths = Object.assign( {}, defaultConfig, {
-	name: 'scss',
+const customPaths = Object.assign( {}, defaultConfig, {
+	name: 'paths',
 	entry: {
 		...scssEntryPoint( 'main' ),
 		...scssEntryPoint( 'editor' ),
 		...scssEntryPoint( 'mayflower-blocks-alert', true ),
 		...scssEntryPoint( 'mayflower-blocks-panel', true ),
 		...scssEntryPoint( 'card', true ),
-	}
+		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' )
+	},
 } );
 
-const customJSPaths = Object.assign( {}, defaultConfig, {
-	name: 'scss',
-	entry: {
-		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' )
-	}
-} );
 
 // Add any new entry points by extending the webpack config.
-module.exports = [defaultConfig, customSCSSPaths, customJSPaths];
+module.exports = [defaultConfig, customPaths];
