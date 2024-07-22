@@ -2,9 +2,15 @@ import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
 import { InnerBlocks } from '@wordpress/block-editor';
+import { RawHTML } from '@wordpress/element';
+import Twig from "twig";
+import apiFetch from '@wordpress/api-fetch';
+import { useState } from '@wordpress/element';
+import { Disabled } from '@wordpress/components';
+import locationAndHours from '/stories/location-and-hours/location-and-hours.twig';
 
 import './style.scss';
-// import './editor.scss';
+import './editor.scss';
 
 import {
     Card,
@@ -12,10 +18,61 @@ import {
     CardHeader
 } from '@wordpress/components';
 
+/**
+ * Mock the WordPress __ Function in Timber
+ * 
+ * Return the input, ignore namespace. __() is used to provide localization.
+ */
+Twig.extendFunction("__", (input, namespace) => {
+    return input;
+});
+
 registerBlockType( 'bc-sitka-spruce/content-and-location', {
 
     edit: function ( props ) {
-        const blockProps = useBlockProps();
+        const blockProps = useBlockProps({
+            className: 'content-and-location alignwide'
+        });
+
+        const [ locationSidebarContent, setLocationSidebarContent ] = useState(null);
+
+        if ( ! locationSidebarContent ) {
+            apiFetch( {
+                path: '/bc-sitka-spruce/v1/options'
+            } )
+                .then( ( response ) => {
+                    setLocationSidebarContent( response );
+                    console.log( locationSidebarContent );
+
+                }
+            );
+        }
+
+
+        const LocationAndHours = () => {
+
+            if ( ! locationSidebarContent ) {
+                return (
+                    <p>Loading...</p>
+                );
+            }
+            return (
+                <RawHTML>{
+                    locationSidebarContent.display_location_card && (
+                        locationAndHours({
+                            image: {
+                                src: locationSidebarContent.location_image.url,
+                                alt: locationSidebarContent.location_image.alt
+                            },
+                            location: locationSidebarContent.location,
+                            hours: locationSidebarContent.hours,
+                            contact_url: locationSidebarContent.contact_page_url
+                        })
+                    )
+                }</RawHTML>
+            );
+
+        }
 
         return (
             <div { ...blockProps }>
@@ -26,12 +83,13 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                         />
                     </div>
                     <div className = "col-md-4">
+                        <Disabled>
+                            <LocationAndHours />
+                        </Disabled>
+                        <hr />
                         <Card>
-                            <CardHeader>
-                                <h2>{ __( 'Location and Hours', 'bc-sitka-spruce' ) }</h2>
-                            </CardHeader>
                             <CardBody>
-                                {__( 'Edit location and hours and control display from Site Options', 'bc-sitka-spruce' )}
+                                {__( 'Visit the "Site Options" area to edit or disable the Location and Hours Sidebar', 'bc-sitka-spruce' )}
                             </CardBody>
                         </Card>
                     </div>

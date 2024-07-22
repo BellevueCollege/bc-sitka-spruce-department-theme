@@ -3,11 +3,14 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/content-and-location",
     "title": "Template: Content with Location Sidebar",
-    "category": "widgets",
-    "icon": "star",
+    "category": "layout",
+    "icon": "align-pull-right",
     "description": "Template that displays limited-width content on the left, with a location sidebar on the right (if enabled).",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "inserter": false
+    },
     "editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
     "style": ["bc-sitka-spruce-style-card", "file:./style-index.css"],
