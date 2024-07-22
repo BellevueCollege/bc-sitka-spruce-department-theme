@@ -14,15 +14,15 @@ Timber\Timber::init();
  * Register Menus
  */
 $menus = Theme::menus();
-$menus->addMenu('main-menu', __('Main Menu', 'bc-sitka-spruce'));
+$menus->addMenu( 'main-menu', __( 'Main Menu', 'bc-sitka-spruce' ) );
 
 /**
  * Register Blocks
- * 
+ *
  * Any blocks that are part of the theme should be registered here.
  */
 function register_blocks() {
-	$blocks = [
+	$blocks = array(
 		'bc-brand-bar',
 		'differentiators',
 		'differentiator-group',
@@ -30,7 +30,7 @@ function register_blocks() {
 		'section-heading',
 		'content-and-location',
 		'template-homepage',
-	];
+	);
 
 	block_registration_helper( $blocks );
 }
@@ -38,7 +38,7 @@ add_action( 'init', __NAMESPACE__ . '\register_blocks' );
 
 /**
  * Helper Function for Registering Blocks
- * 
+ *
  * TODO: Move this to a helper function file
  */
 function block_registration_helper( array $blocks ) {
@@ -52,28 +52,28 @@ function block_registration_helper( array $blocks ) {
 
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
-$enqueuer->addStyle(handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css');
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css' );
 // $enqueuer->addStyle('bc-sitka-spruce-icons', '/node_modules/@fortawesome/fontawesome-pro/css/all.css', [], get_template_directory_uri());
 $enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
-$enqueuer->addScript('bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js');
+$enqueuer->addScript( 'bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js' );
 
 
 /**
  * Pass Multisite Paths to Blocks
- * 
+ *
  * Some blocks need to pull data from the root site of the network.
- * 
+ *
  */
 function pass_multisite_paths_to_blocks() {
-	$blocks = [
+	$blocks    = array(
 		'differentiator',
-	];
+	);
 	$namespace = 'bc-sitka-spruce';
 	foreach ( $blocks as $block ) {
 		$script_handle = "{$namespace}-{$block}-editor-script";
-		$data = 'const bc_blog_url = "' . get_bloginfo( 'url' ) . '";';
-		$data .= 'const bc_network_url = "' . network_site_url() . '";';
-		$position = 'before';
+		$data          = 'const bc_blog_url = "' . get_bloginfo( 'url' ) . '";';
+		$data         .= 'const bc_network_url = "' . network_site_url() . '";';
+		$position      = 'before';
 		wp_add_inline_script( $script_handle, $data, $position );
 	}
 }
@@ -84,13 +84,13 @@ add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\pass_multisite_paths_to_b
  * Load Block Editor Styles
  */
 $block_editor = Theme::blockEditor();
-$block_editor->addStylesheet('editor', 'assets/dist/css/editor.css');
-$block_editor->useGlobally(true);
+$block_editor->addStylesheet( 'editor', 'assets/dist/css/editor.css' );
+$block_editor->useGlobally( true );
 
 
 /**
  * Register Styles for Use in Blocks
- * 
+ *
  * Register additional stylesheets used by blocks
  */
 
@@ -105,7 +105,7 @@ add_action(
 		);
 
 		foreach ( $styles as $style ) {
-			$asset = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $style . '.asset.php' );
+			$asset  = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $style . '.asset.php' );
 			$handle = $handle_prefix . $style;
 			wp_register_style(
 				$handle,
@@ -128,9 +128,9 @@ add_action( 'init', __NAMESPACE__ . '\enqueue_block_styles' );
 
 /**
  * Enqueue Block Style
- * 
+ *
  * Helper function to enqueue a block style
- * 
+ *
  * @param string $handle
  * @param string|null $block
  * @param boolean $registered
@@ -148,7 +148,7 @@ function enqueue_block_style( string $handle, string|null $block = null, $regist
 		return;
 	}
 
-	$slug = str_replace( '/', '-', $handle );
+	$slug  = str_replace( '/', '-', $handle );
 	$asset = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $slug . '.asset.php' );
 	wp_enqueue_block_style(
 		$block,
@@ -164,23 +164,30 @@ function enqueue_block_style( string $handle, string|null $block = null, $regist
 
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
- * 
+ *
  * Thanks to https://fullsiteediting.com/how-to-lock-blocks-and-templates/
  */
-add_filter( 'block_editor_settings_all',  static function ( $settings, $context ) {
-	// Allow for the Editor role and above.
-	$settings['canLockBlocks'] = current_user_can( 'manage_network' );
+add_filter(
+	'block_editor_settings_all',
+	static function ( $settings, $context ) {
+		// Allow for the Editor role and above.
+		$settings['canLockBlocks'] = current_user_can( 'manage_network' );
 
-	// Only enable for specific user(s).
-	// $user = wp_get_current_user();
-	// if ( in_array( $user->user_email, array( 'user@example.com' ), true ) ) {
-	// 	$settings['canLockBlocks'] = false;
-	// }
+		// Only enable for specific user(s).
+		// $user = wp_get_current_user();
+		// if ( in_array( $user->user_email, array( 'user@example.com' ), true ) ) {
+		//  $settings['canLockBlocks'] = false;
+		// }
 
-	// Disable for posts/pages.
-	// if ( $context->post && $context->post->post_type === 'page' ) {
-	// 	$settings['canLockBlocks'] = false;
-	// }
+		// Disable for posts/pages.
+		// if ( $context->post && $context->post->post_type === 'page' ) {
+		//  $settings['canLockBlocks'] = false;
+		// }
 
-	return $settings;
-}, 10, 2 );
+		return $settings;
+	},
+	10,
+	2
+);
+
+
