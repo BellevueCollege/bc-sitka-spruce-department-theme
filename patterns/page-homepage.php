@@ -10,4 +10,4 @@
  */
 ?>
 
-<!-- wp:bc-sitka-spruce/template-homepage -->
+<!-- wp:bc-sitka-spruce/content-and-location {"lock":{"move":true,"remove":true}} -->
