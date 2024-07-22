@@ -191,3 +191,50 @@ add_filter(
 );
 
 
+/**
+ * Custom API Endpoints
+ *
+ * Register custom API endpoints
+ */
+
+/**
+ * Register /options endpoint
+ */
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			'bc-sitka-spruce/v1',
+			'/options',
+			array(
+				'methods'  => 'GET',
+				'callback' => __NAMESPACE__ . '\rest_get_options',
+				'permission_callback' => function( ) {
+					return current_user_can( 'edit_posts' );
+				}
+			)
+		);
+	}
+);
+
+/**
+ * Get Options Callback
+ *
+ * Callback for /options endpoint
+ *
+ * @param WP_REST_Request $request
+ * @return WP_REST_Response|WP_Error
+ */
+
+function rest_get_options( $request ) {
+	if ( ! current_user_can( 'edit_posts' ) ) {
+		return new \WP_Error( 'rest_forbidden', 'Sorry, you are not allowed to access this resource.', array( 'status' => rest_authorization_required_code() ) );
+	}
+	$options = array();
+	$options['display_location_card'] = get_field( 'display_location_card', 'option' );
+	$options['location_image']        = get_field( 'location_image', 'option' );
+	$options['location']              = get_field( 'location', 'option' );
+	$options['hours']                 = get_field( 'hours', 'option' );
+	$options['contact_page_url']      = get_field( 'contact_page_url', 'option' );
+	return new \WP_REST_Response( $options, 200 );
+}
