@@ -7,9 +7,7 @@
 {% extends 'system/wrapper.twig' %}
 
 {% block content %}
-      <div class="hero">
-        {{ featured_image }}
-      </div>
       {{ post.content }}
+      <hr />
       {{ dump() }}
 {% endblock %}
