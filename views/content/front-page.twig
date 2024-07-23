@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Bellevue template for a post.
+ */
+#}
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+      <div class="hero">
+        {{ featured_image }}
+      </div>
+      {{ post.content }}
+      {{ dump() }}
+{% endblock %}
