@@ -59,6 +59,17 @@ $enqueuer->addScript( 'bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/
 
 
 /**
+ * Image Crops
+ */
+/**
+ * Add image sizes.
+ */
+$image_crops = Theme::imageCrops();
+$image_crops->addImageSize( 'featured-home-div-lg', 2880, 1000, true );
+$image_crops->addImageSize( 'featured-home-div-md', 1440, 500, true );
+
+
+/**
  * Pass Multisite Paths to Blocks
  *
  * Some blocks need to pull data from the root site of the network.
