@@ -14,8 +14,8 @@
     },
     "settings": {
         "layout": {
-            "contentSize": "800px",
-            "wideSize": "1200px"
+            "contentSize": "760px",
+            "wideSize": "1280px"
         },
         "typography": {
             "fontSizes": [],
