@@ -22,3 +22,23 @@ $header-desktop-breakpoint: lg;
 
 // Front-end only components
 @import "menus";
+
+
+// MOVE THESE ELSEWHERE
+// Temporary CSS that should be moved to appropriate files
+
+#main-content {
+    @include media-breakpoint-up('lg') {
+        background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 70%);
+    }
+}
+
+.container-xl {
+    @include media-breakpoint-up('lg') {
+        --bs-gutter-x: 7.5rem;
+    }
+
+    @include media-breakpoint-up('xl') {
+        --bs-gutter-x: 7.5rem;
+    }
+}

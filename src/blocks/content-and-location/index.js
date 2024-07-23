@@ -27,6 +27,41 @@ Twig.extendFunction("__", (input, namespace) => {
     return input;
 });
 
+
+const BLOCK_TEMPLATE = [
+    [ 'core/heading', {
+        'level': 1,
+        'placeholder': 'Division/Department/Service Name'
+    }],
+    [ 'core/paragraph', {
+        'placeholder': 'Mission Statement/Service Overview for the Department/Division/Service',
+        'className': 'lead'
+    }],
+    [ 'core/group',
+        {
+            'templateLock': false,
+            'className': 'wp-block-group',
+            'metadata': {
+                'name': 'Optional Homepage Header Element Area'
+            },
+            'layout': {
+                "type": "default",
+            },
+            'allowedBlocks': [ 
+                'mayflower-blocks/button',
+                'core/shortcode',
+                'gravityforms/form',
+            ]
+        }, [
+            [ 'mayflower-blocks/button', {
+                'buttonText': 'Optional Button',
+            }],
+            ['gravityforms/form']
+        ]
+    ]
+];
+
+
 registerBlockType( 'bc-sitka-spruce/content-and-location', {
 
     edit: function ( props ) {
@@ -79,7 +114,8 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                 <div className = "row">
                     <div className = "col-md-8">
                         <InnerBlocks
-                            templateLock=""
+                            templateLock="all"
+                            template={ BLOCK_TEMPLATE }
                         />
                     </div>
                     <div className = "col-md-4">
