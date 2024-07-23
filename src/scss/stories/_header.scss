@@ -52,6 +52,16 @@
     //     margin: .25em;
     // }
 
+    &.container-xl {
+        --bs-gutter-x: 3rem;
+    }
+    @include media-breakpoint-up('xl') {
+        &.container-xl {
+            --bs-gutter-x: 0rem;
+        }
+    }
+
+
     display: grid;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
     grid-template-rows: auto;
