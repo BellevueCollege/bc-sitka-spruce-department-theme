@@ -1,33 +1,7 @@
 {
     "key": "group_669edf3b77649",
     "title": "Page Fields",
-    "fields": [
-        {
-            "key": "field_669edf3bdd420",
-            "label": "Hero Image",
-            "name": "hero_image",
-            "aria-label": "",
-            "type": "image",
-            "instructions": "Upload an image that will display across the top of the page. Must be at least 1440px x 500px.",
-            "required": 0,
-            "conditional_logic": 0,
-            "wrapper": {
-                "width": "",
-                "class": "",
-                "id": ""
-            },
-            "return_format": "array",
-            "library": "all",
-            "min_width": 1440,
-            "min_height": 500,
-            "min_size": "",
-            "max_width": "",
-            "max_height": "",
-            "max_size": "",
-            "mime_types": "",
-            "preview_size": "medium"
-        }
-    ],
+    "fields": [],
     "location": [
         [
             {
@@ -46,5 +20,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1721688162
+    "modified": 1721779007
 }

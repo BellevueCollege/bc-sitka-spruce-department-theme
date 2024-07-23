@@ -1,0 +1,7 @@
+@import '/src/scss/block-styles';
+
+.homepage-intro {
+    @include media-breakpoint-up('lg') {
+        background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 100%);
+    }
+}

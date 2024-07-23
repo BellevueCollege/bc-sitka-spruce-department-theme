@@ -30,6 +30,7 @@ function register_blocks() {
 		'section-heading',
 		'content-and-location',
 		'template-homepage',
+		'hero-image',
 	);
 
 	block_registration_helper( $blocks );
