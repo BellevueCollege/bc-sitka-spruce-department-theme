@@ -7,17 +7,17 @@
 // @import "~bootstrap/scss/tables";
 // @import "~bootstrap/scss/forms";
 @import "~bootstrap/scss/buttons";
-// @import "~bootstrap/scss/transitions";
+@import "~bootstrap/scss/transitions"; // <- minimal CSS, handy to have available all the time
 // @import "~bootstrap/scss/dropdown";
 // @import "~bootstrap/scss/button-group";
-// @import "~bootstrap/scss/nav";
+// @import "~bootstrap/scss/nav"; // <- Loaded conditionally - see file in scss/blocks
 // @import "~bootstrap/scss/navbar";
-// @import "~bootstrap/scss/card";
-// @import "~bootstrap/scss/accordion";
+// @import "~bootstrap/scss/card"; <- Loaded conditionally - see file in scss/blocks
+// @import "~bootstrap/scss/accordion"; <- Loaded conditionally - see file in scss/blocks
 // @import "~bootstrap/scss/breadcrumb";
 // @import "~bootstrap/scss/pagination";
-// @import "~bootstrap/scss/badge";
-// @import "~bootstrap/scss/alert";
+@import "~bootstrap/scss/badge"; // <- minimal CSS, handy to have available all the time
+// @import "~bootstrap/scss/alert"; <- Loaded conditionally - see file in scss/blocks
 // @import "~bootstrap/scss/progress";
 // @import "~bootstrap/scss/list-group";
 // @import "~bootstrap/scss/close";

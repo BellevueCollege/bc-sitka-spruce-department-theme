@@ -115,19 +115,35 @@ $block_editor->useGlobally( true );
  * Register Styles for Use in Blocks
  *
  * Register additional stylesheets used by blocks
+ * TODO: Make this a class!
  */
-
 add_action(
 	'init',
 	function () {
 		$handle_prefix = 'bc-sitka-spruce-style-';
 
-		// List of styles
+		// List of styles //
+		// The `key` should match the name of a file in `src/scss/blocks/`
+		// The `value` should be an array of block names that use that style
+		// Don't forget to register the stylesheet in webpack.config.js too!
 		$styles = array(
-			'card',
+			'card' => array (
+				'mayflower-blocks/panel',
+				'mayflower-blocks/tabs',
+			),
+			'alert' => array (
+				'mayflower-blocks/alert',
+			),
+			'nav' => array (
+				'mayflower-blocks/tabs',
+			),
+			'accordion' => array (
+				'mayflower-blocks/collapsibles',
+			),
 		);
 
-		foreach ( $styles as $style ) {
+		// Register styles based on the style keys
+		foreach ( $styles as $style => $blocks ) {
 			$asset  = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $style . '.asset.php' );
 			$handle = $handle_prefix . $style;
 			wp_register_style(
@@ -136,54 +152,19 @@ add_action(
 				$asset['dependencies'],
 				$asset['version'],
 			);
+
+			// Enqueue styles for each specified block
+			foreach ( $blocks as $block ) {
+				wp_enqueue_block_style(
+					$block,
+					array(
+						'handle' => $handle,
+					)
+				);
+			}
 		}
 	}
 );
-
-/**
- * Register Custom Styles for non-bundled blocks
- */
-function enqueue_block_styles() {
-	enqueue_block_style( 'bc-sitka-spruce-style-card', 'mayflower-blocks/panel', true );
-	enqueue_block_style( 'mayflower-blocks/alert' );
-}
-add_action( 'init', __NAMESPACE__ . '\enqueue_block_styles' );
-
-/**
- * Enqueue Block Style
- *
- * Helper function to enqueue a block style
- *
- * @param string $handle
- * @param string|null $block
- * @param boolean $registered
- */
-function enqueue_block_style( string $handle, string|null $block = null, $registered = false ) {
-	$block = $block ?? $handle;
-
-	if ( $registered ) {
-		wp_enqueue_block_style(
-			$block,
-			array(
-				'handle' => $handle,
-			)
-		);
-		return;
-	}
-
-	$slug  = str_replace( '/', '-', $handle );
-	$asset = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $slug . '.asset.php' );
-	wp_enqueue_block_style(
-		$block,
-		array(
-			'handle' => "bc-sitka-spruce-block-{$slug}",
-			'src'    => get_theme_file_uri( "assets/dist/css/blocks/{$slug}.css" ),
-			'path'   => get_theme_file_path( "assets/dist/css/blocks/{$slug}.css" ),
-			'deps'   => $asset['dependencies'],
-			'ver'    => $asset['version'],
-		)
-	);
-}
 
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
