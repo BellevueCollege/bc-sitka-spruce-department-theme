@@ -5,3 +5,51 @@
         background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 100%);
     }
 }
+
+.hero {
+    min-height: 5rem;
+}
+
+.site-type-div {
+    .hero {
+        img {
+            width: 100%;
+        }
+    }
+    
+}
+
+.site-type-dept {
+
+    .hero {
+
+        // Add padding to sides and top
+        @include make-container();
+        padding-top : calc( var(--bs-gutter-x ) * 0.5 );
+
+        // Allow for intentional looking offset of hero image width and content below
+        @include media-breakpoint-only('lg') {
+            --bs-gutter-x: 1.5rem;
+        }
+
+        img {
+            width: 100%;
+            border-radius: var(--bs-border-radius);
+        }
+    }
+}
+
+.site-type-suppt {
+    .hero {
+        @include make-container();
+        --bs-gutter-x: 7.5rem;
+        max-width: 1280px;
+
+        padding-top: calc( var(--bs-gutter-x ) * 0.5 );
+
+        img {
+            width: 100%;
+            border-radius: var(--bs-border-radius);
+        }
+    }
+}

@@ -66,8 +66,19 @@ $enqueuer->addScript( 'bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/
  * Add image sizes.
  */
 $image_crops = Theme::imageCrops();
+
+// Homepage Hero Images
+
+// Division Sizing
 $image_crops->addImageSize( 'featured-home-div-lg', 2880, 1000, true );
 $image_crops->addImageSize( 'featured-home-div-md', 1440, 500, true );
+
+// Department Sizing
+$image_crops->addImageSize( 'featured-home-dept-lg', 2720, 1000, true );
+$image_crops->addImageSize( 'featured-home-dept-md', 1360, 500, true );
+
+// Support Unit Sizing - no larger size needed, as it is not dependent on the screen size
+$image_crops->addImageSize( 'featured-home-suppt', 1160, 500, true );
 
 
 /**
@@ -250,3 +261,12 @@ function rest_get_options( $request ) {
 	$options['contact_page_url']      = get_field( 'contact_page_url', 'option' );
 	return new \WP_REST_Response( $options, 200 );
 }
+
+/**
+ * Filter Body Class to add Site Type
+ */
+add_filter( 'body_class', function( $classes ) {
+	$site_type = get_field( 'site_type', 'option' ) ?? 'dept';
+	$classes[] = 'site-type-' . $site_type;
+	return $classes;
+} );

@@ -8,7 +8,7 @@
             "name": "hero_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "Image should be at least 2880px x 1000px",
+            "instructions": "<p>Upload an optional image to display at the top of the page. It should be representative of your department, and not include any text!<\/p>\r\n\r\n<p>Image display sizes: <\/p>\r\n<ul>\r\n<li>Division sites: 2880 x 1000<\/li>\r\n<li>Department sites: 2720 x 1000<\/li>\r\n<li>Support Unit sites: 2320 x 1000<\/li>\r\n<\/ul>",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -46,5 +46,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1721776636
+    "modified": 1721836203
 }
