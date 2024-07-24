@@ -1,7 +1,8 @@
 import locationAndHours from "./location-and-hours.twig";
 
+
 export default {
-    title: "Stories/Location and Hours Sidebar",
+    title: "Stories/Content and Location/Location and Hours Sidebar",
     component: "location-and-hours",
     tags: ['autodocs'],
 };
