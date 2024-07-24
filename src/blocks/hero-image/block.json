@@ -4,12 +4,12 @@
     "name": "bc-sitka-spruce/hero-image",
     "title": "Hero Image",
     "category": "layout",
-    "icon": "home",
+    "icon": "cover-image",
     "description": "Displays an image, usually at the top of a page",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
-        "inserter": true,
+        "inserter": false,
         "align": false
     },
     "acf": {
