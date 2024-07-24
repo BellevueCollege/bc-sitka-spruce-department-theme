@@ -9,7 +9,17 @@
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
-        "inserter": false
+        "inserter": false,
+        "multiple": false,
+        "html": false
+    },
+    "attributes": {
+        "heading": {
+            "type": "string"
+        },
+        "summary": {
+            "type": "string"
+        }
     },
     "editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
