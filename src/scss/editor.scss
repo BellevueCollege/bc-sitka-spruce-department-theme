@@ -193,3 +193,14 @@ body.gutenberg-editor-page .editor-block-list__block {
   background-color: #eee;
   color: #111;
 }
+
+
+/**
+ * Change how alignwide and alignfull display
+ */
+.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block:not(.alignwide):not(.alignfull) {
+  // Shift the content to the left an appropriate amount
+  position: relative;
+  left: calc( calc(var(--wp--style--global--wide-size) - var(--wp--style--global--content-size))* -0.5);
+
+}

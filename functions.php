@@ -270,3 +270,62 @@ add_filter( 'body_class', function( $classes ) {
 	$classes[] = 'site-type-' . $site_type;
 	return $classes;
 } );
+
+
+/**
+ * Add Block Wrapper to Root Blocks with Alignment and Width Classes
+ * 
+ */
+add_filter( 'render_block', function( $block_content, $block, $instance ) {
+
+	// Blocks that should not be wrapped. Matches against the beginning of the block name,
+	// so partial matches are allowed.
+	$allowlisted_blocks = array(
+		'bc-sitka-spruce/',
+	);
+
+	// Do not wrap non-root blocks, or blocks that are not named.
+	if ( ! $block['sitka_is_at_root'] || ! isset( $block['blockName'] ) ) {
+		return $block_content;
+	}
+	
+	// Do not wrap blocks that are in the allowlist.
+	foreach ( $allowlisted_blocks as $allowlisted_block ) {
+		if ( str_starts_with( $block['blockName'], $allowlisted_block ) ) {
+			return $block_content;
+		}
+	}
+
+	// Add alignment and width classes.
+	if ( ! isset( $block['attrs']['align'] ) ) {
+		$classes = 'alignstandard';
+	} elseif ( 'wide' === $block['attrs']['align'] ) {
+		$classes = 'alignwide';
+	} elseif ( 'full' === $block['attrs']['align'] ) {
+		$classes = 'alignfull';
+	} elseif ( 'right' === $block['attrs']['align'] ) {
+		$classes = 'alignright alignstandard';
+	} elseif ( 'center' === $block['attrs']['align'] ) {
+		$classes = 'aligncenter';
+	} else {
+		$classes = 'alignstandard';
+	}
+
+	// Debugging helper: Print block data after each block
+	// $block_content .= '<pre>' . print_r( $block, true ) . '</pre>';
+
+	// Return wrapped block
+    return "<div class=\"block-wrapper $classes\">$block_content</div>";
+
+}, 10, 3 );
+
+/**
+ * Allow Root Blocks to be Identified
+ * 
+ * Add 'sitka_is_at_root' property to block data objects, which will be true or false
+ * depending on if the block is at the root of the block editor (not inside another block).
+ */
+add_filter( 'render_block_data', function( $parsed_block, $source_block, $parent_block ) {
+	$parsed_block['sitka_is_at_root'] = $parent_block ? false : true;
+	return $parsed_block;
+}, 10, 3 );
