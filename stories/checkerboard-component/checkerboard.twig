@@ -1,0 +1,38 @@
+<section class="card border-0 mb-5 card--checkerboard">
+  <div class="row g-xl-5">
+    <div class="col-md-5 col-lg-7 card-img--checkerboard">
+      <figure>
+        {% if video %}
+          <div class="aspect-ratio-frame" style="--aspect-ratio: .74">
+            <a class="video-overlay" data-fancybox href="{{ video }}" target="_blank">
+              {{ image }}
+              {% include '../play-button/play-button.twig' %}
+              <span class="show-for-sr">{{ __('Click to play video', 'bellevue-2022') }}</span>
+            </a>
+          </div>
+        {% else %}
+          <div class="aspect-ratio-frame" style="--aspect-ratio: .74">
+            {{ image }}
+          </div>
+        {% endif %}
+        {% if caption %}
+          <figcaption>
+            {{ caption }}
+          </figcaption>
+        {% endif %}
+      </figure>
+    </div>
+
+    <div class="col">
+      <div class="card-body p-0 p-sm-auto">
+        <h2 class="h3">{{ title }}</h2>
+        {% if text %}
+          {{ text }}
+        {% endif %}
+        <div class="checkerboard__links mt-3">
+          {{ links }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

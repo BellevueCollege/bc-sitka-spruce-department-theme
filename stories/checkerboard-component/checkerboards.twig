@@ -1,0 +1,21 @@
+{#
+/**
+ * @file
+ * Bellevue template for the checkerboard component.
+ */
+#}
+
+<section class="checkerboard global-spacing global-margin--12x">
+  <div class="checkerboards container-xl">
+    {% for checkerboard in checkerboards %}
+      {% include '../checkerboard-component/checkerboard.twig' with {
+        video: checkerboard.video,
+        image: checkerboard.image,
+        caption: checkerboard.caption,
+        title: checkerboard.title,
+        text: checkerboard.text,
+        links: checkerboard.links,
+      } %}
+    {% endfor %}
+  </div>
+</section>
