@@ -42,9 +42,10 @@ const customPaths = Object.assign( {}, defaultConfig, {
 	entry: {
 		...scssEntryPoint( 'main' ),
 		...scssEntryPoint( 'editor' ),
-		...scssEntryPoint( 'mayflower-blocks-alert', true ),
-		...scssEntryPoint( 'mayflower-blocks-panel', true ),
+		...scssEntryPoint( 'alert', true ),
+		...scssEntryPoint( 'nav', true ),
 		...scssEntryPoint( 'card', true ),
+		...scssEntryPoint( 'accordion', true ),
 		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' )
 	},
 } );
