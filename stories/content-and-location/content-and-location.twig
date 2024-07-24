@@ -1,6 +1,8 @@
 <div {{ wrapper_attrs }}>
     <div class="row">
         <div class="col">
+            <h1 class="content-and-location-heading">{{ heading }}</h1>
+            <p class="content-and-location-summary">{{ summary }}</p>
             {{ content }}
         </div>
         {% if display_location %}

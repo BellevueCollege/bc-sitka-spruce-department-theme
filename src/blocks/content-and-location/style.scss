@@ -8,6 +8,7 @@
 .content-and-location.container-xl {
 
     padding-top: calc( var(--bs-gutter-x) / 2 );
+    padding-bottom: calc( var(--bs-gutter-x) / 2 );
 
     @include media-breakpoint-up('lg') {
         position: relative;
@@ -15,6 +16,8 @@
 
         background-color: css_color('white');
         border-radius: calc(var(--bs-border-radius) * 1.5);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
     }
 
     @include media-breakpoint-only('lg') {

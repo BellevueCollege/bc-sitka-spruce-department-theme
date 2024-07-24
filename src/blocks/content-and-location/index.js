@@ -8,6 +8,7 @@ import apiFetch from '@wordpress/api-fetch';
 import { useState } from '@wordpress/element';
 import { Disabled } from '@wordpress/components';
 import locationAndHours from '/stories/location-and-hours/location-and-hours.twig';
+import { RichText } from '@wordpress/block-editor';
 
 import './style.scss';
 import './editor.scss';
@@ -29,36 +30,19 @@ Twig.extendFunction("__", (input, namespace) => {
 
 
 const BLOCK_TEMPLATE = [
-    [ 'core/heading', {
-        'level': 1,
-        'placeholder': 'Division/Department/Service Name'
+    [ 'mayflower-blocks/button', {
+        'buttonText': 'Optional Button',
+        'lock': {
+            'move': false,
+            'remove': false
+        }
     }],
-    [ 'core/paragraph', {
-        'placeholder': 'Mission Statement/Service Overview for the Department/Division/Service',
-        'className': 'lead'
-    }],
-    [ 'core/group',
-        {
-            'templateLock': false,
-            'className': 'wp-block-group',
-            'metadata': {
-                'name': 'Optional Homepage Header Element Area'
-            },
-            'layout': {
-                "type": "default",
-            },
-            'allowedBlocks': [ 
-                'mayflower-blocks/button',
-                'core/shortcode',
-                'gravityforms/form',
-            ]
-        }, [
-            [ 'mayflower-blocks/button', {
-                'buttonText': 'Optional Button',
-            }],
-            ['gravityforms/form']
-        ]
-    ]
+    ['gravityforms/form', {
+        'lock': {
+            'move': false,
+            'remove': false
+        }
+    }]
 ];
 
 
@@ -113,9 +97,34 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
             <div { ...blockProps }>
                 <div className = "row">
                     <div className = "col-md-8">
+                        <RichText
+                            tagName="h1"
+                            className="content-and-location-heading"
+                            placeholder={__( 'Division/Department/Service Name', 'bc-sitka-spruce' )}
+                            value={ props.attributes.heading }
+                            onChange={ ( newHeading ) => props.setAttributes( { heading: newHeading } ) }
+                            identifier='heading'
+                            allowedFormats={ [] }
+                            disableLineBreaks={ true }
+                        />
+                        <RichText
+                            tagName="p"
+                            className="content-and-location-summary lead"
+                            placeholder={__( 'Unit summary: Mission statement, service overview, or other introduction to your unit', 'bc-sitka-spruce' )}
+                            value={ props.attributes.summary }
+                            onChange={ ( newSummary ) => props.setAttributes( { summary: newSummary } ) }
+                            identifier='summary'
+                            allowedFormats={ [] }
+                        />
                         <InnerBlocks
-                            templateLock="all"
                             template={ BLOCK_TEMPLATE }
+                            allowedBlocks={[
+                                'mayflower-blocks/button',
+                                'core/shortcode',
+                                'gravityforms/form',
+                            ]}
+                            renderAppender={ InnerBlocks.ButtonBlockAppender }
+                            templateLock=""
                         />
                     </div>
                     <div className = "col-md-4">
