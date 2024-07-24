@@ -11,9 +11,8 @@
 
     @include media-breakpoint-up('lg') {
         position: relative;
-        margin-top: -2rem;
+        margin-top: calc( var(--bs-gutter-x ) * -0.25 );
 
-        border: 1px solid css_color('white');
         background-color: css_color('white');
         border-radius: calc(var(--bs-border-radius) * 1.5);
     }
@@ -27,6 +26,11 @@
 
 }
 
-.hero {
-    min-height: 5rem;
+.site-type-suppt .content-and-location.container-xl {
+
+    @include media-breakpoint-up('lg') {
+        margin-top: calc( var(--bs-gutter-x ) * -0.5 );
+        position: initial;
+        padding-top: calc( var(--bs-gutter-x )  );
+    }
 }
