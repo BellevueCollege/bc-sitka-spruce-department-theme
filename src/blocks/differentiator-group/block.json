@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/differentiator-group",
+    "title": "Differentiator Group",
+    "category": "widgets",
+    "icon": "star",
+    "description": "Differentiator Group",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "attributes": {
+    },
+    "parent": [
+        "bc-sitka-spruce/differentiators"
+    ],
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

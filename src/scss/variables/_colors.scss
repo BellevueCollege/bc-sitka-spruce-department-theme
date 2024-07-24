@@ -1,0 +1,41 @@
+////
+/// @group colors
+/// Site-wide colors.
+////
+
+@function get_color($pallette, $key) {
+    @return map-get($pallette, $key);
+}
+
+@function css_color($name) {
+    @return var(--#{$name});
+}
+
+/// BC Official Colors
+$brand-colors: (
+    'bc-brutus-blue': #003d79,
+    'bc-bulldog-silver': #a7a9ac,
+    'bc-fall-maple-red': #c4122f,
+    'bc-rain-garden-green': #aab720,
+    'bc-day-lily-orange': #e26f1e,
+    'bc-beehive-gold': #f2c01e,
+    'bc-fountain-blue': #00aeef,
+    'bc-rainy-night-blue': #162f57
+);
+
+/// Other Colors Used by Theme
+$sitka-colors: (
+    'white': #ffffff,
+    'black': #000000,
+    'gray--dark': mix(#000000, #ffffff, 85%),
+    'gray--medium': mix(#000000, #ffffff, 65%),
+    'gray--light': #d7dade,
+    'gray--xlight': #ebeef2,
+    'primary-color--dark': darken(get_color($brand-colors, 'bc-brutus-blue'), 20%),
+    'primary-color--light': lighten(get_color($brand-colors, 'bc-brutus-blue'), 10%),
+    'accent-link-blue': #0055b8,
+    'accent-green-light': #ccdb25,
+    'accent-fountain-blue-light': #afe6fa,
+    'accent-fountain-blue-extralight': #dcf2fa,
+    'accent-trees-dark': #c0e2f0,
+);

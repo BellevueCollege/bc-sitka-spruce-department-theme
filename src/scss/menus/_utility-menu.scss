@@ -1,0 +1,103 @@
+	////
+	/// @group menus
+	/// Utility menu styles.
+	////
+
+.utility-menu {
+
+	// All Breakpoints
+	// ---------------
+	ul {
+		display: flex;
+		padding: 0;
+	}
+
+	a,
+	li {
+		display: block;
+	}
+
+	a {
+		font-family: $sans-serif;
+		color: css_color('accent-link-blue');
+		font-weight: 600; 
+
+		text-decoration: underline;
+		text-decoration-color: css_color('bc-fountain-blue');
+		text-decoration-thickness: 2px;
+		text-underline-offset: .33rem;
+
+		.far::before {
+			color: css_color('bc-brutus-blue');
+		}
+
+		&:hover,
+		&:focus {
+			color: css_color('bc-rainy-night-blue');
+			text-decoration-color: css_color('bc-brutus-blue');
+
+		}
+	}
+
+	.search-toggle {
+		a {
+			font-size: 1.25em;
+			position: relative;
+			top: -0.125em;
+			padding: 0 0.5em;
+			text-decoration: none;
+
+			&:hover,
+			&:focus {
+				background: css_color('accent-fountain-blue-light');
+				color: css_color('black');
+				text-decoration: none;
+
+				.far::before {
+					color: css_color('black');
+				}
+			}
+		}
+	}
+	.search-expanded & .search-toggle a {
+		background-color: css_color('bc-brutus-blue');
+		color: css_color('white');
+
+		.far::before {
+			color: css_color('white');
+		}
+
+		&:hover,
+		&:focus {
+			background-color: css_color('bc-rainy-night-blue');
+		}
+	}
+
+	// Mobile
+	// ------
+	@include media-breakpoint-down($header-desktop-breakpoint) {
+
+		ul {
+			flex-direction: column;
+		}
+
+		a {
+			padding: .5em;
+			text-align: left;
+		}
+	}
+
+
+	// Desktop
+	// -----
+	@include media-breakpoint-up($header-desktop-breakpoint) {
+
+		ul {
+			margin-top: 1rem;
+		}
+
+		a {
+			padding: 0 1em;
+		}
+	}
+}

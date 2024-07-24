@@ -1,0 +1,35 @@
+////
+/// @group animation
+/// Site-wide animations.
+////
+
+/// Animation Definitions
+/// ---------------------
+
+/// Custom easing animations
+/// @type String
+$bezier-ease: cubic-bezier(.82, .06, .14, .97);
+$bezier-ease--soft: cubic-bezier(.42, .08, .06, .98);
+$bezier-ease--swanky: cubic-bezier(1, .63, .47, .8);
+$bezier-ease--slingshot: cubic-bezier(.5, 0, .38, 1.47);
+
+/// The default transition duration, in ms.
+/// @type Number
+$primary-transition-time: 150ms;
+
+/// The default transition timing function.
+/// @type String
+$primary-transition-function: $bezier-ease--soft;
+
+/// The default transition duration and timing function.
+/// @type String
+$primary-transition: $primary-transition-time $primary-transition-function;
+
+/// The default animation duration, in ms.
+/// @type Number
+$primary-animation-time: 550ms;
+
+/// The default animation duration and timing function. There is a slight delay
+/// here to account for scroll lag time.
+/// @type String
+$primary-animation: $primary-animation-time $primary-transition-function 250ms;

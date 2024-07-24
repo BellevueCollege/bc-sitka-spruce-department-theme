@@ -1,0 +1,54 @@
+{#
+/**
+ * @file
+ * Bellevue template for the page wrapper.
+ *
+ * Available variables:
+ * - menus: All menus registered on the site, keyed by menu slug.
+ */
+#}
+{% extends 'system/html.twig' %}
+
+{% set main_menu %}
+	{% include 'system/menu.twig' with {
+		items: menu_main_menu.items,
+		depth: 2,
+		ul_class: 'menu',
+		li_active_class: 'menu-item--active-trail menu-item--expanded',
+		li_has_children_class: 'menu-item--expanded',
+	} %}
+{% endset %}
+
+{% block wrapper %}
+
+	{% block header %}
+		{% include '/stories/header/header.twig' with {
+			core_homepage_url: '#',
+			site_homepage_url: '#',
+			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
+			site_title: site.blogname,
+			search_expanded: false,
+			menu_expanded: false,
+			menu: main_menu
+		}
+		
+		%}
+	{% endblock %}
+
+	<main id="main-content" class="main-content">
+		{% block content %}
+		
+		{% endblock %}
+	</main>
+
+	{% block sock %}
+	{% endblock %}
+
+	{% block footer %}
+		{% include 'system/footer.twig' %}
+	{% endblock %}
+
+
+	{{ function('wp_footer') }}
+{% endblock %}
+
