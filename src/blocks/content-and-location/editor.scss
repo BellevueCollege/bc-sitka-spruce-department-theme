@@ -1,15 +1,15 @@
 @import 'style';
 
 .wp-block-bc-sitka-spruce-content-and-location {
-    .location-and-hours.card {
-        padding: 0;
-        max-width: none;
-        box-shadow: none;
-    }
-
     background: #fff;
     border-radius: 6px 6px 0 0;
     border: 1px solid #fff;
     padding: 20px 40px 0 40px;
     box-shadow: 0 -5px 5px 0 rgba(0, 0, 0, 0.1);
+
+	.location-and-hours.card {
+        padding: 0;
+        max-width: none;
+        box-shadow: none;
+    }
 }

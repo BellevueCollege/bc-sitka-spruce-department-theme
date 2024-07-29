@@ -58,6 +58,42 @@ $enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vl
 $enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
 $enqueuer->addScript( 'bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js' );
 
+// Enqueue Block Styles
+$enqueuer->addBlockStyle(
+	handle: 'nav',
+	blocks: array(
+		'mayflower-blocks/tabs',
+	)
+);
+$enqueuer->addBlockStyle(
+	handle: 'card',
+	blocks: array(
+		'mayflower-blocks/tabs',
+		'mayflower-blocks/panel',
+	),
+);
+$enqueuer->addBlockStyle(
+	handle: 'tabs',
+	blocks: array(
+		'mayflower-blocks/tabs',
+	),
+	dependencies: array(
+		'bc-sitka-spruce-style-card',
+		'bc-sitka-spruce-style-nav',
+	)
+);
+$enqueuer->addBlockStyle(
+	handle: 'accordion',
+	blocks: array(
+		'mayflower-blocks/collapsibles',
+	)
+);
+$enqueuer->addBlockStyle(
+	handle: 'alert',
+	blocks: array(
+		'mayflower-blocks/alert',
+	)
+);
 
 /**
  * Image Crops
@@ -112,80 +148,6 @@ $block_editor->useGlobally( true );
 
 
 /**
- * Register Styles for Use in Blocks
- *
- * Register additional stylesheets used by blocks
- */
-
-add_action(
-	'init',
-	function () {
-		$handle_prefix = 'bc-sitka-spruce-style-';
-
-		// List of styles
-		$styles = array(
-			'card',
-		);
-
-		foreach ( $styles as $style ) {
-			$asset  = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $style . '.asset.php' );
-			$handle = $handle_prefix . $style;
-			wp_register_style(
-				$handle,
-				get_theme_file_uri( "assets/dist/css/blocks/{$style}.css" ),
-				$asset['dependencies'],
-				$asset['version'],
-			);
-		}
-	}
-);
-
-/**
- * Register Custom Styles for non-bundled blocks
- */
-function enqueue_block_styles() {
-	enqueue_block_style( 'bc-sitka-spruce-style-card', 'mayflower-blocks/panel', true );
-	enqueue_block_style( 'mayflower-blocks/alert' );
-}
-add_action( 'init', __NAMESPACE__ . '\enqueue_block_styles' );
-
-/**
- * Enqueue Block Style
- *
- * Helper function to enqueue a block style
- *
- * @param string $handle
- * @param string|null $block
- * @param boolean $registered
- */
-function enqueue_block_style( string $handle, string|null $block = null, $registered = false ) {
-	$block = $block ?? $handle;
-
-	if ( $registered ) {
-		wp_enqueue_block_style(
-			$block,
-			array(
-				'handle' => $handle,
-			)
-		);
-		return;
-	}
-
-	$slug  = str_replace( '/', '-', $handle );
-	$asset = include get_parent_theme_file_path( 'assets/dist/css/blocks/' . $slug . '.asset.php' );
-	wp_enqueue_block_style(
-		$block,
-		array(
-			'handle' => "bc-sitka-spruce-block-{$slug}",
-			'src'    => get_theme_file_uri( "assets/dist/css/blocks/{$slug}.css" ),
-			'path'   => get_theme_file_path( "assets/dist/css/blocks/{$slug}.css" ),
-			'deps'   => $asset['dependencies'],
-			'ver'    => $asset['version'],
-		)
-	);
-}
-
-/**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
  *
  * Thanks to https://fullsiteediting.com/how-to-lock-blocks-and-templates/
@@ -230,11 +192,11 @@ add_action(
 			'bc-sitka-spruce/v1',
 			'/options',
 			array(
-				'methods'  => 'GET',
-				'callback' => __NAMESPACE__ . '\rest_get_options',
-				'permission_callback' => function( ) {
+				'methods'             => 'GET',
+				'callback'            => __NAMESPACE__ . '\rest_get_options',
+				'permission_callback' => function () {
 					return current_user_can( 'edit_posts' );
-				}
+				},
 			)
 		);
 	}
@@ -253,7 +215,7 @@ function rest_get_options( $request ) {
 	if ( ! current_user_can( 'edit_posts' ) ) {
 		return new \WP_Error( 'rest_forbidden', 'Sorry, you are not allowed to access this resource.', array( 'status' => rest_authorization_required_code() ) );
 	}
-	$options = array();
+	$options                          = array();
 	$options['display_location_card'] = get_field( 'display_location_card', 'option' );
 	$options['location_image']        = get_field( 'location_image', 'option' );
 	$options['location']              = get_field( 'location', 'option' );
@@ -265,67 +227,79 @@ function rest_get_options( $request ) {
 /**
  * Filter Body Class to add Site Type
  */
-add_filter( 'body_class', function( $classes ) {
-	$site_type = get_field( 'site_type', 'option' ) ?? 'dept';
-	$classes[] = 'site-type-' . $site_type;
-	return $classes;
-} );
+add_filter(
+	'body_class',
+	function ( $classes ) {
+		$site_type = get_field( 'site_type', 'option' ) ?? 'dept';
+		$classes[] = 'site-type-' . $site_type;
+		return $classes;
+	}
+);
 
 
 /**
  * Add Block Wrapper to Root Blocks with Alignment and Width Classes
- * 
+ *
  */
-add_filter( 'render_block', function( $block_content, $block, $instance ) {
+add_filter(
+	'render_block',
+	function ( $block_content, $block, $instance ) {
 
-	// Blocks that should not be wrapped. Matches against the beginning of the block name,
-	// so partial matches are allowed.
-	$allowlisted_blocks = array(
-		'bc-sitka-spruce/',
-	);
+		// Blocks that should not be wrapped. Matches against the beginning of the block name,
+		// so partial matches are allowed.
+		$allowlisted_blocks = array(
+			'bc-sitka-spruce/',
+		);
 
-	// Do not wrap non-root blocks, or blocks that are not named.
-	if ( ! $block['sitka_is_at_root'] || ! isset( $block['blockName'] ) ) {
-		return $block_content;
-	}
-	
-	// Do not wrap blocks that are in the allowlist.
-	foreach ( $allowlisted_blocks as $allowlisted_block ) {
-		if ( str_starts_with( $block['blockName'], $allowlisted_block ) ) {
+		// Do not wrap non-root blocks, or blocks that are not named.
+		if ( ! $block['sitka_is_at_root'] || ! isset( $block['blockName'] ) ) {
 			return $block_content;
 		}
-	}
 
-	// Add alignment and width classes.
-	if ( ! isset( $block['attrs']['align'] ) ) {
-		$classes = 'alignstandard';
-	} elseif ( 'wide' === $block['attrs']['align'] ) {
-		$classes = 'alignwide';
-	} elseif ( 'full' === $block['attrs']['align'] ) {
-		$classes = 'alignfull';
-	} elseif ( 'right' === $block['attrs']['align'] ) {
-		$classes = 'alignright alignstandard';
-	} elseif ( 'center' === $block['attrs']['align'] ) {
-		$classes = 'aligncenter';
-	} else {
-		$classes = 'alignstandard';
-	}
+		// Do not wrap blocks that are in the allowlist.
+		foreach ( $allowlisted_blocks as $allowlisted_block ) {
+			if ( str_starts_with( $block['blockName'], $allowlisted_block ) ) {
+				return $block_content;
+			}
+		}
 
-	// Debugging helper: Print block data after each block
-	// $block_content .= '<pre>' . print_r( $block, true ) . '</pre>';
+		// Add alignment and width classes.
+		if ( ! isset( $block['attrs']['align'] ) ) {
+			$classes = 'alignstandard';
+		} elseif ( 'wide' === $block['attrs']['align'] ) {
+			$classes = 'alignwide';
+		} elseif ( 'full' === $block['attrs']['align'] ) {
+			$classes = 'alignfull';
+		} elseif ( 'right' === $block['attrs']['align'] ) {
+			$classes = 'alignright alignstandard';
+		} elseif ( 'center' === $block['attrs']['align'] ) {
+			$classes = 'aligncenter';
+		} else {
+			$classes = 'alignstandard';
+		}
 
-	// Return wrapped block
-    return "<div class=\"block-wrapper $classes\">$block_content</div>";
+		// Debugging helper: Print block data after each block
+		// $block_content .= '<pre>' . print_r( $block, true ) . '</pre>';
 
-}, 10, 3 );
+		// Return wrapped block
+		return "<div class=\"block-wrapper $classes\">$block_content</div>";
+	},
+	10,
+	3
+);
 
 /**
  * Allow Root Blocks to be Identified
- * 
+ *
  * Add 'sitka_is_at_root' property to block data objects, which will be true or false
  * depending on if the block is at the root of the block editor (not inside another block).
  */
-add_filter( 'render_block_data', function( $parsed_block, $source_block, $parent_block ) {
-	$parsed_block['sitka_is_at_root'] = $parent_block ? false : true;
-	return $parsed_block;
-}, 10, 3 );
+add_filter(
+	'render_block_data',
+	function ( $parsed_block, $source_block, $parent_block ) {
+		$parsed_block['sitka_is_at_root'] = $parent_block ? false : true;
+		return $parsed_block;
+	},
+	10,
+	3
+);
