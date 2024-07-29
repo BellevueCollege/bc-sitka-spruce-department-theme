@@ -194,13 +194,21 @@ body.gutenberg-editor-page .editor-block-list__block {
   color: #111;
 }
 
+@media screen and (max-width: 1499px ) {
+  .editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block:not(.alignwide):not(.alignfull) {
+    margin-left: 1rem !important;
+    margin-right: 1rem !important;
 
-/**
- * Change how alignwide and alignfull display
- */
-.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block:not(.alignwide):not(.alignfull) {
-  // Shift the content to the left an appropriate amount
-  position: relative;
-  left: calc( calc(var(--wp--style--global--wide-size) - var(--wp--style--global--content-size))* -0.5);
+  }
+}
 
+
+@media screen and (min-width: 1500px ) {
+  /**
+  * Change how alignwide and alignfull display
+  */
+  .editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block:not(.alignwide):not(.alignfull) {
+    margin-left: calc( 50% - ( var(--wp--style--global--wide-size) * 0.5 ) ) !important;
+
+  }
 }
