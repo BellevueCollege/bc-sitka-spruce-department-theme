@@ -78,8 +78,8 @@ $enqueuer->addBlockStyle(
 		'mayflower-blocks/tabs',
 	),
 	dependencies: array(
-		'card',
-		'nav',
+		'bc-sitka-spruce-style-card',
+		'bc-sitka-spruce-style-nav',
 	)
 );
 $enqueuer->addBlockStyle(
