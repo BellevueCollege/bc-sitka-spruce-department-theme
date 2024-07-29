@@ -1,0 +1,51 @@
+{
+    "key": "group_66a11fe652dd1",
+    "title": "Admin Options fields",
+    "fields": [
+        {
+            "key": "field_66a11fe69987f",
+            "label": "Site Type",
+            "name": "site_type",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "div": "Division Site",
+                "dept": "Department Site",
+                "suppt": "Support Unit Site"
+            },
+            "default_value": "dept",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "layout": "vertical",
+            "save_other_choice": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "admin-options"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1721835729
+}

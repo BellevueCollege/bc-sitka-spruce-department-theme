@@ -1,0 +1,26 @@
+{
+    "key": "ui_options_page_6697ed5a94cef",
+    "title": "Site Options",
+    "active": true,
+    "menu_order": 0,
+    "page_title": "Site Options",
+    "menu_slug": "site-options",
+    "parent_slug": "none",
+    "advanced_configuration": 1,
+    "icon_url": "",
+    "menu_title": "",
+    "position": "",
+    "redirect": 0,
+    "description": "",
+    "menu_icon": {
+        "type": "dashicons",
+        "value": "dashicons-admin-generic"
+    },
+    "update_button": "Update",
+    "updated_message": "Options Updated",
+    "capability": "manage_options",
+    "data_storage": "options",
+    "post_id": "",
+    "autoload": 1,
+    "modified": 1721232829
+}

@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/template-homepage",
+    "title": "Template: Homepage Hero and Intro",
+    "category": "layout",
+    "icon": "admin-home",
+    "description": "Template defining intro and hero content of the homepage.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "inserter": false,
+        "multiple": false,
+        "html": false
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}

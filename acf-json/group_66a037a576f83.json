@@ -1,0 +1,50 @@
+{
+    "key": "group_66a037a576f83",
+    "title": "Hero Image Block",
+    "fields": [
+        {
+            "key": "field_66a037a5b53bb",
+            "label": "Hero Image",
+            "name": "hero_image",
+            "aria-label": "",
+            "type": "image",
+            "instructions": "<p>Upload an optional image to display at the top of the page. It should be representative of your department, and not include any text!<\/p>\r\n\r\n<p>Image display sizes: <\/p>\r\n<ul>\r\n<li>Division sites: 2880 x 1000<\/li>\r\n<li>Department sites: 2720 x 1000<\/li>\r\n<li>Support Unit sites: 2320 x 1000<\/li>\r\n<\/ul>",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "id",
+            "library": "all",
+            "min_width": "",
+            "min_height": "",
+            "min_size": "",
+            "max_width": "",
+            "max_height": "",
+            "max_size": "",
+            "mime_types": "",
+            "preview_size": "medium"
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "block",
+                "operator": "==",
+                "value": "bc-sitka-spruce\/hero-image"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "default",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1721836203
+}
