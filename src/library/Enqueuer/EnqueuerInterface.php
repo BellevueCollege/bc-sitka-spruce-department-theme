@@ -66,6 +66,9 @@ interface EnqueuerInterface {
    *   A CSS media query string on which to load the stylesheet.
    * @param bool $use_asset_file
    *   Load the stylesheet using version and dependencies from an asset file.
+   *   Defaults to FALSE.
+   * @param bool $enqueue
+   *   Enqueue the stylesheet or just register it. Defaults to TRUE to enqueue.
    */
   public function addStyle(
     string $handle,
@@ -74,7 +77,8 @@ interface EnqueuerInterface {
     $base_path = '',
     $version = null,
     string $media = 'all',
-    bool $use_asset_file = false
+    bool $use_asset_file = false,
+    bool $enqueue = true
   ): void;
 
   /**
@@ -84,5 +88,23 @@ interface EnqueuerInterface {
    *   Stylesheet internal identifier.
    */
   public function removeStyle(string $handle): void;
+
+  /**
+   * Register a stylesheet to be used by one or more external blocks
+   * 
+   * @param string $handle
+   *   Name of the stylesheet file in the `assets/dist/css/blocks` directory
+   * @param string[] $blocks
+   *   Array of block names that use this stylesheet
+   * @param string[] $dependencies
+   *   Array of dependencies, using the short name of the stylesheet
+   *   (only works for styles registered with `addBlockStyle`)
+   */
+  public function addBlockStyle(
+    string $handle, 
+    array $blocks, 
+    array $dependencies = array()
+  ): void;
+
 
 }

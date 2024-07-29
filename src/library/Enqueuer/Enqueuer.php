@@ -13,6 +13,8 @@ class Enqueuer implements EnqueuerInterface {
 
   protected array $styles = [];
 
+  protected array $blockStyles = [];
+
   protected array $deregisteredStyles = [];
 
   protected bool $appendVersion = false;
@@ -71,7 +73,16 @@ class Enqueuer implements EnqueuerInterface {
   /**
    * @inheritDoc
    */
-  public function addStyle(string $handle, string $src, array $dependencies = [], $base_path = '', $version = null, string $media = 'all', bool $use_asset_file = false): void {
+  public function addStyle(
+    string $handle, 
+    string $src, 
+    array $dependencies = [], 
+    $base_path = '', 
+    $version = null, 
+    string $media = 'all', 
+    bool $use_asset_file = false,
+    bool $enqueue = true
+  ): void {
     if ( $use_asset_file ) {
       $asset = include get_parent_theme_file_path( ltrim( $src, '/' ) );
       $src = str_replace( '.asset.php', '.css', $src );
@@ -84,6 +95,7 @@ class Enqueuer implements EnqueuerInterface {
         'dependencies' => $dependencies,
         'version' => $version,
         'media' => $media,
+        'enqueue' => $enqueue,
       ],
     ]);
   }
@@ -99,6 +111,35 @@ class Enqueuer implements EnqueuerInterface {
       $this->deregisteredStyles[] = $handle;
     }
   }
+
+  /**
+   * @inheritDoc
+   */
+  public function addBlockStyle(
+    string $handle,
+    array $blocks,
+    array $dependencies = []
+  ): void {
+    $handle_prefix = 'bc-sitka-spruce-style-';
+    $path = '/assets/dist/css/blocks/';
+    $source = $path . $handle . '.asset.php';
+		$full_handle = $handle_prefix . $handle;
+
+    // print_r($asset);
+    // die();
+
+    $this->addStyle(
+      handle: $full_handle,
+      src: $source,
+      dependencies: $dependencies,
+      use_asset_file: true
+    );
+
+    $this->blockStyles = array_merge( $this->blockStyles, array(
+      $full_handle => $blocks
+    ));
+  }
+
 
   /**
    * Convert a local source path to the correct base path.
@@ -143,7 +184,12 @@ class Enqueuer implements EnqueuerInterface {
     foreach ($this->styles as $handle => $style) {
       $dependencies = $style['dependencies'] ?? [];
       $media = $script['media'] ?? 'all';
-      wp_enqueue_style($handle, $style['src'], $dependencies, $this->generateVersion($style['version']), $media);
+
+      if ($style['enqueue']) {
+        wp_enqueue_style($handle, $style['src'], $dependencies, $this->generateVersion($style['version']), $media);
+      } else {
+        wp_register_style($handle, $style['src'], $dependencies, $this->generateVersion($style['version']), $media);
+      }
     }
   }
 
