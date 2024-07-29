@@ -46,6 +46,7 @@ const customPaths = Object.assign( {}, defaultConfig, {
 		...scssEntryPoint( 'nav', true ),
 		...scssEntryPoint( 'card', true ),
 		...scssEntryPoint( 'accordion', true ),
+		...scssEntryPoint( 'tabs', true ),
 		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' )
 	},
 } );
