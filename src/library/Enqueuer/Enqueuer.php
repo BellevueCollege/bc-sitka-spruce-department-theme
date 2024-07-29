@@ -25,7 +25,9 @@ class Enqueuer implements EnqueuerInterface {
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueScripts' ), 10, 0 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterScripts' ), 99, 0 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueStyles' ), 10, 0 );
+		add_action( 'admin_enqueue_scripts', array( $this, 'setupEnqueueStyles' ), 10, 0 ); // Register in editor as well!
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterStyles' ), 99, 0 );
+		add_action( 'init', array( $this, 'setupEnqueueBlockStyles' ), 10, 0 );
 	}
 
 	/**
@@ -129,9 +131,6 @@ class Enqueuer implements EnqueuerInterface {
 		$source        = $path . $handle . '.asset.php';
 		$full_handle   = $handle_prefix . $handle;
 
-		// print_r($asset);
-		// die();
-
 		$this->addStyle(
 			handle: $full_handle,
 			src: $source,
@@ -206,6 +205,17 @@ class Enqueuer implements EnqueuerInterface {
 	public function setupDeregisterStyles(): void {
 		foreach ( $this->deregisteredStyles as $handle ) {
 			wp_deregister_style( $handle );
+		}
+	}
+
+	/**
+	 * Callback to enqueue block styles.
+	 */
+	public function setupEnqueueBlockStyles(): void {
+		foreach ( $this->blockStyles as $handle => $blocks ) {
+			foreach ( $blocks as $block ) {
+				wp_enqueue_block_style( $block, array( 'handle' => $handle ) );
+			}
 		}
 	}
 
