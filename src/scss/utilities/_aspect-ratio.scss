@@ -1,0 +1,72 @@
+////
+/// @group aspect-ratio
+/// Aspect ratio mixin and default rules setup.
+////
+
+///
+/// @param {Number} $aspect-ratio [1] - a number derrived from width divided by height
+/// @example scss - pass a number to act as the frame ratio
+///   .aspect-ratio-frame {
+///     @include aspect-ratio-frame($aspect-ratio: 1.2);
+///   }
+///
+/// @param {Selector} $pseudo-selector [::before] - A psuedo element, either `::before`, or `::after`
+/// @example scss - This element is established as the relative position in the frame that holds open the mask
+///   .aspect-ratio-frame {
+///     @include aspect-ratio-frame($pseudo-selector: '::before');
+///   }
+///
+/// @param {Selector | multiple} $target-object [img] - The media element
+/// @example scss - This element is established as the relative position in the frame that holds open the mask
+///   .aspect-ratio-frame {
+///     @include aspect-ratio-frame($target-object: 'img, video, .autoplay-video-container, iframe');
+///   }
+///
+@mixin aspect-ratio-frame(
+  $aspect-ratio: 1,
+  $pseudo-selector: '::before',
+  $target-object: 'img',
+) {
+  position: relative;
+
+  &#{$pseudo-selector} {
+    display: block;
+    padding-bottom: calc(#{$aspect-ratio} * 100%);
+    content: '';
+  }
+
+  #{$target-object} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    @if $target-object != 'iframe' {
+      object-fit: cover;
+    }
+  }
+
+  iframe {
+    object-fit: unset;
+  }
+}
+
+/// Set the default aspect ratio
+:root {
+  --aspect-ratio: 1;
+}
+
+.aspect-ratio-frame {
+  /// port in the default as is, also acts as a fallback.
+  @include aspect-ratio-frame($target-object: 'img, video, .autoplay-video-container, iframe');
+
+  /// reset the padding with CSS vars if supported, otherwise rely on the rules above
+  @supports (--css: variables) {
+
+    &::before {
+      padding-bottom: calc(var(--aspect-ratio) * 100%);
+      content: '';
+    }
+  }
+}

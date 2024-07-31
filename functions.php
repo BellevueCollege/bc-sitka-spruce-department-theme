@@ -31,6 +31,8 @@ function register_blocks() {
 		'content-and-location',
 		'template-homepage',
 		'hero-image',
+		'card-section',
+		'card-section-card',
 	);
 
 	block_registration_helper( $blocks );
@@ -115,6 +117,22 @@ $image_crops->addImageSize( 'featured-home-dept-md', 1360, 500, true );
 
 // Support Unit Sizing - no larger size needed, as it is not dependent on the screen size
 $image_crops->addImageSize( 'featured-home-suppt', 1160, 500, true );
+
+// Card Header Image
+$image_crops->addImageSize( 'card-header', 360, 200, true );
+
+// Make some image sizes available in the block editor
+add_filter(
+	'image_size_names_choose',
+	function ( $sizes ) {
+		return array_merge(
+			$sizes,
+			array(
+				'card-header' => __( 'Card Header', 'bc-sitka-spruce' ),
+			)
+		);
+	}
+);
 
 
 /**

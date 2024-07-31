@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Template to display a Bootstrap-based card.
+ */
+#}
+<!-- Story: Card (card-bootstrap) -->
+<div class="card {{ card_classes|join(' ') }}" {% if card_style %} style="{{ card_style }}" {% endif %}>
+  {%  if media %}
+    {% block mediaElement %}
+      <img src="{{ media.src }}" class="card-img-top {{ media.classes|join(' ') }}" alt="{{ media.alt ?? '' }}">
+    {% endblock %}
+  {% endif %}
+  {%  if card_header %}
+    <div class="card-header">
+      {{ card_header }}
+    </div>
+  {% endif %}
+  <div class="card-body">
+		{% if card_title %}
+			<{{ card_title_tag }} class="card-title">{{ card_title }}</{{ card_title_tag }}>
+		{% endif %}
+    {{ card_content }}
+  </div>
+  {%  if card_footer %}
+    <div class="card-footer">
+      {{ card_footer }}
+    </div>
+  {% endif %}
+</div>
