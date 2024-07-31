@@ -24,8 +24,8 @@ class Enqueuer implements EnqueuerInterface {
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueScripts' ), 10, 0 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterScripts' ), 99, 0 );
-		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueStyles' ), 10, 0 );
-		add_action( 'admin_enqueue_scripts', array( $this, 'setupEnqueueStyles' ), 10, 0 ); // Register in editor as well!
+		add_action( 'enqueue_block_assets', array( $this, 'setupRegisterStyles' ), 10, 0 ); // Register styles on front end and in block editor
+		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueStyles' ), 10, 0 ); // Enqueue registered styles on front end only
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterStyles' ), 99, 0 );
 		add_action( 'init', array( $this, 'setupEnqueueBlockStyles' ), 10, 0 );
 	}
@@ -135,7 +135,8 @@ class Enqueuer implements EnqueuerInterface {
 			handle: $full_handle,
 			src: $source,
 			dependencies: $dependencies,
-			use_asset_file: true
+			use_asset_file: true,
+			enqueue: false
 		);
 
 		$this->blockStyles = array_merge(
@@ -184,20 +185,27 @@ class Enqueuer implements EnqueuerInterface {
 	}
 
 	/**
-	 * Callback for the 'wp_enqueue_scripts' action.
+	 * Callback for the 'enqueue_block_assets' action.
 	 */
-	public function setupEnqueueStyles(): void {
+	public function setupRegisterStyles(): void {
 		foreach ( $this->styles as $handle => $style ) {
 			$dependencies = $style['dependencies'] ?? array();
 			$media        = $script['media'] ?? 'all';
+			wp_register_style( $handle, $style['src'], $dependencies, $this->generateVersion( $style['version'] ), $media );
+		}
+	}
 
+	/**
+	 * Callback for the 'ewp_enqueue_scripts' action.
+	 */
+	public function setupEnqueueStyles(): void {
+		foreach ( $this->styles as $handle => $style ) {
 			if ( $style['enqueue'] ) {
-				wp_enqueue_style( $handle, $style['src'], $dependencies, $this->generateVersion( $style['version'] ), $media );
-			} else {
-				wp_register_style( $handle, $style['src'], $dependencies, $this->generateVersion( $style['version'] ), $media );
+				wp_enqueue_style( $handle );
 			}
 		}
 	}
+
 
 	/**
 	 * Callback for the 'wp_enqueue_scripts' action.
