@@ -27,6 +27,7 @@ class TimberHelper implements TimberHelperInterface {
     'views/other',
     'views/system',
     'views/wordpress',
+    'stories'
   ];
 
   protected array $templateLocations = [
@@ -40,6 +41,7 @@ class TimberHelper implements TimberHelperInterface {
     'views/other',
     'views/system',
     'views/wordpress',
+    'stories'
   ];
 
   protected array $filters = [];

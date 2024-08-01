@@ -28,6 +28,7 @@ function register_blocks() {
 		'differentiator-group',
 		'differentiator',
 		'section-heading',
+		'contact-selector',
 		'content-and-location',
 		'template-homepage',
 		'hero-image',

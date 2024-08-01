@@ -1,0 +1,23 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/contact-selector",
+    "title": "Contact Selector",
+    "category": "widgets",
+    "icon": "star",
+    "description": "Over-arching container that displays the contact profile(s)",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "inserter": false,
+        "multiple": false,
+        "html": false
+    },
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css",
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "../../../../src/blocks/contact-selector/render.php"
+    }
+    
+}

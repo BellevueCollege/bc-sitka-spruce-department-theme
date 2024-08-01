@@ -22,3 +22,4 @@ export default preview;
  */
 Twig.extendFunction("__", (input, namespace) => {
   return input;
+});
