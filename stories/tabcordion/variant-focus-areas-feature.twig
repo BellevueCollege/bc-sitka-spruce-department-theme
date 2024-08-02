@@ -1,0 +1,90 @@
+{#
+/**
+* @file
+* Bellevue template for the focus areas feature component.
+*/
+#}
+{% extends '/views/stories/tabcordion/tabcordion.twig' %}
+
+{% block wrapperBefore %}
+    <section class="tabs-section tabs-section--alt">
+    <div class="tabs-section--container dark-bg bg-navy global-padding--12x">
+        {% include '/views/stories/section-heading/section-heading.twig' with {
+        heading: heading_text,
+        subheading: intro_text,
+        } %}
+        <div class="container-xl mt-3">
+{% endblock %}
+{% block heading %}{% endblock %}
+
+{# The full loop needs to be included for tabs and content because content is nested #}
+{% block tabLoop %}
+  {% for tab in tabs %}
+    {% if loop.first %}
+      {% set active = 'active' %}
+      {% set ariaSelected = 'true' %}
+    {% else %}
+      {% set active = '' %}
+      {% set ariaSelected = 'false' %}
+    {% endif %}
+    <li class="nav-item" role="presentation">
+      <button
+        class="btn btn-primary {{ active }}"
+        id="{{ tab.title|sanitize }}-tab"
+        data-bs-toggle="tab"
+        data-bs-target="#{{ tab.title|sanitize }}-content"
+        type="button"
+        role="tab"
+        aria-controls="{{ tab.title|sanitize }}-content"
+        aria-selected="{{ ariaSelected }}"
+      >{{ tab.title }} <span aria-hidden="true" class="far fa-long-arrow-right"></span></button>
+    </li>
+  {% endfor %}
+{% endblock %}
+
+{% block contentLoop %}
+  {% for tab in tabs %}
+    {% if loop.first %}
+      {% set active = 'active show' %}
+    {% else %}
+      {% set active = '' %}
+    {% endif %}
+    <div
+      class="tab-pane fade {{ active }} accordion-item"
+      id="{{ tab.title|sanitize }}-content"
+      role="tabpanel"
+      aria-labelledby="{{ tab.title|sanitize }}-tab"
+    >
+      <h2 class="accordion-header d-md-none" id="{{ tab.title|sanitize }}--acc-header">
+        <button class="accordion-button collapsed bg-primary text-white" type="button" data-bs-toggle="collapse" data-bs-target="#{{ tab.title|sanitize }}-acc-content" aria-expanded="false" aria-controls="{{ tab.title|sanitize }}--acc-content">
+          {{ tab.title }}
+        </button>
+      </h2>
+      <div id="{{ tab.title|sanitize }}-acc-content" class="accordion-collapse collapse d-md-block" aria-labelledby="{{ tab.title|sanitize }}--acc-header" data-bs-parent="#support-feature-accordion">
+        <div class="accordion-body py-3 py-md-0">
+          <article class="tab__text py-1">
+            <h3>{{ tab.title }}</h3>
+            {{ tab.content }}
+
+            {% if tab.programs %}
+                <h4>{{ __('Program Options', 'bellevue_2022') }}</h4>
+                {% for program in tab.programs %}
+                    <dl>
+                        <dt><a href="{{ program.link }}">{{ program.title }}</a></dt>
+                        <dd>{{ program.type }}</dd>
+                    </dl>
+                {% endfor %}
+            {% endif %}
+            </article>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+{% endblock %}
+
+{% block wrapperAfter %}
+      </div>
+    </div>
+  </section>
+{% endblock %}
+

@@ -1,0 +1,39 @@
+{#
+/**
+* @file
+* Bellevue template for the support feature component.
+*/
+#}
+{% extends '/views/stories/tabcordion/tabcordion.twig' %}
+
+{% set intro_text = __('I am a/an:', 'bellevue_2022') %}
+
+{% block wrapperBefore %}
+    <section class="tabs-section curved-top global-margin--12x">
+        {% include '/views/stories/arch-shape/arch-shape.twig' %}
+        <div class="tabs-section--container dark-bg bg-navy">
+            <div class="container-xl">
+{% endblock %}
+
+{% block content %}
+  {% if tab.image %}
+    <figure class="aspect-ratio-frame" style="--aspect-ratio: 320/560">
+      {{ tab.image }}
+    </figure>
+  {% endif %}
+  {% if tab.heading %}
+    <h3>{{ tab.heading }}</h3>
+  {% endif %}
+  {% if tab.content %}
+    {{ tab.content }}
+  {% endif %}
+  {% if tab.links %}
+    {{ tab.links }}
+  {% endif %}
+{% endblock %}
+
+{% block wrapperAfter %}
+    </div>
+  </div>
+</section>
+{% endblock %}
