@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bc-sitka-spruce/application-step-single",
+	"version": "1.0.0",
+	"title": "Application Step",
+	"category": "layout",
+	"icon": "slides",
+	"description": "A step within an application process. Should only be used within Application Steps (Tabs).",
+	"supports": {
+		"html": false
+	},
+	"parent": [
+		"bc-sitka-spruce/tabcordion-content-panel"
+	],
+	"ancestor": [
+		"bc-sitka-spruce/application-steps-tabs"
+	],
+	"allowedBlocks": [
+		"bc-sitka-spruce/application-step-single-content"
+	],
+	"textdomain": "bc-sitka-spruce",
+	"editorScript": "file:./index.js"
+}

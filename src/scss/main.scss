@@ -65,7 +65,7 @@ $header-desktop-breakpoint: lg;
 .tabcordion.tabcordion-tabs-top{
 
 	@include media-breakpoint-up('md') {
-		background: var(--gray--xlight);
+		//background: var(--gray--xlight);
 	}
 
 	.accordion {
@@ -73,6 +73,7 @@ $header-desktop-breakpoint: lg;
 		--bs-accordion-body-padding-y: 0;
 
 		--bs-accordion-border-color: transparent;
+		--bs-accordion-border-width: 0;
 
 		--bs-accordion-btn-bg: var(--bc-brutus-blue);
 		--bs-accordion-btn-color: var(--white);
@@ -86,6 +87,7 @@ $header-desktop-breakpoint: lg;
 
 	.tab-header {
 		--bs-gutter-x: 3.25rem;
+		background: var(--gray--xlight);
 		padding-top: calc( var(--bs-gutter-x) * 0.5);
 		padding-bottom: calc( var(--bs-gutter-x) * 0.5);
 	}
@@ -132,28 +134,48 @@ $header-desktop-breakpoint: lg;
 		}
 	}
 
-	.accordion-body > .container-xl {
-		padding-top: calc( var(--bs-gutter-x) * 0.25);
-		padding-bottom: calc( var(--bs-gutter-x) * 0.25);
+	.accordion-body > .application-step-single {
 		& :last-child {
 			margin-bottom: 0;
 		}
-		&:nth-child(even) {
+		&:nth-child(even) > .container-xl  {
 			background-color: var(--gray--xxlight);
 			border-top: 1px solid var(--bc-bulldog-silver);
 		}
-		&:nth-child(odd) {
+		&:nth-child(odd) > .container-xl  {
 			background-color: var(--gray--xlight);
 		}
 
+		& > .container-xl {
+			padding-top: calc( var(--bs-gutter-x) * 0.5);
+			padding-bottom: calc( var(--bs-gutter-x) * 0.5);
+		}
+
+
 		@include media-breakpoint-up('md') {
-			&:nth-child(even) {
+			&:nth-child(even) > .container-xl {
 				background-color: var(--gray--xxlight);
 			}
-			&:nth-child(odd) {
+			&:nth-child(odd) > .container-xl {
 				background-color: var(--gray--xlight);
 			}
 		}
 	}
+
+	.application-step-single-heading {
+		font-size: 2.75rem;
+	}
+
 }
 
+// Application Steps
+.application-steps-component {
+	background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 25rem);
+
+	& > .section-heading {
+		& > .container-xl {
+			padding-top: calc( var(--bs-gutter-x) * 0.5);
+			padding-bottom: calc( var(--bs-gutter-x) * 0.25);
+		}
+	}
+}

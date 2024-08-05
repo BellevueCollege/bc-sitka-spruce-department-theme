@@ -37,7 +37,9 @@ function register_blocks() {
 		'tabcordion/tabcordion-content',
 		'tabcordion/tabcordion-content-panel',
 		'application-steps-tabs',
-		'application-steps-tabs/application-step',
+		'application-steps-tabs/application-step-single',
+		'application-steps-tabs/application-step-single-content',
+		'callout',
 	);
 
 	block_registration_helper( $blocks );
