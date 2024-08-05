@@ -20,15 +20,13 @@ export default function Edit( props ) {
 	const { attributes: {
 
 	}, isSelected, clientId, context } = props;
-	console.log('panel context', context['bc-sitka-spruce/tabcordion/allowedBlocks'] );
 
 	return (
 		<div { ...blockProps }>
 			<InnerBlocks
 				templateLock={ false }
 				allowedBlocks={ context['bc-sitka-spruce/tabcordion/allowedBlocks'] }
-				template={ [[ 'core/paragraph', {} ] ] }
-				renderAppender={ InnerBlocks.DefaultBlockAppender }
+				renderAppender={ InnerBlocks.ButtonBlockAppender }
 				placeholder={ <p>Click the + icon to add a block</p> }
 			/>
 		</div>
