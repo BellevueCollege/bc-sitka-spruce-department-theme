@@ -1,0 +1,30 @@
+{#
+/**
+ * @file
+ * Bellevue template for the callout component.
+ */
+#}
+{% set heading_tag = heading_tag|default('h2') %}
+{% set enabled = enabled|default(true) %}
+<div class="{{ wrapper_classes }}">
+	<aside class="callout text-margin-reset">
+		<{{ heading_tag }} class="callout__heading">{{ title }}</{{ heading_tag }}>
+		<p>{{ text }}</p>
+
+		{% if links %}
+			<div class="callout__links">
+				{% if links is iterable %}
+					<ul>
+						{% for link in links %}
+							<li>
+								<a href="{{ link.url }}" class="link-arrow">{{ link.title }}</a>
+							</li>
+						{% endfor %}
+					</ul>
+				{% elseif links %}
+					{{ links }}
+				{% endif %}
+			</div>
+		{% endif %}
+	</aside>
+</div>
