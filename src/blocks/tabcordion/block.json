@@ -1,0 +1,31 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bc-sitka-spruce/tabcordion",
+	"version": "1.1.0",
+	"title": "Tabcordion (Top Tabs)",
+	"category": "layout",
+	"icon": "category",
+	"description": "Organize content with a number of clickable tabs. Don't use too many tabs, as they will wrap on narrow screens!",
+	"supports": {
+		"html": false,
+		"lock": false,
+		"align": ["wide"]
+	},
+	"textdomain": "bc-sitka-spruce",
+	"attributes": {
+		"allowedBlocks": {
+			"type": "array",
+			"default": [
+				"core/image"
+			]
+		}
+	},
+	"providesContext": {
+		"bc-sitka-spruce/tabcordion/allowedBlocks": "allowedBlocks"
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

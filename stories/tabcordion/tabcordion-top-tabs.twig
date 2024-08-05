@@ -6,61 +6,6 @@
 #}
 {% block wrapperBefore %}{% endblock %}
 <div class="tabcordion tabcordion-tabs-top">
-	<div class="tab-header d-none d-md-block container-xl">
-		<div class="nav-container">
-			<ul class="nav nav-pills" role="tablist">
-				{% for tab in tabs %}
-					{% if loop.first %}
-						{% set active = 'active' %}
-						{% set ariaSelected = 'true' %}
-					{% else %}
-						{% set active = '' %}
-						{% set ariaSelected = 'false' %}
-					{% endif %}
-					<li class="nav-item" role="presentation">
-						<a
-							class="nav-link {{ active }}"
-							id="{{ tab.title|sanitize }}-tab"
-							data-bs-toggle="tab"
-							data-bs-target="#{{ tab.title|sanitize }}-content"
-							aria-controls="{{ tab.title|sanitize }}-content"
-							aria-selected="{{ ariaSelected }}"
-							href="#"
-						>{{ tab.title }}</a>
-					</li>
-				{% endfor %}
-			</ul>
-		</div>
-	</div>
-	<div class="col accordion px-md-0">
-		<div class="tab-content" id="support-feature-accordion">
-			{% for tab in tabs %}
-				{% if loop.first %}
-					{% set active = 'active show' %}
-				{% else %}
-					{% set active = '' %}
-				{% endif %}
-				<div
-					class="tab-pane {{ active }} accordion-item"
-					id="{{ tab.title|sanitize }}-content"
-					role="tabpanel"
-					aria-labelledby="{{ tab.title|sanitize }}-tab"
-				>
-					<h3 class="accordion-header d-md-none" id="{{ tab.title|sanitize }}--acc-header">
-						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ tab.title|sanitize }}-acc-content" aria-expanded="false" aria-controls="{{ tab.title|sanitize }}--acc-content">
-							{{ tab.title }}
-						</button>
-					</h3>
-					<div id="{{ tab.title|sanitize }}-acc-content" class="accordion-collapse collapse d-md-block" aria-labelledby="{{ tab.title|sanitize }}--acc-header" data-bs-parent="#support-feature-accordion">
-						<div class="accordion-body">
-							{% block content %}
-								{{ tab.content }}
-							{% endblock %}
-						</div>
-					</div>
-				</div>
-			{% endfor %}
-		</div>
-	</div>
+	{{ structure }}
 </div>
 {% block wrapperAfter %}{% endblock %}
