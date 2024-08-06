@@ -3,7 +3,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
 
-//import './style.scss';
+import './style.scss';
 import './editor.scss';
 
 /**

@@ -1,5 +1,6 @@
 
 import './editor.scss';
+import './style.scss';
 
 import Edit from './edit';
 import deprecated from './deprecated';

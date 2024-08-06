@@ -20,7 +20,7 @@ registerBlockType( 'bc-sitka-spruce/application-step-single-content', {
 			<div { ...blockProps }>
 				<RichText
 					tagName="h4"
-					className="application-step-single-heading"
+					className="application-step-single-heading h2"
 					value={ heading }
 					onChange={ ( heading ) => setAttributes( { heading } ) }
 					placeholder={ __( 'Enter Step Heading...', 'bc-sitka-spruce' ) }
@@ -41,7 +41,7 @@ registerBlockType( 'bc-sitka-spruce/application-step-single-content', {
 			<div { ...blockProps }>
 				<RichText.Content
 					tagName="h4"
-					className="application-step-single-heading"
+					className="application-step-single-heading h2"
 					value={ props.attributes.heading }
 				/>
 				<InnerBlocks.Content />

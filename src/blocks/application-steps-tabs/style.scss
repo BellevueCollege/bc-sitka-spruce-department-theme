@@ -1,0 +1,40 @@
+@import '/src/scss/block-styles';
+
+.application-steps-component {
+	background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 25rem);
+
+	& > .section-heading {
+		& > .container-xl {
+			padding-top: calc( var(--bs-gutter-x) * 0.5);
+			padding-bottom: calc( var(--bs-gutter-x) * 0.25);
+		}
+	}
+
+	.accordion-body > .application-step-single {
+		& :last-child {
+			margin-bottom: 0;
+		}
+		&:nth-child(even) > .container-xl  {
+			background-color: var(--gray--xxlight);
+			border-top: 1px solid var(--bc-bulldog-silver);
+		}
+		&:nth-child(odd) > .container-xl  {
+			background-color: var(--gray--xlight);
+		}
+
+		& > .container-xl {
+			padding-top: calc( var(--bs-gutter-x) * 0.5);
+			padding-bottom: calc( var(--bs-gutter-x) * 0.5);
+		}
+
+
+		@include media-breakpoint-up('md') {
+			&:nth-child(even) > .container-xl {
+				background-color: var(--gray--xxlight);
+			}
+			&:nth-child(odd) > .container-xl {
+				background-color: var(--gray--xlight);
+			}
+		}
+	}
+}
