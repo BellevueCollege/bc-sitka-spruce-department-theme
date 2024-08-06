@@ -6,6 +6,7 @@ $context = Timber::context();
 
 $context['structure'] = $content;
 $context['id'] = $attributes['blockId'];
+$context['wrap_content'] = $attributes['wrapContent'] ? 'wrap-content' : '';
 
 
 // $wrapper_attrs = get_block_wrapper_attributes(

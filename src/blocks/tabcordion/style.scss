@@ -75,4 +75,46 @@
 		}
 	}
 
+	// Wrap content in a container to control width, when needed.
+	&.wrap-content {
+
+		margin-bottom: 3.25rem;
+
+		.accordion {
+			--bs-accordion-body-padding-x: 0;
+			--bs-accordion-body-padding-y: 0;
+
+			--bs-accordion-border-color: var(--bc-bulldog-silver);
+			--bs-accordion-border-width: 1;
+
+			--bs-accordion-btn-bg: var(--bc-brutus-blue);
+			--bs-accordion-btn-color: var(--white);
+
+			--bs-accordion-active-color: var(--black);
+			--bs-accordion-active-bg: var(--white);
+			--bs-accordion-bg: transparent;
+		}
+		.accordion .tab-content {
+			@include make-container();
+			padding-top: calc( var(--bs-gutter-x) * 0.25);
+			padding-bottom: calc( var(--bs-gutter-x) * 0.25);
+
+			background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('gray--xxlight') 100%);
+
+
+
+			@include media-breakpoint-up('lg') {
+				--bs-gutter-x: 7.5rem;
+			}
+			@include media-breakpoint-up('xl') {
+				max-width: 1140px;
+
+			}
+
+			@include media-breakpoint-up('xxl') {
+				max-width: 1280px;
+			}
+		}
+	}
+
 }

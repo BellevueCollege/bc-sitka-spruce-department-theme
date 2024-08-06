@@ -16,13 +16,15 @@
 	"attributes": {
 		"allowedBlocks": {
 			"type": "array",
-			"default": [
-				"core/image"
-			]
+			"default": []
 		},
 		"blockId": {
 			"type": "string",
 			"default": "initialblockid"
+		},
+		"wrapContent": {
+			"type": "boolean",
+			"default": true
 		}
 	},
 	"providesContext": {
