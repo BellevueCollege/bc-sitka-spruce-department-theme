@@ -1,2 +1,12 @@
 @import '/src/scss/block-styles';
 
+.callout__links ul {
+	padding-left: 0 !important;
+}
+
+.callout-wrapper.callout-disabled p {
+	opacity: 0.75;
+	font-style: italic;
+	margin: 2rem;
+}
+

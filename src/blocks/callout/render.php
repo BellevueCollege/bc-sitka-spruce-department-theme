@@ -24,4 +24,12 @@ $context['heading_tag'] = 'h5';
 // );
 if ( $context['enabled'] ) {
 	Timber::render( '/stories/callout/callout.twig', $context );
+} else {
+	echo '';
+}
+
+if ( $is_preview && ! $context['enabled'] ) {
+	echo '<div class="callout-wrapper callout-disabled col"><p>';
+	_e( 'The optional \'Callout\' sidebar is disabled. <br />Edit this element to enable it!', 'bc-sitka-spruce' );
+	echo '</p></div>';
 }
