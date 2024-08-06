@@ -14,6 +14,16 @@
 
 		--bs-accordion-active-color: var(--black);
 		--bs-accordion-active-bg: var(--white);
+		--bs-accordion-bg: transparent;
+
+		@include media-breakpoint-down('md') {
+			padding: 0 1rem;
+
+			.accordion-body {
+				padding-top: 1.5rem;
+				padding-bottom: 1rem;
+			}
+		}
 	}
 
 	.tab-header {
@@ -57,7 +67,7 @@
 	}
 
 	.accordion-button {
-		border: 1px solid var(--bc-fountain-blue);
+		border: 2px solid var(--bc-fountain-blue);
 		border-radius: var( --bs-border-radius );
 		margin-top: 0.5rem;
 		&.collapsed {

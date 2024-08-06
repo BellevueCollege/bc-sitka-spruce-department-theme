@@ -1,7 +1,12 @@
 @import '/src/scss/block-styles';
 
 .application-steps-component {
-	background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 25rem);
+
+	background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 10rem);
+
+	@include media-breakpoint-up('lg') {
+		background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 25rem);
+	}
 
 	& > .section-heading {
 		& > .container-xl {
@@ -9,6 +14,7 @@
 			padding-bottom: calc( var(--bs-gutter-x) * 0.25);
 		}
 	}
+
 
 	.accordion-body > .application-step-single {
 		& :last-child {
