@@ -6,9 +6,10 @@ $context = Timber::context();
 $context['enabled'] = get_field( 'display_callout' );
 $context['title'] = get_field( 'title' ) ?? '';
 $context['text'] = get_field( 'text' ) ?? '';
-$context['links'] = array_map( function ( $link ) {
+$links = get_field( 'links' );
+$context['links'] = is_array( $links ) ? array_map( function ( $link ) {
 	return $link['link'] ?? '';
-}, get_field( 'links' ) ?? array() );
+}, $links ) : null;
 
 $context['wrapper_classes'] = 'callout-wrapper col';
 $context['heading_tag'] = 'h5';

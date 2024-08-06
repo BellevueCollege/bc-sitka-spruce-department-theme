@@ -1,15 +1,15 @@
 {
     "$schema": "https://schemas.wp.org/trunk/block.json",
-    "name": "bc-sitka-spruce/section-heading",
-    "title": "Section Heading",
+    "name": "bc-sitka-spruce/callout",
+    "title": "Callout",
     "category": "layout",
     "icon": "star",
-    "description": "Heading for a defined section",
+    "description": "Sidebar component to display related information.",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "acf": {
         "mode": "preview",
-        "renderTemplate": "../../../../src/blocks/section-heading/render.php"
+        "renderTemplate": "../../../../src/blocks/callout/render.php"
     },
 	"editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
