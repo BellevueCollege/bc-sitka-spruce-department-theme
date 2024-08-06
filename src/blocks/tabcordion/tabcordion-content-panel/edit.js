@@ -19,7 +19,7 @@ export default function Edit( props ) {
 	);
 	const { attributes: {
 
-	}, isSelected, clientId, context } = props;
+	}, setAttributes, isSelected, clientId, context } = props;
 
 	return (
 		<div { ...blockProps }>

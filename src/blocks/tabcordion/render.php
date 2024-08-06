@@ -5,6 +5,7 @@ use Timber\Timber;
 $context = Timber::context();
 
 $context['structure'] = $content;
+$context['id'] = $attributes['blockId'];
 
 
 // $wrapper_attrs = get_block_wrapper_attributes(

@@ -9,7 +9,7 @@
 			{{ title }}
 		</button>
 	</h3>
-	<div id="{{ title|sanitize }}-acc-content" class="accordion-collapse collapse d-md-block" aria-labelledby="{{ title|sanitize }}--acc-header" data-bs-parent="#support-feature-accordion">
+	<div id="{{ title|sanitize }}-acc-content" class="accordion-collapse collapse d-md-block" aria-labelledby="{{ title|sanitize }}--acc-header" data-bs-parent="#{{ parent_id }}">
 		<h3 class="d-none d-md-block visually-hidden">{{ title }}</h3>
 		<div class="accordion-body">
 			{% block content %}

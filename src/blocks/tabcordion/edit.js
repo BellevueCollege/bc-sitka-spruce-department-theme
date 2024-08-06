@@ -15,7 +15,11 @@ import './editor.scss';
 export default function Edit( props ) {
 	const blockProps = useBlockProps();
 	const { attributes: {
-	} } = props;
+	}, setAttributes, clientId } = props;
+
+	// Populate Block ID attribute
+	setAttributes( { blockId: `tabcordion-${clientId}` } );
+
 
 	const TEMPLATE = [
 		[ 'bc-sitka-spruce/tabcordion-list', {}, [] ],

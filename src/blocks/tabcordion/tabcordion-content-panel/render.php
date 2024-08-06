@@ -6,6 +6,7 @@ $context = Timber::context();
 $context['content'] = $content;
 $context['title'] = $attributes['tabTitle'];
 $context['active'] = $attributes['tabDefault'] ? 'active show' : '';
+$context['parent_id'] = $block->context['bc-sitka-spruce/tabcordion/blockId'];
 
 // $wrapper_attrs = get_block_wrapper_attributes(
 // 	array(

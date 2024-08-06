@@ -19,10 +19,15 @@
 			"default": [
 				"core/image"
 			]
+		},
+		"blockId": {
+			"type": "string",
+			"default": "initialblockid"
 		}
 	},
 	"providesContext": {
-		"bc-sitka-spruce/tabcordion/allowedBlocks": "allowedBlocks"
+		"bc-sitka-spruce/tabcordion/allowedBlocks": "allowedBlocks",
+		"bc-sitka-spruce/tabcordion/blockId": "blockId"
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
