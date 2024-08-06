@@ -3,13 +3,10 @@
  */
 
 import { __ } from '@wordpress/i18n';
-
 import { Fragment } from '@wordpress/element';
-
 import { select, dispatch } from '@wordpress/data';
-
-
 import { createHigherOrderComponent } from '@wordpress/compose';
+import { useState } from '@wordpress/element';
 
 import {
 	Button,
@@ -67,7 +64,7 @@ export default function Edit( props ) {
 	/**
 	 * Handles updating the default tab.
 	 *
-	 * When clicked, sets the current tab as default and sets the correct new default tab and tab panel.
+	 * The default tab is the tab the user has selected as 'pinned'.
 	 */
 	const handleUpdateDefaultTab = () => {
 		// Set current tab as default
@@ -95,8 +92,12 @@ export default function Edit( props ) {
 		} );
 	};
 
-	// Check if tab is selected and set tabActive attributes to true or false
-	if ( isSelected ) {
+	/**
+	 * Handles updating the active (currently selected) tab.
+	 *
+	 * By all rights this should be handled by state somewhere instead of an attribute, but that makes it difficult to sync between blocks.
+	 */
+	const handleUpdateActiveTab = () => {
 		setAttributes( { tabActive: true } );
 		if ( Array.isArray( parentTabsInnerBlocks ) ) {
 			// Looks for other tabs that were previously active and set it to false
@@ -114,6 +115,17 @@ export default function Edit( props ) {
 				}
 			} );
 		}
+	};
+	// Resync active tab with default tab on load
+	const [ activeTabNeedsReset, setActiveTabNeedsReset ] = useState( tabDefault !== tabActive ? true : false );
+	if ( activeTabNeedsReset && tabDefault ) {
+		handleUpdateActiveTab();
+		setActiveTabNeedsReset( false );
+	}
+
+	// Check if tab is selected and set tabActive attributes to true or false
+	if ( isSelected ) {
+		handleUpdateActiveTab();
 	}
 
 	/**
@@ -170,6 +182,7 @@ export default function Edit( props ) {
 				icon: <Dashicon icon="trash" />,
 				title: 'Remove',
 				onClick: () => handleRemoveTab(),
+				isDestructive: true,
 			},
 		];
 
