@@ -14,18 +14,12 @@
 	},
 	"textdomain": "bc-sitka-spruce",
 	"attributes": {
-		"allowedBlocks": {
-			"type": "array",
-			"default": []
-		},
+
 		"blockId": {
 			"type": "string",
 			"default": "initialblockid"
 		},
-		"wrapContent": {
-			"type": "boolean",
-			"default": true
-		},
+
 		"format": {
 			"type": "string",
 			"enum": [
@@ -34,10 +28,22 @@
 				"list"
 			],
 			"default": "pills"
+		},
+		"_allowedBlocks": {
+			"type": "array",
+			"default": []
+		},
+		"_wrapContent": {
+			"type": "boolean",
+			"default": true
+		},
+		"_hideFormats": {
+			"type": "boolean",
+			"default": false
 		}
 	},
 	"providesContext": {
-		"bc-sitka-spruce/tabcordion/allowedBlocks": "allowedBlocks",
+		"bc-sitka-spruce/tabcordion/allowedBlocks": "_allowedBlocks",
 		"bc-sitka-spruce/tabcordion/blockId": "blockId",
 		"bc-sitka-spruce/tabcordion/format": "format"
 	},

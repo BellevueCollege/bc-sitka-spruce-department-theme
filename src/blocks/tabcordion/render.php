@@ -10,7 +10,7 @@ $context['id'] = $attributes['blockId'];
 $classes = array( 'tabcordion' );
 $classes[] = 'tabcordion-' . $attributes['format'];
 
-if ( $attributes['wrapContent'] ) {
+if ( $attributes['_wrapContent'] ) {
 	$classes[] = 'wrap-content';
 }
 
