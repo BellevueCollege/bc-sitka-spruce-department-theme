@@ -17,10 +17,14 @@ import { ToolbarGroup, ToolbarDropdownMenu, ToolbarButton } from '@wordpress/com
 import './editor.scss';
 
 export default function Edit( props ) {
-	const blockProps = useBlockProps();
+
 	const { attributes: {
 		format,
 	}, setAttributes, clientId } = props;
+
+	const blockProps = useBlockProps({
+		className: `tabcordion-${ format }`
+	});
 
 	// Populate Block ID attribute
 	setAttributes( { blockId: `tabcordion-${clientId}` } );

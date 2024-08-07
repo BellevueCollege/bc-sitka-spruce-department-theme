@@ -1,3 +1,4 @@
+@import '/src/scss/block-styles';
 
 /**
 * #.# Editor Styles
@@ -5,111 +6,212 @@
 * CSS for just Backend enqueued after style.scss
 * which makes it higher in priority.
 */
-.wp-block-bc-sitka-spruce-tabs {
-	box-sizing: border-box;
-	border: 1px solid #ccc;
-	border-radius: 5px;
-}
 
 /**
-* Tab List
+* Pill Format
 */
-.wp-block-bc-sitka-spruce-tabcordion-list {
-	flex-direction: row;
-	flex-wrap: wrap;
-	margin-top: 0;
-	margin-bottom: 0;
-	margin-left: 0;
-	align-items: center;
-	padding: 0.75rem;
-	border-radius: calc( var(--bs-border-radius) * 2 );
-	background: darken(#ebeef2, 3%);
-	box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.125);
+.wp-block-bc-sitka-spruce-tabcordion.tabcordion-pills {
+	background-color: css_color('gray--xlight');
+	padding: 2rem;
 
-	//padding: .5rem;
+	.wp-block-bc-sitka-spruce-tabcordion-list {
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin-top: 0;
+		margin-bottom: 0;
+		margin-left: 0;
+		align-items: center;
+		padding: 0.75rem;
+		border-radius: calc( var(--bs-border-radius) * 2 );
+		background: darken(#ebeef2, 3%);
+		box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.125);
 
-	li[role="presentation"] {
-		float: left;
-		border: 1px solid transparent;
+		//padding: .5rem;
 
-		button.add-tab {
-			padding: 10px 10px;
-			color: #555555;
-			border-radius: 4px 4px 0 0;
-			align-items: center;
-			&:hover {
-				border: 1px solid #ddd;
-				margin: -1px;
+		li[role="presentation"] {
+			float: left;
+			border: 1px solid transparent;
+
+			button.add-tab {
+				padding: 10px 10px;
+				color: #555555;
+				border-radius: 4px 4px 0 0;
+				align-items: center;
+				&:hover {
+					border: 1px solid #ddd;
+					margin: -1px;
+				}
+
+				span {
+					margin-left: 10px;
+				}
+
+				span.dashicon {
+					margin-left: 0px;
+				}
 			}
 
-			span {
-				margin-left: 10px;
+			a {
+				background-color: var( --bc-brutus-blue );
+				color: var( --white );
+				border-radius: var( --bs-border-radius );
+				border: 1px solid var(--bc-brutus-blue);
+				text-decoration: none;
+				box-shadow: none;
+				display: block;
+				padding: 0.5rem 1rem;
+				margin: 0.5rem 0.25rem;
 			}
 
-			span.dashicon {
-				margin-left: 0px;
+			&.active a.wp-block-bc-sitka-spruce-tabcordion-list-tab {
+				color: #555555;
+				background-color: #fff;
+				border: 1px solid var( --bc-fountain-blue);
 			}
-		}
-
-		a {
-			background-color: var( --bc-brutus-blue );
-			color: var( --white );
-			border-radius: var( --bs-border-radius );
-			border: 1px solid var(--bc-brutus-blue);
-			text-decoration: none;
-			box-shadow: none;
-			display: block;
-			padding: 0.5rem 1rem;
-			margin: 0.5rem 0.25rem;
-		}
-
-		&.active a.wp-block-bc-sitka-spruce-tabcordion-list-tab {
-			color: #555555;
-			background-color: #fff;
-			border: 1px solid var( --bc-fountain-blue);
 		}
 	}
-}
 
-/**
-* Tab List Tab
-*/
+	/**
+	* Tab List Tab
+	*/
 
-.wp-block-bc-sitka-spruce-tabcordion-list-tab {
-	margin-top: 0;
-	margin-bottom: 0;
+	.wp-block-bc-sitka-spruce-tabcordion-list-tab {
+		margin-top: 0;
+		margin-bottom: 0;
 
 
-	&.has-warning {
-		> .editor-block-list__block-edit {
-			> div[role="toolbar"].editor-block-contextual-toolbar {
-				> .editor-block-toolbar {
-					> div > div.components-toolbar > div > button.editor-block-settings-menu__toggle {
-						display: block;
+		&.has-warning {
+			> .editor-block-list__block-edit {
+				> div[role="toolbar"].editor-block-contextual-toolbar {
+					> .editor-block-toolbar {
+						> div > div.components-toolbar > div > button.editor-block-settings-menu__toggle {
+							display: block;
+						}
 					}
 				}
 			}
 		}
 	}
+
+	/**
+	* Tab Content
+	*/
+	.wp-block.wp-block-bc-sitka-spruce-tabcordion-content {
+
+		div.tabcordion-pane {
+			display: none;
+		}
+
+		div.tabcordion-pane.active {
+			display: block;
+		}
+	}
+	.wp-block-bc-sitka-spruce-tabcordion-content-panel {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		padding: .5rem 1rem;
+	}
 }
+// Tab Format
+.wp-block-bc-sitka-spruce-tabcordion.tabcordion-tabs {
+	box-sizing: border-box;
+	border: 1px solid #ccc;
+	border-radius: 5px;
 
-/**
-* Tab Content
-*/
-.wp-block.wp-block-bc-sitka-spruce-tabcordion-content {
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
+	.wp-block-bc-sitka-spruce-tabcordion-list {
+		flex-direction: row;
+		flex-wrap: wrap;
+		margin-top: 0;
+		margin-bottom: 0;
+		margin-left: 0;
+		align-items: center;
+		background: #ccc;
 
-	div.tabcordion-pane {
-		display: none;
+		li[role="presentation"] {
+			float: left;
+			border: 1px solid transparent;
+
+			button.add-tab {
+				padding: 10px 15px;
+				color: #555555;
+				border-radius: 4px 4px 0 0;
+				align-items: center;
+				&:hover {
+					border: 1px solid #ddd;
+					border-bottom-color: transparent;
+					margin: -1px;
+				}
+
+				span {
+					margin-left: 10px;
+				}
+
+				span.dashicon {
+					margin-left: 0px;
+				}
+			}
+
+			a {
+				text-decoration: none;
+				box-shadow: none;
+				margin-right: 2px;
+				line-height: 1.428571429;
+				position: relative;
+				display: block;
+				padding: 10px 15px;
+				border-radius: 4px 4px 0 0;
+			}
+
+			&.active a.wp-block-bc-sitka-spruce-tabcordion-list-tab {
+				color: #555555;
+				background-color: #fff;
+				border: 1px solid #ddd;
+				border-bottom-color: transparent;
+				margin: -1px;
+			}
+		}
 	}
 
-	div.tabcordion-pane.active {
-		display: block;
+	/**
+	* Tab List Tab
+	*/
+
+	.wp-block-bc-sitka-spruce-tabcordion-list-tab {
+		margin-top: 0;
+		margin-bottom: 0;
+
+
+		&.has-warning {
+			> .editor-block-list__block-edit {
+				> div[role="toolbar"].editor-block-contextual-toolbar {
+					> .editor-block-toolbar {
+						> div > div.components-toolbar > div > button.editor-block-settings-menu__toggle {
+							display: block;
+						}
+					}
+				}
+			}
+		}
 	}
-}
-.wp-block-bc-sitka-spruce-tabcordion-content-panel {
-	margin-top: 0 !important;
-	margin-bottom: 0 !important;
-	padding: .5rem 1rem;
+
+	/**
+	* Tab Content
+	*/
+	.wp-block.wp-block-bc-sitka-spruce-tabcordion-content {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+
+		div.tab-pane {
+			display: none;
+		}
+
+		div.tab-pane.active {
+			display: block;
+		}
+	}
+	.wp-block-bc-sitka-spruce-tabcordion-content-panel {
+		margin-top: 0 !important;
+		margin-bottom: 0 !important;
+		padding: .5rem 1rem;
+	}
 }
