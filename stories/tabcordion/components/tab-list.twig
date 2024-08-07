@@ -1,6 +1,18 @@
-<div class="tab-header d-none d-md-block container-xl">
+{% if format == 'pills' %}
+	{% set format_classes = 'nav nav-pills' %}
+	{% set container_classes = 'tab-header d-none d-md-block container-xl' %}
+{% elseif format == 'tabs' %}
+	{% set format_classes = 'nav nav-tabs card-header-tabs' %}
+	{% set container_classes = 'tab-header d-none d-md-block card-header' %}
+{% elseif format == 'list' %}
+	{% set format_classes = '' %}
+	{% set container_classes = '' %}
+{% endif %}
+
+
+<div class="{{ container_classes }}">
 	<div class="nav-container">
-		<ul class="nav nav-pills" role="tablist">
+		<ul class="{{ format_classes }}" role="tablist">
 			{{ tab_links }}
 		</ul>
 	</div>

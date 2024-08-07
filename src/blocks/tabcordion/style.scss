@@ -1,6 +1,21 @@
 @import '/src/scss/block-styles';
 
-.tabcordion.tabcordion-tabs-top {
+.tabcordion {
+	.tab-pane.accordion-item {
+		@include media-breakpoint-up('md') {
+			--bs-accordion-border-radius: 0;
+			--bs-accordion-bg: none;
+			--bs-accordion-border-color: transparent;
+		}
+
+		@include media-breakpoint-down('md') {
+			opacity: 1;
+			display: block;
+		}
+	}
+}
+
+.tabcordion.tabcordion-pills {
 
 	.accordion {
 		--bs-accordion-body-padding-x: 0;
@@ -51,19 +66,6 @@
 			//margin: 0rem -2rem 2rem -2rem !important;
 		}
 
-	}
-
-	.tab-pane.accordion-item {
-		@include media-breakpoint-up('md') {
-			--bs-accordion-border-radius: 0;
-			--bs-accordion-bg: none;
-			--bs-accordion-border-color: transparent;
-		}
-
-		@include media-breakpoint-down('md') {
-			opacity: 1;
-			display: block;
-		}
 	}
 
 	.accordion-button {

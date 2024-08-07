@@ -6,8 +6,12 @@ import { __ } from '@wordpress/i18n';
 
 import {
 	useBlockProps,
-	InnerBlocks
+	InnerBlocks,
+	BlockControls,
+
 } from '@wordpress/block-editor';
+
+import { ToolbarGroup, ToolbarDropdownMenu, ToolbarButton } from '@wordpress/components';
 
 
 import './editor.scss';
@@ -15,6 +19,7 @@ import './editor.scss';
 export default function Edit( props ) {
 	const blockProps = useBlockProps();
 	const { attributes: {
+		format,
 	}, setAttributes, clientId } = props;
 
 	// Populate Block ID attribute
@@ -28,6 +33,35 @@ export default function Edit( props ) {
 
 	return (
 		<div { ...blockProps }>
+			<BlockControls>
+				<ToolbarGroup>
+					<ToolbarDropdownMenu
+						label={ __( 'Tab Format', 'bc-sitka-spruce' ) }
+						icon="admin-appearance"
+						title={ __( 'Tab Format', 'bc-sitka-spruce' ) }
+						controls = { [
+							{
+								icon: 'table-row-after',
+								title: __( 'Tabs', 'bc-sitka-spruce' ),
+								isActive: format === 'tabs',
+								onClick: () => setAttributes( { format: 'tabs' } ),
+							},
+							{
+								icon: 'ellipsis',
+								title: __( 'Pills', 'bc-sitka-spruce' ),
+								isActive: format === 'pills',
+								onClick: () => setAttributes( { format: 'pills' } ),
+							},
+							{
+								icon: 'align-pull-right',
+								title: __( 'Vertical List', 'bc-sitka-spruce' ),
+								isActive: format === 'list',
+								onClick: () => setAttributes( { format: 'list' } ),
+							}
+						]}
+					/>
+				</ToolbarGroup>
+			</BlockControls>
 			<InnerBlocks
 				template={ TEMPLATE }
 				templateLock={ 'insert' }
