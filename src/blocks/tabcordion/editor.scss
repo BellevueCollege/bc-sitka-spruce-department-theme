@@ -74,7 +74,6 @@
 	/**
 	* Tab List Tab
 	*/
-
 	.wp-block-bc-sitka-spruce-tabcordion-list-tab {
 		margin-top: 0;
 		margin-bottom: 0;
@@ -112,6 +111,7 @@
 		padding: .5rem 1rem;
 	}
 }
+
 // Tab Format
 .wp-block-bc-sitka-spruce-tabcordion.tabcordion-tabs {
 	box-sizing: border-box;
@@ -201,11 +201,11 @@
 		margin-top: 0 !important;
 		margin-bottom: 0 !important;
 
-		div.tab-pane {
+		div.tabcordion-pane {
 			display: none;
 		}
 
-		div.tab-pane.active {
+		div.tabcordion-pane.active {
 			display: block;
 		}
 	}
@@ -215,3 +215,69 @@
 		padding: .5rem 1rem;
 	}
 }
+
+
+// List Format (Left Sidebar)
+.wp-block-bc-sitka-spruce-tabcordion.tabcordion-list {
+	background: var( --bc-rainy-night-blue );
+
+	// Side-by-side layout
+	& > .block-editor-inner-blocks > .block-editor-block-list__layout {
+		display: grid;
+		grid-template-columns: 1fr 2fr;
+	}
+
+	.wp-block-bc-sitka-spruce-tabcordion-list {
+		margin-top: 3.5rem;
+		margin-bottom: 3.5rem;
+		flex-direction: column;
+		border: none;
+		border-right: 2px solid var(--bc-fountain-blue);
+
+		.components-button.add-tab {
+			background: var(--white);
+			float: right;
+		}
+	}
+
+	.wp-block-bc-sitka-spruce-tabcordion-list-tab {
+		color: var(--white);
+		font-size: 1.25rem;
+		text-decoration-color: var(--bc-fountain-blue);
+		text-underline-offset: 5px;
+		text-decoration-thickness: 2px;
+		line-height: 2em;
+	}
+
+	li.active {
+		border-bottom: 2px solid var(--bc-fountain-blue);
+
+	}
+	li.active > .wp-block-bc-sitka-spruce-tabcordion-list-tab {
+		color: var(--bc-fountain-blue);
+		text-decoration: none;
+	}
+
+
+	.wp-block-bc-sitka-spruce-tabcordion-content {
+		color: var(--white);
+		margin: 3.5rem 2rem;
+
+		div.tabcordion-pane {
+			display: none;
+		}
+
+		div.tabcordion-pane.active {
+			display: block;
+		}
+	}
+
+}
+
+.wp-block-bc-sitka-spruce-tabcordion .tab-heading{
+	&.indicate-hidden {
+		opacity: 0.75;
+
+	}
+}
+

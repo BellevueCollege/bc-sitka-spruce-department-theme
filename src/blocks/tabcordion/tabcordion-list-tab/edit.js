@@ -16,6 +16,7 @@ import {
 	Panel,
 	PanelBody,
 	PanelRow,
+	Disabled,
 
 } from '@wordpress/components';
 

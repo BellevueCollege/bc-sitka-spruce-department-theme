@@ -18,6 +18,10 @@ if ( $attributes['format'] === 'tabs' ) {
 	$classes[] = 'card';
 }
 
+if ( $attributes['format'] === 'list' ) {
+	$classes[] = 'row';
+}
+
 $context['wrapper_attrs'] = get_block_wrapper_attributes(
 	array(
 		'id' => $attributes['blockId'],
@@ -32,7 +36,10 @@ $context['wrapper_attrs'] = get_block_wrapper_attributes(
 // );
 if ( $attributes['format'] === 'tabs' ) {
 	Timber::render( '/stories/tabcordion/tabcordion-top-tabs-card.twig', $context );
-} else {
+} elseif ( $attributes['format'] === 'pills' ) {
 	Timber::render( '/stories/tabcordion/tabcordion-top-tabs.twig', $context );
+} else {
+	Timber::render( '/stories/tabcordion/tabcordion-side-tabs.twig', $context );
 }
+
 

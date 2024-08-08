@@ -29,6 +29,10 @@
 			],
 			"default": "pills"
 		},
+		"headingLevel": {
+			"type": "string",
+			"default": "h2"
+		},
 		"_allowedBlocks": {
 			"type": "array",
 			"default": []
@@ -44,8 +48,10 @@
 	},
 	"providesContext": {
 		"bc-sitka-spruce/tabcordion/allowedBlocks": "_allowedBlocks",
+		"bc-sitka-spruce/tabcordion/hideFormats": "_hideFormats",
 		"bc-sitka-spruce/tabcordion/blockId": "blockId",
-		"bc-sitka-spruce/tabcordion/format": "format"
+		"bc-sitka-spruce/tabcordion/format": "format",
+		"bc-sitka-spruce/tabcordion/headingLevel": "headingLevel"
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

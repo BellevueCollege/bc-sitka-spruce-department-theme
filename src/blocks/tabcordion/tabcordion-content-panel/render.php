@@ -7,7 +7,8 @@ $context['content'] = $content;
 $context['title'] = $attributes['tabTitle'];
 $context['active'] = $attributes['tabDefault'] ? 'active show' : '';
 $context['parent_id'] = $block->context['bc-sitka-spruce/tabcordion/blockId'];
-
+$context['heading_level'] = $block->context['bc-sitka-spruce/tabcordion/headingLevel'];
+$context['display_heading_visually'] = $attributes['displayHeadingVisually'];
 // $wrapper_attrs = get_block_wrapper_attributes(
 // 	array(
 // 		'role' => 'tabpanel',

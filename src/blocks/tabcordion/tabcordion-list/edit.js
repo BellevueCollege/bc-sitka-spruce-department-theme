@@ -8,7 +8,7 @@ import { select, dispatch } from '@wordpress/data';
 
 import { createBlock } from '@wordpress/blocks';
 
-
+import { RichText } from '@wordpress/block-editor';
 
 import {
 	Button,

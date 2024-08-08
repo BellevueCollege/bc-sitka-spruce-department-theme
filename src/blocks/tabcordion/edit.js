@@ -13,13 +13,17 @@ import {
 
 import { ToolbarGroup, ToolbarDropdownMenu, ToolbarButton } from '@wordpress/components';
 
+import {
+	// ToolbarBootstrapColorSelector,
+	ToolbarBootstrapHeadingLevelSelector
+} from '../shared-elements/toolbar';
 
-import './editor.scss';
 
 export default function Edit( props ) {
 
 	const { attributes: {
 		format,
+		headingLevel,
 		_hideFormats
 	}, setAttributes, clientId } = props;
 
@@ -41,6 +45,11 @@ export default function Edit( props ) {
 			{ ! _hideFormats && (
 				<BlockControls>
 					<ToolbarGroup>
+						<ToolbarBootstrapHeadingLevelSelector
+							values= {  [ 'Heading 2', 'Heading 3', 'Heading 4', 'Heading 5', 'Heading 6' ] }
+							active = { headingLevel }
+							onClick = { ( value ) => setAttributes( { headingLevel: value } ) }
+						/>
 						<ToolbarDropdownMenu
 							label={ __( 'Tab Format', 'bc-sitka-spruce' ) }
 							icon="admin-appearance"

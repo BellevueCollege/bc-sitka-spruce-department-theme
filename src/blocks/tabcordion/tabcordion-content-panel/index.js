@@ -21,8 +21,5 @@ import { registerBlockType } from '@wordpress/blocks'; // Import registerBlockTy
 registerBlockType( 'bc-sitka-spruce/tabcordion-content-panel', {
 	edit: Edit,
 	deprecated,
-	save,
-	usesContext: [
-		'bc-sitka-spruce/tabcordion/allowedBlocks',
-	],
+	save
 } );
