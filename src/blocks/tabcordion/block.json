@@ -3,10 +3,10 @@
 	"apiVersion": 3,
 	"name": "bc-sitka-spruce/tabcordion",
 	"version": "1.1.0",
-	"title": "Tabcordion (Top Tabs)",
+	"title": "Tabs (Accordion on Mobile)",
 	"category": "layout",
 	"icon": "category",
-	"description": "Organize content with a number of clickable tabs. Don't use too many tabs, as they will wrap on narrow screens!",
+	"description": "Organize content with a number of clickable tabs. Transforms to an accordion on mobile for ease of use.",
 	"supports": {
 		"html": false,
 		"lock": false,
