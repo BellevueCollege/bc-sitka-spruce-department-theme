@@ -121,7 +121,12 @@
 
 }
 
-
+.tabcordion.tabcordion-tabs {
+	margin-bottom: 1.5rem;
+	&:not(.alignwide) {
+		max-width: var(--wp--style--global--content-size);
+	}
+}
 
 
 

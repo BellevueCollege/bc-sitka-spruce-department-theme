@@ -28,7 +28,7 @@ export default function Edit( props ) {
 	}, setAttributes, clientId } = props;
 
 	const blockProps = useBlockProps({
-		className: `tabcordion-${ format }`
+		className: `tabcordion-${ format } ${ format !== 'tabs' ? 'alignwide' : '' }`
 	});
 
 	// Populate Block ID attribute

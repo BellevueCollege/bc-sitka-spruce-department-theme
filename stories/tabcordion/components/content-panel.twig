@@ -18,8 +18,8 @@
 		</button>
 	</{{ heading_level }}>
 	<div id="{{ title|sanitize }}-acc-content" class="accordion-collapse collapse d-md-block" aria-labelledby="{{ title|sanitize }}--acc-header" data-bs-parent="#{{ parent_id }}">
-		<{{ heading_level }} class="{{ heading_classes }}">{{ title }}</{{ heading_level }}>
 		<div class="accordion-body">
+			<{{ heading_level }} class="{{ heading_classes }}">{{ title }}</{{ heading_level }}>
 			{% block content %}
 				{{ content }}
 			{% endblock %}
