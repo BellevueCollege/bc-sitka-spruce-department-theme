@@ -1,0 +1,41 @@
+@import '/src/scss/block-styles';
+
+.wp-block-bc-sitka-spruce-application-steps-tabs {
+	padding: 2rem 2rem;
+
+	.application-steps-header {
+		padding: 1rem 3rem 0rem;
+	}
+
+
+	// Row layout for content and callout
+	.wp-block-bc-sitka-spruce-application-step-single.container-xl {
+		margin: 0;
+		padding: 1rem 4rem;
+		background-color: var(--gray--xlight);
+
+
+		&:nth-child(even) {
+			border-top: 1px solid var(--bc-bulldog-silver);
+			background-color: var(--gray--xxlight);
+		}
+
+		& > .block-editor-inner-blocks > .block-editor-block-list__layout {
+			@include make-row();
+		}
+		.wp-block-bc-sitka-spruce-callout {
+			@include make-col();
+		}
+
+		.wp-block-bc-sitka-spruce-application-step-single-content {
+		}
+	}
+	.block-list-appender.wp-block {
+		position: inherit;
+		margin-top: 0.5rem;
+	}
+
+
+}
+
+
