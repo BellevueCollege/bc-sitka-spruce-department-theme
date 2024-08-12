@@ -31,6 +31,7 @@ registerBlockType( 'bc-sitka-spruce/application-steps-tabs', {
 			[ 'bc-sitka-spruce/tabcordion', {
 				'format': 'pills',
 				'headingLevel': 'h3',
+				'displayHeadingsVisually': false,
 				'_allowedBlocks': [ 'bc-sitka-spruce/application-step-single' ],
 				'_wrapContent': false,
 				'_hideFormats': true,

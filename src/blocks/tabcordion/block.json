@@ -33,6 +33,10 @@
 			"type": "string",
 			"default": "h2"
 		},
+		"displayHeadingsVisually": {
+			"type": "boolean",
+			"default": true
+		},
 		"_allowedBlocks": {
 			"type": "array",
 			"default": []
@@ -51,7 +55,8 @@
 		"bc-sitka-spruce/tabcordion/hideFormats": "_hideFormats",
 		"bc-sitka-spruce/tabcordion/blockId": "blockId",
 		"bc-sitka-spruce/tabcordion/format": "format",
-		"bc-sitka-spruce/tabcordion/headingLevel": "headingLevel"
+		"bc-sitka-spruce/tabcordion/headingLevel": "headingLevel",
+		"bc-sitka-spruce/tabcordion/displayHeadingsVisually": "displayHeadingsVisually"
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

@@ -40,7 +40,7 @@
 		"bc-sitka-spruce/tabcordion/allowedBlocks",
 		"bc-sitka-spruce/tabcordion/blockId",
 		"bc-sitka-spruce/tabcordion/headingLevel",
-		"bc-sitka-spruce/tabcordion/hideFormats"
+		"bc-sitka-spruce/tabcordion/displayHeadingsVisually"
 	],
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",

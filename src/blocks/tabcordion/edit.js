@@ -8,10 +8,12 @@ import {
 	useBlockProps,
 	InnerBlocks,
 	BlockControls,
+	InspectorControls,
 
 } from '@wordpress/block-editor';
 
 import { ToolbarGroup, ToolbarDropdownMenu, ToolbarButton } from '@wordpress/components';
+import { ToggleControl, PanelBody } from '@wordpress/components';
 
 import {
 	// ToolbarBootstrapColorSelector,
@@ -24,6 +26,7 @@ export default function Edit( props ) {
 	const { attributes: {
 		format,
 		headingLevel,
+		displayHeadingsVisually,
 		_hideFormats
 	}, setAttributes, clientId } = props;
 
@@ -42,6 +45,28 @@ export default function Edit( props ) {
 
 	return (
 		<div { ...blockProps }>
+			<InspectorControls>
+				<PanelBody
+					title={ __( 'Heading Visibility', 'bc-sitka-spruce' ) }
+				>
+					<ToggleControl
+						style="float: right; width: 30%"
+						label={ __( 'Display Tab Headings Visually', 'bc-sitka-spruce' ) }
+						checked={ displayHeadingsVisually }
+						disabled={ _hideFormats }
+						onChange={ ( value ) => setAttributes( { displayHeadingsVisually: value } ) }
+						help= {
+							displayHeadingsVisually
+								? __( 'Headings will display to all website visitors', 'bc-sitka-spruce' )
+								: __( 'Headings will only be read to visitors using screen readers', 'bc-sitka-spruce' )
+						}
+					/>
+					{ _hideFormats && (
+						<p>{ __( 'This setting is currently locked because of how the block is configured.', 'bc-sitka-spruce' ) }</p>
+					)}
+				</PanelBody>
+
+			</InspectorControls>
 			{ ! _hideFormats && (
 				<BlockControls>
 					<ToolbarGroup>
