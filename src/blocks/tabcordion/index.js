@@ -7,7 +7,8 @@ import deprecated from './deprecated';
 import transforms from './transforms';
 import save from './save';
 
-import { registerBlockType } from '@wordpress/blocks'; // Import registerBlockType() from wp.blocks
+import { __ } from '@wordpress/i18n';
+import { registerBlockType, registerBlockVariation } from '@wordpress/blocks'; // Import registerBlockType() from wp.blocks
 
 /**
  * Register: aa Gutenberg Block.
@@ -28,3 +29,36 @@ registerBlockType( 'bc-sitka-spruce/tabcordion', {
 	transforms,
 	save,
 } );
+
+registerBlockVariation( 'bc-sitka-spruce/tabcordion', {
+	name: 'tabcordion-tabs',
+	title: __( 'Classic Tabs', 'bc-sitka-spruce' ),
+	icon: 'table-row-after',
+	scope: 'transform',
+	attributes: {
+		format: 'tabs',
+	},
+	isActive: ['format'],
+});
+
+registerBlockVariation( 'bc-sitka-spruce/tabcordion', {
+	name: 'tabcordion-pills',
+	title: __( 'Tabs with Pill Format', 'bc-sitka-spruce' ),
+	icon: 'ellipsis',
+	scope: 'transform',
+	attributes: {
+		format: 'pills',
+	},
+	isActive: ['format'],
+});
+
+registerBlockVariation( 'bc-sitka-spruce/tabcordion', {
+	name: 'tabcordion-list',
+	title: __( 'Vertical Tabs', 'bc-sitka-spruce' ),
+	icon: 'align-pull-right',
+	scope: 'transform',
+	attributes: {
+		format: 'list',
+	},
+	isActive: ['format'],
+});
