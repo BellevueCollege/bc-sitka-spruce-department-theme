@@ -14,6 +14,10 @@
 
 @import "lib/fontawesome";
 
+@import "mixins";
+
+@import "atoms";
+
 // Stories that should be included globally
 $header-tablet-breakpoint: sm;
 $header-desktop-breakpoint: lg;

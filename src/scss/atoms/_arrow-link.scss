@@ -1,0 +1,18 @@
+////
+/// @group components-micro
+/// Styles for an arrow link - written in utilities/_elements.scss
+////
+
+.link-arrow {
+  @include link-arrow;
+}
+
+.dark-bg .link-arrow {
+  @include dark-link-arrow;
+}
+
+.dark-bg .accordion__content .link-arrow {
+  @include media-breakpoint-down(md) {
+    @include link-arrow;
+  }
+}

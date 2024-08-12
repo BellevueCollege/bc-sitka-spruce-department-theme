@@ -7,8 +7,8 @@
 @import "lib/gerillass";
 
 @import "variables/spacing";
-  @import "variables/spacing";
-}
+@import "mixins";
+
 
 @import "lib/bootstrap/config";
 
@@ -19,6 +19,7 @@
 
 .editor-styles-wrapper {
   @import "lib/bootstrap/components";
+	@import "atoms";
 }
 
 @import "lib/bootstrap/helpers";
