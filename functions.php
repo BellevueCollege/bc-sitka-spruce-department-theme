@@ -28,11 +28,22 @@ function register_blocks() {
 		'differentiator-group',
 		'differentiator',
 		'section-heading',
+		'contact-selector',
 		'content-and-location',
 		'template-homepage',
 		'hero-image',
 		'card-section',
 		'card-section-card',
+		'tabcordion',
+		'tabcordion/tabcordion-list',
+		'tabcordion/tabcordion-list-tab',
+		'tabcordion/tabcordion-content',
+		'tabcordion/tabcordion-content-panel',
+		'application-steps-tabs',
+		'application-steps-tabs/application-step-single',
+		'application-steps-tabs/application-step-single-content',
+		'callout',
+
 	);
 
 	block_registration_helper( $blocks );

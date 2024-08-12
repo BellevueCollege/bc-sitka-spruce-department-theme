@@ -1,0 +1,54 @@
+@import '/src/scss/block-styles';
+
+//Styling for Contact Section 
+.contact-section {
+    background-color: var( --accent-fountain-blue-extralight );
+    padding-top: calc( var(--bs-gutter-x) / 2 );
+    padding-bottom: calc( var(--bs-gutter-x) / 2 );
+}
+
+//change px to rem:1rem = 16px, EX: 24px = 1.5rem
+//TODO: Fix right contact section padding 
+.contact-item-r {
+    //styling for left-hand side/ column of contact item(s)
+    h3{
+        color: var( --black );
+    }
+    .position-text {
+        color: var( --black );
+    }
+    
+    //styling for all of the contact item(s)
+    color: var( --bc-brutus-blue );
+    background-color: var( --white );
+    margin: 1.5rem;
+    margin-right: 1.5rem;
+    border-radius: 2rem;
+    border: none;
+    //TODO: ask Taija how to calculate gutters for this
+    padding:2.5rem 1.5rem;
+    &:last-child {
+        margin-top: 0;
+    }
+}
+
+//Styling Specific to button(s)
+.contact-info {
+    p{
+        a{
+            font-weight: bold;
+            color: var( --accent-link-blue );
+            &:hover{
+                color: var( --black );
+            }
+        }
+    }
+    .btn{
+        //TODO: Need to add arrow to button and fix outline coloring
+        color: var( --white );
+        &:hover{
+            color: var( --black );
+            background-color: var(--accent-green-light);
+        }
+    }
+}

@@ -15,6 +15,16 @@ const preview = {
 };
 
 export default preview;
+
+/**
+ * Mock the Sanitize Filter in Timber
+ *
+ * Replace non-alphanumeric characters with dashes
+ */
+Twig.extendFilter("sanitize", function (a, b) {
+  return a.replace(/\s/g, "-").replace(/[^a-zA-Z0-9-]/g, "-");
+});
+
 /**
  * Mock the WordPress __ Function in Timber
  *
