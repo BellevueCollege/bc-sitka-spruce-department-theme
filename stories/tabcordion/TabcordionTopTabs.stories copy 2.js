@@ -12,7 +12,7 @@ import '/assets/dist/blocks/tabcordion/style-index.css';
 
 
 export default {
-    title: "Stories/Tabcordion/Tabcordion with Pills",
+    title: "Stories/Tabcordion with Pills",
     component: "tabcordionTopTabs",
     argTypes: {
 		heading_level: {

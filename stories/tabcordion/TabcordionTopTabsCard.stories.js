@@ -1,4 +1,4 @@
-import twigTabcordion from "./tabcordion-top-tabs.twig";
+import twigTabcordion from "./tabcordion-top-tabs-card.twig";
 import twigTabList from "./components/tab-list.twig";
 import twigTabListTab from "./components/tab-list-tab.twig";
 import twigTabContent from "./components/content.twig";
@@ -12,8 +12,8 @@ import '/assets/dist/blocks/tabcordion/style-index.css';
 
 
 export default {
-    title: "Stories/Tabcordion/Tabcordion with Pills",
-    component: "tabcordionTopTabs",
+    title: "Stories/Tabcordion/Tabcordion with Tabs and Card",
+    component: "tabcordionTopTabsCard",
     argTypes: {
 		heading_level: {
 			control: 'select',
@@ -42,7 +42,7 @@ const Template = ( {
 	display_heading_visually,
 	wrap_content,
 }) => {
-	const format = 'pills';
+	const format = 'tabs';
 	const wrapper_attrs = `id="${id}" class="tabcordion tabcordion-${format}"`;
 	const tabList = twigTabList({
 		format: format,
