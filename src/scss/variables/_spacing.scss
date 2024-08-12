@@ -80,7 +80,7 @@ $global-spacing: (
     md: space-calc(6),
     lg: space-calc(12),
   ),
-  
+
   /* 40,56,80 or 5x,7x,10x */
   10x: (
     xs: space-calc(5),
@@ -92,7 +92,7 @@ $global-spacing: (
     md: space-calc(7),
     lg: space-calc(10),
   ),
-  
+
   /* 32/48/56 or 4x,6x,7x */
   7x: (
     xs: space-calc(4),
@@ -104,7 +104,7 @@ $global-spacing: (
     md: space-calc(6),
     lg: space-calc(7),
   ),
-  
+
   /* 32/40/48 or 4x,5x,6x */
   6x: (
     xs: space-calc(4),
@@ -116,7 +116,7 @@ $global-spacing: (
     md: space-calc(5),
     lg: space-calc(6),
   ),
-  
+
   /* 24/32/40 or 3x,4x,5x */
   5x: (
     xs: space-calc(3),
@@ -128,7 +128,7 @@ $global-spacing: (
     md: space-calc(4),
     lg: space-calc(5),
   ),
-  
+
   /* 24,32,32 or 3x,4x,4x */
   4x: (
     xs: space-calc(3),
@@ -138,7 +138,7 @@ $global-spacing: (
     xs: space-calc(3),
     md: space-calc(4),
   ),
-  
+
   /* 16,24,24 or 2x,3x,3x */
   3x: (
     xs: space-calc(2),
@@ -148,7 +148,7 @@ $global-spacing: (
     xs: space-calc(2),
     md: space-calc(3),
   ),
-  
+
   /* 16 or 2x */
   2x: (
     xs: space-calc(2),
@@ -156,7 +156,7 @@ $global-spacing: (
   xsmall: (
     xs: space-calc(2),
   ),
-  
+
   /* 8 or 1x */
   1x: (
     xs: space-calc(2),
@@ -198,41 +198,4 @@ $global-spacing: (
 @function global-spacing($size, $breakpoint) {
   $spacing: map-get($global-spacing, $size);
   @return map-get($spacing, $breakpoint);
-}
-
-/// Create global spacing classes for margin-top.
-/// @see config at top of file for names and values.
-
-@each $size, $values in $global-spacing {
-
-  .global-spacing--#{$size},
-  %global-spacing--#{$size} {
-
-    @include global-spacing($size, margin-top);
-  }
-}
-
-/// Create global spacing classes for margin-top AND margin-bottom
-/// @see config at top of file for names and values.
-
-@each $size,
-  $values in $global-spacing {
-
-  .global-margin--#{$size},
-  %global-margin--#{$size} {
-
-    @include global-spacing($size, margin-top margin-bottom);
-  }
-}
-
-/// Create global padding classes.
-@each $size,
-  $values in $global-spacing {
-
-  .global-padding--#{$size},
-  %global-padding--#{$size} {
-
-    @include global-spacing($size, padding-top);
-    @include global-spacing($size, padding-bottom);
-  }
 }
