@@ -1,0 +1,24 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bc-sitka-spruce/application-step-single-content",
+	"version": "1.0.0",
+	"title": "Application Step Content",
+	"category": "layout",
+	"icon": "slides",
+	"description": "Content Area for an Application Step.",
+	"supports": {
+		"html": false
+	},
+	"parent": [
+		"bc-sitka-spruce/application-step-single"
+	],
+	"attributes": {
+		"heading": {
+			"type": "string",
+			"default": ""
+		}
+	},
+	"textdomain": "bc-sitka-spruce",
+	"editorScript": "file:./index.js"
+}

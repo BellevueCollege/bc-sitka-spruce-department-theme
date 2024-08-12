@@ -194,6 +194,17 @@ body.gutenberg-editor-page .editor-block-list__block {
   color: #111;
 }
 
+
+
+
+/**
+* Change how alignwide and alignfull display
+*/
+.editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block:not(.alignwide):not(.alignfull) {
+	margin-left: max( 1rem, calc( 50% - ( var(--wp--style--global--wide-size) * 0.5 ) ) ) !important;
+
+}
+
 @media screen and (max-width: 1499px ) {
   .editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block:not(.alignwide):not(.alignfull) {
     margin-left: 1rem !important;
@@ -202,13 +213,6 @@ body.gutenberg-editor-page .editor-block-list__block {
   }
 }
 
-
-@media screen and (min-width: 1500px ) {
-  /**
-  * Change how alignwide and alignfull display
-  */
-  .editor-styles-wrapper .block-editor-block-list__layout.is-root-container > .wp-block:not(.alignwide):not(.alignfull) {
-    margin-left: calc( 50% - ( var(--wp--style--global--wide-size) * 0.5 ) ) !important;
-
-  }
+.editor-post-title {
+	max-width: var(--wp--style--global--wide-size) !important;
 }

@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "name": "bc-sitka-spruce/callout",
+    "title": "Callout",
+    "category": "layout",
+    "icon": "star",
+    "description": "Sidebar component to display related information.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "acf": {
+        "mode": "preview",
+        "renderTemplate": "../../../../src/blocks/callout/render.php"
+    },
+	"editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}

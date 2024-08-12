@@ -32,6 +32,15 @@ function register_blocks() {
 		'content-and-location',
 		'template-homepage',
 		'hero-image',
+		'tabcordion',
+		'tabcordion/tabcordion-list',
+		'tabcordion/tabcordion-list-tab',
+		'tabcordion/tabcordion-content',
+		'tabcordion/tabcordion-content-panel',
+		'application-steps-tabs',
+		'application-steps-tabs/application-step-single',
+		'application-steps-tabs/application-step-single-content',
+		'callout',
 	);
 
 	block_registration_helper( $blocks );
