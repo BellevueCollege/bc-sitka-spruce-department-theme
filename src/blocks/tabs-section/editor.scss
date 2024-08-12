@@ -1,0 +1,16 @@
+@import '/src/scss/block-styles';
+.tabs-section-component {
+	.container-xl {
+		--bs-gutter-x: 7.5rem !important;
+	}
+}
+.application-steps-header {
+	a:link,
+	a:visited,
+	a:hover,
+	a:focus,
+	a:active {
+		color: var(--white);
+	}
+}
+
