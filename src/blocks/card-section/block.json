@@ -1,0 +1,29 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/card-section",
+    "title": "Card Section",
+    "category": "layout",
+    "icon": "align-pull-right",
+    "description": "Template that displays a group of card with a heading and introduction.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "html": false
+    },
+	"allowedBlocks": [
+		"bc-sitka-spruce/card-section-card"
+	],
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        }
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": [ "file:./style-index.css"],
+    "render": "file:./render.php"
+}
