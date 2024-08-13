@@ -14,18 +14,17 @@
 ///   }
 ///
 @mixin placeholder {
+	&::-webkit-input-placeholder {
+		@content;
+	}
 
-  &::-webkit-input-placeholder {
-    @content;
-  }
+	&::-moz-placeholder {
+		// Gecko adds an opacity by default. Remove it.
+		opacity: 1;
+		@content;
+	}
 
-  &::-moz-placeholder {
-    // Gecko adds an opacity by default. Remove it.
-    opacity: 1;
-    @content;
-  }
-
-  &:-ms-input-placeholder {
-    @content;
-  }
+	&:-ms-input-placeholder {
+		@content;
+	}
 }
