@@ -3,7 +3,7 @@ import ServerSideRender from '@wordpress/server-side-render';
 import { useBlockProps } from '@wordpress/block-editor';
 import { useState } from '@wordpress/element';
 import { SelectControl } from '@wordpress/components';
-import apiFetch from '@wordpress/api-fetch';
+import coreSiteApiFetch from '../shared-elements/coreSiteApiFetch';
 
 import { Card, CardBody, CardHeader } from '@wordpress/components';
 
@@ -17,38 +17,29 @@ registerBlockType( 'bc-sitka-spruce/differentiator', {
 		] );
 		const [ areDiffsLoaded, setAreDiffsLoaded ] = useState( false );
 
-		// Load network site URL from custom API endpoint
-		apiFetch( { path: '/bc-sitka-spruce/v1/site-info' } ).then(
-			( info ) => {
-				const bc_network_url = info.network_url;
-
-				// Build REST URL for differentiators on the core site
-				const restUrl = bc_network_url + 'wp-json/wp/v2/differentiator';
-				if ( ! areDiffsLoaded ) {
-					fetch( restUrl )
-						.then( ( response ) => response.json() )
-						.then( ( differentiators ) => {
-							const label = {
-								value: null,
-								label: 'Select Differentiator',
+		if ( ! areDiffsLoaded ) {
+			coreSiteApiFetch( 'wp-json/wp/v2/differentiator' ).then(
+				( differentiators ) => {
+					const label = {
+						value: null,
+						label: 'Select Differentiator',
+					};
+					const diffArray = differentiators.map(
+						( differentiator ) => {
+							return {
+								value: differentiator.id,
+								label: differentiator.title.rendered,
 							};
-							const diffArray = differentiators.map(
-								( differentiator ) => {
-									return {
-										value: differentiator.id,
-										label: differentiator.title.rendered,
-									};
-								}
-							);
-							setDifferentiators( [
-								...[ label ],
-								...diffArray,
-							] );
-							setAreDiffsLoaded( true );
-						} );
+						}
+					);
+					setDifferentiators( [
+						...[ label ],
+						...diffArray,
+					] );
+					setAreDiffsLoaded( true );
 				}
-			}
-		);
+			)
+		}
 
 		return (
 			<div { ...blockProps }>
