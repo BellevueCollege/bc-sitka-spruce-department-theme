@@ -14,15 +14,22 @@
 
 @import "lib/fontawesome";
 
+
 @import "mixins";
 
 @import "atoms";
+
+@import "utilities";
+
+@import "components";
+
 
 // Stories that should be included globally
 $header-tablet-breakpoint: sm;
 $header-desktop-breakpoint: lg;
 @import "stories/header";
 @import "stories/site-search-form";
+@import "stories/section-heading";
 
 // Front-end only components
 @import "menus";
@@ -63,5 +70,3 @@ $header-desktop-breakpoint: lg;
 
     }
 }
-
-

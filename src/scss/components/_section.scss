@@ -1,0 +1,13 @@
+.section-divider {
+	max-width: 1160px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.section {
+	.section-heading > .container-xl {
+		padding-top: calc( var( --bs-gutter-x ) * 0.5);
+		padding-bottom: calc( var( --bs-gutter-x ) * 0.25);
+	}
+
+}

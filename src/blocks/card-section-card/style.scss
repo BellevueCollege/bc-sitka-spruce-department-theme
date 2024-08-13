@@ -1,0 +1,53 @@
+@import '/src/scss/block-styles';
+
+.card.card-section-card {
+	border: none;
+
+	background-color: var( --bc-rainy-night-blue );
+	color: var( --white );
+
+	max-width: 360px; // match with image size
+
+	.card-title {
+		font-size: 1.125rem;
+		line-height: 1.5em;
+		font-family: $font-family-sans-serif;
+	}
+
+	a {
+		&,
+		&:link,
+		&:active,
+		&:focus,
+		&:hover {
+			color: var( --white );
+			text-decoration: none;
+			// text-decoration-color: var( --bc-fountain-blue );
+			// text-underline-offset: 6px;
+			// text-decoration-thickness: 2px;
+			border-bottom: 2px solid var( --bc-fountain-blue );
+			padding-bottom: 3px;
+
+			&::after {
+				margin-left: 0.25em;
+				transition: margin-left 0.125s ease-in;
+				display: inline-block;
+				text-rendering: auto;
+				-webkit-font-smoothing: antialiased;
+				font: var(--fa-font-regular);
+				content: '\f178'; // arrow-right-long
+			}
+
+		}
+
+		&:hover,
+		&:focus {
+			border-bottom-width: 6px;
+			padding-bottom: 0px;
+
+			&::after {
+				margin-left: 0.5em;
+			}
+		}
+	}
+}

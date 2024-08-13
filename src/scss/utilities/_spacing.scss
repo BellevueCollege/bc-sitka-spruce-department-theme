@@ -1,0 +1,31 @@
+////
+/// @group spacing
+/// Functions and mixins for global spacing.
+////
+
+/// Generate global spacing rules.
+/// @param {String} $size - The size of the global spacing rules to generate.
+/// @param {String|List} $properties - The properties to apply the spacing to. Prefix a property with '-' to output the global spacing values as negative values.
+@mixin global-spacing($size, $properties) {
+  @each $breakpoint, $spacing in map-get($global-spacing, $size) {
+    @include breakpoint(min, $breakpoint) {
+      @each $property in $properties {
+        $prop: $property;
+        $sign: '';
+        @if str-index($property, '-') == 1 {
+          $prop: str-slice($property, 2);
+          $sign: '-';
+        }
+        #{$prop}: #{$sign + $spacing};
+      }
+    }
+  }
+}
+
+/// Generate a single global spacing rule.
+/// @param {String} $size - The size of the global spacing rules to generate.
+/// @param {String} $breakpoint - The Foundation breakpoint value to get.
+@function global-spacing($size, $breakpoint) {
+  $spacing: map-get($global-spacing, $size);
+  @return map-get($spacing, $breakpoint);
+}
