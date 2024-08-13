@@ -1,13 +1,9 @@
-@import 'variables/type';
-@import 'variables/colors';
-@import 'variables/animation';
-@import 'variables/bootstrap';
+@import 'variables';
 @import "lib/gerillass";
 @import 'lib/bootstrap/config';
+@import 'mixins';
 
 // Font Awesome Mixins
 $fa-font-path: '~@fortawesome/fontawesome-pro/webfonts';
 @import '~@fortawesome/fontawesome-pro/scss/mixins';
 
-
-@import 'utilities';

@@ -43,7 +43,7 @@ function register_blocks() {
 		'application-steps-tabs/application-step-single',
 		'application-steps-tabs/application-step-single-content',
 		'callout',
-
+		'tabs-section',
 	);
 
 	block_registration_helper( $blocks );

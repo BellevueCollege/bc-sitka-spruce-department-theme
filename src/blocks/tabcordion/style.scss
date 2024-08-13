@@ -300,7 +300,7 @@
 
         h3,
         .btn-row {
-            //@include global-spacing(3x, margin-top);
+            @include global-spacing(3x, margin-top);
         }
 
         p {
@@ -326,7 +326,7 @@
 // Application Process and Focus Areas Tabcordions
 .tabs-section--alt .tabcordion .tab-pane {
     .tab__text {
-        //@include global-spacing(6x, padding-top padding-bottom);
+        @include global-spacing(6x, padding-top padding-bottom);
 
         @include media-breakpoint-down(md) {
 			padding-top: 0;
@@ -341,7 +341,7 @@
     h4 {
 		font-family: $myriad-pro;
         //@include secondary-typeface(eyebrow);
-        //@include global-spacing(3x, margin-top);
+        @include global-spacing(3x, margin-top);
     }
 
     dl,
@@ -358,7 +358,7 @@
 
     dt {
         //@include typeface(h5);
-        //@include global-spacing(2x, margin-top);
+        @include global-spacing(2x, margin-top);
 
         @include media-breakpoint-up(md) {
 
@@ -385,7 +385,7 @@
 .tabs-section {
 
     &--container {
-    	//@include global-spacing(12x, padding-bottom);
+    	@include global-spacing(12x, padding-bottom);
     }
 
     &.curved-top {
@@ -394,7 +394,7 @@
     }
 
     .section-heading {
-    	// @include global-spacing(4x, padding-top);
+    	@include global-spacing(4x, padding-top);
     }
 
     button:focus-visible {

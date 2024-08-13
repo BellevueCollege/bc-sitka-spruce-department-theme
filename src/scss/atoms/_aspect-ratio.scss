@@ -1,0 +1,19 @@
+/// Set the default aspect ratio
+:root {
+	--aspect-ratio: 1;
+}
+
+.aspect-ratio-frame {
+	/// port in the default as is, also acts as a fallback.
+	@include aspect-ratio-frame(
+		$target-object: "img, video, .autoplay-video-container, iframe"
+	);
+
+	/// reset the padding with CSS vars if supported, otherwise rely on the rules above
+	@supports (--css: variables) {
+		&::before {
+			padding-bottom: calc(var(--aspect-ratio) * 100%);
+			content: "";
+		}
+	}
+}

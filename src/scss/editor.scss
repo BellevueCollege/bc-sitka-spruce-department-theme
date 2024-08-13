@@ -1,28 +1,22 @@
-@import "variables/type";
-@import "variables/colors";
-@import "variables/css";
-@import "variables/animation";
-@import "variables/bootstrap";
-
+@import "variables";
 @import "lib/gerillass";
 
-.editor-styles-wrapper {
-  @import "variables/spacing";
-}
+
+@import "mixins";
+
 
 @import "lib/bootstrap/config";
 
 // CSS Variables
 @import "~bootstrap/scss/root";
 
+
 .editor-styles-wrapper {
   @import "lib/bootstrap/components";
+	@import "atoms";
 }
 
 @import "lib/bootstrap/helpers";
-
-@import "utilities";
-
 
 
 /**
