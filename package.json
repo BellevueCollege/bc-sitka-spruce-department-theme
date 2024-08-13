@@ -18,6 +18,7 @@
     "theme",
     "bellevuecollege"
   ],
+	"prettier": "@wordpress/prettier-config",
   "author": "ITS Integration Team",
   "license": "ISC",
   "bugs": {
@@ -37,6 +38,7 @@
     "@storybook/html": "^8.1.10",
     "@storybook/html-webpack5": "^8.1.10",
     "@storybook/test": "^8.1.10",
+    "@wordpress/prettier-config": "^4.5.0",
     "@wordpress/scripts": "^28.0.0",
     "@wordpress/stylelint-config": "^22.4.0",
     "gerillass": "^1.3.1",
