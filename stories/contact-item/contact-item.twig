@@ -4,7 +4,7 @@
             <h3>{{ first_name }} {{ last_name }}</h3>
             <p class="position-text">{{ position }}</p>
         </div>
-        <div class="contact-info col-6">
+        <div class="contact-info col-6 ">
             {% if phone %}
                 <p><i class="fas fa-phone-flip" aria-hidden="true"></i> <a href="tel:{{ phone }}">{{ phone }}</a></p>
             {% endif %}
@@ -12,7 +12,12 @@
                 <p><i class="fas fa-envelope" aria-hidden="true"></i> <a href="mailto:{{ email }}">{{ email }}</a></p>
             {% endif %}
             {% if scheduling_link %}
-                <p><a class="btn btn-primary" href="{{ scheduling_link }}">{{ scheduling_text }}</a></p>
+                <p><a class="btn btn-primary" href="{{ scheduling_link }}">
+                {{ scheduling_text }}
+                <i class="fa fa-external-link-square" aria-hidden="true"></i>
+                </a>
+                
+</p>
             {% endif %}
         </div>
     </div> 

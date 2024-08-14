@@ -3,16 +3,15 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/contact-selector",
     "title": "Contact Selector",
-    "category": "widgets",
-    "icon": "star",
+    "category": "theme",
+    "icon": "groups",
     "description": "Over-arching container that displays the contact profile(s)",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
-        "inserter": false,
-        "multiple": false,
         "html": false
     },
+    "editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
     "style": "file:./style-index.css",
     "acf": {
