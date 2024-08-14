@@ -48,7 +48,6 @@ const customPaths = Object.assign( {}, defaultConfig, {
 		...scssEntryPoint( 'accordion', true ),
 		...scssEntryPoint( 'tabs', true ),
 		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' ),
-		'blocks/contact-selector/index': path.resolve( process.cwd(), 'src/blocks/contact-selector', 'style.scss' )
 	},
 } );
 

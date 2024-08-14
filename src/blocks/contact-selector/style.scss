@@ -3,12 +3,11 @@
 //Styling for Contact Section
 .contact-section {
     background-color: var( --accent-fountain-blue-extralight );
-    padding-top: var( --sitka-container-spacing );
-    padding-bottom: var( --sitka-container-spacing );
+    padding-top: calc( var(--bs-gutter-x) / 2 );
+    padding-bottom: calc( var(--bs-gutter-x) / 2 );
 }
 
-//change px to rem:1rem = 16px, EX: 24px = 1.5rem
-//TODO: Fix right contact section padding
+//1rem = 16px, EX: 24px = 1.5rem
 .contact-item-r {
     //styling for left-hand side/ column of contact item(s)
     h3{
@@ -17,16 +16,15 @@
     .position-text {
         color: var( --black );
     }
-
+    
     //styling for all of the contact item(s)
     color: var( --bc-brutus-blue );
     background-color: var( --white );
     margin: 1.5rem;
     margin-right: 1.5rem;
-    border-radius: 2rem;
+    border-radius: 0.5rem;
     border: none;
-    //TODO: ask Taija how to calculate gutters for this
-    padding:2.5rem 1.5rem;
+    padding:1.5rem 2.5rem;
     &:last-child {
         margin-top: 0;
     }
@@ -34,8 +32,9 @@
 
 //Styling Specific to button(s)
 .contact-info {
-    p{
+    &:last-child{
         a{
+            overflow-wrap: break-word;
             font-weight: bold;
             color: var( --accent-link-blue );
             &:hover{
@@ -44,11 +43,11 @@
         }
     }
     .btn{
-        //TODO: Need to add arrow to button and fix outline coloring
         color: var( --white );
-        &:hover{
-            color: var( --black );
-            background-color: var(--accent-green-light);
-        }
     }
+}
+
+//Styling for icon in button
+.fa-external-link-square{
+    padding-inline: 0.5rem;
 }
