@@ -47,6 +47,12 @@ html :where(.wp-block) {
     }
   }
 
+	// Fix combobox formatting
+	.components-form-token-field__suggestions-list {
+		margin-bottom: 0;
+		padding-left: 0;
+	}
+
 
 }
 

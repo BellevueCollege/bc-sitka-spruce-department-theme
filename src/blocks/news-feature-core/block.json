@@ -1,0 +1,44 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bc-sitka-spruce/news-feature-core",
+	"version": "1.0.0",
+	"title": "BC Core Site News Feature",
+	"category": "layout",
+	"icon": "megaphone",
+	"description": "Display featured news stories from the main BC news site.",
+	"supports": {
+		"html": false
+	},
+	"textdomain": "bc-sitka-spruce",
+	"attributes": {
+		"title": {
+			"type": "string",
+			"default": ""
+		},
+		"description": {
+			"type": "string",
+			"default": ""
+		},
+		"linkTitle": {
+			"type": "string",
+			"default": ""
+		},
+		"linkUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"largeStoryId": {
+			"type": "number",
+			"default": 0
+		},
+		"smallStoryTypes": {
+			"type": "array",
+			"default": []
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

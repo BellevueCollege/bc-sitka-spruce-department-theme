@@ -44,6 +44,7 @@ function register_blocks() {
 		'application-steps-tabs/application-step-single-content',
 		'callout',
 		'tabs-section',
+		'news-feature-core',
 	);
 
 	block_registration_helper( $blocks );
