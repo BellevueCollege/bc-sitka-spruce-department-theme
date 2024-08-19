@@ -1,0 +1,41 @@
+@import '/src/scss/block-styles';
+
+.testimonial-section-wrapper {
+	background-color: var( --gray--xlight );
+	padding: 6rem 0;
+}
+.testimonial-section {
+	margin-top: 3rem;
+
+	.testimonial-text {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+
+		blockquote {
+			font-size: 1.75rem;
+			font-weight: 300;
+
+			// Add quotes before and after the text
+			&::before {
+				content: "\201C";
+			}
+			&::after {
+				content: "\201D";
+			}
+		}
+
+		.attribution {
+			&-name {
+				font-size: 1.25rem;
+				font-weight: 600;
+				margin-bottom: 0rem;
+			}
+
+			&-desc {
+				font-size: 1rem;
+			}
+		}
+
+	}
+}
