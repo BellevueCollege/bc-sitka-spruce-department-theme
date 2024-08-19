@@ -1,1 +1,12 @@
 @import '/src/scss/block-styles';
+
+.news-feature-component {
+	padding-top: 6rem;
+	padding-bottom: 6rem;
+
+	.news-feature--featured-item {
+		figure svg {
+			border-radius: var(--bs-border-radius);
+		}
+	}
+}

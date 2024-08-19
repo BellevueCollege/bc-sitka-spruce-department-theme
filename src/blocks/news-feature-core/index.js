@@ -15,7 +15,6 @@ import twigNewsFeatureFeatured from '/stories/news-feature/news-feature-featured
 import twigNewsFeatureSmall from '/stories/news-feature/news-feature-list-item.twig';
 import { RawHTML } from '@wordpress/element';
 
-
 import './style.scss';
 import './editor.scss';
 
@@ -48,7 +47,7 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 		}, setAttributes, isSelected } = props;
 
 		const blockProps = useBlockProps({
-			className: 'news-feature-component alignwide container-xl'
+			className: 'news-feature news-feature-component alignwide container-xl'
 		});
 
 		// Set up stateful variables to manage news feature selection
@@ -257,7 +256,7 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 
 			return (
 				<RawHTML
-					className="row"
+					className="row mt-4"
 					children={ output }
 				/>
 			);
