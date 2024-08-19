@@ -9,10 +9,11 @@ import apiFetch from '@wordpress/api-fetch';
  * @param {array} data - Array to store the data. Defaults to an empty array.
  * @return {Promise} The promise resolves with the final array of data.
  */
-const fetchAllPages = async ( url, page = 1, data = [] ) => {
+const fetchPage = async ( url, allPages = false, page = 1, data = [] ) => {
 
 	try {
-		const restUrl = url + `&page=${page}`;
+		const restUrl = url;
+		restUrl.searchParams.append( 'page', page );
 		const result = await fetch( restUrl );
 		if ( ! result.ok ) {
 			throw new Error( `Response status: ${response.status}` );
@@ -21,12 +22,18 @@ const fetchAllPages = async ( url, page = 1, data = [] ) => {
 		// Get the total pages from the header.
 		const pages = result.headers.get( 'X-WP-TotalPages' );
 
+		const resultJson = await result.json();
+
+		// Not an array? Return the data.
+		if ( ! Array.isArray( resultJson ) ) {
+			return resultJson;
+		}
 		// Add the data from this page to the array.
-		data.push( ...( await result.json() ) );
+		data.push( ...( resultJson ) );
 
 		// If there are more pages, call the function again.
-		if ( page < pages ) {
-			await fetchAllPages( url, page + 1, data );
+		if ( allPages && ( page < pages ) ) {
+			await fetchAllPages( url, true, page + 1, data );
 		}
 		return data;
 
@@ -41,11 +48,17 @@ const fetchAllPages = async ( url, page = 1, data = [] ) => {
  * @param {string} path - URL of the endpoint.
  * @return {Promise} The promise resolves with the final array of data.
  */
-const coreSiteApiFetch = async path => {
+const coreSiteApiFetch = async ( path, allPages = true )=> {
 	try {
 		const siteInfo = await apiFetch( { path: '/bc-sitka-spruce/v1/site-info' } );
-		const restUrl = await siteInfo.network_url + path + '?per_page=100';
-		const data = await fetchAllPages( restUrl );
+		let restUrl = await new URL( siteInfo.network_url + path );
+
+		if ( allPages ) {
+			restUrl.searchParams.append( 'per_page', 100 );
+		}
+
+		const data = await fetchPage( restUrl, allPages );
+		// console.log( `Data from ${restUrl}`, data );
 		return data;
 	} catch ( error ) {
 		console.warn( 'Error: ', error );
