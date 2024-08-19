@@ -6,7 +6,7 @@
   "scripts": {
     "start": "wp-scripts start --webpack-src-dir=src --output-path=assets/dist",
     "build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist",
-    "storybook": "concurrently 'npm run start' 'storybook dev -p 6006'",
+    "storybook": "concurrently \"npm run start\" \"storybook dev -p 6006\"",
     "build-storybook": "storybook build"
   },
   "repository": {
