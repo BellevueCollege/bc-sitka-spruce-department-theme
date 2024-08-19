@@ -45,12 +45,12 @@ class News {
 			'tax_query'        => array(
 				array(
 					'taxonomy' => 'news_type',
-					'field'    => 'slug',
+					'field'    => 'id',
 					'terms'    => $types,
 					'operator' => 'IN',
 				),
 			),
-			'post__not_in'     => array( $exclude ),
+			'post__not_in'     => $exclude,
 			'fields'           => 'ids',
 		);
 		$post_ids =  get_posts( $args );

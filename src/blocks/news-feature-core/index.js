@@ -92,7 +92,7 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 					const typesArray = types.map(
 						( type ) => {
 							return {
-								value: type.slug,
+								value: type.id,
 								label: type.name,
 							};
 						}
