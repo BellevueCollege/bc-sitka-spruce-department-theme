@@ -3,17 +3,26 @@ import { registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
 import { useState } from '@wordpress/element';
-import { Card, CardBody, CardHeader, CheckboxControl, PanelBody, Spinner } from '@wordpress/components';
-import  ServerSideRender  from '@wordpress/server-side-render';
+import { Card, CardBody, CardHeader, CheckboxControl, PanelBody, Spinner, Disabled } from '@wordpress/components';
 
 import transforms from './transforms';
 import Link from '../shared-elements/link';
 import coreSiteApiFetch from '../shared-elements/coreSiteApiFetch';
 import { ComboboxControl } from '@wordpress/components';
 
+import Twig from "twig";
+import twigNewsFeatureFeatured from '/stories/news-feature/news-feature-featured.twig';
+import twigNewsFeatureSmall from '/stories/news-feature/news-feature-list-item.twig';
+import { RawHTML } from '@wordpress/element';
+
+
 import './style.scss';
 import './editor.scss';
 
+
+Twig.extendFunction("__", (input, namespace) => {
+    return input;
+});
 /**
  * Register: aa Gutenberg Block.
  *
@@ -56,8 +65,11 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 			data: [
 			] } );
 
+		const [ largeStoryData, setLargeStoryData ] = useState( null );
+		const [ smallStoryData, setSmallStoryData ] = useState( [] );
 
-		if ( ! largeStories.loaded ) {
+		// Load Available Featured Stories
+		if ( ! largeStories.loaded && isSelected ) {
 			coreSiteApiFetch( 'wp-json/wp/v2/news' ).then(
 				( stories ) => {
 					const label = {
@@ -86,7 +98,8 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 			)
 		}
 
-		if ( ! smallStoryTypesList.loaded ) {
+		// Load Available Story Types for Small Story List
+		if ( ! smallStoryTypesList.loaded && isSelected ) {
 			coreSiteApiFetch( 'wp-json/wp/v2/news_type' ).then(
 				( types ) => {
 					const typesArray = types.map(
@@ -107,6 +120,41 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 			)
 		}
 
+		// Load Selected Large Story Data for Display in Editor
+		if ( largeStoryId && ! largeStoryData ) {
+			coreSiteApiFetch( `wp-json/wp/v2/news/${ largeStoryId }` ).then(
+				( story ) => {
+					setLargeStoryData( story );
+				}
+			)
+		}
+
+		// Load Selected Small Story Data for Display in Editor
+		if ( smallStoryTypes.length && smallStoryData.length === 0 ) {
+
+			// Set up URL params
+			let urlParams = new URLSearchParams({
+				per_page: 3,
+				order: 'desc',
+				order_by: 'date',
+				tax_relation: 'OR',
+				news_type: smallStoryTypes.join( ',' ),
+			});
+
+
+			// Exclude large story
+			if ( largeStoryId ) {
+				urlParams.append( 'exclude', largeStoryId );
+			}
+
+			coreSiteApiFetch( `wp-json/wp/v2/news/?${ urlParams.toString() }`, false ).then(
+				( story ) => {
+					setSmallStoryData( story );
+				}
+			)
+		}
+
+		// Render Small Story Type Selector
 		const SmallStoryTypeSelector = ( { onChange, options, selected } ) => {
 			return options.map(
 				( obj ) => <CheckboxControl
@@ -117,6 +165,106 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 				/>
 			)
 		}
+
+		// Render Large Story Preview
+		const LargeStoryPreview = ( { largeStoryData } ) => {
+			const placeholderImage = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+					<rect width="760" height="400" fill="#cccccc"></rect>
+					<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="26px" fill="#000000">Placeholder Image</text>
+				</svg>`;
+			let title = `<span class="placeholder-glow placeholder col-8"></span>`;
+			let summary = `
+					<span class="placeholder-glow placeholder col-3"></span>
+					<span class="placeholder-glow placeholder col-4"></span>
+					<span class="placeholder-glow placeholder col-2"></span>
+					<span class="placeholder-glow placeholder col-9"></span>
+					<span class="placeholder-glow placeholder col-4"></span>
+					<span class="placeholder-glow placeholder col-4"></span>
+					<span class="placeholder-glow placeholder col-4"></span>
+				`;
+
+			if ( largeStoryData ) {
+				title = largeStoryData.title.rendered;
+				summary = largeStoryData.acf.summary;
+			}
+			return (
+				<RawHTML>
+					{ largeStoryId &&
+						twigNewsFeatureFeatured({
+							title,
+							summary,
+							image: placeholderImage,
+							url: '#',
+						})
+					}
+				</RawHTML>
+			);
+		}
+
+		// Render Small Story Preview
+		const SmallStoryPreview = ( { smallStoryData } ) => {
+
+			// No types selected
+			if ( smallStoryTypes.length === 0 ) {
+				return '';
+			}
+			const output = [];
+
+			// Placeholder content
+			let title = `<span class="placeholder-glow placeholder col-8"></span>`;
+			let summary = `
+					<span class="placeholder-glow placeholder col-3"></span>
+					<span class="placeholder-glow placeholder col-4"></span>
+					<span class="placeholder-glow placeholder col-2"></span>
+					<span class="placeholder-glow placeholder col-9"></span>
+					<span class="placeholder-glow placeholder col-4"></span>
+					`;
+
+
+			if ( smallStoryData.length === 0 ) {
+				output.push(
+					twigNewsFeatureSmall({
+						title: title,
+						url: '#',
+						summary: summary,
+					})
+				);
+				output.push(
+					twigNewsFeatureSmall({
+						title: title,
+						url: '#',
+						summary: summary,
+					})
+				);
+				output.push(
+					twigNewsFeatureSmall({
+						title: title,
+						url: '#',
+						summary: summary,
+					})
+				);
+			} else {
+				smallStoryData.forEach( ( story ) => {
+					output.push(
+						twigNewsFeatureSmall({
+							title: story.title.rendered,
+							url: story.link,
+							summary: story.acf.summary,
+						})
+					)
+				});
+			}
+
+			return (
+				<RawHTML
+					className="row"
+					children={ output }
+				/>
+			);
+
+		}
+
+		// Render block
 		return (
 			<div { ...blockProps }>
 				<InspectorControls>
@@ -137,6 +285,7 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 										props.setAttributes( {
 											largeStoryId,
 										} )
+										setLargeStoryData( null );
 									}
 								}
 								options={ largeStories.data }
@@ -161,6 +310,7 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 										props.setAttributes( {
 											smallStoryTypes,
 										} )
+										setSmallStoryData( [] );
 									} }
 								/>
 
@@ -198,10 +348,16 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 					</div>
 				</div>
 				<div className='row'>
-					<ServerSideRender
-						block="bc-sitka-spruce/news-feature-core"
-						attributes={ props.attributes }
-					/>
+					<Disabled>
+						{ largeStoryId &&
+							<LargeStoryPreview
+								largeStoryData={largeStoryData}
+							/>
+						}
+						<SmallStoryPreview
+							smallStoryData={smallStoryData}
+						/>
+					</Disabled>
 				</div>
 			</div>
 		);
