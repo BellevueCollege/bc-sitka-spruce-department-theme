@@ -12,7 +12,7 @@ $context['description'] = $attributes['description'];
 // Wrapper
 $context['wrapper_attrs'] = get_block_wrapper_attributes(
 	array(
-		'class' => 'section card-section alignfull',
+		'class' => 'section section-white card-section alignfull',
 	)
 );
 

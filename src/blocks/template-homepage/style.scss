@@ -16,7 +16,7 @@
             width: 100%;
         }
     }
-    
+
 }
 
 .site-type-dept {
@@ -25,7 +25,7 @@
 
         // Add padding to sides and top
         @include make-container();
-        padding-top : calc( var(--bs-gutter-x ) * 0.5 );
+        padding-top : var( --sitka-container-spacing );
 
         // Allow for intentional looking offset of hero image width and content below
         @include media-breakpoint-only('lg') {
@@ -42,10 +42,10 @@
 .site-type-suppt {
     .hero {
         @include make-container();
-        --bs-gutter-x: 7.5rem;
+        --bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 );
         max-width: 1280px;
 
-        padding-top: calc( var(--bs-gutter-x ) * 0.5 );
+        padding-top: var( --sitka-container-spacing );
 
         img {
             width: 100%;

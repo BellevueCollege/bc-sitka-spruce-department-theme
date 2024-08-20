@@ -8,14 +8,6 @@
 		background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 25rem);
 	}
 
-	& > .section-heading {
-		& > .container-xl {
-			padding-top: calc( var(--bs-gutter-x) * 0.5);
-			padding-bottom: calc( var(--bs-gutter-x) * 0.25);
-		}
-	}
-
-
 	.accordion-body > .application-step-single {
 		& :last-child {
 			margin-bottom: 0;
@@ -29,8 +21,8 @@
 		}
 
 		& > .container-xl {
-			padding-top: calc( var(--bs-gutter-x) * 0.5);
-			padding-bottom: calc( var(--bs-gutter-x) * 0.5);
+			padding-top: var( --sitka-container-spacing );
+			padding-bottom: var( --sitka-container-spacing );
 		}
 
 

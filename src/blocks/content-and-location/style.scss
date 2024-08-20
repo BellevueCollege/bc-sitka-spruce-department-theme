@@ -7,12 +7,12 @@
 
 .content-and-location.container-xl {
 
-    padding-top: calc( var(--bs-gutter-x) / 2 );
-    padding-bottom: calc( var(--bs-gutter-x) / 2 );
+    padding-top: var( --sitka-container-spacing );
+    padding-bottom: var( --sitka-container-spacing );
 
     @include media-breakpoint-up('lg') {
         position: relative;
-        margin-top: calc( var(--bs-gutter-x ) * -0.25 );
+        margin-top: calc( var( --sitka-container-spacing ) * -0.5 );
 
         background-color: css_color('white');
         border-radius: calc(var(--bs-border-radius) * 1.5);

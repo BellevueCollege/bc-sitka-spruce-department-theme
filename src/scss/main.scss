@@ -8,7 +8,6 @@
 
 @import "components";
 
-
 // Stories that should be included globally
 $header-tablet-breakpoint: sm;
 $header-desktop-breakpoint: lg;
@@ -26,32 +25,32 @@ $header-desktop-breakpoint: lg;
 
 
 .container, .container-xl {
-    @include media-breakpoint-up('lg') {
-        --bs-gutter-x: 7.5rem;
-    }
+	@include media-breakpoint-up('lg') {
+		--bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 );
+	}
 }
 
 #main-content {
-    .block-wrapper {
-        @include make-container();
-        @include media-breakpoint-up('lg') {
-            --bs-gutter-x: 7.5rem;
-        }
+	.block-wrapper {
+		@include make-container();
+		@include media-breakpoint-up('lg') {
+			--bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 );
+		}
 
-        max-width: var( --wp--style--global--wide-size);
+		max-width: var( --wp--style--global--wide-size);
 
-        &.alignfull {
-            max-width: 100%;
-        }
+		&.alignfull {
+			max-width: 100%;
+		}
 
-        &.alignstandard > *,
-        &.aligncenter {
-            max-width: var(--wp--style--global--content-size);
-        }
+		&.alignstandard > *,
+		&.aligncenter {
+			max-width: var(--wp--style--global--content-size);
+		}
 
-        &.alignwide > * {
-            max-width: var( --wp--style--global--wide-size);
-        }
+		&.alignwide > * {
+			max-width: var( --wp--style--global--wide-size);
+		}
 
-    }
+	}
 }
