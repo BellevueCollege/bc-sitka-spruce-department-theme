@@ -1,0 +1,33 @@
+{#
+/**
+ * @file
+ * Bellevue template for the callout component.
+ */
+#}
+
+<div class="section section-xlight testimonial-section-wrapper">
+	{% include '/stories/section-heading/section-heading.twig' with {
+		'heading': title,
+		'subheading': description
+	} %}
+	<div class="testimonial-section container-xl">
+
+		<div class="testimonial row">
+			<div class="col-md-6 testimonial-image">
+				{{ image }}
+			</div>
+
+			<div class="col-md-6 testimonial-text">
+				<blockquote>{{ quote }}</blockquote>
+				<hr />
+				<p class="attribution-name">{{ attribution_name }}</p>
+				<p class="attribution-desc">{{ attribution_desc }}</p>
+				{%  if cta %}
+					<div class="cta">
+						<a class="btn btn-primary" href="{{ cta.url }}">{{ cta.title }}</a>
+					</div>
+				{% endif %}
+
+			</div>
+	</div>
+</div>
