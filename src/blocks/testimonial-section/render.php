@@ -5,7 +5,14 @@ $context = Timber::context();
 
 $context['title'] = get_field( 'title' ) ?? '';
 $context['description'] = get_field( 'description' ) ?? '';
-$context['image'] =  wp_get_attachment_image( get_field( 'image' )['ID'], 'testimonial' );
+$context['image'] =  wp_get_attachment_image(
+	get_field( 'image' )['ID'],
+	'testimonial',
+	false,
+	array(
+		'class' => 'img-fluid',
+	)
+);
 $context['quote'] = get_field( 'quote' ) ?? '';
 $attribution = get_field( 'attribution' ) ?? array();
 $context['attribution_name'] = $attribution['name'] ?? '';

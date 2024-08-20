@@ -5,6 +5,10 @@
 		border-radius: var(--bs-border-radius);
 	}
 
+	.testimonial.row {
+		--bs-gutter-x: 4rem;
+	}
+
 	.testimonial-text {
 		display: flex;
 		flex-direction: column;
@@ -13,6 +17,7 @@
 		blockquote {
 			font-size: 1.75rem;
 			font-weight: 300;
+			margin: 0;
 
 			// Add quotes before and after the text
 			&::before {
@@ -21,6 +26,13 @@
 			&::after {
 				content: "\201D";
 			}
+		}
+
+		hr {
+			border-top: 3px solid;
+			border-color: var(--bc-fountain-blue);
+			opacity: 1;
+			max-width: 5.25rem;
 		}
 
 		.attribution {
