@@ -1,11 +1,9 @@
 @import '/src/scss/block-styles';
 
-.testimonial-section-wrapper {
-	background-color: var( --gray--xlight );
-	padding: 6rem 0;
-}
 .testimonial-section {
-	margin-top: 3rem;
+	.testimonial-image img {
+		border-radius: var(--bs-border-radius);
+	}
 
 	.testimonial-text {
 		display: flex;

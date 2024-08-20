@@ -44,6 +44,7 @@ function register_blocks() {
 		'application-steps-tabs/application-step-single-content',
 		'callout',
 		'tabs-section',
+		'testimonial-section',
 	);
 
 	block_registration_helper( $blocks );
@@ -131,6 +132,9 @@ $image_crops->addImageSize( 'featured-home-suppt', 1160, 500, true );
 
 // Card Header Image
 $image_crops->addImageSize( 'card-header', 360, 200, true );
+
+$image_crops->addImageSize( 'testimonial', 560, 680, true );
+
 
 // Make some image sizes available in the block editor
 add_filter(
