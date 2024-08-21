@@ -76,11 +76,14 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 						label: __( 'Select Story', 'bc-sitka-spruce' ),
 						disabled: true
 					};
+
 					const storyArray = stories.map(
 						( story ) => {
+							const noImageNotice = ! story.acf.image ? __( ' (No Image)', 'bc-sitka-spruce' ) : '';
 							return {
 								value: story.id,
-								label: story.title.rendered,
+								label: story.title.rendered + noImageNotice,
+								disabled: story.acf.image ? false : true, // Disable if no image
 							};
 						}
 					);
@@ -270,7 +273,7 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 					<PanelBody
 						title={ __( 'Featured Story', 'bc-sitka-spruce' ) }
 					>
-						<p>{ __( 'Display a large, featured news story from the BC News website', 'bc-sitka-spruce' ) }</p>
+						<p>{ __( 'Display a large, featured news story from the BC News website. Only stories that have featured images can be selected.', 'bc-sitka-spruce' ) }</p>
 						{ ! largeStories.loaded && (
 							<Spinner />
 						) }
