@@ -348,11 +348,20 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 				</div>
 				<div className='row'>
 					<Disabled>
-						{ largeStoryId &&
-							<LargeStoryPreview
-								largeStoryData={largeStoryData}
-							/>
-						}
+						{ (
+							( ! largeStoryId ||
+							largeStoryId === 0 ) &&
+							smallStoryTypes.length === 0
+						) && (
+							<Card>
+								<CardHeader><h3>{__('No Story or Story Types Selected!', 'bc-sitka-spruce')}</h3></CardHeader>
+								<CardBody>{__('Select this block and use the Settings sidebar to configure what should be displayed.', 'bc-sitka-spruce')}</CardBody>
+							</Card>
+						)}
+
+						<LargeStoryPreview
+							largeStoryData={largeStoryData}
+						/>
 						<SmallStoryPreview
 							smallStoryData={smallStoryData}
 						/>
