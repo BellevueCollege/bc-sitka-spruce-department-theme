@@ -44,6 +44,7 @@ function register_blocks() {
 		'application-steps-tabs/application-step-single-content',
 		'callout',
 		'tabs-section',
+		'news-feature-core',
 		'testimonial-section',
 	);
 
@@ -149,29 +150,6 @@ add_filter(
 	}
 );
 
-
-/**
- * Pass Multisite Paths to Blocks
- *
- * Some blocks need to pull data from the root site of the network.
- *
- */
-function pass_multisite_paths_to_blocks() {
-	$blocks    = array(
-		'differentiator',
-	);
-	$namespace = 'bc-sitka-spruce';
-	foreach ( $blocks as $block ) {
-		$script_handle = "{$namespace}-{$block}-editor-script";
-		$data          = 'const bc_blog_url = "' . get_bloginfo( 'url' ) . '";';
-		$data         .= 'const bc_network_url = "' . network_site_url() . '";';
-		$position      = 'before';
-		wp_add_inline_script( $script_handle, $data, $position );
-	}
-}
-add_action( 'admin_enqueue_scripts', __NAMESPACE__ . '\pass_multisite_paths_to_blocks' );
-
-
 /**
  * Load Block Editor Styles
  */
@@ -236,6 +214,24 @@ add_action(
 );
 
 /**
+ * Register /site-info endpoint
+ */
+add_action(
+	'rest_api_init',
+	function () {
+		register_rest_route(
+			'bc-sitka-spruce/v1',
+			'/site-info',
+			array(
+				'methods'             => 'GET',
+				'callback'            => __NAMESPACE__ . '\rest_get_site_info',
+				'permission_callback' => '__return_true',
+			)
+		);
+	}
+);
+
+/**
  * Get Options Callback
  *
  * Callback for /options endpoint
@@ -255,6 +251,18 @@ function rest_get_options( $request ) {
 	$options['hours']                 = get_field( 'hours', 'option' );
 	$options['contact_page_url']      = get_field( 'contact_page_url', 'option' );
 	return new \WP_REST_Response( $options, 200 );
+}
+
+/**
+ * Get Site Info Callback
+ */
+
+function rest_get_site_info( $request ) {
+	$site_info = array(
+		'site_url' => get_bloginfo( 'url' ),
+		'network_url' => network_site_url(),
+	);
+	return new \WP_REST_Response( $site_info, 200 );
 }
 
 /**

@@ -6,7 +6,7 @@
 .aspect-ratio-frame {
 	/// port in the default as is, also acts as a fallback.
 	@include aspect-ratio-frame(
-		$target-object: "img, video, .autoplay-video-container, iframe"
+		$target-object: "img, video, .autoplay-video-container, iframe, svg"
 	);
 
 	/// reset the padding with CSS vars if supported, otherwise rely on the rules above
