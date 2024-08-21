@@ -15,9 +15,9 @@ class News {
 		}
 
 		$output =  [
-			'title' => get_the_title( get_the_title( $id ) ),
-			'url' => get_the_permalink( $id ),
-			'summary' => esc_url( esc_html( get_field( 'summary', $id ) ) ),
+			'title' => esc_html( get_the_title( $id ) ),
+			'url' => esc_url( get_the_permalink( $id ) ),
+			'summary' => wp_kses_post( get_field( 'summary', $id ) ),
 			'image' => get_field( 'image', $id ) ? wp_get_attachment_image(
 				get_field( 'image', $id )['id'],
 				'760x400',
