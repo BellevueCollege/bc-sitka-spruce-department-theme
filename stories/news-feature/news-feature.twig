@@ -5,9 +5,8 @@
  */
 #}
 
-<section class="news-feature global-margin--12x oho-animate-sequence">
+<section class="section section-white news-feature oho-animate-sequence">
     {% include '/stories/section-heading/section-heading.twig' %}
-
     <div class="container-xl">
         {% if featured_news and featured_news.title and featured_news.summary and featured_news.image %}
             {% include '/stories/news-feature/news-feature-featured.twig' with {
@@ -17,7 +16,7 @@
                 summary: featured_news.summary
             } %}
         {% endif %}
-        <div class="row mt-4">
+        <div class="row mt-4 news-feature--list">
             {% for post in news_listing %}
                 {% include '/stories/news-feature/news-feature-list-item.twig' with {
                     url: post.link,
@@ -26,7 +25,7 @@
                 } %}
             {% endfor %}
         </div>
-
     </div>
+	<hr class="section-divider" />
 </section>
 

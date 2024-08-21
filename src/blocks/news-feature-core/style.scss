@@ -10,6 +10,7 @@
 
 	.news-feature--featured-item .eyebrow {
 		position: relative;
+		font-weight: 600;
 
 		&::before {
 			position: absolute;
@@ -63,6 +64,10 @@
 		p {
 			@include global-spacing(2x, margin-top);
 		}
+	}
+
+	&--list {
+		margin-bottom: var( --sitka-container-spacing );
 	}
 
 	&--item {
