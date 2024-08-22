@@ -109,7 +109,11 @@ $enqueuer->addBlockStyle(
 		'mayflower-blocks/alert',
 	)
 );
-
+$enqueuer->addBlockStyle(
+	handle: 'tabcordion-list',
+	blocks: array(
+	)
+);
 /**
  * Image Crops
  */
