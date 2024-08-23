@@ -27,6 +27,9 @@
 
 		@include media-breakpoint-up(md) {
 			--bs-accordion-color: var(--white);
+			--bs-accordion-border-color: transparent;
+			--bs-accordion-bg: transparent;
+			--bs-accordion-body-padding-y: 0;
 		}
 	}
 

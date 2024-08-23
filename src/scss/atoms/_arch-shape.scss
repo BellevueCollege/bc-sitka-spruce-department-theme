@@ -1,0 +1,13 @@
+.arch-shape {
+    width: 100%;
+    height: 10vw;
+    background-color: var(--bc-rainy-night-blue);
+	clip-path: ellipse(65% 100% at bottom center);
+	overflow: hidden;
+
+	& + div {
+		margin-top: 0;
+		padding-top: 0;
+	}
+}
+
