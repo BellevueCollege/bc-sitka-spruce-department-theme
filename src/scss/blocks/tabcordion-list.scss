@@ -125,31 +125,43 @@
 		}
 	}
 	.tab-pane {
-
 		.aspect-ratio-frame {
 			overflow: hidden;
 			border-radius: var(--bs-border-radius);
 		}
-
-		.btn-row {
-			@include global-spacing(3x, margin-top);
-		}
-
 		p {
 			margin-top: 1rem;
 		}
 
-		.btn-row {
-			display: flex;
-			flex-wrap: wrap;
-			list-style: none;
-			gap: 1rem;
+		.btn {
+			--bs-btn-font-weight: 600;
+			--bs-btn-color: var(--white);
+			--bs-btn-bg: var(--bc-brutus-blue);
+			--bs-btn-border-color: transparent;
+			--bs-btn-hover-color: var(--white);
+			--bs-btn-hover-bg: var(--bc-rainy-night-blue);
+			--bs-btn-active-color: var(--white);
+			--bs-btn-active-bg: var(--bc-rainy-night-blue);
 
-			@include media-breakpoint-down(md) {
-				.btn.btn-light {
-					//@include button-variant( $primary, $primary );
-				}
+			margin-right: 0.75rem;
+			margin-top: 1rem;
+			&:last-child {
+				margin-right: 0;
+			}
+
+			@include media-breakpoint-up(md) {
+				--bs-btn-font-weight: 600;
+				--bs-btn-color: var(--black);
+				--bs-btn-bg: var(--white);
+				--bs-btn-border-color: transparent;
+				--bs-btn-hover-color: var(--black);
+				--bs-btn-hover-bg: var(--bc-rain-garden-green);
+				--bs-btn-active-color: var(--black);
+				--bs-btn-active-bg: var(--bc-rain-garden-green);
 			}
 		}
+
+
+
 	}
 }

@@ -5,9 +5,9 @@
 	<h4 class="h2 mt-3">{{ heading }}</h4>
 	{{ content }}
 	{% if links %}
-		<div class="mt-3">
+		<div class="btn-group">
 			{% for link in links %}
-				<a class="btn btn-light" href="{{ link.url }}">{{ link.title }}</a>
+				<a class="btn" href="{{ link.url }}" {% if link.target %}target="{{ link.target }}"{% endif %}>{{ link.title }}</a>
 			{% endfor %}
 		</div>
 	{% endif %}

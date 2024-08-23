@@ -8,7 +8,7 @@
 {% block tab_links %}
 	{% for tab in tabs %}
 		{% include '/stories/tabcordion/components/tab-list-tab.twig' with {
-			active: 'active show',
+			active: loop.first ? 'active show' : '',
 			aria_selected: 'true',
 			title: tab.title,
 		} %}
