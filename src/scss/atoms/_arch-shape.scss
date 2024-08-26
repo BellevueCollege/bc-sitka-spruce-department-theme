@@ -2,7 +2,7 @@
     width: 100%;
     height: 10vw;
     background-color: var(--bc-rainy-night-blue);
-	clip-path: ellipse(65% 100% at bottom center);
+	clip-path: ellipse(65% 100% at center 120%);
 	overflow: hidden;
 
 	& + div {
