@@ -1,2 +1,34 @@
 @import '/src/scss/block-styles';
 
+.wp-block-bc-sitka-spruce-support-feature {
+
+	.tab-wrapper-dark {
+		color: var(--white);
+		padding-bottom: var(--sitka-container-spacing);
+	}
+
+	.tab-editor-body {
+		@include media-breakpoint-down(md) {
+			display: none;
+		}
+	}
+
+	.tab-editor-row {
+		display: grid;
+
+		@include media-breakpoint-up(md) {
+			grid-template-columns: 2fr 3fr;
+		}
+	}
+
+	.placeholder {
+		margin-right: 5px;
+	}
+
+	.tab-image-placeholder {
+		aspect-ratio: 512/320;
+		background-color: white;
+		opacity: 0.5;
+		margin-bottom: 1rem;
+	}
+}

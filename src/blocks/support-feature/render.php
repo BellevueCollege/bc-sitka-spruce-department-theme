@@ -3,8 +3,8 @@ use BcSitkaSpruce\Controllers\SupportFeature;
 use Timber\Timber;
 $context                      = Timber::context();
 $context['heading']           = esc_html( $attributes['heading'] );
-$context['parent_id']                = esc_attr( $attributes['sectionId'] );
-$context['wrapper_attrs'] = get_block_wrapper_attributes(
+$context['parent_id']         = esc_attr( $attributes['sectionId'] );
+$context['wrapper_attrs']     = get_block_wrapper_attributes(
 	array(
 		'class' => 'row tabcordion tabcordion-list',
 		'id'    => esc_attr( $attributes['sectionId'] ),
