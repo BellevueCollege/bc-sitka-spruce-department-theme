@@ -1,7 +1,7 @@
 <div {{ wrapper_attrs }}>
 	{% include "/stories/section-heading/section-heading.twig" with {
 		heading: title,
-		subheading: "<p>#{description}</p>",
+		subheading: description
 	} %}
 	<div class="container-xl cards">
 		{{ cards }}
