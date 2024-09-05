@@ -43,6 +43,13 @@ if ( $is_preview && ! $context['profiles'] ) {
 	echo '</p></div>';
 }
 
+// Showing message if use does not input any contacts (in preview, on editor side)
+if ( $is_preview && ! $context['profiles'] ) {
+	echo '<div class="callout-wrapper callout-disabled col"><p>';
+	_e( 'YOU HAVE NOT ADDED ANY CONTACTS! <br />Edit this element to add some!', 'bc-sitka-spruce' );
+	echo '</p></div>';
+}
+
 // Render Twig Template, and if it's empty, return nothing
 if ( $context['profiles'] ) {
 	Timber::render( '/stories/contact-item/contact-loop.twig', $context );
