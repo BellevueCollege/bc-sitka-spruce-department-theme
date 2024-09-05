@@ -5,6 +5,10 @@
     background-color: var( --accent-fountain-blue-extralight );
     padding-top: calc( var(--bs-gutter-x) / 2 );
     padding-bottom: calc( var(--bs-gutter-x) / 2 );
+    //Styling for icon in button
+    .fa-external-link-square{
+        padding-inline: 0.5rem;
+    }
 }
 
 //1rem = 16px, EX: 24px = 1.5rem
@@ -45,9 +49,4 @@
     .btn{
         color: var( --white );
     }
-}
-
-//Styling for icon in button
-.fa-external-link-square{
-    padding-inline: 0.5rem;
 }
