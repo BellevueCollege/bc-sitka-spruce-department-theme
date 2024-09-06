@@ -45,7 +45,7 @@ registerBlockType( 'bc-sitka-spruce/department-feature', {
 		}, setAttributes, isSelected } = props;
 
 		const blockProps = useBlockProps({
-			className: 'department-feature department-feature-component alignwide container-xl'
+			className: 'section section-white organization-feature alignwide'
 		});
 
 		// Set up stateful variables to manage available departments for the combobox
@@ -104,7 +104,7 @@ registerBlockType( 'bc-sitka-spruce/department-feature', {
 
 		// Preview card
 		const DepartmentCardPreview = ( { departmentData } ) => {
-			const placeholderImage = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 400" width="760" height="400">
+			const placeholderImage = `<svg class="rounded" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 500" width="760" height="400">
 					<rect width="660" height="500" fill="#cccccc"></rect>
 					<text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-family="monospace" font-size="26px" fill="#000000">Placeholder Image</text>
 				</svg>`;
