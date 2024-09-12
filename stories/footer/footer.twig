@@ -90,21 +90,14 @@
 			<div class="col-md-6 col-lg">
 				<nav class="footer-menu-utility" aria-label="{{ __('Footer Utility Links', 'bc-sitka-spruce') }}">
 					<ul class="menu">
-						<li><a href="#">Link 1</a></li>
-						<li><a href="#">Link 2</a></li>
-						<li><a href="#">Link 3</a></li>
+						{% include '/views/static-content/menu-utility.twig' %}
 					</ul>
 				</nav>
 			</div>
 			<div class="col-md-6 col-lg">
 				<nav class="footer-menu-legal" aria-label="{{ __('Global Links', 'bc-sitka-spruce') }}">
 					<ul class="menu">
-						<li><a href="#">Accessibility</a></li>
-						<li><a href="#">Emergency Alerts</a></li>
-						<li><a href="#">Privacy Notice</a></li>
-						<li><a href="#">Public Disclosure</a></li>
-						<li><a href="#">Website Info</a></li>
-						<li><a href="#">We are an equal opportunity institution</a></li>
+						{% include '/views/static-content/menu-legal.twig' %}
 					</ul>
 				</nav>
 			</div>
@@ -112,7 +105,7 @@
 	</div>
 	<div class="footer-copyright text-bg-primary">
 		<div class="container-xl">
-			<p>&copy; {{ current_year }} Bellevue College.</p>
+			<p>&copy; {{ current_year }} {{ __('Bellevue College. All Rights Reserved.', 'bc-sitka-spruce') }} <a target="_blank" class="text-white" href="https://www.bellevuecollege.edu/accessibility/">{{ __('Privacy Notice', 'bc-sitka-spruce') }}</a></p>
 		</div>
 	</div>
 </footer>

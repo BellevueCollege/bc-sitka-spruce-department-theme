@@ -1,5 +1,5 @@
 <header id="header-wrapper">
-    <div 
+    <div
         id="site-header"
         class="site-header container-xl
             {% if search_expanded %}search-expanded{% endif %}
@@ -43,9 +43,7 @@
             data-menu-has-items-selector=".menu-item-has-children > a"
         >
             <ul class="menu justify-content-end">
-                <li class="menu-item"><a href="#">Link 1 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item"><a href="#">Link 2 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item"><a href="#">Link 3 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
+				{% include '/views/static-content/menu-utility.twig' with { li_class: 'menu-item' } %}
                 <li class="menu-item d-none d-lg-block search-toggle">
                     <a
                         id="site-header--search-toggle-btn"

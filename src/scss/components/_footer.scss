@@ -32,15 +32,12 @@
 		}
 	}
 
-	&-menu-utility a,
-	&-menu-legal a {
-		@include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
-	}
-
+	&-menu-utility,
 	&-menu-legal {
 		a {
-			font-weight: normal;
+			@include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
 		}
+
 		a::after {
 			position: relative;
 			display: inline-block;
@@ -53,6 +50,12 @@
 			font-family: $font-awesome;
 			font-weight: 300;
 			line-height: 1;
+		}
+	}
+
+	&-menu-legal {
+		a {
+			font-weight: normal;
 		}
 	}
 
