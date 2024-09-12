@@ -7,14 +7,13 @@ import mountains from "/assets/img/footer-mountains.svg";
 // Sample menu output from WordPress
 const menu = `<ul class="menu">
 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-145 ">
-<a href="#" target="_self">Menu Item 1</a>
+<a href="#" target="_self" class="link-arrow">Menu Item 1</a>
 </li>
 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-146 ">
-<a href="#" target="_self">Menu Item 2</a>
+<a href="#" target="_self" class="link-arrow">Menu Item 2</a>
 </li>
 <li class="menu-item menu-item-type-custom menu-item-object-custom menu-item-150 ">
-<a href="#" target="_self">Submenu Item 3</a>
-
+<a href="#" target="_self" class="link-arrow">Submenu Item 3</a>
 </li>
 </ul>`;
 
@@ -62,33 +61,25 @@ Default.args = {
 	phone: "555-555-5555",
 	social: [
 		{
-			icon: "<i class='fab fa-facebook-f' aria-hidden='true'></i>",
-			link: {
-				url: "#",
-				title: "Facebook"
-			}
+			network: "facebook",
+			url: "https://www.facebook.com/",
 		},
 		{
-			icon: "<i class='fab fa-twitter' aria-hidden='true'></i>",
-			link: {
-				url: "#",
-				title: "Twitter"
-			}
+			network: "x",
+			url: "https://x.com/",
 		},
 		{
-			icon: "<i class='fab fa-instagram' aria-hidden='true'></i>",
-			link: {
-				url: "#",
-				title: "Instagram"
-			}
+			network: "linkedin",
+			url: "https://www.linkedin.com/",
 		},
 		{
-			icon: "<i class='fab fa-linkedin-in' aria-hidden='true'></i>",
-			link: {
-				url: "#",
-				title: "LinkedIn"
-			}
-		}
+			network: "youtube",
+			url: "https://www.youtube.com/",
+		},
+		{
+			network: "instagram",
+			url: "https://www.instagram.com/",
+		},
 	],
 	current_year: new Date().getFullYear()
 };
