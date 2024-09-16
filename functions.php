@@ -46,6 +46,7 @@ function register_blocks() {
 		'tabs-section',
 		'news-feature-core',
 		'testimonial-section',
+		'support-feature',
 		'department-feature',
 	);
 
@@ -110,7 +111,11 @@ $enqueuer->addBlockStyle(
 		'mayflower-blocks/alert',
 	)
 );
-
+$enqueuer->addBlockStyle(
+	handle: 'tabcordion-list',
+	blocks: array(
+	)
+);
 /**
  * Image Crops
  */
