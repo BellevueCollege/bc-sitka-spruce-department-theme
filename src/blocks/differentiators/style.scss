@@ -1,17 +1,16 @@
+ 
 @import '/src/scss/block-styles';
+
 
 .diffs {
   border-top: 1px solid $white;
 
   &--container {
-    //differentiator heading should be added later
-    //@include global-spacing(12x, padding-bottom);
-    //@include global-spacing(36x, padding-top);
+
     width: 100%;
-    // height: 10vw;
     background-color: var(--bc-rainy-night-blue);
-	clip-path: ellipse(90% 100% at bottom center);
-	overflow: hidden;
+	  clip-path: ellipse(90% 100% at bottom center);
+	  overflow: hidden;
 
 	& + div {
 		margin-top: 50;
@@ -36,121 +35,60 @@
 }
 
 .diff {
+
   &--item {
     
     overflow: hidden;
     height: 100%;
-    border-radius: 8px;
+    border-radius: var(--bs-border-radius)x;
     background-color: var(--white);
-    //padding: 48px 32px 48px 32px;
-    //height: 360px;
-    //width: 418px;
-    //padding-top: 48px;
-    //padding-bottom: 48px;
+
+    h3, p, a, a:hover {
+      padding-right: 2rem;
+      padding-left: 2rem; 
+
+    }
 
 
     h3 {
-      //@include secondary-typeface(b22-card-title-small);
-      font-size: 22px;
-      //padding: 48px 32px 48px 32px;
-      padding-right: 2rem;
-      //padding-bottom: 50px;
-      padding-left: 2rem;
-      //padding-top: 16px;
+
+      font-size: 1.375rem;
       margin-top: 1rem;
-      //padding-bottom: 48px;
+ 
     }
 
     p {
       margin-top: 1rem;
-      font-size: 18px;
-      //padding: 48px 32px 48px 32px;
-      padding-right: 2rem;
-      //padding-bottom: 50px;
-      padding-left: 2rem;
-
-    }
-
-    a {
-
-      padding-right: 2rem;
-      //padding-bottom: 50px;
-      padding-left: 2rem;
+      font-size: 1.125rem;
 
     }
 
     img {
 
-      height: 200px;
-      width: 360px;
+      height: 100%;
+      width: 100%;
 
     }
 
-		//padding-bottom: var( --sitka-container-spacing );
+    a {
+
+      display:inline-block;
+    
+    }
+    
     padding-bottom: 2.5rem;
 
-    /*
-
-    height: 100%;
-		border-radius: 0.5rem;
-		background-color: var(--accent-fountain-blue-extralight);
-
-		h3 {
-			@include secondary-typeface(b22-card-title-small);
-		}
-
-		p {
-			margin-top: 0.5rem;
-
-			@include secondary-typeface(small-text);
-		}
-*/
-
-  }
-
-  &--hero:not(.diff--hero__photo) {
-    // @include global-spacing(6x, padding-top);
-    // @include global-spacing(4x, padding-right padding-left);
-/*     .icon {
-      width: 90px;
-      height: 90px;
-    }
-      
-    color: var(--bc-rainy-night-blue); */
-    //height: 200px;
-    //width: 360px;
-
-  }
-
-  &--hero__photo {
-    //padding: 0;
-    //height: 200px;
-    //width: 360px;
-
-/*     .icon {
-      width: 90px;
-      height: 90px;
-    }
-    color: var(--bc-rainy-night-blue); */
   }
 
   &--hero {
-   /* [class^="fa-"],
-    [class^="fas-"] {
-      color: var(--bc-rainy-night-blue);
-      font-size: 90px;
-    } */
-           padding-top: 2rem;
-           //padding-bottom: 16px;
-      //padding-bottom: 48px;
+
+    padding-top: 2rem;
+
     i::before {
       font-size: 4.5rem;
       color: var(--bc-rainy-night-blue);
       padding-right: 2rem;
-      //padding-bottom: 50px;
       padding-left: 2rem;
-      //padding-top: 48px;
-      //padding-bottom: 16px;
     }
     
   }
@@ -159,20 +97,14 @@
     color: var(--bc-rainy-night-blue);
     font-size: 4rem;
     font-weight: bold;
-    // @include secondary-typeface(stat);
     padding-right: 2rem;
-    //padding-bottom: 50px;
     padding-left: 2rem;
-    //padding-top: 32px;
-    //padding-bottom: 48px;
-    //padding-top: 32px;
-    //padding-bottom: 16px;
   }
 }
 
 @media screen and (min-width: 576px) and (max-width: 767px) {
   .diffs--container .col-sm-6:nth-child(3) {
-    margin-top: 40px;
-    margin-bottom: 40px;
+    margin-top: 2.5rem;
+    margin-bottom: 2.5rem;
   }
 }
