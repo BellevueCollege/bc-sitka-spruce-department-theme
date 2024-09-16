@@ -19,25 +19,35 @@
 	} %}
 {% endset %}
 
+{% set footer_menu %}
+	{% include 'system/menu.twig' with {
+		items: menu_main_menu.items,
+		depth: 1,
+		ul_class: 'menu',
+		li_active_class: 'menu-item--active-trail menu-item--expanded',
+		a_class: 'link-arrow',
+	} %}
+{% endset %}
+
 {% block wrapper %}
 
 	{% block header %}
 		{% include '/stories/header/header.twig' with {
-			core_homepage_url: '#',
-			site_homepage_url: '#',
+			core_homepage_url: 'https://www.bellevuecollege.edu',
+			site_homepage_url: site.siteurl,
 			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
 			site_title: site.blogname,
 			search_expanded: false,
 			menu_expanded: false,
 			menu: main_menu
 		}
-		
+
 		%}
 	{% endblock %}
 
 	<main id="main-content" class="main-content">
 		{% block content %}
-		
+
 		{% endblock %}
 	</main>
 
@@ -45,7 +55,17 @@
 	{% endblock %}
 
 	{% block footer %}
-		{% include 'system/footer.twig' %}
+		{% include '/stories/footer/footer.twig' with {
+			core_homepage_url: 'https://www.bellevuecollege.edu',
+			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
+			mountains_url: theme.uri ~ '/assets/img/footer-mountains.svg',
+			site_homepage_url: site.siteurl,
+			site_title: site.blogname,
+			menu: footer_menu,
+			address: acf_options.address,
+			phone: acf_options.phone,
+			social: acf_options.social
+		} %}
 	{% endblock %}
 
 

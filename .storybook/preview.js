@@ -33,3 +33,18 @@ Twig.extendFilter("sanitize", function (a, b) {
 Twig.extendFunction("__", (input, namespace) => {
   return input;
 });
+
+/**
+ * Mock the Timber esc_url function. Note that NO SANITIZATION is done. This is purely for a preview.
+ */
+Twig.extendFilter("esc_url", (input) => {
+	return input;
+});
+
+
+/**
+ * Mock the Timber wp_kses_post function. Note that NO SANITIZATION is done. This is purely for a preview.
+ */
+Twig.extendFilter("wp_kses_post", (input) => {
+	return input;
+});
