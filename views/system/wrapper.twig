@@ -19,6 +19,17 @@
 	} %}
 {% endset %}
 
+{% set menu_cta %}
+	{% include 'system/menu.twig' with {
+		items: menu_cta_menu.items|slice(0, 2),
+		depth: 1,
+		ul_class: 'menu',
+		li_class: 'menu-item',
+		li_active_class: 'menu-item',
+		a_class: 'btn btn-info',
+	} %}
+{% endset %}
+
 {% set footer_menu %}
 	{% include 'system/menu.twig' with {
 		items: menu_main_menu.items,

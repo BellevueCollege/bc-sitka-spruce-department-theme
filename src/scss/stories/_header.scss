@@ -2,12 +2,12 @@
 #header-wrapper {
     background: css_color('white');
     background: linear-gradient(180deg, css_color('gray--xlight') 60px, css_color('white') 60px);
-    
+
     // Toggle Menu Button Styles
     &.menu-expanded .menu-toggle {
         background-color: css_color('bc-brutus-blue');
         color: css_color('white');
-    } 
+    }
 
     // Show and hide menus based on screen size and expanded state
     @include media-breakpoint-down($header-desktop-breakpoint) {
@@ -41,6 +41,9 @@
 
     #site-header--search {
         background-color: css_color('accent-fountain-blue-light');
+		.container-xl {
+			--bs-gutter-x: 1rem;
+		}
     }
 }
 
@@ -72,7 +75,7 @@
         "navbar navbar navbar navbar navbar navbar"
         "utilitynav utilitynav utilitynav utilitynav utilitynav utilitynav";
 
-    
+
     // Desktop Header Layout
     @include media-breakpoint-up($header-desktop-breakpoint) {
         grid-template-areas:
@@ -81,7 +84,7 @@
     }
 
 
-    &--logo { 
+    &--logo {
         grid-area: logo;
 
         img {
@@ -116,14 +119,27 @@
             color: css_color('black');
         }
     }
-
-
-
     // Hide and display Search Box based on screen size and expanded state
     @include media-breakpoint-up($header-desktop-breakpoint) {
-        &--main-nav,
-        &--cta {
+        &--main-nav {
             padding-top: 0.5rem;
         }
+		&--cta {
+			padding-top: 0.75rem;
+			padding-left: 1rem;
+		}
     }
+
+	// Style Main and CTA menu interaction
+	&--menu-wrapper {
+		display: flex;
+		justify-content: flex-end;
+		@include media-breakpoint-down($header-desktop-breakpoint) {
+			flex-direction: column;
+		}
+
+		.menu {
+			flex: 0 1 auto;
+		}
+	}
 }
