@@ -86,22 +86,18 @@
 }
 
 // Touchevents based navigation
-.touchevents {
+@media (hover: none) {
 
   .accessible-menu {
-    @include media-breakpoint-up(lg) {
+    @include media-breakpoint-up($header-desktop-breakpoint) {
+
 
       .menu-item-has-children > a {
-        padding-right: 30px;
+        padding-right: 30px !important;
       }
 
       .menu-item__button {
-        top: 0rem;
-        right: -20px;
-        left: auto;
         width: calc( 1rem + 2px ) !important;
-        height: 100%;
-        padding: 0;
         opacity: 1;
       }
 
