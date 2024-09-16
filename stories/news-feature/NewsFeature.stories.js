@@ -6,8 +6,10 @@ export default {
     tags: ['autodocs'],
 };
 
+import '/assets/dist/blocks/news-feature-core/style-index.css';
 
-const Template = ( { 
+
+const Template = ( {
     eyebrow,
     heading,
     subheading,
@@ -29,7 +31,7 @@ const news_story = {
     title: 'Bellevue College Receives $0.0 Million Grant',
     summary: 'BC was chosen to receive $0.0 million grant from the National Science Foundation (not the one you are thinking of!).'
 };
-    
+
 export const Default = Template.bind({});
 Default.args = {
     eyebrow: 'Keep Up to Date',

@@ -47,6 +47,7 @@ function register_blocks() {
 		'news-feature-core',
 		'testimonial-section',
 		'support-feature',
+		'department-feature',
 	);
 
 	block_registration_helper( $blocks );

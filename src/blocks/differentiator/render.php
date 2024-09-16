@@ -3,19 +3,19 @@ use BcSitkaSpruce\Controllers\Differentiator;
 use Timber\Timber;
 
 if ( ! isset( $attributes['differentiatorPostId'] ) ) {
-    return;
+	return;
 }
 
-$context = Timber::context();
-$context['assetPath'] = get_template_directory_uri() . '/assets';
+$context                = Timber::context();
+$context['assetPath']   = get_template_directory_uri() . '/assets';
 $context['wrapperAtts'] = get_block_wrapper_attributes();
 
-$content = Differentiator::get_post_data_from_site(
-    $attributes['differentiatorPostId']
+$content = Differentiator::get_single_from_core(
+	$attributes['differentiatorPostId']
 );
 
 if ( ! is_array( $content ) || ! isset( $content ) ) {
-    return;
+	return;
 }
 
 $context += $content;
