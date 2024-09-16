@@ -1,0 +1,6 @@
+@import "/src/scss/block-styles";
+.support-feature-component {
+	&.tab-wrapper.tab-wrapper-dark {
+		padding-top: 0;
+	}
+}

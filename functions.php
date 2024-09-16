@@ -10,6 +10,13 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Initialize Timber.
 Timber\Timber::init();
+
+// Register Global Timber Context Variables
+add_filter('timber/context', function ($context) {
+	$context['current_year'] = date('Y');
+
+	return $context;
+});
 /**
  * Register Menus
  */
@@ -46,6 +53,8 @@ function register_blocks() {
 		'tabs-section',
 		'news-feature-core',
 		'testimonial-section',
+		'support-feature',
+		'department-feature',
 	);
 
 	block_registration_helper( $blocks );
@@ -71,7 +80,6 @@ $enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css' );
 // $enqueuer->addStyle('bc-sitka-spruce-icons', '/node_modules/@fortawesome/fontawesome-pro/css/all.css', [], get_template_directory_uri());
 $enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
-$enqueuer->addScript( 'bootstrap', '//cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js' );
 
 // Enqueue Block Styles
 $enqueuer->addBlockStyle(
@@ -109,7 +117,11 @@ $enqueuer->addBlockStyle(
 		'mayflower-blocks/alert',
 	)
 );
-
+$enqueuer->addBlockStyle(
+	handle: 'tabcordion-list',
+	blocks: array(
+	)
+);
 /**
  * Image Crops
  */
