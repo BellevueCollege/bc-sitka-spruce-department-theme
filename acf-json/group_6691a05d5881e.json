@@ -131,7 +131,7 @@
             "label": "Phone Number",
             "name": "phone_number",
             "aria-label": "",
-            "type": "number",
+            "type": "text",
             "instructions": "",
             "required": 0,
             "conditional_logic": 0,
@@ -141,10 +141,8 @@
                 "id": ""
             },
             "default_value": "",
-            "min": "",
-            "max": "",
-            "placeholder": "",
-            "step": "",
+            "maxlength": 12,
+            "placeholder": "Please Type In Your Phone Number (e.g 425-564-XXXX)",
             "prepend": "",
             "append": ""
         },
@@ -333,5 +331,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1722277966
+    "modified": 1722980801
 }
