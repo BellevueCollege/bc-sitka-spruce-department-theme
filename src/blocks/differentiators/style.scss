@@ -3,13 +3,11 @@
 
 
 .diffs {
-  border-top: 1px solid $white;
 
   &--container {
 
     width: 100%;
     background-color: var(--bc-rainy-night-blue);
-	  clip-path: ellipse(90% 100% at bottom center);
 	  overflow: hidden;
 
 	& + div {
@@ -20,18 +18,6 @@
   padding-bottom: var( --sitka-container-spacing );
   }
 
-  &.curved-top {
-    position: relative;
-    padding-top: 10vw;
-
-    .arch-shape {
-      clip-path: url(#diffs--arch-shape--path);
-    }
-  }
-
-  .section-heading {
-   @include global-spacing(10px, padding-top);
-  }
 }
 
 .diff {
@@ -40,7 +26,7 @@
     
     overflow: hidden;
     height: 100%;
-    border-radius: var(--bs-border-radius)x;
+    border-radius: 0.5rem;
     background-color: var(--white);
 
     h3, p, a, a:hover {
