@@ -55,6 +55,8 @@ function register_blocks() {
 		'testimonial-section',
 		'support-feature',
 		'department-feature',
+		'accordion-section',
+		'accordion-section/accordion-section-content',
 	);
 
 	block_registration_helper( $blocks );
