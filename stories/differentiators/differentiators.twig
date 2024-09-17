@@ -4,14 +4,11 @@
 * Bellevue template for the differentiators section component.
 */
 #}
-<section class="diffs curved-top global-margin--12x">
-  <svg class="arch-shape--svg">
-    <clipPath id="diffs--arch-shape--path" clippathunits="objectBoundingBox">
-      <path d="M0,0.634 C0.384,-0.226,0.603,-0.196,1,0.634 V1 H0 V0.634"></path>
-    </clipPath>
-  </svg>
-  <div class="arch-shape"></div>
+<section class="section section-dark diffs curved-top global-margin--12x">
   <div class="diffs--container bg-navy">
+		{% include '/stories/section-heading/section-heading.twig' with {
+
+		} %}
     {{ content }}
   </div>
 </section>
