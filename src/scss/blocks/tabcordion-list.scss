@@ -1,0 +1,167 @@
+@import '/src/scss/block-styles';
+
+// Raw styles from Bellevue 2022
+.tab-wrapper-dark {
+	background-color: var(--bc-rainy-night-blue);
+}
+
+.tabcordion.tabcordion-list {
+	// Prevent blue line from extending outside of component
+	overflow: hidden;
+
+
+	.tab-pane.accordion-item {
+
+		// Force all tabs to display in accordion mode
+		@include media-breakpoint-down(md) {
+			--bs-accordion-color: var(--black);
+			--bs-accordion-border-color: var(--bc-rainy-night-blue);
+			--bs-accordion-bg: var(--accent-fountain-blue-extralight);
+
+			display: block;
+
+			&.fade {
+				opacity: 1;
+			}
+		}
+
+		@include media-breakpoint-up(md) {
+			--bs-accordion-color: var(--white);
+			--bs-accordion-border-color: transparent;
+			--bs-accordion-bg: transparent;
+			--bs-accordion-body-padding-y: 0;
+		}
+	}
+
+	@include media-breakpoint-up(md) {
+		.left-pane {
+			flex-direction: column;
+			align-items: flex-start;
+			width: 50%;
+			padding-bottom: 3px; // so the last underline isn't hidden
+
+			h2 {
+				padding-right: 2.5rem;
+			}
+
+			.nav-link {
+				font-family: $myriad-pro;
+				width: calc(100% - 24px);
+				margin-left: 1.5rem;
+				padding-bottom: 2px;
+				padding-left: 0;
+				text-decoration: underline;
+				font-size: 1.375rem;
+				text-decoration-color: var(--bc-fountain-blue);
+				text-decoration-thickness: 2px;
+				text-underline-offset: 5px;
+				position: relative;
+				color: var(--white);
+				margin-top: 0.75em;
+
+				&::before,
+				&::after {
+					position: absolute;
+					right: 0;
+					display: block;
+					width: 2px;
+					height: 1000px;
+					max-height: 1px;
+					content: "";
+					transition:
+						max-height 2s $bezier-ease--swanky 0.5s,
+						opacity 0.6s $bezier-ease;
+					opacity: 0;
+					background-color: var(--bc-fountain-blue);
+				}
+
+				&::before {
+					bottom: 0;
+				}
+
+				&::after {
+					top: 100%;
+				}
+
+				&:not(.active) {
+					border-bottom: 2px solid rgba(0, 174, 239, 0);
+
+					span.far {
+						position: absolute;
+						padding-left: space-calc(1);
+						color: var(--bc-fountain-blue);
+						font-weight: 300;
+					}
+				}
+
+				&.active {
+					text-decoration: none;
+					color: var(--bc-fountain-blue);
+					border-bottom: 2px solid rgba(0, 174, 239, 1);
+
+					span.far {
+						position: absolute;
+						opacity: 0;
+					}
+
+					&::before,
+					&::after {
+						max-height: 1000px;
+						opacity: 1;
+					}
+				}
+				&:hover {
+					color: var(--accent-fountain-blue-light);
+					background-color: transparent;
+				}
+
+				&:focus-visible {
+					border-top: 2px solid var(--white);
+					border-bottom: 2px solid var(--white);
+					border-left: 2px solid var(--white);
+					color: var(--white);
+				}
+			}
+		}
+	}
+	.tab-pane {
+		.aspect-ratio-frame {
+			overflow: hidden;
+			border-radius: var(--bs-border-radius);
+		}
+		p {
+			margin-top: 1rem;
+		}
+
+		.btn {
+			--bs-btn-font-weight: 600;
+			--bs-btn-color: var(--white);
+			--bs-btn-bg: var(--bc-brutus-blue);
+			--bs-btn-border-color: transparent;
+			--bs-btn-hover-color: var(--white);
+			--bs-btn-hover-bg: var(--bc-rainy-night-blue);
+			--bs-btn-active-color: var(--white);
+			--bs-btn-active-bg: var(--bc-rainy-night-blue);
+
+			margin-right: 0.75rem;
+			margin-top: 1rem;
+			&:last-child {
+				margin-right: 0;
+			}
+
+			@include media-breakpoint-up(md) {
+				--bs-btn-font-weight: 600;
+				--bs-btn-color: var(--black);
+				--bs-btn-bg: var(--white);
+				--bs-btn-border-color: transparent;
+				--bs-btn-hover-color: var(--black);
+				--bs-btn-hover-bg: var(--bc-rain-garden-green);
+				--bs-btn-active-color: var(--black);
+				--bs-btn-active-bg: var(--bc-rain-garden-green);
+			}
+		}
+
+
+
+	}
+}

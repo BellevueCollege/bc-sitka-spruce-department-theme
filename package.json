@@ -49,6 +49,7 @@
   },
   "dependencies": {
     "@fortawesome/fontawesome-pro": "^6.5.2",
+    "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "twig-loader": "^0.5.5"
   },

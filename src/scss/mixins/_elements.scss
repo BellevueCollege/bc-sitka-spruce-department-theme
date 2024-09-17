@@ -10,17 +10,44 @@
 ///   .link-arrow {
 ///     @include link-arrow($icon-color: $primary-color);
 ///   }
-///
-@mixin link-arrow($link-color: $link-color, $icon-color: $link-color) {
+
+
+@mixin link-accent-underline($link-color: $link-color) {
 	position: relative;
 	padding-bottom: 4px;
 	text-decoration: underline;
 	color: $link-color;
-	font-size: 1.25rem;
 	font-weight: bold;
 	text-decoration-color: var(--bc-fountain-blue);
 	text-decoration-thickness: 2px;
 	text-underline-offset: 7px;
+
+	&:focus {
+		position: relative;
+		text-decoration: none;
+		text-decoration: underline;
+		outline: 1px solid $black;
+		outline-offset: 1px;
+		background-color: var(--accent-fountain-blue-extralight);
+		text-decoration-color: var(--bc-fountain-blue);
+		text-decoration-thickness: 2px;
+		text-underline-offset: 3px;
+	}
+
+	&:hover,
+	&:active {
+		padding: 0 0 4px;
+		color: var(--black);
+		outline: none;
+		text-decoration-color: var(--bc-fountain-blue);
+		text-decoration-thickness: 5px;
+		text-underline-offset: 5px;
+	}
+}
+
+@mixin link-arrow($link-color: $link-color, $icon-color: $link-color) {
+	@include link-accent-underline($link-color);
+	font-size: 1.25rem;
 
 	&.btn {
 		padding-right: $spacing--small;
@@ -42,16 +69,6 @@
 	}
 
 	&:focus {
-		position: relative;
-		text-decoration: none;
-		text-decoration: underline;
-		outline: 1px solid $black;
-		outline-offset: rem-calc(1);
-		background-color: var(--accent-fountain-blue-extralight);
-		text-decoration-color: var(--bc-fountain-blue);
-		text-decoration-thickness: 2px;
-		text-underline-offset: 3px;
-
 		&::after {
 			color: var(--black);
 		}
@@ -59,13 +76,6 @@
 
 	&:hover,
 	&:active {
-		padding: 0 0 4px;
-		color: var(--black);
-		outline: none;
-		text-decoration-color: var(--bc-fountain-blue);
-		text-decoration-thickness: 5px;
-		text-underline-offset: 5px;
-
 		&::after {
 			transform: translateX(4px);
 			color: var(--black);

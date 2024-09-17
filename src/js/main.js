@@ -1,3 +1,4 @@
+import * as bootstrap from 'bootstrap'
 import AccessibleMenu from './modules/accessible-menu';
 import ButtonToggle from './modules/button-toggle';
 
@@ -24,6 +25,10 @@ import ButtonToggle from './modules/button-toggle';
         let searchToggle = document.getElementById('site-header--search-toggle-btn');
         searchToggle.focus();
         searchToggle.click();
-        
+
     });
+
+	// Enable Tooltips
+	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 })()
