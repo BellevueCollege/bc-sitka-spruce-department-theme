@@ -1,0 +1,14 @@
+<?php
+use BcSitkaSpruce\Controllers\Department;
+use Timber\Timber;
+$context                  = Timber::context();
+$context['heading']       = esc_html( $attributes['title'] );
+$context['subheading']    = esc_html( $attributes['description'] );
+$context['department_id'] = esc_attr( $attributes['departmentId'] );
+$context                  = array_merge( $context, Department::get_single_from_core( $attributes['departmentId'] ) ); // Merge in the content from the core
+
+if ( $context['department_id'] ) {
+	Timber::render( '/stories/department-feature/department-feature.twig', $context );
+} else {
+	return '';
+}

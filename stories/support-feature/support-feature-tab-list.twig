@@ -1,0 +1,16 @@
+{% extends '/stories/tabcordion/components/tab-list.twig' %}
+
+{% block tab_list_heading %}
+	{% if heading %}
+		<h2 class="support-feature-intro-heading text-white">{{ heading }}</h2>
+	{% endif %}
+{% endblock %}
+{% block tab_links %}
+	{% for tab in tabs %}
+		{% include '/stories/tabcordion/components/tab-list-tab.twig' with {
+			active: loop.first ? 'active show' : '',
+			aria_selected: 'true',
+			title: tab.title,
+		} %}
+	{% endfor %}
+{% endblock %}
