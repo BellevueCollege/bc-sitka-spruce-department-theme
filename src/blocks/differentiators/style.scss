@@ -1,21 +1,33 @@
- 
 @import '/src/scss/block-styles';
-
 
 .diffs {
 
-  &--container {
+    &--container {
 
-    width: 100%;
-    background-color: var(--bc-rainy-night-blue);
-	  overflow: hidden;
+      width: 100%;
+      background-color: var(--bc-rainy-night-blue);
+      overflow: hidden;
 
-	& + div {
-		margin-top: 50;
-		padding-top: 10;
-	}
-  padding-top: var( --sitka-container-spacing );
-  padding-bottom: var( --sitka-container-spacing );
+    & + div {
+      margin-top: 50;
+      padding-top: 10;
+    }
+    padding-top: var( --sitka-container-spacing );
+    padding-bottom: var( --sitka-container-spacing );
+    
+    .section-heading{ 
+    
+      h2, .link-arrow, .section-heading__subheading{
+        color: white
+      }
+      
+      
+      h2 {		
+      font-size: 2.75rem;
+      margin-bottom: 0;
+      }
+
+    }
   }
 
 }
