@@ -58,6 +58,8 @@ function register_blocks() {
 		'announcement-banner',
 		'support-feature',
 		'department-feature',
+		'accordion-section',
+		'accordion-section/accordion-section-content',
 	);
 
 	block_registration_helper( $blocks );
