@@ -53,6 +53,7 @@ function register_blocks() {
 		'tabs-section',
 		'news-feature-core',
 		'testimonial-section',
+		'announcement-banner',
 		'support-feature',
 		'department-feature',
 	);
@@ -147,6 +148,8 @@ $image_crops->addImageSize( 'featured-home-suppt', 1160, 500, true );
 $image_crops->addImageSize( 'card-header', 360, 200, true );
 
 $image_crops->addImageSize( 'testimonial', 560, 680, true );
+
+$image_crops->addImageSize( 'announcement-banner', 260, 174, false );
 
 
 // Make some image sizes available in the block editor
