@@ -48,6 +48,7 @@
     "webpack-remove-empty-scripts": "^1.0.4"
   },
   "dependencies": {
+    "@fancyapps/ui": "^5.0.36",
     "@fortawesome/fontawesome-pro": "^6.5.2",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",

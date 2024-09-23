@@ -3,6 +3,8 @@ import AccessibleMenu from './modules/accessible-menu';
 import ButtonToggle from './modules/button-toggle';
 import HeaderState from './modules/header-state';
 import Slider from './modules/slider';
+import { Fancybox } from "@fancyapps/ui";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 (() => {
 
@@ -60,4 +62,14 @@ import Slider from './modules/slider';
 		}
 	});
 	mediaGallerySlider.add('.media-gallery-wrapper').run();
+
+	// Enable Fancybox
+	Fancybox.bind('[data-fancybox]', {
+		Html: {
+			video: {
+			autoplay: false,
+			},
+		},
+	});
+
 })();
