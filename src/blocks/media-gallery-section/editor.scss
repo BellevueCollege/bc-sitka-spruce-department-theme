@@ -1,2 +1,14 @@
 @import '/src/scss/block-styles';
 
+.wp-block-bc-sitka-spruce-media-gallery-section {
+	max-width: var(--wp--style--global--wide-size) !important;
+
+	.swiper-slide {
+		display: none;
+
+		&:first-child {
+			display: block;
+			margin-top: 2rem;
+		}
+	}
+}

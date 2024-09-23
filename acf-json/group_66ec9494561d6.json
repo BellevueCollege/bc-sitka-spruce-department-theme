@@ -48,7 +48,7 @@
             "name": "slides",
             "aria-label": "",
             "type": "repeater",
-            "instructions": "",
+            "instructions": "Insert one or more 'Slides' to display in this media gallery. A slide can display an image or a video. Note that only the first slide will preview in the editor; don't worry, the rest will display on the front-end of the webpage.",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
@@ -171,5 +171,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1726864879
+    "modified": 1727106141
 }
