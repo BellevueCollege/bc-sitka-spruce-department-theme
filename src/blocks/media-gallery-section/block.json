@@ -3,7 +3,7 @@
     "name": "bc-sitka-spruce/media-gallery-section",
     "title": "Media Gallery Section",
     "category": "layout",
-    "icon": "star",
+    "icon": "format-gallery",
     "description": "Displays a slider of images and videos.",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
