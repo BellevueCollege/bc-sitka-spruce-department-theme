@@ -51,6 +51,7 @@
     "@fortawesome/fontawesome-pro": "^6.5.2",
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
+    "swiper": "^11.1.0",
     "twig-loader": "^0.5.5"
   },
   "packageManager": "pnpm@8.13.1+sha1.90f9b2bb3ed58632bcb7b13c3902d6873ee9501c"
