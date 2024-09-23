@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "name": "bc-sitka-spruce/media-gallery-section",
+    "title": "Media Gallery Section",
+    "category": "layout",
+    "icon": "star",
+    "description": "Displays a slider of images and videos.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "../../../../src/blocks/media-gallery-section/render.php"
+    },
+	"editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
