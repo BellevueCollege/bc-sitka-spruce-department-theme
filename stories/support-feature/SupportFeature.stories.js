@@ -5,7 +5,6 @@ import twigTabContent from "../tabcordion/components/content.twig";
 import twigTabContentPanel from "../tabcordion/components/content-panel.twig";
 
 
-import '/assets/dist/css/blocks/card.css'
 import '/assets/dist/css/blocks/nav.css';
 import '/assets/dist/css/blocks/accordion.css';
 import '/assets/dist/css/blocks/tabcordion-list.css';

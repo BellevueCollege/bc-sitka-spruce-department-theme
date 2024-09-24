@@ -6,10 +6,9 @@ export default {
     tags: ['autodocs'],
 };
 
-import '/assets/dist/css/blocks/card.css';
 import '/assets/dist/blocks/content-and-location/style-index.css';
 
-const Template = ( { 
+const Template = ( {
     wrapper_attrs,
     heading,
     summary,

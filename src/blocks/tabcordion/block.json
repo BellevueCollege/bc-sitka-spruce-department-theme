@@ -61,7 +61,6 @@
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
 	"style": [
-		"bc-sitka-spruce-style-card",
 		"bc-sitka-spruce-style-nav",
 		"bc-sitka-spruce-style-tabs",
 		"bc-sitka-spruce-style-tabcordion-list",
