@@ -4,7 +4,7 @@ import bcStandardSock from "./standard-sock.twig";
 
 
 export default {
-    title: "Stories/Sock",
+    title: "Stories/Sock/Standard Sock",
     component: "sock",
     tags: ['autodocs'],
 };
