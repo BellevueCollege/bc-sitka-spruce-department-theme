@@ -155,6 +155,7 @@ $image_crops->addImageSize( 'testimonial', 560, 680, true );
 
 $image_crops->addImageSize( 'announcement-banner', 260, 174, false );
 
+$image_crops->addImageSize( 'sock-location', 300, 200, true );
 
 // Make some image sizes available in the block editor
 add_filter(
