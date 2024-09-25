@@ -1,4 +1,4 @@
-@import 'variables';
+@import "variables";
 
 @import "lib";
 
@@ -18,26 +18,24 @@ $header-desktop-breakpoint: lg;
 // Front-end only components
 @import "menus";
 
-
 // MOVE THESE ELSEWHERE
 // Temporary CSS that should be moved to appropriate files
 
-
-
-.container, .container-xl {
-	@include media-breakpoint-up('lg') {
-		--bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 );
+.container,
+.container-xl {
+	@include media-breakpoint-up("lg") {
+		--bs-gutter-x: calc(var(--sitka-container-spacing) * 2);
 	}
 }
 
 #main-content {
 	.block-wrapper {
 		@include make-container();
-		@include media-breakpoint-up('lg') {
-			--bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 );
+		@include media-breakpoint-up("lg") {
+			--bs-gutter-x: calc(var(--sitka-container-spacing) * 2);
 		}
 
-		max-width: var( --wp--style--global--wide-size);
+		max-width: var(--wp--style--global--wide-size);
 
 		&.alignfull {
 			max-width: 100%;
@@ -49,8 +47,110 @@ $header-desktop-breakpoint: lg;
 		}
 
 		&.alignwide > * {
-			max-width: var( --wp--style--global--wide-size);
+			max-width: var(--wp--style--global--wide-size);
+		}
+	}
+}
+
+/// Styles for the checkerboard.
+////
+
+.card--checkerboard {
+	@include media-breakpoint-up(md) {
+		// Blue Line -- TODO: Md Breakpoint
+		.card-img--checkerboard:before {
+			position: absolute;
+			z-index: 10;
+			top: 4.4375rem;
+			right: 57%;
+			width: 6.25rem;
+			height: 0.1875rem;
+			content: "";
+			border-radius: 0.125rem;
+			background-color: var(--bc-fountain-blue);
+		}
+	}
+	@include media-breakpoint-up(lg) {
+		.card-img--checkerboard:before {
+			right: 40%;
+		}
+	}
+
+	figcaption {
+		padding-right: 0;
+		padding-left: 0;
+		background-color: var(--white);
+		border-top-left-radius: 0rem;
+		border-bottom-left-radius: 0.5rem;
+		border-top-right-radius: 0.5rem;
+		border-bottom-right-radius: 0rem;
+
+		@include media-breakpoint-up(md) {
+			& {
+				position: absolute;
+				width: fit-content;
+				max-width: calc(41% - 2rem);
+				padding-right: 1rem;
+				padding-left: 1rem;
+				color: var(--white);
+				background-color: var(--bc-rainy-night-blue);
+				transform: translateY(-100%);
+			}
+		}
+		@include media-breakpoint-up(lg) {
+			& {
+				max-width: calc(58% - 2rem);
+			}
+		}
+	}
+
+	&:nth-child(odd) {
+		& > .row {
+			flex-direction: row-reverse;
+
+			figcaption {
+				border-top-left-radius: 0.5rem;
+				border-bottom-left-radius: 0rem;
+				border-top-right-radius: 0rem;
+				border-bottom-right-radius: 0.5rem;
+			}
+
+			@include media-breakpoint-up(md) {
+				figcaption {
+					right: 0;
+				}
+			}
 		}
 
+		.card-img--checkerboard:before {
+			left: 57%;
+		}
+		@include media-breakpoint-up(lg) {
+			.card-img--checkerboard:before {
+				left: 40%;
+			}
+		}
+	}
+
+	.card-body {
+		ul {
+			display: flex;
+			flex-direction: column;
+			gap: 1rem;
+			list-style-type: none;
+
+			li {
+				margin: 0;
+				padding: 0;
+
+				&::before {
+					display: none;
+				}
+			}
+		}
+
+		p {
+			margin-top: 1rem;
+		}
 	}
 }
