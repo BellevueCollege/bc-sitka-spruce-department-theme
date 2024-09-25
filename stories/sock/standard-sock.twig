@@ -8,7 +8,7 @@
 				<p class="lead">{{ cta.additional_text|e }}</p>
 				{% if cta.buttons|length > 0 %}
 					{% for b in cta.buttons %}
-						<a href="{{ b.button.url|esc_url }}" class="btn btn-lg  btn-light">{{ b.button.title|e }}</a>
+						<a href="{{ b.button.url|esc_url }}" class="btn btn-lg btn-light mb-2">{{ b.button.title|e }}</a>
 					{% endfor %}
 				{% endif %}
 			{% endfor %}
