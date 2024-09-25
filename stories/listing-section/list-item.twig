@@ -1,0 +1,19 @@
+<div class="list-item row">
+	<div class="col-md-8">
+		<h3>{{ title|e }}</h3>
+		<p>{{ description|e }}</p>
+		{%  if links|length > 0 %}
+			<p>
+				{% for link in links %}
+					<a class="link-arrow" href="{{ link.url|esc_url }}">{{ link.title|e }}</a>
+				{% endfor %}
+			</p>
+		{% endif %}
+		{% if button %}
+			<a class="btn btn-primary" href="{{ button.url|esc_url }}">{{ button.title|e }}</a>
+		{% endif %}
+	</div>
+	<div class="col-md-4">
+		{{ image }}
+	</div>
+</div>
