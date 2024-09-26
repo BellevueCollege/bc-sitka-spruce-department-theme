@@ -1,5 +1,7 @@
 import contactItem from "./contact-item.twig";
 
+import '/assets/dist/blocks/contact-selector/style-index.css';
+
 export default {
     title: "Stories/Contact Item",
     component: "contact-item",
@@ -7,7 +9,7 @@ export default {
 };
 
 
-const Template = ( { 
+const Template = ( {
     first_name,
     last_name,
     position,
