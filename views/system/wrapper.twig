@@ -63,6 +63,19 @@
 	</main>
 
 	{% block sock %}
+		{% set location_image_html %}
+			<img src = "{{ acf_options.location_image.sizes['sock-location'] }}" alt = "{{ acf_options.location_image.alt }}" class = "img-fluid rounded">
+		{% endset %}
+
+		{% include '/stories/sock/standard-sock.twig' with {
+			standard_sock: acf_options.standard_sock,
+			display_location_card: acf_options.display_location_card,
+			location: acf_options.location,
+			location_image: location_image_html,
+			hours: acf_options.hours,
+			contact_page_url: acf_options.contact_page_url,
+			website_manager: acf_options.website_manager
+		} %}
 	{% endblock %}
 
 	{% block footer %}
