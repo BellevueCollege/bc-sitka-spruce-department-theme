@@ -1,1 +1,29 @@
-@import '/src/scss/block-styles';
+@import "/src/scss/block-styles";
+
+.listing-section {
+	.list {
+		margin-top: 3rem;
+		margin-bottom: 3rem;
+
+		&-item {
+			background-color: var(--white);
+			padding: 1.5rem;
+			margin-bottom: 0.125rem;
+			margin-left: 0.125rem;
+			margin-right: 0.125rem;
+
+			.img-fluid {
+				width: 360px;
+				height: 240px;
+			}
+		}
+
+		h2 {
+			@include secondary-typeface(b22-card-title-big);
+		}
+
+		p {
+			margin-top: 1rem;
+		}
+	}
+}

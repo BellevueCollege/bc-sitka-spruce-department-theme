@@ -1,6 +1,6 @@
 import twigListingSection from "./listing-section.twig";
 import twigListItem from "./list-item.twig";
-import '/assets/dist/blocks/listing-section/style-index.css';
+import '../../assets/dist/blocks/listing-section/style-index.css';
 export default {
     title: "Stories/Listing Section",
     component: "listing-section",
