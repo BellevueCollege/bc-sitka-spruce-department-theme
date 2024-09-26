@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "name": "bc-sitka-spruce/announcement-banner",
+    "title": "Announcement Banner",
+    "category": "layout",
+    "icon": "star",
+    "description": "Display an announcement banner with an image and text.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "../../../../src/blocks/announcement-banner/render.php"
+    },
+	"editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}

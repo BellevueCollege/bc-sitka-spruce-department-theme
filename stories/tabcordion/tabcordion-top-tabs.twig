@@ -4,8 +4,4 @@
 * Bellevue template for the tabcordion component.
 */
 #}
-{% block wrapperBefore %}{% endblock %}
-<div {{ wrapper_attrs }}>
-	{{ structure }}
-</div>
-{% block wrapperAfter %}{% endblock %}
+{% extends 'stories/tabcordion/tabcordion.twig' %}

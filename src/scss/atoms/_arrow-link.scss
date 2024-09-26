@@ -4,7 +4,7 @@
 ////
 
 .link-arrow {
-  @include link-arrow;
+  @include link-arrow( get_color( $sitka-colors, 'accent-link-blue' ) );
 }
 
 .dark-bg .link-arrow {

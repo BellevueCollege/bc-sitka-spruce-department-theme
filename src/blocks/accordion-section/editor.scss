@@ -1,0 +1,16 @@
+@import '/src/scss/block-styles';
+.wp-block-bc-sitka-spruce-accordion-section {
+	background-color: var(--gray--xlight);
+	padding-top: var(--sitka-container-spacing);
+	padding-bottom: var(--sitka-container-spacing);
+
+	@include media-breakpoint-up(md) {
+		& .accordion-section > .block-editor-inner-blocks > .block-editor-block-list__layout {
+			display: flex;
+			gap: 2rem;
+		}
+		.wp-block-bc-sitka-spruce-callout {
+			flex: 1 1 25%;
+		}
+	}
+}

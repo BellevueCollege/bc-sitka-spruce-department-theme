@@ -1,0 +1,9 @@
+@import '/src/scss/block-styles';
+.accordion-section-wrapper {
+	padding-top: var(--sitka-container-spacing);
+	padding-bottom: var(--sitka-container-spacing);
+
+	.accordion-section-heading {
+		margin-bottom: calc(var(--sitka-container-spacing) / 2);
+	}
+}

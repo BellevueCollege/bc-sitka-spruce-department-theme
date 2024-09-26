@@ -1,0 +1,42 @@
+{#
+/**
+ * @file
+ * Bellevue template to display a card item.
+ */
+#}
+<!-- Story: Card (card-bellevue2022) -->
+{%
+  set card_item_classes = [
+  'card',
+  'border-0'
+]|merge(card_classes|default([]))
+%}
+
+{% if aspect_ratio is not defined %}
+  {% set aspect_ratio = '.55' %}
+{% endif %}
+
+<div class="{{ card_item_classes|join(' ') }}">
+  <div class="row g-0">
+    {% if media or media_content %}
+      <div class="col-lg-7 col-md-6">
+        {{ media_content }}
+        {% if media %}
+          <figure>
+            <div class="aspect-ratio-frame" style="--aspect-ratio: {{ aspect_ratio }}">
+              {{ media }}
+            </div>
+            {% if media_caption %}
+              <figcaption>{{ media_caption }}</figcaption>
+            {% endif %}
+          </figure>
+        {% endif %}
+      </div>
+    {% endif %}
+    <div class="col">
+      <div class="card-body mt-n3 mx-3 mt-md-5 ms-md-n4 me-md-0 position-relative bg-white rounded p-3 p-md-4">
+        {{ card_content }}
+      </div>
+    </div>
+  </div>
+</div>

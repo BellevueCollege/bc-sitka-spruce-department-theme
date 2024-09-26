@@ -1,0 +1,14 @@
+{% extends '/stories/tabcordion/components/content-panel.twig' %}
+
+{% block content %}
+	{{ image }}
+	<h4 class="h2 mt-3">{{ heading }}</h4>
+	{{ content }}
+	{% if links %}
+		<div class="btn-group">
+			{% for link in links %}
+				<a class="btn" href="{{ link.url }}" {% if link.target %}target="{{ link.target }}"{% endif %}>{{ link.title }}</a>
+			{% endfor %}
+		</div>
+	{% endif %}
+{% endblock %}

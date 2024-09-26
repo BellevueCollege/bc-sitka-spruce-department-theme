@@ -1,0 +1,19 @@
+.cta-menu {
+	ul.menu {
+		list-style-type: none;
+		padding-left: 0;
+		display: flex;
+		gap: 1rem;
+
+		@include media-breakpoint-down($header-desktop-breakpoint) {
+			flex-direction: column;
+			a {
+				display: block;
+			}
+		}
+	}
+	.btn.btn-info {
+		--bs-btn-hover-bg: var(--bc-rain-garden-green);
+		--bs-btn-hover-border-color: var(--bc-rain-garden-green);
+	}
+}

@@ -1,39 +1,40 @@
 {#
 /**
- * @file
- * Bellevue template for the announcement banner component.
- */
+* @file
+* Bellevue template for the announcement banner component.
+*/
 #}
-<section class="announcement global-margin--12x container-xl">
-    <div class="row">
-        <div class="col">
-            <article class="announcement--item padding-6x oho-animate oho-animate-single fade-in-up">
-                {% if image %}
-                    <div class="announcement__image">
-                        <figure class="aspect-ratio-frame" style="--aspect-ratio: 174/260">
-                        {{ image }}
-                        </figure>
-                    </div>
-                {% endif %}
-                <div class="announcement__text text-margin-reset">
-                    <h2>{{ title }}</h2>
-                    {{ description }}
+<section class="announcement container-xl">
+	<div class="row">
+		<div class="col">
+			<article class="announcement--item oho-animate oho-animate-single fade-in-up rounded">
+				<div class="row">
+					{% if image %}
+						<div class="announcement__image col-sm-6 col-md-4">
+							<figure class="aspect-ratio-frame" style="--aspect-ratio: 174/260">
+							{{ image }}
+							</figure>
+						</div>
+					{% endif %}
+					<div class="announcement__text col">
+						<h2>{{ title }}</h2>
+						{{ description }}
+						<div class="announcement__button mt-3">
+							{% if button %}
+								<a class='btn btn-primary' href="{{ button.url }}">{{button.title}}</a>
+							{% endif %}
+						</div>
 
-                    <div>
-                        {% if links %}
-                            {% for link in links %}
-                                <a href="{{ link.url }}" class='link-arrow'>{{ link.text }}</a>
-                            {% endfor %}
-                        {% endif %}
-                    </div>
-
-                    <div>
-                        {% if button %}
-                            <a class='btn btn-primary' href="{{ button.url }}">{{button.text}}</a>
-                        {% endif %}
-                    </div>
-                </div>
-            </article>
-        </div>
-    </div>
+						{% if links %}
+							<ul class="announcement__links list-unstyled row mt-3">
+								{% for link in links %}
+									<li class="col-auto"><a class="link-arrow" href="{{ link.url }}">{{ link.title }}</a></li>
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+				</div>
+			</article>
+		</div>
+	</div>
 </section>
