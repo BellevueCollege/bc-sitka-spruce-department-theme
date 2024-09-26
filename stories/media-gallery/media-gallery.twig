@@ -1,0 +1,56 @@
+{#
+/**
+* @file
+* Bellevue template for the announcement banner component.
+*/
+#}
+<section class="media-gallery-wrapper section section-dark text-white swiper">
+	{% include '/stories/section-heading/section-heading.twig' with {
+		heading: title,
+		subheading: description
+	} %}
+	<div class="container-xl">
+		<div class="row">
+			<div class="col-md-12">
+				<div class="media-gallery-slides">
+					<div class="swiper-container">
+						<div class="slider-navigation">
+							<button class="slider-navigation__prev">
+								<span class="far fa-arrow-left" aria-hidden="true"></span>
+								<span class="visually-hidden">{{ __('Go to the previous slide.', 'bc-sitka-spruce') }}</span>
+							</button>
+							<button class="slider-navigation__next">
+								<span class="far fa-arrow-right" aria-hidden="true"></span>
+								<span class="visually-hidden">{{ __('Go to the next slide.', 'bc-sitka-spruce') }}</span>
+							</button>
+						</div>
+						<div class="swiper-wrapper">
+							{% for slide in slides %}
+								<div class="swiper-slide">
+									<flgure class="media-gallery-single-slide row">
+										<div class="col-md-8">
+											<div class="image-overlay-container">
+												{{ slide.image|wp_kses_post }}
+												{%  if slide.video_url %}
+													<a class="image-overlay" href="{{ slide.video_url|esc_url }}" data-fancybox target="_blank" rel="noopener noreferrer">
+														<i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+														<span class="visually-hidden">{{ __('Open video', 'bc-sitka-spruce') }}</span>
+													</a>
+												{% endif %}
+											</div>
+										</div>
+										<figcaption class="col-md-3">
+											<h3>{{ slide.slide_title|e }}</h3>
+											<hr>
+											<p>{{ slide.slide_description|e }}</p>
+										</figcaption>
+									</figure>
+								</div>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
