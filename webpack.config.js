@@ -44,7 +44,6 @@ const customPaths = Object.assign( {}, defaultConfig, {
 		...scssEntryPoint( 'editor' ),
 		...scssEntryPoint( 'alert', true ),
 		...scssEntryPoint( 'nav', true ),
-		...scssEntryPoint( 'card', true ),
 		...scssEntryPoint( 'accordion', true ),
 		...scssEntryPoint( 'tabs', true ),
 		...scssEntryPoint( 'tabcordion-list', true ),
