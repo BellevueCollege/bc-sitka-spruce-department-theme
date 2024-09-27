@@ -22,6 +22,15 @@
 	}
 }
 
+@media screen and (min-width: map.get($grid-breakpoints, 'md ')) { // Bootstrap helpers not available - using vanilla media query
+	:root {
+		// Use lg heading sizes at this breakpoint
+		@each $tag, $sizes in $heading-sizes {
+			--sitka-#{$tag}-font-size: var(--sitka-#{$tag}-font-size-md);
+		}
+	}
+}
+
 @media screen and (min-width: map.get($grid-breakpoints, 'lg')) { // Bootstrap helpers not available - using vanilla media query
 	:root {
 		--sitka-container-spacing: 3.75rem;
