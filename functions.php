@@ -60,6 +60,7 @@ function register_blocks() {
 		'department-feature',
 		'accordion-section',
 		'accordion-section/accordion-section-content',
+		'media-gallery-section',
 	);
 
 	block_registration_helper( $blocks );
@@ -82,6 +83,8 @@ function block_registration_helper( array $blocks ) {
 
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-mainjsassets', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
+
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css' );
 // $enqueuer->addStyle('bc-sitka-spruce-icons', '/node_modules/@fortawesome/fontawesome-pro/css/all.css', [], get_template_directory_uri());
 $enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
@@ -93,20 +96,13 @@ $enqueuer->addBlockStyle(
 		'mayflower-blocks/tabs',
 	)
 );
-$enqueuer->addBlockStyle(
-	handle: 'card',
-	blocks: array(
-		'mayflower-blocks/tabs',
-		'mayflower-blocks/panel',
-	),
-);
+
 $enqueuer->addBlockStyle(
 	handle: 'tabs',
 	blocks: array(
 		'mayflower-blocks/tabs',
 	),
 	dependencies: array(
-		'bc-sitka-spruce-style-card',
 		'bc-sitka-spruce-style-nav',
 	)
 );
@@ -155,6 +151,9 @@ $image_crops->addImageSize( 'testimonial', 560, 680, true );
 
 $image_crops->addImageSize( 'announcement-banner', 260, 174, false );
 
+$image_crops->addImageSize( 'sock-location', 300, 200, true );
+
+$image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
 
 // Make some image sizes available in the block editor
 add_filter(

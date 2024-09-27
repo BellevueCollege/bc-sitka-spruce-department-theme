@@ -1,5 +1,4 @@
 import twigCardBootstrap from "./card-bootstrap.twig";
-import '/assets/dist/css/blocks/card.css';
 
 export default {
     title: "Stories/Card (Bootstrap)",

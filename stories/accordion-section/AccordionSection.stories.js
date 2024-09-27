@@ -3,7 +3,6 @@ import twigContent from "./accordion-section-content.twig";
 import twigCallout from "../callout/callout.twig";
 
 
-import '/assets/dist/css/blocks/card.css'
 import '/assets/dist/css/blocks/nav.css';
 import '/assets/dist/css/blocks/accordion.css';
 import '/assets/dist/blocks/callout/style-index.css';

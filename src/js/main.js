@@ -2,6 +2,9 @@ import * as bootstrap from 'bootstrap'
 import AccessibleMenu from './modules/accessible-menu';
 import ButtonToggle from './modules/button-toggle';
 import HeaderState from './modules/header-state';
+import Slider from './modules/slider';
+import { Fancybox } from "@fancyapps/ui";
+import "@fancyapps/ui/dist/fancybox/fancybox.css";
 
 (() => {
 
@@ -38,4 +41,35 @@ import HeaderState from './modules/header-state';
 	// Enable Tooltips
 	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+
+	// Enable Sliders
+	const mediaGallerySlider = new Slider({
+		sliderOpts: {
+			slidesPerView: 1.05,
+			watchSlidesProgress: true,
+			spaceBetween: 40,
+			centeredSlides: false,
+			loop: false,
+			navigation: {
+				nextEl: '.slider-navigation__next',
+				prevEl: '.slider-navigation__prev',
+			},
+			breakpoints: {
+				1024: {
+					slidesPerView: 1.2,
+				},
+			}
+		}
+	});
+	mediaGallerySlider.add('.media-gallery-wrapper').run();
+
+	// Enable Fancybox
+	Fancybox.bind('[data-fancybox]', {
+		Html: {
+			video: {
+			autoplay: false,
+			},
+		},
+	});
+
 })();

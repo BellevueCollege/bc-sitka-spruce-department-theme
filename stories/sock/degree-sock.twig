@@ -1,0 +1,52 @@
+
+<aside class="sock sock-degree dark-bg">
+	{% if enable %}
+		<div class="container-xl sock-heading mb-4">
+			<h2>{{ main_heading|e }}</h2>
+			<p class="lead">{{ main_text|e }}</p>
+		</div>
+		<div class="container-xl sock-segments">
+			<div class="row">
+				<div class="col-md-8">
+					{% for segment in message_segments %}
+						<div class="sock-segment mb-4">
+							{% if segment.title %}<h3>{{ segment.title|e }}</h3>{% endif %}
+							{% if segment.description %}<p>{{ segment.description|e }}</p>{% endif %}
+							{% if segment.button %}
+								<p><a href="{{ segment.button.url|e }}" class="btn btn-light">{{ segment.button.title|e }}</a></p>
+							{% endif %}
+							{% if segment.link %}
+								<p><a href="{{ segment.link.url|e }}" class="link-arrow">{{ segment.link.title|e }}</a></p>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+				<div class="col sock-admissions-contact">
+					{% set admissions_card_content %}
+						{% if admissions_contact_description %}
+							<p>{{ admissions_contact_description|wp_kses_post }}</p>
+						{% endif %}
+						{% if admissions_contact_button %}
+							<p><a href="{{ admissions_contact_button.url|e }}" class="btn btn-light">{{ admissions_contact_button.title|e }}</a></p>
+						{% endif %}
+					{% endset %}
+
+
+					{% include '/stories/card-bootstrap/card-bootstrap.twig' with {
+						card_classes: ['card-sitka'],
+						media: admissions_contact_image,
+						card_title_tag: 'h3',
+						card_title: admissions_contact_title,
+						card_content: admissions_card_content,
+					} %}
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<div class="container-xl">
+			<div class="alert alert-danger text-bg-danger p-4 rounded">
+				<p>{{ __('Error: The "Degree Sock" is not currently configured! Report this issue to the website manager.', 'bc-sitka-spruce') }}</p>
+			</div>
+		</div>
+	{% endif %}
+</aside>
