@@ -1,0 +1,22 @@
+.card-title-big,
+.card-title-small {
+	font-family: $myriad-semicondensed;
+	font-weight: 600;
+	line-height: 1.3;
+}
+
+.card-title-big {
+	font-size: 1.375rem !important;
+
+	@include media-breakpoint-up(lg) {
+		font-size: 1.875rem !important;
+	}
+}
+
+.card-title-small {
+	font-size: 1.25rem !important;
+
+	@include media-breakpoint-up(lg) {
+		font-size: 1.375rem !important;
+	}
+}
