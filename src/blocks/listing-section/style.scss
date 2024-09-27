@@ -17,12 +17,16 @@
 				height: 240px;
 			}
 
-			a.link-arrow {
+			@include media-breakpoint-down(sm) {
 
-				//display: flex;
-				
+					a.link-arrow {
+
+						display: block;
+						
+					}
+
 			}
-		}
+			
 		}
 
 		h2 {
@@ -32,5 +36,6 @@
 		p {
 			margin-top: 1rem;
 
-	}
+		}
+	}	
 }
