@@ -9,7 +9,7 @@
 {% set wrapper_classes = wrapper_classes|default('callout-wrapper col') %}
 <div class="{{ wrapper_classes }}">
 	<aside class="callout text-margin-reset {{ callout_type }}">
-		<{{ heading_tag|e('html_attr') }} class="callout__heading">{{ title|e }}</{{ heading_tag|e('html_attr') }}>
+		<{{ heading_tag|e('html_attr') }} class="callout__heading card-title-small">{{ title|e }}</{{ heading_tag|e('html_attr') }}>
 		<p>{{ text|wp_kses_post }}</p>
 
 		{% if links %}
