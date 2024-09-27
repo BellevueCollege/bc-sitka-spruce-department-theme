@@ -41,15 +41,16 @@ $headings-font-weight: 600;
 
 // Text
 $line-height-base:  1.8;
-$body-font-size: 16px;
+$font-size-base: 1rem;
+$body-font-size: $font-size-base;
 
-// Heading Sizes
-$h1-font-size: 2rem;
-$h2-font-size: 1.75rem;
-$h3-font-size: 1.5rem;
-$h4-font-size: 1.25rem;
-$h5-font-size: 1.125rem;
-$h6-font-size: 1rem;
+// Heading Sizes - use CSS variables so they can be overridden!
+$h1-font-size: var( --sitka-h1-font-size );
+$h2-font-size: var( --sitka-h2-font-size );
+$h3-font-size: var( --sitka-h3-font-size );
+$h4-font-size: var( --sitka-h4-font-size );
+$h5-font-size: var( --sitka-h5-font-size );
+$h6-font-size: var( --sitka-h6-font-size );
 
 
 // Borders
