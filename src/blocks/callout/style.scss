@@ -15,10 +15,7 @@
 
 
 	&__heading {
-		//@include secondary-typeface(b22-card-title-small);
-		font-family: $myriad-semicondensed;
-		font-weight: 600;
-		font-size: 1.25rem;
+		@extend .card-title-small;
 		margin-bottom: 1rem;
 	}
 
