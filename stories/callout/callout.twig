@@ -9,8 +9,8 @@
 {% set wrapper_classes = wrapper_classes|default('callout-wrapper col') %}
 <div class="{{ wrapper_classes }}">
 	<aside class="callout text-margin-reset {{ callout_type }}">
-		<{{ heading_tag }} class="callout__heading">{{ title }}</{{ heading_tag }}>
-		<p>{{ text }}</p>
+		<{{ heading_tag|e('html_attr') }} class="callout__heading">{{ title|e }}</{{ heading_tag|e('html_attr') }}>
+		<p>{{ text|wp_kses_post }}</p>
 
 		{% if links %}
 			<div class="callout__links">
@@ -18,12 +18,12 @@
 					<ul>
 						{% for link in links %}
 							<li>
-								<a href="{{ link.url }}" class="link-arrow">{{ link.title }}</a>
+								<a href="{{ link.url|esc_url }}" class="link-arrow">{{ link.title|e }}</a>
 							</li>
 						{% endfor %}
 					</ul>
 				{% elseif links %}
-					{{ links }}
+					{{ links|wp_kses_post }}
 				{% endif %}
 			</div>
 		{% endif %}
