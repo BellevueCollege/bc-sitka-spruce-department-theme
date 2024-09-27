@@ -9,7 +9,9 @@
 	padding: 2rem;
 	margin-bottom: 2rem;
 
-
+	&.callout-info {
+		background-color: var( --accent-fountain-blue-extralight );
+	}
 
 
 	&__heading {

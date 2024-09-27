@@ -6,8 +6,9 @@
 #}
 {% set heading_tag = heading_tag|default('h2') %}
 {% set enabled = enabled|default(true) %}
+{% set wrapper_classes = wrapper_classes|default('callout-wrapper col') %}
 <div class="{{ wrapper_classes }}">
-	<aside class="callout text-margin-reset">
+	<aside class="callout text-margin-reset {{ callout_type }}">
 		<{{ heading_tag }} class="callout__heading">{{ title }}</{{ heading_tag }}>
 		<p>{{ text }}</p>
 
