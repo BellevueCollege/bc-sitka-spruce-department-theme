@@ -4,6 +4,7 @@
 }
 
 .section {
+	padding-top: var( --sitka-container-spacing );
 	padding-bottom: var( --sitka-container-spacing );
 
 	&.section-white {
@@ -24,7 +25,7 @@
 
 
 	.section-heading > .container-xl {
-		padding-top: var( --sitka-container-spacing );
+
 		padding-bottom: calc( var( --sitka-container-spacing ) * 0.5);
 	}
 

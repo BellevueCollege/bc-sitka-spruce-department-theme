@@ -1,0 +1,18 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/body-section-content",
+    "title": "Body Section Content",
+    "category": "layout",
+    "icon": "media-default",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "html": false
+    },
+	"parent": [
+		"bc-sitka-spruce/body-section"
+	],
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}
