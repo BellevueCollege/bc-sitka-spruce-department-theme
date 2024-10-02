@@ -1,0 +1,75 @@
+<div class="profile-overview-wrapper bg-trees-dark">
+        <div class="container-xl profile-overview">
+            <div class="row">
+                <div class="profile-overview-column1 col-6">
+                    <h1>{{ first_name }}
+                        {{ last_name }}
+                    </h1>
+                    <p class="position-text lead">{{ position }}</p>
+                    <dl class="profile-dept">
+                        {% if department %}
+                            <dt>Department</dt>
+                            <dd>{{ department }}</dd>
+                        {% endif %}
+                    </dl>
+                    <dl class="profile-content">
+                        {% if email %}
+                            <dt>Email</dt>
+                            <dd>
+                                <a href="mailto:{{ email }}">{{ email }}</a>
+                            </dd>
+                        {% endif %}
+
+                        {% if phone %}
+                            <dt>Phone</dt>
+                            <dd>
+                                <a href="tel:{{ phone }}">{{ phone }}</a>
+                            </dd>
+                        {% endif %}
+
+                        {% if languages %}
+                            <dt>Languages Spoken</dt>
+                            <dd>{{ languages }}</dd>
+                        {% endif %}
+
+                        {% if office_locale %}
+                            <dt>Office Location</dt>
+                            <dd>{{ office_locale }}</dd>
+                        {% endif %}
+
+                        {% if office_hours %}
+                            <dt>Office Hours</dt>
+                            <dd>{{ office_hours }}</dd>
+                        {% endif %}
+
+                        {% if url %}
+                            <dt>LinkedIn</dt>
+                            <dd>
+                                <a href=>{{ url }}</a>
+                                <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
+                            </dd>
+                        {% endif %}
+
+                        {% if additional_url %}
+                            <dt>Additional URL</dt>
+                            <dd>
+                                <a href=>
+                                    {{ additional_url }}
+                                    <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
+                                </a>
+                            </dd>
+                        {% endif %}
+                    </dl>
+                </div>
+                <div class="profile-overview-column2 col-6">
+                    {% if profile_image %}
+                        <div class="profile__image">
+                            <figure class="aspect-ratio-frame" style="--aspect-ratio: 460/460">
+                                {{ profile_image }}
+                            </figure>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+</div>
