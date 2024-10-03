@@ -1,0 +1,21 @@
+.flexible-page-intro-wrapper {
+	padding-top: var(--sitka-container-spacing);
+	margin-bottom: max( calc( var(--sitka-container-spacing) * 2 ), 4rem );
+	color: var(--white);
+	--bs-heading-color: var(--white);
+	--bs-body-color: var(--white);
+
+	.flexible-page-intro {
+		.intro-text-content {
+			padding-bottom: calc(var(--sitka-container-spacing) * 1);
+		}
+	}
+
+	.flexible-page-header-image {
+		text-align: center;
+		$offset: -3rem;
+		position: relative;
+		margin-top: $offset;
+		bottom: $offset;
+	}
+}

@@ -61,6 +61,7 @@ function register_blocks() {
 		'accordion-section',
 		'accordion-section/accordion-section-content',
 		'media-gallery-section',
+		'narrow-content',
 	);
 
 	block_registration_helper( $blocks );
