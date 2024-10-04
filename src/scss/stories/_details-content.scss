@@ -8,8 +8,13 @@
         -webkit-text-size-adjust: 100%;
 
     .profile-overview{
-        padding: 3.5rem 8.75rem;
+        padding-top: var(--sitka-container-spacing);
+        padding-bottom: var(--sitka-container-spacing);
+        @include media-breakpoint-up(md) {
+            justify-content: flex-start;
+        }
     }
+
 // Styling for name section
     h1{
         margin-bottom: 2rem;
@@ -24,12 +29,18 @@
 // Styling for department section
     .profile-dept {
         display: grid;
-        grid-template-columns: auto 1fr;
+        grid-template-columns: 1fr;
         column-gap: 1rem;
         margin-bottom: 2rem;
         width: 100%;
         max-width: 600px;
         font-size: 1.125rem;
+        dt{
+            padding-bottom: 1rem;
+        }
+        @include media-breakpoint-up(md) {
+            grid-template-columns: auto 1fr;
+        }
     }
 //Styling for profile overview details section(s)
     .profile-content {
@@ -38,18 +49,20 @@
         line-height: 1.25rem;
         column-gap: 2.5rem;
         row-gap: .5rem;
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         width: 100%;
         max-width: 600px;
         margin: 0 auto;
-    }
-
-    dt {
+        dt{
         padding: none;
-    }
-
-    dd {
-        margin: 0;
+        }
+        dd{
+            padding-bottom: .5rem;
+        }
+        @include media-breakpoint-up(md) {
+            grid-template-columns: 1fr 1fr;
+            margin: 0;
+        }
     }
 
     .fa-square-arrow-up-right{
