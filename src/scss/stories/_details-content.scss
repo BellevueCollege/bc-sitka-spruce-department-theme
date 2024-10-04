@@ -10,9 +10,6 @@
     .profile-overview{
         padding-top: var(--sitka-container-spacing);
         padding-bottom: var(--sitka-container-spacing);
-        @include media-breakpoint-up(md) {
-            justify-content: flex-start;
-        }
     }
 
 // Styling for name section
