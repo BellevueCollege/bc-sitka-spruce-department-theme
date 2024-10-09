@@ -1,4 +1,6 @@
 @import "variables";
+@import 'variables/css';
+
 @import "lib/gerillass";
 
 
@@ -14,6 +16,7 @@
 .editor-styles-wrapper {
   @import "lib/bootstrap/components";
 	@import "atoms";
+	@import "components";
 }
 
 @import "lib/bootstrap/helpers";

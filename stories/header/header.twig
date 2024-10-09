@@ -1,72 +1,72 @@
-<header id="header-wrapper">
-    <div 
-        id="site-header"
-        class="site-header container-xl
-            {% if search_expanded %}search-expanded{% endif %}
-            {% if menu_expanded %}menu-expanded{% endif %}
-    ">
-        <div id="site-header--logo" class="">
-            <a href="{{ core_homepage_url }}"><img class="img-fluid" src="{{ logo_url }}" alt="{{ __('Bellevue College - Link to college homepage', 'bc-sitka-spruce') }}"></a>
-        </div>
-        <div id="site-header--site-navbar" class="row">
-            <div id="site-header--site-title" class="col col-lg-auto d-flex ">
-                <div class="site-title h1 flex-grow-1"><a href="{{ site_homepage_url }}">{{ site_title }}</a></div>
-                <button
-                    class="btn btn-link button-toggle menu-toggle d-lg-none"
-                    data-button-open-class="menu-expanded"
-                    data-button-open-class-element="header"
-                    data-button-disable-at="1025"
-                    aria-expanded="false"
-                    aria-controls="site-header--main-nav site-header--utility-nav site-header--cta site-header--search"
-                >
-                    <span class="visually-hidden">{{ __('Menu', 'bc-sitka-spruce') }}</span>
-                    <i class="fas fa-bars" aria-hidden="true"></i>
-                </button>
-            </div>
-            <nav
-                id="site-header--main-nav"
-                aria-label="{{ __('Main Menu', 'bc-sitka-spruce') }}"
-                class="col-lg-auto flex-grow-1 main-menu accessible-menu"
-                data-item-open-text="{{ __('Open the %s menu', 'bc-sitka-spruce') }}"
-                data-item-close-text="{{ __('Close the %s menu', 'bc-sitka-spruce') }}"
-                data-menu-has-items-selector=".menu-item-has-children > a"
-            >
-                {{ menu }}
-            </nav>
-            <div id="site-header--cta" class="col-lg-2 text-lg-end">
-                {#  Move to a component #}<a class="btn btn-info" href="#">Apply Now!</a>
-            </div>
-        </div>
-        <nav
-            id="site-header--utility-nav"
-            class="utility-menu accessible-menu"
-            data-menu-has-items-selector=".menu-item-has-children > a"
-        >
-            <ul class="menu justify-content-end">
-                <li class="menu-item"><a href="#">Link 1 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item"><a href="#">Link 2 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item"><a href="#">Link 3 <i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i></a></li>
-                <li class="menu-item d-none d-lg-block search-toggle">
-                    <a
-                        id="site-header--search-toggle-btn"
-                        href="#"
-                        class="button-toggle"
-                        data-button-open-class="search-expanded"
-                        data-button-open-class-element="header"
-                        aria-expanded="false"
-                        aria-controls="college-search-field"
-                    >
-                        <span class="visually-hidden">Search</span><i class="far fa-search" aria-hidden="true"></i>
-                    </a>
-                </li>
-            </ul>
-        </nav>
-    </div>
-    <div id="site-header--search" class="">
-        <div class="container-xl">
+<header id="header-wrapper" class="header-wrapper">
+	<div
+		id="site-header"
+		class="site-header container-xl
+			{% if search_expanded %}search-expanded{% endif %}
+			{% if menu_expanded %}menu-expanded{% endif %}
+	">
+		<div id="site-header--logo" class="">
+			<a href="{{ core_homepage_url }}"><img class="img-fluid" src="{{ logo_url }}" alt="{{ __('Bellevue College - Link to college homepage', 'bc-sitka-spruce') }}"></a>
+		</div>
+		<div id="site-header--site-navbar" class="row">
+			<div id="site-header--site-title" class="col col-lg-auto d-flex ">
+				<div class="site-title h4 flex-grow-1"><a href="{{ site_homepage_url }}">{{ site_title }}</a></div>
+				<button
+					class="btn btn-link button-toggle menu-toggle d-lg-none"
+					data-button-open-class="menu-expanded"
+					data-button-open-class-element="header"
+					data-button-disable-at="1025"
+					aria-expanded="false"
+					aria-controls="site-header--main-nav site-header--utility-nav site-header--cta site-header--search"
+				>
+					<span class="visually-hidden">{{ __('Menu', 'bc-sitka-spruce') }}</span>
+					<i class="fas fa-bars" aria-hidden="true"></i>
+				</button>
+			</div>
+			<nav id="site-header--menu-wrapper" class="col-lg-auto flex-grow-1 " aria-label="{{ __('Main Menu', 'bc-sitka-spruce') }}">
+				<div
+					id="site-header--main-nav"
+					class="main-menu accessible-menu"
+					data-item-open-text="{{ __('Open the %s menu', 'bc-sitka-spruce') }}"
+					data-item-close-text="{{ __('Close the %s menu', 'bc-sitka-spruce') }}"
+					data-menu-has-items-selector=".menu-item-has-children > a"
+				>
+					{{ menu }}
 
-            {% include '/stories/site-search-form/site-search-form.twig' %}
+				</div>
+				<div id="site-header--cta" class="cta-menu accessible-menu">
+					{{ menu_cta }}
+				</div>
+			</nav>
+		</div>
+		<nav
+			id="site-header--utility-nav"
+			class="utility-menu accessible-menu"
+			data-menu-has-items-selector=".menu-item-has-children > a"
+		>
+			<ul class="menu justify-content-end">
+				{% include '/views/static-content/menu-utility.twig' with { li_class: 'menu-item' } %}
+				<li class="menu-item d-none d-lg-block search-toggle">
+					<a
+						id="site-header--search-toggle-btn"
+						href="#"
+						class="button-toggle"
+						data-button-open-class="search-expanded"
+						data-button-open-class-element="header"
+						aria-expanded="false"
+						aria-controls="college-search-field"
+					>
+						<span class="visually-hidden">{{ __('Search', 'bc-sitka-spruce') }}</span><i class="far fa-search" aria-hidden="true"></i>
+					</a>
+				</li>
+			</ul>
+		</nav>
+	</div>
+	<div id="site-header--search" class="">
+		<div class="container-xl">
 
-        </div>
-    </div>
+			{% include '/stories/site-search-form/site-search-form.twig' %}
+
+		</div>
+	</div>
 </header>

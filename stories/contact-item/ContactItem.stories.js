@@ -1,13 +1,16 @@
 import contactItem from "./contact-item.twig";
+import contactLoop from "./contact-loop.twig";
+
+import '/assets/dist/blocks/contact-selector/style-index.css';
 
 export default {
-    title: "Stories/Contact Item",
+    title: "Stories/Contact Section/Contact Item",
     component: "contact-item",
     tags: ['autodocs'],
 };
 
 
-const Template = ( { 
+const Template = ( {
     first_name,
     last_name,
     position,

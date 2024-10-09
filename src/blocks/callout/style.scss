@@ -9,14 +9,12 @@
 	padding: 2rem;
 	margin-bottom: 2rem;
 
-
+	&.callout-info {
+		background-color: var( --accent-fountain-blue-extralight );
+	}
 
 
 	&__heading {
-		//@include secondary-typeface(b22-card-title-small);
-		font-family: $myriad-semicondensed;
-		font-weight: 600;
-		font-size: 1.25rem;
 		margin-bottom: 1rem;
 	}
 

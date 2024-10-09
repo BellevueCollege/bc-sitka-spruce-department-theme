@@ -1,0 +1,3 @@
+.link-accent {
+	@include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
+}

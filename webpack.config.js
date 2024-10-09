@@ -44,9 +44,9 @@ const customPaths = Object.assign( {}, defaultConfig, {
 		...scssEntryPoint( 'editor' ),
 		...scssEntryPoint( 'alert', true ),
 		...scssEntryPoint( 'nav', true ),
-		...scssEntryPoint( 'card', true ),
 		...scssEntryPoint( 'accordion', true ),
 		...scssEntryPoint( 'tabs', true ),
+		...scssEntryPoint( 'tabcordion-list', true ),
 		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' ),
 		'js/editor': path.resolve( process.cwd(), 'src/js', 'editor.js' ),
 		'blocks/contact-selector/index': path.resolve( process.cwd(), 'src/blocks/contact-selector', 'style.scss' )

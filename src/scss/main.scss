@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'variables/css';
 
 @import "lib";
 
@@ -14,6 +15,9 @@ $header-desktop-breakpoint: lg;
 @import "stories/header";
 @import "stories/site-search-form";
 @import "stories/section-heading";
+@import "stories/footer";
+@import "stories/sock";
+
 
 // Front-end only components
 @import "menus";

@@ -1,22 +1,24 @@
-<div class="contact-section container-xl">
-    <div class="contact-section-r row">   
-        <div class="col-md-4">
-            <h2>{{title}}</h2>
-            <p>{{description}}</p>
+<div class="contact-section container-fluid">
+    <div class="contact-section container-xl">
+        <div class="contact-section-r row">
+            <div class="col-md-4">
+                <h2>{{title}}</h2>
+                <p>{{description}}</p>
+            </div>
+
+            <div class="col-md-8">
+                {% for profile in profiles %}
+                    {% include '/stories/contact-item/contact-item.twig' with {
+                        first_name: profile.first_name,
+                        last_name: profile.last_name,
+                        position: profile.position,
+                        phone: profile.phone,
+                        email: profile.email,
+                        scheduling_link: profile.scheduling_link,
+                        scheduling_text: profile.scheduling_text
+                    } %}
+                {% endfor %}
+            </div>
         </div>
-        
-        <div class="col-md-8">
-            {% for profile in profiles %}
-                {% include '/stories/contact-item/contact-item.twig' with {
-                    first_name: profile.first_name,
-                    last_name: profile.last_name,
-                    position: profile.position,
-                    phone: profile.phone,
-                    email: profile.email,
-                    scheduling_link: profile.scheduling_link,
-                    scheduling_text: profile.scheduling_text
-                } %}
-            {% endfor %}
-        </div> 
-    </div> 
+    </div>
 </div>
