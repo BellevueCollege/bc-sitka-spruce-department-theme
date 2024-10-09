@@ -4,6 +4,7 @@
  * Slug: bc-sitka-spruce/page
  * Categories: page
  * Keywords: starter
+ * Block Types: core/post-content
  * Post Types: page, wp_template
  * Viewport width: 1400
  */
@@ -18,3 +19,6 @@
 <p></p>
 <!-- /wp:paragraph --></div>
 <!-- /wp:bc-sitka-spruce/narrow-content -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->
