@@ -57,8 +57,12 @@ $header-desktop-breakpoint: lg;
 
 /// Styles for the checkerboard.
 ////
+/// 
 
 .card--checkerboard {
+
+	margin-bottom: 2.5rem !important;
+
 	@include media-breakpoint-up(md) {
 
 		// Blue Line -- TODO: Md Breakpoint
@@ -112,9 +116,23 @@ $header-desktop-breakpoint: lg;
 				max-width: calc(58% - 2rem);
 			}
 		}
+
+		@include media-breakpoint-down(md) {
+			& {
+				padding-top: 0.25rem;
+			}
+		}
+
+		@include media-breakpoint-down(sm) {
+			& {
+				padding-top: 0.25rem;
+			}
+		}
+
 	}
 
 	&:nth-child(odd) {
+
 		&>.row {
 			flex-direction: row-reverse;
 
@@ -123,11 +141,24 @@ $header-desktop-breakpoint: lg;
 				border-bottom-left-radius: 0rem;
 				border-top-right-radius: 0rem;
 				border-bottom-right-radius: 0.5rem;
+
 			}
 
 			@include media-breakpoint-up(md) {
 				figcaption {
 					right: 0;
+				}
+			}
+
+			@include media-breakpoint-down(md) {
+				figcaption {
+					padding-top: 0.25rem;
+				}
+			}
+
+			@include media-breakpoint-down(sm) {
+				figcaption {
+					padding-top: 0.25rem;
 				}
 			}
 		}
@@ -144,17 +175,20 @@ $header-desktop-breakpoint: lg;
 	}
 
 	.card-body {
+
+		ul,
+		p,
+		h2 {
+			padding-left: 0;
+		}
+
 		ul {
 			display: flex;
 			flex-direction: column;
 			gap: 1rem;
 			list-style-type: none;
-			margin: 0;
-			padding: 0;
 
 			li {
-				margin: 0;
-				padding: 0;
 
 				&::before {
 					display: none;
@@ -165,6 +199,7 @@ $header-desktop-breakpoint: lg;
 		p {
 			margin-top: 1rem;
 		}
+
 	}
 
 	.aspect-ratio-frame svg {
@@ -180,6 +215,7 @@ $header-desktop-breakpoint: lg;
 		display: flex;
 		justify-content: center;
 		align-items: center;
+		fill-opacity: 75%;
 	}
 
 }
