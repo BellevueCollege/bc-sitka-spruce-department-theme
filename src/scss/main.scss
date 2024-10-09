@@ -69,7 +69,7 @@ $header-desktop-breakpoint: lg;
 		.card-img--checkerboard:before {
 			position: absolute;
 			z-index: 10;
-			top: 4.4375rem;
+			top: 4.8375rem;
 			right: 57%;
 			width: 6.25rem;
 			height: 0.1875rem;
@@ -179,9 +179,17 @@ $header-desktop-breakpoint: lg;
 		ul,
 		p,
 		h2 {
-			margin-top: 4rem;
+			text-align: left;
 			padding-left: 0;
 		}
+
+        @include media-breakpoint-up(lg) {
+			h2 {margin-top: 4rem;}
+			}
+			@include media-breakpoint-up(md) {
+				h2 {margin-top: 4rem;}
+				}
+	
 
 		ul {
 			display: flex;
