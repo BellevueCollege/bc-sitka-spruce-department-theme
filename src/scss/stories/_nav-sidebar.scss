@@ -16,6 +16,13 @@
 	hr {
 		margin: 1.5rem 0 1rem 0;
 	}
+
+	// Accordion colors
+	--bs-accordion-btn-bg: var( --accent-fountain-blue-light );
+	--bs-accordion-btn-color: var( --black );
+	--bs-accordion-active-bg: var( --accent-fountain-blue-light );
+	--bs-accordion-btn-icon: #{ escape-svg(  accordion-icon-open($accordion-icon-active-color) ) };
+	--bs-accordion-border-color: none;
 }
 .nav-sidebar-menu {
 	.menu ul {
