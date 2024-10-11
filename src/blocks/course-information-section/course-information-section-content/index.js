@@ -18,13 +18,17 @@ registerBlockType("bc-sitka-spruce/course-information-section-content", {
 
 		const TEMPLATE = [
 			[ "core/paragraph", {
-				placeholder: "Welcome to our program..."
+				placeholder: "Add an introduction to the courses in this degree or certificate."
 			} ],
 			[ "core/paragraph", {
-				placeholder: "Example courses:"
+				placeholder: "Add list descriptor (aka 'Example courses')"
 			} ],
 			[ "core/list", {} ],
-			[ "mayflower-blocks/button", {} ],
+			[ "mayflower-blocks/button-group", {}, [
+				[ "mayflower-blocks/button", {
+					placeholder: "Add Call-to-Action",
+				}]
+			] ],
 			[ "bawb/program", {
 				_headingTagOverride: "p",
 				_linkTextOverride: __("Review Catalog for all Requirements", "bc-sitka-spruce"),
