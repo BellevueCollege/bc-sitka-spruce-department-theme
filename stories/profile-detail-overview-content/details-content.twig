@@ -1,3 +1,4 @@
+{#  use {{dump()}} for troubleshooting- timber documentation for more dump options #}
 <div class="profile-overview-wrapper bg-trees-dark">
 	<div class="container-xl profile-overview">
 		<div class="row">
@@ -16,7 +17,11 @@
 				<dl class="profile-dept">
 					{% if department %}
 						<dt>Department</dt>
-						<dd>{{ department }}</dd>
+						<dd>
+							{% for single_dept in department %}
+								{{ single_dept.name }}
+							{% endfor %}
+						</dd>
 					{% endif %}
 				</dl>
 				<dl class="profile-content">
@@ -39,9 +44,9 @@
 						<dd>{{ languages }}</dd>
 					{% endif %}
 
-					{% if office_locale %}
+					{% if office_location %}
 						<dt>Office Location</dt>
-						<dd>{{ office_locale }}</dd>
+						<dd>{{ office_location }}</dd>
 					{% endif %}
 
 					{% if office_hours %}
@@ -49,10 +54,10 @@
 						<dd>{{ office_hours }}</dd>
 					{% endif %}
 
-					{% if url %}
+					{% if linkedin %}
 						<dt>LinkedIn</dt>
 						<dd>
-							<a href=>{{ url }}</a>
+							<a href="{{ linkedin.url }}">{{ linkedin.title }}</a>
 							<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
 						</dd>
 					{% endif %}
@@ -60,10 +65,8 @@
 					{% if additional_url %}
 						<dt>Additional URL</dt>
 						<dd>
-							<a href=>
-								{{ additional_url }}
-								<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
-							</a>
+							<a href="{{ additional_url.url }}">{{additional_url.title|default('Additional URL')}}</a>
+							<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
 						</dd>
 					{% endif %}
 				</dl>

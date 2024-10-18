@@ -54,7 +54,8 @@
         padding: none;
         }
         dd{
-            padding-bottom: .5rem;
+            padding-top: .5rem;
+            margin-top: .5rem;
         }
         @include media-breakpoint-up(md) {
             grid-template-columns: 1fr 1fr;

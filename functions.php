@@ -155,6 +155,9 @@ $image_crops->addImageSize( 'sock-location', 300, 200, true );
 
 $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
 
+// Profile Detail Overview Image Sizing
+$image_crops->addImageSize( 'profile-overview-image', 460, 460, true );
+
 // Make some image sizes available in the block editor
 add_filter(
 	'image_size_names_choose',

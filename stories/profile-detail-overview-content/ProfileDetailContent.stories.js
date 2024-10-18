@@ -16,10 +16,10 @@ const Template = ( {
     email,
     phone,
     languages,
-    office_locale,
+    office_location,
     office_hours,
-    url,
-    additional_url
+    linkedin,
+    additional_url,
  }) =>
     detailsContent({
         profile_image,
@@ -30,10 +30,10 @@ const Template = ( {
         email,
         phone,
         languages,
-        office_locale,
+        office_location,
         office_hours,
-        url,
-        additional_url
+        linkedin,
+        additional_url,
     });
 
 export const Default = Template.bind({});
@@ -42,15 +42,14 @@ Default.args = {
     first_name: "John",
     last_name: "Doe",
     position: "Manager",
-    department: "Department or Office",
+    department: [{name: 'Campus Ops'}],
     email: "XKZfH@example.com",
     phone: "555-555-5555",
     languages: "English, French",
-    office_locale: "Bellevue, WA",
+    office_location: "Bellevue, WA",
     office_hours: "Mon-Fri 9am-5pm",
-    url: "https://example.com",
-    additional_url: "https://example.com"
-
+    linkedin: {title:"My LinkedIn"},
+    additional_url: {additional_url:"https://example.com"}
 };
 
 
@@ -59,5 +58,5 @@ RequiredOnly.args = {
     first_name: "John",
     last_name: "Doe",
     position: "Manager",
-    department: "noneya",
+    department: [{name: 'Campus Ops'}],
 };
