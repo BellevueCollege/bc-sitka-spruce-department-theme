@@ -4,7 +4,7 @@
 }
 
 .flexible-page-intro-wrapper {
-	padding-top: var(--sitka-container-spacing);
+	padding-top: max( var(--sitka-container-spacing), 2rem );
 	margin-bottom: max( calc( var(--sitka-container-spacing) * 2 ), 4rem );
 	color: var(--white);
 	--bs-heading-color: var(--white);
