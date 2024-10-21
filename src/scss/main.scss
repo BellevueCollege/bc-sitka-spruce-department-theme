@@ -9,6 +9,8 @@
 
 @import "components";
 
+@import "pages";
+
 // Stories that should be included globally
 $header-tablet-breakpoint: sm;
 $header-desktop-breakpoint: lg;
@@ -17,6 +19,9 @@ $header-desktop-breakpoint: lg;
 @import "stories/section-heading";
 @import "stories/footer";
 @import "stories/sock";
+@import "stories/flexible-page-intro";
+@import "stories/nav-sidebar";
+@import "stories/breadcrumbs";
 
 
 // Front-end only components

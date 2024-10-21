@@ -1,0 +1,11 @@
+{% if breadcrumbs %}
+	<div class="container-xl">
+		<nav aria-label="{{ __('Breadcrumbs', 'bc-sitka-spruce') }}">
+			<ol class="breadcrumbs rounded">
+			{% for breadcrumb in breadcrumbs %}
+				<li {% if loop.last %} aria-current="page" {% endif %}>{{ breadcrumb }}</li>
+			{% endfor %}
+			</ol>
+		</nav>
+	</div>
+{% endif %}

@@ -7,8 +7,13 @@
 {% extends 'system/wrapper.twig' %}
 
 {% block content %}
-      <div class="container-xl">
-        <h1>{{ post.title }}</h1>
-      </div>
-      {{ post.content }}
+	<div class="flexible-page">
+		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+			title: post.title,
+		} %}
+		{% include '/stories/nav-sidebar/nav-sidebar.twig' with {
+
+		} %}
+		{{ post.content }}
+	</div>
 {% endblock %}
