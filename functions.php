@@ -61,7 +61,11 @@ function register_blocks() {
 		'accordion-section',
 		'accordion-section/accordion-section-content',
 		'media-gallery-section',
+    'flexible-page-template',
 		'narrow-content',
+		'body-section',
+		'body-section/body-section-content',
+    'release-v1'
 	);
 
 	block_registration_helper( $blocks );
