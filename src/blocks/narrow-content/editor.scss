@@ -1,0 +1,20 @@
+@import '/src/scss/block-styles';
+
+.narrow-content {
+	.narrow-content-area {
+		border: 1px dotted var(--gray--light);
+	}
+
+
+	.sidebar-placeholder {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		border: 2px solid var(--gray--xlight);
+		font-weight: bold;
+		color: var(--gray--medium);
+		text-align: center;
+	}
+
+}

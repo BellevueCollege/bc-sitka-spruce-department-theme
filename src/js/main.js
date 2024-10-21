@@ -16,6 +16,12 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
     accessibleMainMenu.add('.main-menu').run();
 
 	/**
+	 * Add the accessible Sidebar menu
+	 */
+	const accessibleSidebarMenu = new AccessibleMenu();
+	accessibleSidebarMenu.add('.nav-sidebar-menu').run();
+
+	/**
 	 * Add Header State Controls (sticky-ish header)
 	 */
 	const headerState = new HeaderState();
