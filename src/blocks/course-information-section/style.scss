@@ -1,0 +1,32 @@
+@import '/src/scss/block-styles';
+.course-information-section-wrapper {
+	padding-top: var(--sitka-container-spacing);
+	padding-bottom: var(--sitka-container-spacing);
+
+	.course-information-section-heading,
+	p {
+		margin-bottom: 1.5rem;
+	}
+
+
+	// Style program link
+	.bawb-program-link-wrapper {
+		font-size: 1.125rem;
+		font-weight: bold;
+		margin-top: 2rem;
+
+		a::after {
+			position: relative;
+			display: inline-block;
+			padding-left: 4px;
+			content: "\f14c";
+			transition:
+				transform $primary-transition,
+				opacity $primary-transition;
+			transform: translateX(0);
+			font-family: $font-awesome;
+			font-weight: 300;
+			line-height: 1;
+		}
+	}
+}

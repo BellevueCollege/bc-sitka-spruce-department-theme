@@ -61,6 +61,14 @@ function register_blocks() {
 		'accordion-section',
 		'accordion-section/accordion-section-content',
 		'media-gallery-section',
+    'course-information-section',
+		'course-information-section',
+		'course-information-section/course-information-section-content',
+    'flexible-page-template',
+		'narrow-content',
+		'body-section',
+		'body-section/body-section-content',
+    'release-v1'
 	);
 
 	block_registration_helper( $blocks );
@@ -365,3 +373,23 @@ add_filter(
 	10,
 	3
 );
+
+
+// // Filter post content to add blocks that are missing or are in the wrong place
+// add_filter(
+// 	'block_editor_settings_all',
+// 	function ( $settings, $context ) {
+// 		echo '<h2>Settings</h2><pre>' . print_r( $settings, true ) . '</pre>';
+// 		echo '<h2>Context</h2><pre>' . print_r( $context, true ) . '</pre>';
+// 		die();
+// 		return $settings;
+// 	}, 10, 2
+// );
+
+add_action( 'enqueue_block_editor_assets', function () {
+	wp_enqueue_script(
+		'apply-templates',
+		get_template_directory_uri() . '/assets/dist/js/editor.js',
+		['wp-blocks', 'wp-dom-ready', 'wp-edit-post'],
+	);
+} );

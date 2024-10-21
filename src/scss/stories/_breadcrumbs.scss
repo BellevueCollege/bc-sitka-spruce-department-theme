@@ -1,0 +1,74 @@
+////
+/// @group components
+/// Styles for breadcrumbs.
+////
+
+// Base Breadcrumbs
+// ----------------
+.breadcrumbs {
+	display: inline-flex;
+	overflow: hidden;
+	margin: 0 0 2rem 0;
+	padding: 0.5rem 1rem;
+	list-style: none;
+	background-color: var( --bc-rainy-night-blue );
+	color: var( --white );
+	font-family: $sans-serif;
+	font-size: 1rem;
+
+	li {
+		@include media-breakpoint-up(sm) {
+			&:first-child {
+				padding-left: 0;
+
+				&::before {
+					display: none;
+				}
+			}
+		}
+
+		&:nth-child(n + 2)::before {
+			@include font-awesome;
+			padding: 0.1em 0.6em 0;
+			content: fa-content($fa-var-chevron-right);
+			color: var(--bc-fountain-blue);
+			font-size: 1em;
+		}
+	}
+
+	a {
+		text-decoration: none;
+		color: var( --white );
+
+		&:hover,
+		&:focus {
+			text-decoration: underline;
+		}
+	}
+
+	// Mobile
+	// -------
+	@include media-breakpoint-down(sm) {
+
+		li:not(:nth-last-child(2)) {
+			display: none;
+		}
+
+		li:nth-last-child(2) {
+
+			a {
+				overflow: hidden;
+				white-space: nowrap; /* pre works as well */
+				text-overflow: ellipsis;
+			}
+		}
+
+		li:nth-last-child(2)::before {
+			@include font-awesome;
+			padding: 0.1em 0.6em 0 0;
+			content: fa-content($fa-var-chevron-left);
+			color: var(--bc-fountain-blue);
+			font-size: 1em;
+		}
+	}
+}

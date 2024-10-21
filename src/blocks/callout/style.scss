@@ -2,15 +2,12 @@
 
 .callout {
 	border-radius: 0.5rem;
-	background-color: var( --white );
-	// background-color: var( --accent-fountain-blue-extralight );
-
-	// @include padding-4x;
+	background-color: var( --sitka-callout-bg, var( --white ) );
 	padding: 2rem;
 	margin-bottom: 2rem;
 
 	&.callout-info {
-		background-color: var( --accent-fountain-blue-extralight );
+		--sitka-callout-bg: var( --accent-fountain-blue-extralight );
 	}
 
 
