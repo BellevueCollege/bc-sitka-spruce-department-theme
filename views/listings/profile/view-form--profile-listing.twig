@@ -1,0 +1,28 @@
+{#
+/**
+* @file
+* Bellevue template for a view form.
+*
+* Available variables:
+* - view_name: The machine name of the view.
+* - view_url: The form submit url.
+* - method: The form submit method ('get' or 'post', depending on whether AJAX
+*   is enabled).
+* - exposed_filters: An array of exposed filter rendered HTML, keyed by filter name.
+* - ajax: Hidden input elements used for AJAX requests. These elements must be
+*   printed in the template if AJAX is enabled.
+*/
+#}
+{% extends 'listings/view-form.twig' %}
+
+{% block title %}
+	<h2 class="card-title-small"><i class="fa-solid fa-bars-filter me-2 filter-icon" aria-hidden="true"></i> {{ __('Search and Filter Directory', 'bc-sitka-spruce') }}</h2>
+{% endblock %}
+
+{% block exposed_filters %}
+<div class="search-sidebar">
+	{{ exposed_filters.search }}
+	{{ exposed_filters.department }}
+	{{ exposed_filters.profile_type }}
+</div>
+{% endblock %}

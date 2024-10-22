@@ -1,0 +1,22 @@
+<div class="row">
+	<div class="col-md-3">
+		{% if acf.profile_image %}
+			<img src="{{ get_image(acf.profile_image.ID).src('thumbnail') }}" alt="{{ __('Profile Image for', 'bc-sitka-spruce') }} {{ acf.first_name }} {{ acf.last_name }}" class="img-fluid rounded">
+		{% endif %}
+	</div>
+	<div class="col-md-9">
+		<h3><a href="{{ row.link }}">{{ acf.first_name }} {{ acf.last_name }}</a></h3>
+		<div class="row">
+			<div class="col-md-6">
+				{% if acf.position_role %}<p class="lead">{{ acf.position_role }}</p>{% endif %}
+			</div>
+			<div class="col-md-6">
+				<ul>
+					{% if acf.email %}<li><a href="mailto:{{ acf.email }}">{{ acf.email }}</a></li>{% endif %}
+					{% if acf.phone %}<li><a href="tel:{{ acf.phone }}">{{ acf.phone }}</a></li>{% endif %}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
