@@ -63,6 +63,18 @@ $header-desktop-breakpoint: lg;
 
 	margin-bottom: 2.5rem !important;
 
+	.card-img--checkerboard {
+		a.video-overlay {
+
+			img {
+
+				filter: brightness(70%);
+
+			}
+		}
+
+	}
+
 	@include media-breakpoint-up(md) {
 
 		// Blue Line -- TODO: Md Breakpoint
@@ -156,11 +168,6 @@ $header-desktop-breakpoint: lg;
 				}
 			}
 
-			@include media-breakpoint-down(sm) {
-				figcaption {
-					padding-top: 0.25rem;
-				}
-			}
 		}
 
 		.card-img--checkerboard:before {
@@ -183,13 +190,18 @@ $header-desktop-breakpoint: lg;
 			padding-left: 0;
 		}
 
-        @include media-breakpoint-up(lg) {
-			h2 {margin-top: 4rem;}
+		@include media-breakpoint-up(lg) {
+			h2 {
+				margin-top: 4rem;
 			}
-			@include media-breakpoint-up(md) {
-				h2 {margin-top: 4rem;}
-				}
-	
+		}
+
+		@include media-breakpoint-up(md) {
+			h2 {
+				margin-top: 4rem;
+			}
+		}
+
 
 		ul {
 			display: flex;
@@ -224,7 +236,6 @@ $header-desktop-breakpoint: lg;
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		fill-opacity: 75%;
 	}
 
 }
