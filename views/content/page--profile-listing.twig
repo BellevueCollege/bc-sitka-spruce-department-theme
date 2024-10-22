@@ -1,9 +1,15 @@
 {% extends 'system/wrapper.twig' %}
 
 {% block content %}
-	<div class="profile-listing-page container-xl">
-		{{ listing }}
-		<hr>
+	<div class="flexible-page">
+		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+			title: post.title,
+		} %}
+		<div class="profile-listing-page container-xl">
+			{{ listing }}
+			<hr class="my-5">
+		</div>
+		{{ post.content }}
 	</div>
-	{{ post.content }}
+
 {% endblock %}
