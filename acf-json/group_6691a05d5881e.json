@@ -315,7 +315,7 @@
         {
             "key": "field_66fb2303e3d00",
             "label": "Office or Department",
-            "name": "dept-office",
+            "name": "dept_office",
             "aria-label": "",
             "type": "taxonomy",
             "instructions": "",
