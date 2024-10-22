@@ -1,0 +1,14 @@
+@use 'sass:map';
+// Note: heading styles are defined in variables/_type.scss
+// Note: heading sizes are set as CSS vars in variables/_css.scss
+
+@each $tag, $sizes in $heading-sizes {
+
+	@each $breakpoint, $size in $sizes {
+		@include media-breakpoint-up($breakpoint) {
+			#{$tag} {
+				line-height: map.get($size, 'line-height');
+			}
+		}
+	}
+}
