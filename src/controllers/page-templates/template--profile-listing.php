@@ -45,7 +45,7 @@ function build_profile_listing() {
 	$department_filter->addAllOption(__('All Offices and Departments', 'bc-sitka-spruce'));
 
 	$profile_type_filter = new TaxonomyCheckboxExposedFilter( // this should be checkboxes, but they aren't working as expected
-		'profile_type',
+		'profile-type',
 		__('Profile Type', 'bc-sitka-spruce'),
 		'profile_type',
 		'IN',
