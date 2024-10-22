@@ -3,8 +3,14 @@
 {% set first_name = acf.first_name %}
 {% set last_name = acf.last_name %}
 {% set position_title = acf.position_role %}
-{% set department = acf.department %}
-{% set type = acf.type %}
+{% set departments = [] %}
+{%  if acf.dept_office %}
+	{% for dept in acf.dept_office %}
+		{% set departments = departments|merge([dept.name]) %}
+	{% endfor %}
+{% endif %}
+{% set department = departments|join(', ') %}
+{% set type = acf.profile_type.name %}
 {% set email = acf.email %}
 {% set phone_number = acf.phone_number %}
 {% set scheduling_link = acf.scheduling_section.schedule_appointment_link %}
@@ -19,17 +25,19 @@
 		<h3 class="card-title-small"><a href="{{ profile_url }}">{{ first_name }} {{ last_name }}</a></h3>
 		<div class="row">
 			<div class="col-md-6">
-				{% if position_title %}<p class="position-title">{{ position_title }}</p>{% endif %}
-				{% if type or department %}
-					<p>
-						{% if type %}
-							{{ type }} /
-						{% endif %}
-						{% if department %}
-							<strong>{{ department }}</strong>
-						{% endif %}
-					</p>
-				{% endif %}
+				<ul class="list-unstyled">
+					{% if position_title %}<li class="position-title">{{ position_title }}</li>{% endif %}
+					{% if type or department %}
+						<li>
+							{% if type %}
+								{{ type }} /
+							{% endif %}
+							{% if department %}
+								<strong>{{ department }}</strong>
+							{% endif %}
+						</li>
+					{% endif %}
+				</ul>
 			</div>
 			<div class="col-md-6">
 				<ul class="list-unstyled">

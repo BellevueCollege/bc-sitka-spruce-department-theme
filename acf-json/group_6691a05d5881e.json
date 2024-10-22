@@ -319,7 +319,7 @@
             "aria-label": "",
             "type": "taxonomy",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -332,9 +332,36 @@
             "load_terms": 1,
             "return_format": "object",
             "field_type": "checkbox",
+            "allow_in_bindings": 1,
             "bidirectional": 0,
             "multiple": 0,
             "allow_null": 0,
+            "bidirectional_target": []
+        },
+        {
+            "key": "field_671810393cc3c",
+            "label": "Profile Type",
+            "name": "profile_type",
+            "aria-label": "",
+            "type": "taxonomy",
+            "instructions": "Choose or create a profile type for this person. Profile types are usually used for values like Faculty, Staff, or Administrator.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "taxonomy": "profile-type",
+            "add_term": 1,
+            "save_terms": 1,
+            "load_terms": 1,
+            "return_format": "object",
+            "field_type": "select",
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "bidirectional": 0,
+            "multiple": 0,
             "bidirectional_target": []
         }
     ],
@@ -356,5 +383,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1728939840
+    "modified": 1729631024
 }
