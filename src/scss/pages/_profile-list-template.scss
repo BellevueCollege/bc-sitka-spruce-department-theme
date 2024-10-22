@@ -1,0 +1,39 @@
+.profile-listing-page {
+	& > section {
+		@include make-row();
+	}
+
+	.filter-form-col {
+		@include make-col-ready();
+		@include media-breakpoint-up(md) {
+			@include make-col(4);
+		}
+	}
+	.view__results-wrapper {
+		@include make-col-ready();
+		@include media-breakpoint-up(md) {
+			@include make-col(8);
+		}
+	}
+
+	.result-count {
+		font-weight: 600;
+	}
+
+	.pinned-profile {
+		background-color: var(--accent-fountain-blue-extralight);
+	}
+
+	.filter-form-block {
+		background-color: get_color( $sitka-colors, 'gray--xlight' );
+
+		.filter-icon {
+			color: get_color( $brand-colors, 'bc-fountain-blue' );
+		}
+
+		.view__button {
+			display: block;
+			width: 100%;
+		}
+	}
+}
