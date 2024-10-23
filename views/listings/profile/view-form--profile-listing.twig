@@ -21,8 +21,14 @@
 
 {% block exposed_filters %}
 <div class="search-sidebar">
-	{{ exposed_filters.search }}
-	{{ exposed_filters.department }}
-	{{ exposed_filters.profile_type }}
+	<div class="row">
+		<div class="col-md-6 col-lg-12">
+			{{ exposed_filters.search }}
+			{{ exposed_filters.department }}
+		</div>
+		<div class="col-md-6 col-lg-12">
+			{{ exposed_filters.profile_type }}
+		</div>
+	</div>
 </div>
 {% endblock %}

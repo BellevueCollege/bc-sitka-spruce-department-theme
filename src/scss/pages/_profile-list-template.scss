@@ -4,14 +4,15 @@
 	}
 
 	.filter-form-col {
+		margin-bottom: 2rem;
 		@include make-col-ready();
-		@include media-breakpoint-up(md) {
+		@include media-breakpoint-up(lg) {
 			@include make-col(4);
 		}
 	}
 	.view__results-wrapper {
 		@include make-col-ready();
-		@include media-breakpoint-up(md) {
+		@include media-breakpoint-up(lg) {
 			@include make-col(8);
 		}
 	}
@@ -23,6 +24,31 @@
 
 	.result-count {
 		font-weight: 600;
+	}
+
+	.profile-list-element.row {
+		--bs-gutter-x: 1.5rem;
+	}
+
+	.contact-info-list li {
+
+		// Ensure long email addresses don't break layout
+		// For some reason, hiding overflow doesn't work on smaller breakpoints
+		word-break: break-all;
+		@include media-breakpoint-up(md) {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+
+
+		a.btn {
+			white-space: wrap;
+		}
+
+		i {
+			color: var(--bc-brutus-blue);
+		}
 	}
 
 	.pinned-profile {

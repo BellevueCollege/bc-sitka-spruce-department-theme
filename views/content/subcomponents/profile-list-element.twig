@@ -15,13 +15,13 @@
 {% set phone_number = acf.phone_number %}
 {% set scheduling_link = acf.scheduling_section.schedule_appointment_link %}
 
-<div class="row">
-	<div class="col-md-3">
+<div class="row profile-list-element">
+	<div class="col-sm-6 col-md-auto">
 		{% if profile_image_id %}
 			<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name, last_name ) }}" class="img-fluid rounded">
 		{% endif %}
 	</div>
-	<div class="col-md-9">
+	<div class="col-sm-6 col-md">
 		<h3 class="card-title-small"><a href="{{ profile_url }}">{{ first_name }} {{ last_name }}</a></h3>
 		<div class="row">
 			<div class="col-md-6">
@@ -40,7 +40,7 @@
 				</ul>
 			</div>
 			<div class="col-md-6">
-				<ul class="list-unstyled">
+				<ul class="list-unstyled contact-info-list">
 					{% if email %}
 						<li>
 							<i class="fa-solid fa-envelope me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Email:', 'bc-sitka-spruce') }}</span> <a href="mailto:{{ email }}">{{ email }}</a>
