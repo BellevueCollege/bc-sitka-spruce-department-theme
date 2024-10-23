@@ -122,7 +122,8 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "",
+            "allow_in_bindings": 1,
+            "placeholder": "firstname.lastname@bellevuecollege.edu",
             "prepend": "",
             "append": ""
         },
@@ -132,7 +133,7 @@
             "name": "phone_number",
             "aria-label": "",
             "type": "text",
-            "instructions": "",
+            "instructions": "Use the format XXX-XXX-XXXX to enter phone number.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -142,6 +143,7 @@
             },
             "default_value": "",
             "maxlength": 12,
+            "allow_in_bindings": 1,
             "placeholder": "Please Type In Your Phone Number (e.g 425-564-XXXX)",
             "prepend": "",
             "append": ""
@@ -261,7 +263,7 @@
                     "aria-label": "",
                     "type": "text",
                     "instructions": "",
-                    "required": 1,
+                    "required": 0,
                     "conditional_logic": 0,
                     "wrapper": {
                         "width": "",
@@ -270,6 +272,7 @@
                     },
                     "default_value": "",
                     "maxlength": "",
+                    "allow_in_bindings": 1,
                     "placeholder": "",
                     "prepend": "",
                     "append": ""
@@ -345,7 +348,7 @@
             "aria-label": "",
             "type": "taxonomy",
             "instructions": "Choose or create a profile type for this person. Profile types are usually used for values like Faculty, Staff, or Administrator.",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -377,11 +380,11 @@
     "menu_order": 0,
     "position": "normal",
     "style": "default",
-    "label_placement": "top",
+    "label_placement": "left",
     "instruction_placement": "label",
     "hide_on_screen": "",
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1729631024
+    "modified": 1729700106
 }
