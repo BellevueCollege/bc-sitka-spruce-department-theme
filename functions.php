@@ -66,6 +66,7 @@ function register_blocks() {
 		'narrow-content',
 		'body-section',
 		'body-section/body-section-content',
+		'program-information',
 	);
 
 	block_registration_helper( $blocks );

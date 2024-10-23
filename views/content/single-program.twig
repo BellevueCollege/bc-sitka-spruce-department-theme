@@ -1,0 +1,15 @@
+{#
+/**
+ * @file
+ * Bellevue template for a post.
+ */
+#}
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+	{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+		title: post.title,
+	} %}
+
+	{{ post.content }}
+{% endblock %}
