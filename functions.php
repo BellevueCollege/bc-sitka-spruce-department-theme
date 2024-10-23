@@ -388,3 +388,25 @@ add_action( 'enqueue_block_editor_assets', function () {
 		['wp-blocks', 'wp-dom-ready', 'wp-edit-post'],
 	);
 } );
+
+
+/**
+ * Filter Program post type registration to add templates etc
+ *
+ */
+
+add_filter( 'register_program_post_type_args', function ( $args ) {
+	$args['template'] = array(
+		array(
+			'bc-sitka-spruce/program-information',
+			array(
+				'lock' => array(
+					'move' => true,
+					'remove' => true,
+				),
+			)
+		)
+		);
+	error_log(print_r($args, true));
+	return $args;
+} );
