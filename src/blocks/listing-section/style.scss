@@ -18,29 +18,29 @@
 				height: 240px;
 				border-radius: var(--bs-border-radius) !important;
 				object-fit: fill;
-				height: auto; 
+				height: auto;
 				max-width: 100%;
 
 			}
 
 			@include media-breakpoint-down(sm) {
 
-					a.link-arrow {
+				a.link-arrow {
 
-						display: block;
-						
-					}
+					display: block;
+
+				}
 
 			}
 
 			a {
-				margin-right: 1rem; 
-			  }
+				margin-right: 1rem;
+			}
 
 			@include media-breakpoint-up(md) {
 				padding: 3rem;
 			}
-			
+
 		}
 
 		h2 {
@@ -51,5 +51,5 @@
 			margin-top: 1rem;
 
 		}
-	}	
+	}
 }
