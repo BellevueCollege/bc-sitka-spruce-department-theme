@@ -390,3 +390,34 @@ add_action( 'enqueue_block_editor_assets', function () {
 		['wp-blocks', 'wp-dom-ready', 'wp-edit-post'],
 	);
 } );
+
+
+/**
+ * Custom Post Type Functionality
+ */
+
+/**
+  * Profile Post Type
+*/
+
+/**
+ * Auto-Generate Post Title on Save
+ *
+ * @param string $title
+ */
+add_filter( 'wp_insert_post_data', function( $data , $postarr ) {
+	global $post;
+
+	if ( 'profile' === $data['post_type'] && isset( $data['post_type'] ) ) {
+		if ( $post && $post->ID ) {
+			$first_name = $_POST['acf']['field_6691a56ecddf7'];
+			$last_name  = $_POST['acf']['field_6691a59bcddf8'];
+			$title      = $_POST['acf']['field_6691a5abcddf9'];
+
+			$post_title = "$last_name, $first_name - $title";
+
+			$data['post_title'] = $post_title;
+		}
+	}
+	return $data;
+} , 'filter_handler', 10, 2 );
