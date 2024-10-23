@@ -14,11 +14,18 @@ use Oho\Views\View;
 use Oho\Views\FilterContainer\FilterContainer;
 use Oho\Views\ViewType\PostView;
 use Timber\Timber;
+use BcSitkaSpruce\Library\Theme;
+
 
 $context = Timber::context();
 $context['post'] = Timber::get_post();
 $context['listing'] = build_profile_listing();
 $context['acf'] = get_fields();
+$context['breadcrumbs'] = Theme::breadcrumbs()->getItems( 2 );
+$context['header_image'] = get_field( 'header_image' ) ?
+	wp_get_attachment_image( get_field( 'header_image' ), 'full', false, array( 'class' => 'img-fluid rounded' ) ) : null;
+$context['intro_text'] = get_field( 'intro_text' );
+
 
 Timber::render( 'content/page--profile-listing.twig', $context );
 
