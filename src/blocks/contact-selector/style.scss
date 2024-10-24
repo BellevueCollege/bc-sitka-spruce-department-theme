@@ -20,7 +20,7 @@
     .position-text {
         color: var( --black );
     }
-
+    
     //styling for all of the contact item(s)
     color: var( --bc-brutus-blue );
     background-color: var( --white );
@@ -36,13 +36,23 @@
 
 //Styling Specific to button(s)
 .contact-info {
-    &:last-child {
-        a {
+    &:last-child{
+
+/*         i{
+            display:inline-block; white-space: nowrap;
+        } */
+
+        //use span
+        a{
             overflow-wrap: break-word;
             font-weight: bold;
+            color: var( --accent-link-blue );
+            &:hover{
+                color: var( --black );
+            }
         }
     }
-    .btn {
+    .btn{
         color: var( --white );
     }
 }
