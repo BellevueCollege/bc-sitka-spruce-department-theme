@@ -1,9 +1,11 @@
-import programInformation from "./program-information-sidebar.twig";
+import programInfoSidebar from "./program-info-sidebar.twig";
+import '/assets/dist/blocks/template-program-info/style-index.css';
+
 
 
 export default {
-    title: "Stories/Program Information Sidebar",
-    component: "programInformation",
+    title: "Stories/Program Info/Program Information Sidebar",
+    component: "programInfoSidebar",
     tags: ['autodocs'],
 };
 
@@ -17,7 +19,7 @@ const Template = ( {
 	pathways,
 	focus_areas,
  }) =>
-    programInformation({
+    programInfoSidebar({
 		type,
 		degree,
 		duration,

@@ -31,7 +31,7 @@ const BLOCK_TEMPLATE = [
 ];
 
 
-registerBlockType( 'bc-sitka-spruce/program-information', {
+registerBlockType( 'bc-sitka-spruce/template-program-info', {
 
     edit: function ( props ) {
         const blockProps = useBlockProps({

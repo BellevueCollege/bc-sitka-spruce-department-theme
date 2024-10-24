@@ -1,9 +1,10 @@
-import programIntroduction from "./program-introduction.twig";
+import programInfo from "./program-info.twig";
+import '/assets/dist/blocks/template-program-info/style-index.css';
 
 
 export default {
-    title: "Stories/Program Introduction",
-    component: "programIntroduction",
+    title: "Stories/Program Info",
+    component: "programInfo",
     tags: ['autodocs'],
 };
 
@@ -19,7 +20,7 @@ const Template = ( {
 	pathways,
 	focus_areas
  }) =>
-    programIntroduction({
+    programInfo({
 		overview,
 		content,
 		type,
