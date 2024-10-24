@@ -2,33 +2,37 @@
 
 //Styling for Contact Section
 .contact-section {
-    background-color: var( --accent-fountain-blue-extralight );
-    padding-top: calc( var(--bs-gutter-x) / 2 );
-    padding-bottom: calc( var(--bs-gutter-x) / 2 );
+    background-color: var(--accent-fountain-blue-extralight);
+    padding-top: calc(var(--bs-gutter-x) / 2);
+    padding-bottom: calc(var(--bs-gutter-x) / 2);
+
     //Styling for icon in button
-    .fa-external-link-square{
+    .fa-external-link-square {
         padding-inline: 0.5rem;
     }
 }
 
 //1rem = 16px, EX: 24px = 1.5rem
 .contact-item-r {
+
     //styling for left-hand side/ column of contact item(s)
-    h3{
-        color: var( --black );
+    h3 {
+        color: var(--black);
     }
+
     .position-text {
-        color: var( --black );
+        color: var(--black);
     }
-    
+
     //styling for all of the contact item(s)
-    color: var( --bc-brutus-blue );
-    background-color: var( --white );
+    color: var(--bc-brutus-blue);
+    background-color: var(--white);
     margin: 1.5rem;
     margin-right: 1.5rem;
     border-radius: 0.5rem;
     border: none;
     padding:1.5rem 2.5rem;
+
     &:last-child {
         margin-top: 0;
     }
@@ -36,28 +40,32 @@
 
 //Styling Specific to button(s)
 .contact-info {
-    &:last-child{
+    &:last-child {
 
-/*         i{
-            display:inline-block; white-space: nowrap;
-        } */
 
-        //use span
-        a{
+        .i-a-same-line {
+            display: inline-block;
+            white-space: nowrap;
+        }
+
+        a {
             overflow-wrap: break-word;
             font-weight: bold;
-            color: var( --accent-link-blue );
-            &:hover{
-                color: var( --black );
+            color: var(--accent-link-blue);
+
+            &:hover {
+                color: var(--black);
             }
         }
+
     }
-    .btn{
-        color: var( --white );
+
+    .btn {
+        color: var(--white);
     }
 }
 
 //Styling for icon in button
-.fa-external-link-square{
+.fa-external-link-square {
     padding-inline: 0.5rem;
 }
