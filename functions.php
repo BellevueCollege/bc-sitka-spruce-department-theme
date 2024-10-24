@@ -67,6 +67,7 @@ function register_blocks() {
 		'body-section',
 		'body-section/body-section-content',
 		'template-program-info',
+		'degrees-certificates-section',
 	);
 
 	block_registration_helper( $blocks );
