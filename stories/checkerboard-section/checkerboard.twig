@@ -4,20 +4,20 @@
       <figure>
         {% if video %}
           <div class="aspect-ratio-frame" style="--aspect-ratio: .74">
-            <a class="video-overlay" data-fancybox href="{{ video }}" target="_blank">
-              {{ image }}
+            <a class="video-overlay" data-fancybox href="{{ video|esc_url }}" target="_blank">
+              {{ image|wp_kses_post }}
               {% include '/stories/play-button/play-button.twig' %}
               <span class="visually-hidden">{{ __('Click to play video', 'bc-sitka-spruce') }}</span>
             </a>
           </div>
         {% else %}
           <div class="aspect-ratio-frame" style="--aspect-ratio: .74">
-            {{ image }}
+            {{ image|wp_kses_post }}
           </div>
         {% endif %}
         {% if caption %}
           <figcaption>
-            {{ caption }}
+            {{ caption|e }}
           </figcaption>
         {% endif %}
       </figure>
@@ -25,15 +25,15 @@
 
     <div class="col">
       <div class="card-body p-0 p-sm-auto">
-        <h2 class="h3">{{ title }}</h2>
+        <h2 class="h3">{{ title|e }}</h2>
         {% if text %}
-          {{ text }}
+          {{ text|wp_kses_post }}
         {% endif %}
         <div class="checkerboard__links mt-3">
 					{% if links %}
 						<ul class="link">
 							{% for link in links %}
-								<li><a class='link-arrow' href="{{ link.url }}" {% if link.target %}target="{{ link.target }}"{% endif %}>{{link.title}}</a></li>
+								<li><a class='link-arrow' href="{{ link.url|esc_url }}" {% if link.target %}target="{{ link.target|esc_attr }}"{% endif %}>{{ link.title|e }}</a></li>
 							{% endfor %}
 						</ul>
 					{% endif %}
