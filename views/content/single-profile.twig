@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Bellevue template for a post.
+ */
+#}
+{% extends 'system/wrapper.twig' %}
+
+{#Use {{dump()}} inside top of block content to show all data#}
+{% block content %}
+{# Pullling in details-content rather than remaking same layout from scratch
+Only use 'with' if stuff isn't transferring properly#}
+{% include '/stories/profile-detail-overview-content/details-content.twig' with {
+
+} %}
+
+<div class= "single-profile-appointment">
+      {#Pulling in annoucement banner for profile scheduler rather than remaking from scratch#}
+      {% include '/stories/announcement-banner/announcement-banner.twig' with {
+            title:title,
+            description:description,
+            button:button,
+            button_icon: '<i class= "fa ms-1 fa-external-link-square"></i>'
+      } only %}
+            {{ post.content }}
+</div>
+{% endblock %}
+
+
