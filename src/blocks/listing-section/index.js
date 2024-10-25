@@ -16,12 +16,12 @@ registerBlockType("bc-sitka-spruce/listing-section", {
 			isSelected,
 		} = props;
 		const blockProps = useBlockProps({
-			className: "section listing-section alignfull",
+			className: "section section-xlight listing-section-wrapper alignfull",
 		});
 
 		return (
 			<div {...blockProps}>
-				<div className="container-xl">
+				<div className="container-xl listing-section">
 					<RichText
 						tagName="h2"
 						className="section-heading__heading"
@@ -41,10 +41,12 @@ registerBlockType("bc-sitka-spruce/listing-section", {
 						identifier="description"
 						allowedFormats={[]}
 					/>
+					<div className="listing-section container-xl">
+						<InnerBlocks
+							renderAppender={ InnerBlocks.ButtonBlockAppender }
+						/>
+					</div>
 
-					<InnerBlocks
-						renderAppender={ InnerBlocks.ButtonBlockAppender }
-					/>
 				</div>
 			</div>
 		);
