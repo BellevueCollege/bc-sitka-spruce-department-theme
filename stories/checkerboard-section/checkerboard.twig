@@ -6,8 +6,8 @@
           <div class="aspect-ratio-frame" style="--aspect-ratio: .74">
             <a class="video-overlay" data-fancybox href="{{ video }}" target="_blank">
               {{ image }}
-              {% include '../play-button/play-button.twig' %}
-              <span class="show-for-sr">{{ __('Click to play video', 'bellevue-2022') }}</span>
+              {% include '/stories/play-button/play-button.twig' %}
+              <span class="visually-hidden">{{ __('Click to play video', 'bc-sitka-spruce') }}</span>
             </a>
           </div>
         {% else %}
@@ -30,7 +30,13 @@
           {{ text }}
         {% endif %}
         <div class="checkerboard__links mt-3">
-          {{ links }}
+					{% if links %}
+						<ul class="link">
+							{% for link in links %}
+								<li><a class='link-arrow' href="{{ link.url }}" {% if link.target %}target="{{ link.target }}"{% endif %}>{{link.title}}</a></li>
+							{% endfor %}
+						</ul>
+					{% endif %}
         </div>
       </div>
     </div>
