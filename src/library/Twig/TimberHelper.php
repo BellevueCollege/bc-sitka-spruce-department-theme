@@ -15,32 +15,19 @@ class TimberHelper implements TimberHelperInterface {
 
   protected array $defaultFolders = [
     'views',
-    'views/atoms',
-    'views/blocks',
-    'views/components',
     'views/content',
     'views/includes',
+    'views/static-content',
     'views/listings',
-    'views/listings/news',
-    'views/listings/organization',
-    'views/listings/program',
-    'views/other',
-    'views/system',
-    'views/wordpress',
+    'views/listings/profile',
     'stories'
   ];
 
   protected array $templateLocations = [
     'views',
-    'views/atoms',
-    'views/blocks',
-    'views/components',
     'views/content',
-    'views/includes',
-    'views/listings',
-    'views/other',
-    'views/system',
-    'views/wordpress',
+		'views/listings',
+    'views/listings/profile',
     'stories'
   ];
 
