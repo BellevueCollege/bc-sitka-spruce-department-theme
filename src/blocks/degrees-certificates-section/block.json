@@ -3,7 +3,7 @@
     "name": "bc-sitka-spruce/degrees-certificates-section",
     "title": "Degrees and Certificates Section",
     "category": "layout",
-    "icon": "admin-users",
+    "icon": "menu",
     "description": "Section for displaying programs (degrees and certificates) offered by the department. ",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
