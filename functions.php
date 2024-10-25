@@ -66,6 +66,7 @@ function register_blocks() {
 		'narrow-content',
 		'body-section',
 		'body-section/body-section-content',
+		'checkerboard-section',
 	);
 
 	block_registration_helper( $blocks );
@@ -159,6 +160,10 @@ $image_crops->addImageSize( 'announcement-banner', 260, 174, false );
 $image_crops->addImageSize( 'sock-location', 300, 200, true );
 
 $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
+
+$image_crops->addImageSize( 'checkerboard', 660, 550, true );
+
+
 
 // Make some image sizes available in the block editor
 add_filter(

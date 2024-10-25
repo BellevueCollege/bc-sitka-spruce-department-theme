@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "name": "bc-sitka-spruce/checkerboard-section",
+    "title": "Checkerboard Section",
+    "category": "layout",
+    "icon": "admin-users",
+    "description": "Section for displaying a group of sections with images. ",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "../../../../src/blocks/checkerboard-section/render.php"
+    },
+	"editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}
