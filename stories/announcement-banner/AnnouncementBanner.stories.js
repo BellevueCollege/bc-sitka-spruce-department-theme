@@ -1,5 +1,4 @@
 import announcementBanner from "./announcement-banner.twig";
-import '/assets/dist/blocks/announcement-banner/style-index.css';
 
 export default {
     title: "Stories/Announcement Banner",
