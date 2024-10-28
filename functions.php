@@ -401,7 +401,7 @@ add_action( 'enqueue_block_editor_assets', function () {
 add_filter( 'register_program_post_type_args', function ( $args ) {
 	$args['template'] = array(
 		array(
-			'bc-sitka-spruce/program-information',
+			'bc-sitka-spruce/template-program-info',
 			array(
 				'lock' => array(
 					'move' => true,
