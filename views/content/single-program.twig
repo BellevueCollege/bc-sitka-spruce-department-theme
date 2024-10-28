@@ -13,9 +13,11 @@
 
 	{{ post.content }}
 
-	{% include '/stories/related-programs/related-programs.twig' with {
-		programs: related_programs
-	} %}
+	{% if related_programs.length > 0 %}
+		{% include '/stories/related-programs/related-programs.twig' with {
+			programs: related_programs
+		} %}
+	{% endif %}
 {% endblock %}
 
 {% block sock %}
