@@ -12,6 +12,10 @@
 	} %}
 
 	{{ post.content }}
+
+	{% include '/stories/related-programs/related-programs.twig' with {
+		programs: related_programs
+	} %}
 {% endblock %}
 
 {% block sock %}

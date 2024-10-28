@@ -3,7 +3,8 @@
 	margin: 0 auto;
 }
 
-.section {
+.section,
+.section.swiper {
 	padding-top: var( --sitka-container-spacing );
 	padding-bottom: var( --sitka-container-spacing );
 
@@ -25,7 +26,6 @@
 
 
 	.section-heading > .container-xl {
-
 		padding-bottom: calc( var( --sitka-container-spacing ) * 0.5);
 	}
 
