@@ -14,6 +14,7 @@
 
 
 .editor-styles-wrapper {
+	@import "blocks/block-spacing";
   @import "lib/bootstrap/components";
 	@import "atoms";
 	@import "components";
