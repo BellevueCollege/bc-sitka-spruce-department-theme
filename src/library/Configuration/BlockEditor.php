@@ -89,7 +89,7 @@ class BlockEditor implements BlockEditorInterface {
       remove_theme_support('block-templates');
     }
     add_filter('allowed_block_types_all', [$this, 'setupAllowedBlocks'], 10, 2);
-    // add_filter('block_categories_all', [$this, 'setupBlockGroups'], 10, 2);
+    add_filter('block_categories_all', [$this, 'setupBlockGroups'], 10, 2);
     // add_filter('use_block_editor_for_post', [$this, 'setupBlockEditorForPost'], 10, 2);
     // add_action('acf/init', [$this, 'setupAcfBlocks'], 10, 1);
     add_action('enqueue_block_editor_assets', [$this, 'setupBlockEditorStylesheet'], 99, 0);
@@ -303,8 +303,8 @@ class BlockEditor implements BlockEditorInterface {
   ): array {
     array_splice($block_categories, 1, 0, [
       [
-        'slug' => 'bellevue',
-        'title' => __('Bellevue', 'bc-sitka-spruce'),
+        'slug' => 'sitka-sections',
+        'title' => __('Sections', 'bc-sitka-spruce'),
         'icon' => null,
       ],
     ]);
