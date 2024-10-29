@@ -116,7 +116,21 @@ $enqueuer->addBlockStyle(
 		'bc-sitka-spruce-style-nav',
 	)
 );
-
+$enqueuer->addBlockStyle(
+	handle: 'table',
+	blocks: array(
+		'core/table',
+		'mayflower-blocks/tablepress',
+		'tablepress/table',
+	)
+);
+$enqueuer->addBlockStyle(
+	handle: 'tablepress',
+	blocks: array(
+		'mayflower-blocks/tablepress',
+		'tablepress/table',
+	)
+);
 $enqueuer->addBlockStyle(
 	handle: 'alert',
 	blocks: array(
@@ -451,3 +465,39 @@ add_filter( 'wp_insert_post_data', function( $data , $postarr ) {
 	}
 	return $data;
 } , 'filter_handler', 10, 2 );
+
+
+// TablePress
+
+/**
+ * Add Bootstrap Classes to TablePress Tables.
+ */
+/**
+ * Add 'table' class to tablepress tables
+ *
+ * @param array  $classes List of classes.
+ * @param string $table_id Current Table ID?.
+ */
+function tablepress_classes( $classes, $table_id ) {
+	$classes[] = 'table';
+	$classes[] = 'table-bordered';
+	$classes[] = 'table-hover';
+	return $classes;
+}
+add_filter( 'tablepress_table_css_classes',  __NAMESPACE__ . '\tablepress_classes', 10, 2 );
+
+/**
+ * Wrap tablepress tables in a div
+ *
+ * @param string $data Tablepress output.
+ */
+function tablepress_add_wrapper( $data ) {
+	$data = '<div class="sitka-tablepress-wrapper table-responsive-lg">' . $data . '</div>';
+	return $data;
+}
+add_filter( 'tablepress_table_output', __NAMESPACE__ . '\tablepress_add_wrapper', 10, 2 );
+
+/**
+ * Disable TablePress CSS
+ */
+add_filter( 'tablepress_use_default_css', '__return_false' );
