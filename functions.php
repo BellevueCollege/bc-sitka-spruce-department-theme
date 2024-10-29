@@ -116,12 +116,7 @@ $enqueuer->addBlockStyle(
 		'bc-sitka-spruce-style-nav',
 	)
 );
-$enqueuer->addBlockStyle(
-	handle: 'accordion',
-	blocks: array(
-		'mayflower-blocks/collapsibles',
-	)
-);
+
 $enqueuer->addBlockStyle(
 	handle: 'alert',
 	blocks: array(
