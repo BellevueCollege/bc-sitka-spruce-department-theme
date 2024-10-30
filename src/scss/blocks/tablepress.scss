@@ -205,6 +205,7 @@
 .tablepress .sorting_asc:hover,
 .tablepress .sorting_desc:hover {
 	background-color: $info;
+	color: var(--black);
 	border-bottom: 2px solid $primary;
 }
 
