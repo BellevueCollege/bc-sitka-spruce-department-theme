@@ -355,7 +355,7 @@
                 "class": "",
                 "id": ""
             },
-            "taxonomy": "profile-type",
+            "taxonomy": "profile_type",
             "add_term": 1,
             "save_terms": 1,
             "load_terms": 1,
@@ -386,5 +386,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1729700106
+    "modified": 1730325787
 }
