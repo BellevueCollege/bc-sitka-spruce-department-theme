@@ -64,6 +64,12 @@ function register_blocks() {
 		'listing-section',
 		'listing-section/listing-section-list-item',
 		'listing-section-list-item-links',
+		'course-information-section',
+		'course-information-section/course-information-section-content',
+		'narrow-content',
+		'body-section',
+		'body-section/body-section-content',
+		'checkerboard-section',
 	);
 
 	block_registration_helper( $blocks );
@@ -159,6 +165,12 @@ $image_crops->addImageSize( 'sock-location', 300, 200, true );
 $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
 
 $image_crops->addImageSize( 'listing-section', 360, 240, true );
+
+// Profile Detail Overview Image Sizing
+$image_crops->addImageSize( 'profile-overview-image', 460, 460, true );
+
+$image_crops->addImageSize( 'checkerboard', 660, 550, true );
+
 
 // Make some image sizes available in the block editor
 add_filter(
@@ -368,3 +380,54 @@ add_filter(
 	10,
 	3
 );
+
+
+// // Filter post content to add blocks that are missing or are in the wrong place
+// add_filter(
+// 	'block_editor_settings_all',
+// 	function ( $settings, $context ) {
+// 		echo '<h2>Settings</h2><pre>' . print_r( $settings, true ) . '</pre>';
+// 		echo '<h2>Context</h2><pre>' . print_r( $context, true ) . '</pre>';
+// 		die();
+// 		return $settings;
+// 	}, 10, 2
+// );
+
+add_action( 'enqueue_block_editor_assets', function () {
+	wp_enqueue_script(
+		'apply-templates',
+		get_template_directory_uri() . '/assets/dist/js/editor.js',
+		['wp-blocks', 'wp-dom-ready', 'wp-edit-post'],
+	);
+} );
+
+
+/**
+ * Custom Post Type Functionality
+ */
+
+/**
+  * Profile Post Type
+*/
+
+/**
+ * Auto-Generate Post Title on Save
+ *
+ * @param string $title
+ */
+add_filter( 'wp_insert_post_data', function( $data , $postarr ) {
+	global $post;
+
+	if ( 'profile' === $data['post_type'] && isset( $data['post_type'] ) ) {
+		if ( $post && $post->ID ) {
+			$first_name = $_POST['acf']['field_6691a56ecddf7'];
+			$last_name  = $_POST['acf']['field_6691a59bcddf8'];
+			$title      = $_POST['acf']['field_6691a5abcddf9'];
+
+			$post_title = "$last_name, $first_name - $title";
+
+			$data['post_title'] = $post_title;
+		}
+	}
+	return $data;
+} , 'filter_handler', 10, 2 );

@@ -1,5 +1,6 @@
 import twigCheckerboards from "./checkerboards.twig";
 import twigCheckerboard from "./checkerboard.twig";
+import '/assets/dist/blocks/checkerboard-section/style-index.css';
 
 export default {
     title: "Stories/Checkerboards",
@@ -35,7 +36,18 @@ const SingleCheckerboardImage = {
     caption: 'Placeholder Image Caption',
     title: 'Checkerboard Title',
     text: '<p>This is some text.</p>',
-    links: "<ul class='link'><li><a href='#' class='link-arrow'>Learn more</a></li><li><a href='#' class='link-arrow'>Another Link</a></li></ul>"
+	links: [
+		{
+			title: 'Learn more',
+			url: '#',
+			target: '_blank',
+		},
+		{
+			title: 'Learn more',
+			url: '#',
+			target: '_blank',
+		}
+	]
 };
 
 const SingleCheckerboardVideo = {

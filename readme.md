@@ -1,5 +1,24 @@
 # BC "Sitka Spruce" Department Theme
 
+## Required Plugins
+This theme requires the following plugins to be installed and activated:
+- [Advanced Custom Fields Pro](https://www.advancedcustomfields.com)
+- [Advanced Custom Fields: Font Awesome Field](https://wordpress.org/plugins/advanced-custom-fields-font-awesome/)
+- [Breadcrumb Trail](https://wordpress.org/plugins/breadcrumb-trail/)
+
+## System Preparation
+
+To build theme assets locally, you will need the following dependencies
+installed on your development environment:
+
+1. [NodeJS](https://nodejs.org) - Version 21+.
+1. [npm](https://npm.community) - Version 10+.
+1. [Composer](https://getcomposer.org) - Version 2.6+.
+1. [FontAwesome Pro](https://fontawesome.com/) Key. Get the key from your FontAwesome
+   account, and add it to your `.bashrc` or `.zshrc` file, in the format `export FONTAWESOME_KEY="MY KEY"`
+
+Once these requirements are installed, you can install project dependencies via `composer install` and `npm install`.
+
 ## File Structure
 
 - `assets/` - Built assents and static files

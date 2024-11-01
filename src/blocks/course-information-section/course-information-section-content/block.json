@@ -1,0 +1,31 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/course-information-section-content",
+    "title": "Course Information Section Content",
+    "category": "layout",
+    "icon": "align-pull-right",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "html": false
+    },
+	"allowedBlocks": [
+		"core/paragraph",
+		"core/heading",
+		"core/list",
+		"mayflower-blocks/button",
+		"bawb/program"
+	],
+	"parent": [
+		"bc-sitka-spruce/course-information-section"
+	],
+    "attributes": {
+        "title": {
+            "type": "string",
+			"default": "Courses & Credit Requirements"
+        }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

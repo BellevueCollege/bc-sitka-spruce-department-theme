@@ -2,21 +2,16 @@
 
 .callout {
 	border-radius: 0.5rem;
-	background-color: var( --white );
-	// background-color: var( --accent-fountain-blue-extralight );
-
-	// @include padding-4x;
+	background-color: var( --sitka-callout-bg, var( --white ) );
 	padding: 2rem;
 	margin-bottom: 2rem;
 
-
+	&.callout-info {
+		--sitka-callout-bg: var( --accent-fountain-blue-extralight );
+	}
 
 
 	&__heading {
-		//@include secondary-typeface(b22-card-title-small);
-		font-family: $myriad-semicondensed;
-		font-weight: 600;
-		font-size: 1.25rem;
 		margin-bottom: 1rem;
 	}
 

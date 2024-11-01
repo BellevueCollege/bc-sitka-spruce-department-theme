@@ -1,4 +1,5 @@
 @import 'variables';
+@import 'variables/css';
 
 @import "lib";
 
@@ -8,6 +9,8 @@
 
 @import "components";
 
+@import "pages";
+
 // Stories that should be included globally
 $header-tablet-breakpoint: sm;
 $header-desktop-breakpoint: lg;
@@ -16,44 +19,46 @@ $header-desktop-breakpoint: lg;
 @import "stories/section-heading";
 @import "stories/footer";
 @import "stories/sock";
-
+@import "stories/profile-overview-details-content";
+@import "stories/announcement-banner";
+@import "stories/flexible-page-intro";
+@import "stories/nav-sidebar";
+@import "stories/breadcrumbs";
 
 // Front-end only components
 @import "menus";
 
-
 // MOVE THESE ELSEWHERE
 // Temporary CSS that should be moved to appropriate files
 
-
-
-.container, .container-xl {
-	@include media-breakpoint-up('lg') {
-		--bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 );
+.container,
+.container-xl {
+	@include media-breakpoint-up("lg") {
+		--bs-gutter-x: calc(var(--sitka-container-spacing) * 2);
 	}
 }
 
 #main-content {
 	.block-wrapper {
 		@include make-container();
-		@include media-breakpoint-up('lg') {
-			--bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 );
+
+		@include media-breakpoint-up("lg") {
+			--bs-gutter-x: calc(var(--sitka-container-spacing) * 2);
 		}
 
-		max-width: var( --wp--style--global--wide-size);
+		max-width: var(--wp--style--global--wide-size);
 
 		&.alignfull {
 			max-width: 100%;
 		}
 
-		&.alignstandard > *,
+		&.alignstandard>*,
 		&.aligncenter {
 			max-width: var(--wp--style--global--content-size);
 		}
 
-		&.alignwide > * {
-			max-width: var( --wp--style--global--wide-size);
+		&.alignwide>* {
+			max-width: var(--wp--style--global--wide-size);
 		}
-
 	}
 }
