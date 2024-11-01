@@ -1,13 +1,15 @@
 @import '/src/scss/block-styles';
 
-.program-intro-section{
+.program-intro-section {
 
-ul {line-height: 180%;}
+    ul {
+        line-height: 180%;
+    }
 
 }
 
 
-.program-information-section{
+.program-information-section {
     margin-top: 0.25rem;
     margin-bottom: 1.25rem;
     margin-left: 0.25rem;
@@ -16,10 +18,11 @@ ul {line-height: 180%;}
     padding-bottom: 1.5rem;
     padding-left: 1.5rem;
     padding-right: 1.25rem;
-    background-color: var( --accent-fountain-blue-extralight );
+    background-color: var(--accent-fountain-blue-extralight);
     border-radius: var(--bs-border-radius);
+
     a {
-        @include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
+        @include link-accent-underline(get_color($sitka-colors, 'accent-link-blue'));
 
         &:hover,
         &:focus {
@@ -28,7 +31,7 @@ ul {line-height: 180%;}
     }
 }
 
-.pathway-information-section{
+.pathway-information-section {
     margin-top: 1.25rem;
     margin-bottom: 0.25rem;
     margin-left: 0.25rem;
@@ -39,12 +42,22 @@ ul {line-height: 180%;}
     padding-right: 1.25rem;
     background-color: var(--gray--xlight);
     border-radius: var(--bs-border-radius);
+
     a {
-        @include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
+        @include link-accent-underline(get_color($sitka-colors, 'accent-link-blue'));
 
         &:hover,
         &:focus {
             color: var(--black);
         }
+    }
+
+    h3.card-title-small {
+        font-size: 1.125rem !important;
+        font-weight: 700 !important;
+    }
+
+    ul {
+        line-height: 220%;
     }
 }
