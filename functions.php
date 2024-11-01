@@ -160,6 +160,8 @@ $image_crops->addImageSize( 'announcement-banner', 260, 174, false );
 
 $image_crops->addImageSize( 'sock-location', 300, 200, true );
 
+$image_crops->addImageSize( 'sock-admissions-contact', 360, 240, true );
+
 $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
 
 // Make some image sizes available in the block editor
@@ -399,7 +401,7 @@ add_action( 'enqueue_block_editor_assets', function () {
 add_filter( 'register_program_post_type_args', function ( $args ) {
 	$args['template'] = array(
 		array(
-			'bc-sitka-spruce/program-information',
+			'bc-sitka-spruce/template-program-info',
 			array(
 				'lock' => array(
 					'move' => true,

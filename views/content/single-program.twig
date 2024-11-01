@@ -13,3 +13,19 @@
 
 	{{ post.content }}
 {% endblock %}
+
+{% block sock %}
+	{% include '/stories/sock/degree-sock.twig' with {
+		enable: acf_options.degree_sock.enable,
+		main_heading: acf_options.degree_sock.main_message.heading,
+		main_text: acf_options.degree_sock.main_message.additional_text,
+		message_segments: acf_options.degree_sock.message_segments,
+		admissions_contact_image: {
+			src: acf_options.degree_sock.admissions_contact.image.sizes['sock-admissions-contact'],
+			alt: acf_options.degree_sock.admissions_contact.image.alt
+		},
+		admissions_contact_title: acf_options.degree_sock.admissions_contact.title,
+		admissions_contact_description: acf_options.degree_sock.admissions_contact.description,
+		admissions_contact_button: acf_options.degree_sock.admissions_contact.button
+	} %}
+{% endblock %}
