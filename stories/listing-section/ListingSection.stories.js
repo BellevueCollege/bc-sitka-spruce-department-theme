@@ -1,5 +1,6 @@
 import twigListingSection from './listing-section.twig';
 import twigListItem from './list-item.twig';
+import twigListItemLinks from './list-item-links.twig';
 import '/assets/dist/blocks/listing-section/style-index.css';
 export default {
 	title: 'Stories/Listing Section',
@@ -22,44 +23,54 @@ Default.args = {
 	list_items: [
 		twigListItem({
 			title: 'Item 1',
-			description:
+			content: [
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.',
-			links: [
-				{
-					title: 'Link 1',
-					url: '#',
-				},
-				{
-					title: 'Link 2',
-					url: '#',
-				},
-				{
-					title: 'Link 3',
-					url: '#',
-				},
-			],
-
+				twigListItemLinks({
+					links: [
+						{
+							title: 'Link 1',
+							url: '#',
+						},
+						{
+							title: 'Link 2',
+							url: '#',
+						},
+						{
+							title: 'Link 3',
+							url: '#',
+						},
+					],
+					button: {
+						title: 'Button 1',
+						url: '#',
+					},
+				})
+			].join(''),
 			image: '<img src="https://placehold.co/360x240" class="img-fluid rounded" alt="Placeholder Image">',
 		}),
 		twigListItem({
 			title: 'Item 2',
 			description:
 				'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.',
-			links: [
-				{
-					title: 'Link 1',
-					url: '#',
-				},
-				{
-					title: 'Link 2',
-					url: '#',
-				},
-				{
-					title: 'Link 3',
-					url: '#',
-				},
-			],
-
+				content: [
+					'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.',
+					twigListItemLinks({
+						links: [
+							{
+								title: 'Link 1',
+								url: '#',
+							},
+							{
+								title: 'Link 2',
+								url: '#',
+							},
+							{
+								title: 'Link 3',
+								url: '#',
+							},
+						]
+					})
+				].join(''),
 			image: '<img src="https://placehold.co/360x240" class="img-fluid rounded" alt="Placeholder Image">',
 		}),
 	].join(''),

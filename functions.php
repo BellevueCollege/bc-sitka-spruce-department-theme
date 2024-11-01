@@ -61,6 +61,9 @@ function register_blocks() {
 		'accordion-section',
 		'accordion-section/accordion-section-content',
 		'media-gallery-section',
+		'listing-section',
+		'listing-section/listing-section-list-item',
+		'listing-section-list-item-links',
 	);
 
 	block_registration_helper( $blocks );
@@ -155,6 +158,8 @@ $image_crops->addImageSize( 'sock-location', 300, 200, true );
 
 $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
 
+$image_crops->addImageSize( 'listing-section', 360, 240, true );
+
 // Make some image sizes available in the block editor
 add_filter(
 	'image_size_names_choose',
@@ -162,7 +167,8 @@ add_filter(
 		return array_merge(
 			$sizes,
 			array(
-				'card-header' => __( 'Card Header', 'bc-sitka-spruce' ),
+				'card-header' => __( 'Card Header Image', 'bc-sitka-spruce' ),
+				'listing-section' => __( 'Listing Section Image', 'bc-sitka-spruce' ),
 			)
 		);
 	}
