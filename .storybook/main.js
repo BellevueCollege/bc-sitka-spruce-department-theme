@@ -14,6 +14,7 @@
         loader: "twig-loader",
         options: {
           twigOptions: {
+            paths: ["/"],
           }
         }
       },

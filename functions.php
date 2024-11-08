@@ -66,6 +66,7 @@ function register_blocks() {
 		'narrow-content',
 		'body-section',
 		'body-section/body-section-content',
+		'profiles-section',
 		'checkerboard-section',
 	);
 
@@ -164,6 +165,8 @@ $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
 // Profile Detail Overview Image Sizing
 $image_crops->addImageSize( 'profile-overview-image', 460, 460, true );
 
+$image_crops->addImageSize( 'profile-list-image', 260, 260, true );
+// Checkerboard Image
 $image_crops->addImageSize( 'checkerboard', 660, 550, true );
 
 

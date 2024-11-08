@@ -21,3 +21,9 @@ if ( $is_preview && ! $context['title'] ) {
 	_e( 'The  \'Media Gallery Section\' is not configured. <br />Edit this element to configure it!', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }
+
+/*$slides = get_field( 'slides' );
+$context['slides'] = array_map( function_to_process_array, $slides );
+function function_to_process_array( $slide ) {
+	return DO ALL THE THINGS
+}*/
