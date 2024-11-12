@@ -33,10 +33,8 @@ $menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
 function register_blocks() {
 	$blocks = array(
 		'bc-brand-bar',
-		'differentiators',
-		'differentiator-group',
-		'differentiator',
-		'section-heading',
+		'differentiator-section',
+		'differentiator-section/differentiator',
 		'contact-selector',
 		'content-and-location',
 		'template-homepage',

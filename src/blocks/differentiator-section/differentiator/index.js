@@ -3,13 +3,17 @@ import ServerSideRender from '@wordpress/server-side-render';
 import { useBlockProps } from '@wordpress/block-editor';
 import { useState } from '@wordpress/element';
 import { SelectControl } from '@wordpress/components';
-import coreSiteApiFetch from '../shared-elements/coreSiteApiFetch';
+import coreSiteApiFetch from '../../shared-elements/coreSiteApiFetch';
 
 import { Card, CardBody, CardHeader } from '@wordpress/components';
 
 registerBlockType( 'bc-sitka-spruce/differentiator', {
 	edit: function ( props ) {
-		const blockProps = useBlockProps();
+		const blockProps = useBlockProps(
+			{
+				className: 'text-dark',
+			}
+		);
 
 		// Set up stateful variables to manage differentiator selection
 		const [ differentiators, setDifferentiators ] = useState( [
@@ -43,7 +47,7 @@ registerBlockType( 'bc-sitka-spruce/differentiator', {
 
 		return (
 			<div { ...blockProps }>
-				{ ! areDiffsLoaded && <p>Loading...</p> }
+				{ ! areDiffsLoaded && <p className="text-white">Loading...</p> }
 				{ areDiffsLoaded &&
 					( props.isSelected ||
 						! props.attributes.differentiatorPostId ) && (

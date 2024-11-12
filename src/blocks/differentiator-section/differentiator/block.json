@@ -4,12 +4,12 @@
     "name": "bc-sitka-spruce/differentiator",
     "title": "Differentiator",
     "category": "widgets",
-    "icon": "star",
-    "description": "Single Differentiator",
+    "icon": "welcome-learn-more",
+    "description": "Single Differentiator within a Differentiator Group",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "parent": [
-        "bc-sitka-spruce/differentiator-group"
+        "bc-sitka-spruce/differentiators"
     ],
     "attributes": {
         "differentiatorPostId": {
