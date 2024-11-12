@@ -59,11 +59,6 @@
                 "param": "post_type",
                 "operator": "==",
                 "value": "page"
-            },
-            {
-                "param": "page_template",
-                "operator": "==",
-                "value": "default"
             }
         ]
     ],
@@ -76,5 +71,5 @@
     "active": true,
     "description": "Custom Fields displayed on Pages that aren't the homepage",
     "show_in_rest": 0,
-    "modified": 1727986262
+    "modified": 1729702493
 }

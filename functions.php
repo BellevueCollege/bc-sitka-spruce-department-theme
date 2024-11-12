@@ -61,6 +61,9 @@ function register_blocks() {
 		'accordion-section',
 		'accordion-section/accordion-section-content',
 		'media-gallery-section',
+		'listing-section',
+		'listing-section/listing-section-list-item',
+		'listing-section-list-item-links',
 		'course-information-section',
 		'course-information-section/course-information-section-content',
 		'narrow-content',
@@ -68,6 +71,7 @@ function register_blocks() {
 		'body-section/body-section-content',
 		'template-program-info',
 		'degrees-certificates-section',
+		'checkerboard-section',
 	);
 
 	block_registration_helper( $blocks );
@@ -164,6 +168,14 @@ $image_crops->addImageSize( 'sock-admissions-contact', 360, 240, true );
 
 $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
 
+$image_crops->addImageSize( 'listing-section', 360, 240, true );
+
+// Profile Detail Overview Image Sizing
+$image_crops->addImageSize( 'profile-overview-image', 460, 460, true );
+
+$image_crops->addImageSize( 'checkerboard', 660, 550, true );
+
+
 // Make some image sizes available in the block editor
 add_filter(
 	'image_size_names_choose',
@@ -171,7 +183,8 @@ add_filter(
 		return array_merge(
 			$sizes,
 			array(
-				'card-header' => __( 'Card Header', 'bc-sitka-spruce' ),
+				'card-header' => __( 'Card Header Image', 'bc-sitka-spruce' ),
+				'listing-section' => __( 'Listing Section Image', 'bc-sitka-spruce' ),
 			)
 		);
 	}
@@ -392,6 +405,9 @@ add_action( 'enqueue_block_editor_assets', function () {
 	);
 } );
 
+/*
+ * Custom Post Type Functionality
+ */
 
 /**
  * Filter Program post type registration to add templates etc
@@ -410,6 +426,32 @@ add_filter( 'register_program_post_type_args', function ( $args ) {
 			)
 		)
 		);
-	error_log(print_r($args, true));
 	return $args;
 } );
+
+
+/**
+  * Profile Post Type
+*/
+
+/**
+ * Auto-Generate Post Title on Save
+ *
+ * @param string $title
+ */
+add_filter( 'wp_insert_post_data', function( $data , $postarr ) {
+	global $post;
+
+	if ( 'profile' === $data['post_type'] && isset( $data['post_type'] ) ) {
+		if ( $post && $post->ID ) {
+			$first_name = $_POST['acf']['field_6691a56ecddf7'];
+			$last_name  = $_POST['acf']['field_6691a59bcddf8'];
+			$title      = $_POST['acf']['field_6691a5abcddf9'];
+
+			$post_title = "$last_name, $first_name - $title";
+
+			$data['post_title'] = $post_title;
+		}
+	}
+	return $data;
+} , 'filter_handler', 10, 2 );
