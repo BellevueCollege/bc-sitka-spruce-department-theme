@@ -1,5 +1,4 @@
 import twigDifferentiators from './differentiators.twig';
-import twigDifferentiatorGroup from './differentiator-group.twig';
 import twigDifferentiator from './differentiator.twig';
 
 import {
@@ -7,7 +6,7 @@ import {
 	differentiatorText,
 	differentiatorImage,
 } from './differentiator.data.js';
-import '/assets/dist/blocks/differentiators/style-index.css';
+import '/assets/dist/blocks/differentiator-section/style-index.css';
 
 export default {
 	title: 'Stories/Differentiators',
@@ -15,15 +14,15 @@ export default {
 	tags: ['autodocs'],
 };
 
-const TemplateDifferentiators = ({ heading, subheading, link, content }) =>
+const TemplateDifferentiators = ({ title, description, linkTitle, linkUrl, content }) =>
 	twigDifferentiators({
-		heading,
-		subheading,
-		link,
+		title,
+		description,
+		linkTitle,
+		linkUrl,
 		content,
 	});
-const TemplateDifferentiatorGroup = ({ content }) =>
-	twigDifferentiatorGroup({ content });
+
 const TemplateDifferentiator = ({
 	top_layout,
 	top_text,
@@ -47,22 +46,10 @@ const TemplateDifferentiator = ({
 
 export const Default = TemplateDifferentiators.bind({});
 Default.args = {
-	heading: 'Heading',
-	subheading: 'Subheading',
-	link: '<a href="#" class="link-arrow">Link</a>',
-	content: twigDifferentiatorGroup({
-		content: [
-			twigDifferentiator({ ...differentiatorText }),
-			twigDifferentiator({ ...differentiatorIcon }),
-			twigDifferentiator({ ...differentiatorImage }),
-		].join(''),
-	}),
-};
-
-export const DifferentiatorGroupContainer = TemplateDifferentiatorGroup.bind(
-	{}
-);
-DifferentiatorGroupContainer.args = {
+	title: 'Heading',
+	description: 'Subheading',
+	linkTitle: 'Link Title',
+	linkUrl: '#',
 	content: [
 		twigDifferentiator({ ...differentiatorText }),
 		twigDifferentiator({ ...differentiatorIcon }),
