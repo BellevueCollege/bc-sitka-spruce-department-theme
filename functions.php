@@ -42,7 +42,7 @@ function register_blocks() {
 		'template-homepage',
 		'hero-image',
 		'card-section',
-		'card-section-card',
+		'card-section/card-section-card',
 		'tabcordion',
 		'tabcordion/tabcordion-list',
 		'tabcordion/tabcordion-list-tab',
