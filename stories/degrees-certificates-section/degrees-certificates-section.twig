@@ -1,0 +1,63 @@
+<div class="degrees-certificates-section-wrapper section section-dark text-white">
+	{% include '../section-heading/section-heading.twig' with {
+		heading: title,
+		subheading: description
+	} %}
+	<div class="container-xl mt-2">
+		{% for segment in segments %}
+			<div class="row segment">
+				<div class="col-lg-4">
+					<h3 class="">{{ segment.title|e }}</h3>
+					{% if segment.description %}<p>{{ segment.description|wp_kses_post }}</p>{% endif %}
+				</div>
+				<div class="col-lg-8">
+					{% for program in segment.programs %}
+						<div class="program-card text-dark mb-3 mx-3 mx-xs-3">
+							<div class="row">
+								<div class="col-md-6 p-3">
+									<h4><a href="{{ program.url|esc_url }}">{{ program.title|e }}</a></h4>
+									{% if program.overview %}{{ program.overview|wp_kses_post }}{% endif %}
+								</div>
+								<div class="col-md-6 p-3">
+									<dl>
+										<dt>{{ __( 'Degree', 'bc-sitka-spruce' ) }}</dt>
+										<dd>{{ program.degree|e }}</dd>
+
+										<dt>{{ __( 'Duration', 'bc-sitka-spruce' ) }}</dt>
+										<dd>{{ program.duration|e }}</dd>
+
+										<dt>{{ __( 'Pathway(s)', 'bc-sitka-spruce' ) }}</dt>
+										<dd><ul class="list-unstyled">
+											{% for pathway in program.pathways %}
+												<li>
+													<a href="{{ pathway.url|esc_url }}" target="_blank">
+														{{ pathway.title|e }}<i class="fa-regular fa-square-arrow-up-right ms-1" aria-hidden="true"></i>
+														<span class="visually-hidden">{{ __( 'Opens in a new tab', 'bc-sitka-spruce' ) }}</span>
+													</a>
+												</li>
+											{% endfor %}
+										</ul></dd>
+
+										<dt>{{ __( 'Focus Area(s)', 'bc-sitka-spruce' ) }}</dt>
+										<dd><ul class="list-unstyled">
+											{% for focus_area in program.focus_areas %}
+												<li>
+													<a href="{{ focus_area.url|esc_url }}" target="_blank">
+														{{ focus_area.title|e }}<i class="fa-regular fa-square-arrow-up-right ms-1" aria-hidden="true"></i>
+														<span class="visually-hidden">{{ __( 'Opens in a new tab', 'bc-sitka-spruce' ) }}</span>
+													</a>
+												</li>
+											{% endfor %}
+										</ul></dd>
+									</dl>
+								</div>
+							</div>
+						</div>
+					{% endfor %}
+				</div>
+			</div>
+			{% if not loop.last %}<hr class="accent">{% endif %}
+		{% endfor %}
+	</div>
+</div>
+

@@ -69,6 +69,29 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 	});
 	mediaGallerySlider.add('.media-gallery-wrapper').run();
 
+	const relatedProgramsSlider = new Slider({
+		sliderOpts: {
+			slidesPerView: 1.125,
+			watchSlidesProgress: true,
+			spaceBetween: 40,
+			centeredSlides: false,
+			loop: false,
+			navigation: {
+				nextEl: '.slider-navigation__next',
+				prevEl: '.slider-navigation__prev',
+			},
+			breakpoints: {
+				640: {
+					slidesPerView: 2.25,
+				},
+				1024: {
+					slidesPerView: 3,
+				},
+			}
+		}
+	});
+	relatedProgramsSlider.add('.related-program-slides').run();
+
 	// Enable Fancybox
 	Fancybox.bind('[data-fancybox]', {
 		Html: {

@@ -69,6 +69,8 @@ function register_blocks() {
 		'narrow-content',
 		'body-section',
 		'body-section/body-section-content',
+		'template-program-info',
+		'degrees-certificates-section',
 		'checkerboard-section',
 	);
 
@@ -161,6 +163,8 @@ $image_crops->addImageSize( 'testimonial', 560, 680, true );
 $image_crops->addImageSize( 'announcement-banner', 260, 174, false );
 
 $image_crops->addImageSize( 'sock-location', 300, 200, true );
+
+$image_crops->addImageSize( 'sock-admissions-contact', 360, 240, true );
 
 $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
 
@@ -401,10 +405,30 @@ add_action( 'enqueue_block_editor_assets', function () {
 	);
 } );
 
-
-/**
+/*
  * Custom Post Type Functionality
  */
+
+/**
+ * Filter Program post type registration to add templates etc
+ *
+ */
+
+add_filter( 'register_program_post_type_args', function ( $args ) {
+	$args['template'] = array(
+		array(
+			'bc-sitka-spruce/template-program-info',
+			array(
+				'lock' => array(
+					'move' => true,
+					'remove' => true,
+				),
+			)
+		)
+		);
+	return $args;
+} );
+
 
 /**
   * Profile Post Type
