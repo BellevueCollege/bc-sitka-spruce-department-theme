@@ -18,9 +18,15 @@ registerBlockType("bc-sitka-spruce/card-section", {
 			className: "section card-section alignwide",
 		});
 
+		const TEMPLATE = [
+			[ "bc-sitka-spruce/card-section-card", {} ],
+			[ "bc-sitka-spruce/card-section-card", {} ],
+			[ "bc-sitka-spruce/card-section-card", {} ],
+		];
+
 		return (
 			<div {...blockProps}>
-				<div className="section-heading">
+				<div className="section-heading container-xl">
 					<RichText
 						tagName="h2"
 						className="section-heading__heading"
@@ -31,6 +37,7 @@ registerBlockType("bc-sitka-spruce/card-section", {
 						allowedFormats={[]}
 						disableLineBreaks={true}
 					/>
+
 					<RichText
 						tagName="p"
 						className="section-heading__subheading"
@@ -41,7 +48,11 @@ registerBlockType("bc-sitka-spruce/card-section", {
 						allowedFormats={[]}
 					/>
 				</div>
-				<InnerBlocks />
+				<div className="container-xl">
+					<InnerBlocks
+						template={TEMPLATE}
+					/>
+				</div>
 			</div>
 		);
 	},

@@ -1,6 +1,7 @@
 @import '/src/scss/block-styles';
 
-.card.card-section-card {
+.card.card-section-card,
+.editor-styles-wrapper .card.card-section-card {
 	border: none;
 
 	background-color: var( --bc-rainy-night-blue );
