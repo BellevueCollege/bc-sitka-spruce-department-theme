@@ -18,14 +18,14 @@ $context['wrapper_attrs'] = get_block_wrapper_attributes(
 
 $context['card_classes'] = array( 'card-section-card' );
 $context['media']        = $attributes['cardImageUrl'] ? array(
-	'src'     => $attributes['cardImageUrl'],
-	'alt'     => $attributes['cardImageAlt'],
+	'src'     => esc_url( $attributes['cardImageUrl'] ),
+	'alt'     => esc_attr( $attributes['cardImageAlt'] ),
 	'classes' => array(),
 ) : null;
 
 $context['card_title_tag'] = 'h3';
-$context['card_title']     = $attributes['cardTitle'];
-$context['card_content']   = $content;
+$context['card_title']     = esc_html( $attributes['cardTitle'] ?? '' );
+$context['card_content']   = wp_kses_post( $content ?? '' );
 
 
 
