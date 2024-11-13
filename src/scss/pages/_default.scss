@@ -8,12 +8,10 @@
 	--flexpage-sidebar-width: calc( var( --flexpage-unit ) * 1 );
 	--flexpage-narrow-content-width: calc( var( --flexpage-unit ) * 2 );
 
-	display: grid;
-	grid-template-columns: 1fr;
-	grid-template-rows: auto;
-	column-gap: var( --flexpage-column-gap );
-
 	@include media-breakpoint-up('md') {
+		display: grid;
+		grid-template-rows: auto;
+		column-gap: var( --flexpage-column-gap );
 		grid-template-columns: 1fr repeat( var( --flexpage-columns ), var( --flexpage-unit ) )  1fr;
 		--flexpage-unit: calc(
 			( var( --flexpage-base-width ) - ( var( --flexpage-column-gap ) * ( var( --flexpage-columns ) - 1 ) ) -
