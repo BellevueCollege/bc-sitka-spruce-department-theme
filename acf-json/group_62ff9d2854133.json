@@ -9,7 +9,7 @@
             "aria-label": "",
             "type": "text",
             "instructions": "",
-            "required": 0,
+            "required": 1,
             "conditional_logic": 0,
             "wrapper": {
                 "width": "",
@@ -17,7 +17,7 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 50,
             "allow_in_bindings": 0,
             "placeholder": "",
             "prepend": "",
@@ -109,5 +109,5 @@
     "active": true,
     "description": "Component: Checkerboard",
     "show_in_rest": 0,
-    "modified": 1731455231
+    "modified": 1731456119
 }
