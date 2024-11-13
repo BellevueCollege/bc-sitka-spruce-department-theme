@@ -2,4 +2,8 @@
 
 .wp-block-bc-sitka-spruce-checkerboard-section {
 	max-width: var(--wp--style--global--wide-size) !important;
+
+	.card.card--checkerboard {
+		max-width: 100% !important; // Override WordPress '.card' styles
+	}
 }

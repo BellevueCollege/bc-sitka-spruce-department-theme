@@ -9,8 +9,8 @@ export default {
 };
 
 
-const CheckerboardsTemplate = ( { checkerboards }) =>
-    twigCheckerboards({ checkerboards });
+const CheckerboardsTemplate = ( { title, description, checkerboards }) =>
+    twigCheckerboards({ title, description, checkerboards });
 
 const CheckerboardTemplate = ( {
     video,
@@ -57,6 +57,8 @@ const SingleCheckerboardVideo = {
 
 export const Default = CheckerboardsTemplate.bind({});
 Default.args = {
+	title: "Heading for Checkerboards Section",
+	description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore.",
     checkerboards: [
         SingleCheckerboardImage,
         SingleCheckerboardVideo,

@@ -1,7 +1,49 @@
 {
     "key": "group_62ff9d2854133",
-    "title": "Checkerboard Block",
+    "title": "Checkerboard Section Block",
     "fields": [
+        {
+            "key": "field_6733e8e54e848",
+            "label": "Title",
+            "name": "title",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": 50,
+            "allow_in_bindings": 0,
+            "placeholder": "",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_6733e8f04e849",
+            "label": "Description",
+            "name": "description",
+            "aria-label": "",
+            "type": "textarea",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "maxlength": "",
+            "allow_in_bindings": 0,
+            "rows": "",
+            "placeholder": "",
+            "new_lines": ""
+        },
         {
             "key": "field_62ff9d3385358",
             "label": "Checkerboards",
@@ -67,5 +109,5 @@
     "active": true,
     "description": "Component: Checkerboard",
     "show_in_rest": 0,
-    "modified": 1729885031
+    "modified": 1731456119
 }
