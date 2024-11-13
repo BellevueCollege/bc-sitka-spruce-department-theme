@@ -6,8 +6,8 @@ $context = Timber::context();
 $context['cards'] = $content;
 
 // Rich Text Fields
-$context['title']       = $attributes['title'];
-$context['description'] = $attributes['description'];
+$context['title']       = esc_html( $attributes['title'] ?? '' );
+$context['description'] = wp_kses_post( $attributes['description'] ?? '' );
 
 // Wrapper
 $context['wrapper_attrs'] = get_block_wrapper_attributes(
