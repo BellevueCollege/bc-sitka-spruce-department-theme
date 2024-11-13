@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/template-program-info",
+    "title": "Template: Program Introduction with Info Sidebar",
+    "category": "layout",
+    "icon": "align-pull-left",
+    "description": "Template that displays intro content on the left with a program information sidebar on the right.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "inserter": true,
+        "multiple": false,
+        "html": false
+    },
+    "attributes": {
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": ["file:./style-index.css"],
+    "render": "file:./render.php"
+}

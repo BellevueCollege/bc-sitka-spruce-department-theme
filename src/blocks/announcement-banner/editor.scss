@@ -1,2 +1,9 @@
 @import '/src/scss/block-styles';
 
+
+.wp-block-bc-sitka-spruce-announcement-banner {
+	max-width: var(--wp--style--global--wide-size) !important;
+
+	@import '/src/scss/stories/announcement-banner';
+}
+

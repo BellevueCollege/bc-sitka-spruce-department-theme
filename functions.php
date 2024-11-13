@@ -61,12 +61,17 @@ function register_blocks() {
 		'accordion-section',
 		'accordion-section/accordion-section-content',
 		'media-gallery-section',
+		'listing-section',
+		'listing-section/listing-section-list-item',
+		'listing-section-list-item-links',
 		'course-information-section',
 		'course-information-section/course-information-section-content',
 		'narrow-content',
 		'body-section',
 		'body-section/body-section-content',
 		'profiles-section',
+		'template-program-info',
+		'degrees-certificates-section',
 		'checkerboard-section',
 	);
 
@@ -160,7 +165,11 @@ $image_crops->addImageSize( 'announcement-banner', 260, 174, false );
 
 $image_crops->addImageSize( 'sock-location', 300, 200, true );
 
+$image_crops->addImageSize( 'sock-admissions-contact', 360, 240, true );
+
 $image_crops->addImageSize( 'media-gallery-image', 600, 550, true );
+
+$image_crops->addImageSize( 'listing-section', 360, 240, true );
 
 // Profile Detail Overview Image Sizing
 $image_crops->addImageSize( 'profile-overview-image', 460, 460, true );
@@ -170,7 +179,6 @@ $image_crops->addImageSize( 'profile-list-image', 260, 260, true );
 $image_crops->addImageSize( 'checkerboard', 660, 550, true );
 
 
-
 // Make some image sizes available in the block editor
 add_filter(
 	'image_size_names_choose',
@@ -178,7 +186,8 @@ add_filter(
 		return array_merge(
 			$sizes,
 			array(
-				'card-header' => __( 'Card Header', 'bc-sitka-spruce' ),
+				'card-header' => __( 'Card Header Image', 'bc-sitka-spruce' ),
+				'listing-section' => __( 'Listing Section Image', 'bc-sitka-spruce' ),
 			)
 		);
 	}
@@ -399,10 +408,30 @@ add_action( 'enqueue_block_editor_assets', function () {
 	);
 } );
 
-
-/**
+/*
  * Custom Post Type Functionality
  */
+
+/**
+ * Filter Program post type registration to add templates etc
+ *
+ */
+
+add_filter( 'register_program_post_type_args', function ( $args ) {
+	$args['template'] = array(
+		array(
+			'bc-sitka-spruce/template-program-info',
+			array(
+				'lock' => array(
+					'move' => true,
+					'remove' => true,
+				),
+			)
+		)
+		);
+	return $args;
+} );
+
 
 /**
   * Profile Post Type
