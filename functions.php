@@ -455,3 +455,17 @@ add_filter( 'wp_insert_post_data', function( $data , $postarr ) {
 	}
 	return $data;
 } , 'filter_handler', 10, 2 );
+
+/**
+ * Gravity Forms Configuration
+ */
+
+// Force Orbital Theme
+add_filter( 'gform_form_theme_slug', function( $slug, $form ) {
+	return 'orbital';
+}, 10, 2 );
+
+// Set Default Styles
+add_filter( 'gform_default_styles', function( $styles ) {
+	return '{"theme":"orbital","inputSize":"md","inputBorderColor":"var(--bc-bulldog-silver)","inputBackgroundColor":"#fff","inputColor":"#112337","inputPrimaryColor":"var(--bc-brutus-blue)","labelFontSize":"16","labelColor":"#112337","descriptionFontSize":"14","descriptionColor":"var(--bc-rainy-night-blue)","buttonPrimaryBackgroundColor":"var(--bc-brutus-blue)","buttonPrimaryColor":"#fff"}';
+} );
