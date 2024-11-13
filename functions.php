@@ -69,6 +69,7 @@ function register_blocks() {
 		'narrow-content',
 		'body-section',
 		'body-section/body-section-content',
+		'profiles-section',
 		'template-program-info',
 		'degrees-certificates-section',
 		'checkerboard-section',
@@ -173,6 +174,8 @@ $image_crops->addImageSize( 'listing-section', 360, 240, true );
 // Profile Detail Overview Image Sizing
 $image_crops->addImageSize( 'profile-overview-image', 460, 460, true );
 
+$image_crops->addImageSize( 'profile-list-image', 260, 260, true );
+// Checkerboard Image
 $image_crops->addImageSize( 'checkerboard', 660, 550, true );
 
 

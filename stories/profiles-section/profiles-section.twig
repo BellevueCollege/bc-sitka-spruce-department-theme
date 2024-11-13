@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Bellevue template for the callout component.
+ */
+#}
+
+<div class="section section-xlight profiles-section-wrapper">
+	{% include '/stories/section-heading/section-heading.twig' with {
+		'heading': title,
+		'subheading': description,
+		'link_custom':cta_button,
+	} %}
+	<div class="profiles-section container-xl ">
+                {% for section in sections %}
+					<h3>{{section.title}}</h3>
+					<div class="row">
+						{% for profile in section.profiles %}
+						<div class="col-sm-6 col-lg-3 mb-3">
+							<div class="profile-card  bg-white rounded">
+								<a href= "{{profile.profile_url}}">
+								{% if profile.profile_image is not empty %}
+									{{profile.profile_image}}
+								{% else %}
+									<img class="rounded-top img-fluid" src="{{theme.link}}/assets/img/fountain-logo.svg" alt="Default Profile Image">
+								{% endif %}
+								</a>
+								<div class= "p-2">
+									<p class= "mb-0 fs-6 fw-bold"><a href= "{{profile.profile_url}}">{{profile.first_name}} {{profile.last_name}}</a></p>
+									<p class= "mb-0">{{profile.position}}</p>
+								</div>
+							</div>
+						</div>
+						{% endfor %} {# end of profiles section loop #}
+					</div>
+					{% endfor %} {# end of section loop #}
+	</div>
+</div>
