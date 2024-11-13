@@ -3,7 +3,7 @@
     "name": "bc-sitka-spruce/checkerboard-section",
     "title": "Checkerboard Section",
     "category": "layout",
-    "icon": "admin-users",
+    "icon": "align-pull-left",
     "description": "Section for displaying a group of sections with images. ",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
