@@ -20,6 +20,7 @@ form .form-control {
 	line-height: 1.2;
 	text-decoration: none;
 	text-transform: none;
+	max-width: 100%;
 
 	&:hover,
 	&:focus {
@@ -121,13 +122,15 @@ select.view__select {
 }
 
 
-input[type="checkbox"] {
+input[type="checkbox"],
+.wFormContainer .oneField input[type="checkbox"] {
 	appearance: none;
 	width: 1em;
 	margin-bottom: 1em;
 }
 
-input[type="checkbox"]:after {
+input[type="checkbox"]:after,
+.wFormContainer .oneField input[type="checkbox"]::after {
 	display: inline-block;
 	width: 1em;
 	height: 1em;
@@ -142,7 +145,8 @@ input[type="checkbox"]:after {
 	top: 0.125em;
 }
 
-input[type="checkbox"]:checked:after {
+input[type="checkbox"]:checked:after,
+.wFormContainer .oneField input[type="checkbox"]:checked::after {
 	border: 1px solid var(--bc-fountain-blue);
 	background-image: url(/assets/img/checked.svg);
 	background-repeat: no-repeat;
