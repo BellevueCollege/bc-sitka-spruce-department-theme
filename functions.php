@@ -60,7 +60,7 @@ function register_blocks() {
 		'media-gallery-section',
 		'listing-section',
 		'listing-section/listing-section-list-item',
-		'listing-section-list-item-links',
+		'listing-section/listing-section-list-item-links',
 		'course-information-section',
 		'course-information-section/course-information-section-content',
 		'narrow-content',
