@@ -12,7 +12,7 @@ $context['wrapperAtts'] = get_block_wrapper_attributes();
 
 $content = Differentiator::get_single_from_core(
 	$attributes['differentiatorPostId']
-);
+) ?? array();
 
 if ( ! is_array( $content ) || ! isset( $content ) ) {
 	return;
