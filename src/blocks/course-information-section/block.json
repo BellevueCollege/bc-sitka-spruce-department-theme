@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/course-information-section",
     "title": "Course Information Section",
-    "category": "layout",
+    "category": "sitka-sections",
     "icon": "align-pull-right",
     "description": "Course information for a degree or certificate.",
     "version": "1.0.0",

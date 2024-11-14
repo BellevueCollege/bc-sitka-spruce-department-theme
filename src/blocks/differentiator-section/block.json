@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/differentiator-section",
     "title": "Differentiator Section",
-    "category": "layout",
+    "category": "sitka-core-content",
     "icon": "performance",
     "description": "Display a list of differentiators from the Core Site.",
     "version": "1.0.0",

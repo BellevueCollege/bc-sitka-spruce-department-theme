@@ -4,7 +4,7 @@
 	"name": "bc-sitka-spruce/support-feature",
 	"version": "1.0.0",
 	"title": "BC Core Site Student Support Feature",
-	"category": "layout",
+	"category": "sitka-core-content",
 	"icon": "info",
 	"description": "Display one or more tabs from the main BC news site, highlighting how BC supports students from different communities.",
 	"supports": {

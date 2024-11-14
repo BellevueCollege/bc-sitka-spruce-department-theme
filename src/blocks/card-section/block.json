@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/card-section",
     "title": "Card Section",
-    "category": "layout",
+    "category": "sitka-sections",
     "icon": "align-pull-right",
     "description": "Template that displays a group of card with a heading and introduction.",
     "version": "1.0.0",

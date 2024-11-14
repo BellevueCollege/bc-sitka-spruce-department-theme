@@ -2,7 +2,7 @@
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "name": "bc-sitka-spruce/degrees-certificates-section",
     "title": "Degrees and Certificates Section",
-    "category": "layout",
+    "category": "sitka-sections",
     "icon": "menu",
     "description": "Section for displaying programs (degrees and certificates) offered by the department. ",
     "version": "1.0.0",
