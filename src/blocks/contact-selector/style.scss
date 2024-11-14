@@ -2,9 +2,6 @@
 
 //Styling for Contact Section
 .contact-section {
-    background-color: var(--accent-fountain-blue-extralight);
-    padding-top: calc(var(--bs-gutter-x) / 2);
-    padding-bottom: calc(var(--bs-gutter-x) / 2);
 
     //Styling for icon in button
     .fa-external-link-square {
@@ -12,7 +9,6 @@
     }
 }
 
-//1rem = 16px, EX: 24px = 1.5rem
 .contact-item-r {
 
     //styling for left-hand side/ column of contact item(s)
@@ -36,6 +32,10 @@
     &:last-child {
         margin-top: 0;
     }
+}
+
+.contact-item:last-child .contact-item-r {
+	margin-bottom: 0;
 }
 
 //Styling Specific to button(s)

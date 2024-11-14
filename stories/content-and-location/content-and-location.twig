@@ -1,4 +1,4 @@
-<div {{ wrapper_attrs }}>
+<section {{ wrapper_attrs }}>
     <div class="row">
         <div class="col">
             <h1 class="content-and-location-heading">{{ heading }}</h1>
@@ -7,9 +7,9 @@
         </div>
         {% if display_location %}
             <div class="col-lg-4 col-md-5">
-                {%  include '/stories/location-and-hours/location-and-hours.twig' with { 
+                {%  include '/stories/location-and-hours/location-and-hours.twig' with {
                 } %}
             </div>
         {% endif %}
     </div>
-</div>
+</section>

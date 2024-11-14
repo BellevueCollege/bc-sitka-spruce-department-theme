@@ -8,6 +8,10 @@
 	padding-top: var( --sitka-container-spacing );
 	padding-bottom: var( --sitka-container-spacing );
 
+	&.curved-top {
+		padding-top: 0;
+	}
+
 	&.section-white {
 		padding-bottom: 0;
 	}
@@ -16,14 +20,13 @@
 		background-color: var(--gray--xlight);
 	}
 
-	// Hide divider if next section has a colored background
-	&:has( + .section-xlight ),
-	&:has( + .section-dark ) {
-		.section-divider {
-			display: none;
-		}
+	&.section-accent-blue-extralight {
+		background-color: var(--accent-fountain-blue-extralight);
 	}
 
+	.bg-navy {
+		background-color: var(--bc-rainy-night-blue);
+	}
 
 	.section-heading > .container-xl {
 		padding-bottom: calc( var( --sitka-container-spacing ) * 0.5);
