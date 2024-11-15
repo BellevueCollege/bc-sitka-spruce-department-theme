@@ -1,0 +1,413 @@
+#main-content {
+	.wFormContainer .oneField input[type="checkbox"] {
+		padding: 0;
+	}
+
+	.wFormContainer {
+		max-width: 1440px;
+		margin: 0 auto;
+		background-color: var(--gray--xlight);
+		padding: 2rem;
+		border-radius: var(--bs-border-radius);
+	}
+
+	.wFormContainer .wForm {
+		.wFormTitle {
+			margin-bottom: 1rem !important;
+		}
+		.htmlSection {
+			h1,
+			h2,
+			h3,
+			h4,
+			h5,
+			h6 {
+				font-size: 2rem;
+				margin-top: 1.5rem;
+			}
+		}
+		.actions {
+			margin: 0 !important;
+			padding: 0;
+		}
+
+		fieldset.section {
+			// Fieldsets (radios and checkboxes) need more top margin, because Gravity Forms
+			// moves the fieldset label into the margin area. The specificity here is
+			// unfortunately high, because of how Gravity Forms styles fieldsets.
+			@include global-spacing(xsmall, margin-top);
+			border: 2px solid var(--bc-brutus-blue);
+			background-color: var(--gray--xlight);
+			border-radius: 0.25rem;
+			margin-top: 1.95rem !important;
+			margin-bottom: 1.5rem;
+
+			legend {
+				margin-top: -0.9rem;
+				background: inherit;
+				width: fit-content;
+				border: 2px solid var(--bc-brutus-blue);
+				border-radius: 0.25rem;
+			}
+
+			&.highlighted {
+				border: 2px solid var(--bc-day-lily-orange);
+
+				legend {
+					border-color: var(--bc-day-lily-orange);
+					color: var(--bc-day-lily-orange);
+				}
+			}
+		}
+
+		.oneField,
+		.oneField .inputWrapper {
+			max-width: 100%;
+			margin: 0 0 0.25rem 0;
+			padding: 0;
+			display: block;
+
+			label.label.preField {
+				display: inline-block;
+				font-size: 16px;
+				font-weight: 700;
+				margin-bottom: 8px;
+				padding: 0;
+			}
+
+			.hint,
+			.field-hint,
+			.field-hint-inactive {
+				font-size: 0.9rem;
+				font-weight: 400;
+				background: transparent;
+				color: #000;
+				opacity: 1;
+				margin-top: 0.25rem;
+				font-style: italic;
+			}
+
+			@include all-text-inputs {
+				@include text-input-defaults();
+				// Webkit
+				margin: 0;
+				// Webkit and Blink
+				padding: 1.125rem 1rem;
+				// Blink, Gecko, and Webkit
+				border-width: 1px;
+				border-style: solid;
+				border-color: var(--bc-bulldog-silver);
+				border-radius: 0rem;
+				// Blink, Gecko, and Webkit
+				font-family: $sans-serif;
+				// Less than 16px or equivalent here causes Webkit on mobile to zoom in when
+				// selecting a field.
+				font-size: 1rem;
+				// Remove all user-agent set appearance.
+				appearance: none;
+
+				// Prevent padding from hiding text on small fields
+				min-width: 3em !important;
+
+				&::placeholder {
+					opacity: 0.8;
+					font-weight: 400;
+				}
+
+				&:focus {
+					border-width: 2px;
+					border-color: var(--bc-brutus-blue) !important;
+				}
+
+				@include media-breakpoint-up(md) {
+					font-size: 1.125rem;
+				}
+			}
+
+			[type="file"],
+			[type="image"],
+			select,
+			fieldset {
+				@include text-input-defaults();
+				// Webkit
+				margin: 0;
+				// Webkit and Blink
+				padding: 1.125rem 1rem;
+				// Blink, Gecko, and Webkit
+				border-width: 1px;
+				border-style: solid;
+				border-color: var(--bc-bulldog-silver);
+				border-radius: 0rem;
+				// Blink, Gecko, and Webkit
+				font-family: $sans-serif;
+				// Less than 16px or equivalent here causes Webkit on mobile to zoom in when
+				// selecting a field.
+				font-size: 1rem;
+				// Remove all user-agent set appearance.
+				appearance: none;
+
+				// Prevent padding from hiding text on small fields
+				min-width: 3em !important;
+
+				&::placeholder {
+					opacity: 0.8;
+					font-weight: 400;
+				}
+
+				&:focus {
+					border-width: 2px;
+					border-color: var(--bc-brutus-blue) !important;
+				}
+
+				@include media-breakpoint-up(md) {
+					font-size: 1.125rem;
+				}
+			}
+			[type="file"],
+			textarea {
+				width: 100%;
+			}
+
+			// Selects.
+			select {
+				@include form-input();
+				max-width: 100%;
+				line-height: normal;
+				border-width: 1px;
+				border-style: solid;
+				border-color: var(--bc-bulldog-silver);
+				border-radius: 0rem;
+				background-image: url(/assets/img/chevron-down.svg);
+				background-repeat: no-repeat;
+				background-position: calc(100% - 0.625em) 50%;
+				background-size: 1em;
+				color: #000;
+				// Remove all user-agent set appearance.
+				appearance: none;
+				padding: 8px 2rem 8px 1rem;
+				height: auto;
+			}
+
+			// Checkboxes and Radios
+			.choices {
+				padding-left: 1.5rem;
+				display: block;
+				background-color: transparent !important;
+
+				[type="checkbox"],
+				[type="radio"] {
+					position: absolute;
+					top: 65% !important;
+					width: 2em;
+					height: 2em;
+					transition: border-color $primary-transition;
+					transform: translateY(-50%);
+					opacity: 0;
+					// Inputs don't automatically inherit font-size, so we need to declare it
+					// explicitly for the relative width and height to work.
+					font-size: inherit;
+
+					+ label {
+						position: relative;
+						margin-left: var(1.5em);
+						transition: color $primary-transition;
+
+						&::before {
+							position: absolute;
+							top: 3px;
+							left: -22px;
+							display: block;
+							width: 1.25em;
+							height: 1.25em;
+							content: "";
+							transition:
+								background $primary-transition,
+								border-color $primary-transition,
+								box-shadow $primary-transition;
+							border: 0.125em solid var(--gray--dark);
+						}
+					}
+
+					&:disabled,
+					&:disabled + label {
+						cursor: default;
+					}
+
+					&:invalid {
+						+ label {
+							color: var(--bc-fall-maple-red);
+
+							&::before {
+								border-color: var(--bc-fall-maple-red);
+								box-shadow: 0 0 0 0.0625em
+									var(--bc-fall-maple-red);
+							}
+						}
+					}
+				}
+
+				[type="checkbox"] {
+					&:focus {
+						& + label::before {
+							outline: 3px solid var(--bc-brutus-blue);
+						}
+					}
+
+					&:checked {
+						+ label {
+							&::before {
+								background-color: var(--bc-brutus-blue);
+							}
+
+							&::after {
+								position: absolute;
+								top: 50%;
+								left: -1em;
+								display: block;
+								width: 0.3125em;
+								height: 0.6875em;
+								content: "";
+								transform: rotate(45deg) translate(-100%, -50%);
+								border-width: 0 0.1875em 0.1875em 0;
+								border-style: solid;
+								border-color: var(--white);
+							}
+						}
+
+						&:disabled + label::after {
+							border-color: var(--gray--dark);
+						}
+					}
+
+					&:disabled + label::before {
+						background-color: var(--gray--light);
+					}
+				}
+
+				[type="radio"] {
+					+ label::before {
+						border-radius: 50%;
+						background-image: radial-gradient(
+							var(--bc-brutus-blue) 0.25em,
+							var(--white) 0.25em,
+							var(--white) 0.5em,
+							var(--bc-brutus-blue) 0.5em
+						);
+						background-repeat: no-repeat;
+						background-position: 50% 50%;
+						background-size: 0 0;
+					}
+
+					&:focus {
+						& + label::before {
+							outline: 3px solid var(--bc-brutus-blue);
+						}
+					}
+
+					&:checked {
+						+ label::before {
+							border-color: var(--bc-brutus-blue);
+							background-size: 1.25em 1.25em;
+						}
+
+						&:disabled + label::before {
+							border-color: var(--gray--dark);
+							background-image: radial-gradient(
+								var(--gray--dark) 0.25em,
+								var(--gray--light) 0.25em,
+								var(--gray--light) 0.5em,
+								var(--gray--dark) 0.5em
+							);
+						}
+
+						&:invalid + label::before {
+							background-image: radial-gradient(
+								var(--bc-fall-maple-red) 0.25em,
+								var(--white) 0.25em,
+								var(--white) 0.5em,
+								var(--bc-fall-maple-red) 0.5em
+							);
+						}
+					}
+
+					&:disabled + label::before {
+						background-color: var(--gray--light);
+					}
+				}
+				// @include form-input();
+				display: block;
+				max-width: 1440px;
+				// Webkit
+				margin: 0;
+
+				legend {
+					margin-bottom: 0.75rem;
+				}
+
+				input {
+					margin-bottom: 1rem;
+					padding: 1.125rem 1rem;
+					border: none;
+				}
+
+				&:hover {
+					border-color: transparent;
+				}
+
+				input[type="radio"]:not(old) {
+					display: inline-block;
+					padding: 0.667rem;
+					border: 1px solid var(--bc-rainy-night-blue);
+					border-radius: 1em;
+					appearance: none;
+				}
+
+				input[type="radio"]:not(old):checked {
+					// display: none;
+					background-image: radial-gradient(
+						circle at center,
+						#162f57,
+						#162f57 37.5%,
+						#ffffff 40%,
+						#ffffff 100%
+					);
+				}
+
+				input[type="checkbox"] {
+					pointer-events: none;
+					width: 16px;
+					margin-top: 9px;
+					margin-bottom: 1rem;
+				}
+
+				input[type="checkbox"]:after {
+					display: inline-block;
+					width: var(1.5rem);
+					height: var(1.5rem);
+					margin-top: -4px;
+					margin-left: -4px;
+					content: "";
+					cursor: pointer;
+					border: 1px solid rgb(192, 192, 192);
+					border-radius: 0.25em;
+					background: var(--white);
+					line-height: 1.5em;
+				}
+
+				input[type="checkbox"]:checked:after {
+					border: 1px solid var(--bc-fountain-blue);
+					background-image: url(/assets/img/checked.svg);
+					background-repeat: no-repeat;
+					background-position: 4px 7px;
+
+					&:focus {
+						border: 2px solid var(--bc-fountain-blue);
+					}
+				}
+			}
+		}
+		input.primaryAction {
+			@include button($type: "default", $size: null, $init-defaults: true);
+		}
+	}
+}

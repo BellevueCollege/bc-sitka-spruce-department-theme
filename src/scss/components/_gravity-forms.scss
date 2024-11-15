@@ -1,0 +1,38 @@
+.gform_wrapper {
+	background-color: var(--gray--xlight);
+	padding: 2rem;
+	margin-bottom: 2rem;
+	border-radius: var(--bs-border-radius);
+
+	--gf-ctrl-accent-color: var(--bc-brutus-blue) !important;
+	--gf-color-in-ctrl-primary: var(--bc-brutus-blue) !important;
+	--gf-color-in-ctrl-primary-darker: var(--black) !important;
+
+	// button
+	--gf-color-primary: var(--bc-brutus-blue);
+	--gf-ctrl-btn-radius: 3rem !important;
+	--gf-ctrl-btn-font-size: 1.25rem !important;
+	--gf-ctrl-btn-padding-x: 2rem !important;
+	--gf-ctrl-btn-padding-y: 1rem !important;
+
+	// button text
+	--gf-color-primary-contrast: var(--white);
+
+	// field background
+	--gf-color-in-ctrl: var(--white);
+
+	// field border
+	--gf-ctrl-border-color: var(--bc-bulldog-silver) !important;
+	--gf-ctrl-shadow: none;
+	--gf-ctrl-border-width: 1px;
+	--gf-radius: 0 !important;
+
+	//field size
+	--gf-ctrl-size-md: 50px !important;
+
+	//field label
+	--gf-font-weight-secondary: bold !important;
+
+	// progress bar color
+	--gf-field-pg-prog-bar-bg-color-blue: var(--bc-brutus-blue);
+}
