@@ -68,7 +68,7 @@ class BlockEditor implements BlockEditorInterface {
     'core/site-tagline',
     'core/site-title',
     'core/social-links',
-    'core/table',
+    //'core/table',
     'core/tag-cloud',
     'core/template-part',
     'core/term-description',
@@ -79,25 +79,16 @@ class BlockEditor implements BlockEditorInterface {
 
   protected array $acfBlocks = [];
 
-  protected array $jsBlocks = [
-    'mayflower-blocks/alert',
-    'mayflower-blocks/button',
-    'mayflower-blocks/collapse',
-    'mayflower-blocks/collapsibles',
-    'mayflower-blocks/column',
-    'mayflower-blocks/jumbotron',
-    'mayflower-blocks/lead',
-    'mayflower-blocks/panel',
-    'mayflower-blocks/row',
-    'mayflower-blocks/tabs',
-    'mayflower-blocks/tab-content',
-    'mayflower-blocks/tab-list',
-  ];
+  protected array $jsBlocks = [];
 
   protected int $editorMaxWidth = 1024;
 
   public function __construct() {
     // The presence of theme.json implies this is true, so manually opt out.
+    if (!$this->useFullSiteEditing) {
+      remove_theme_support('block-templates');
+    }
+    add_filter('allowed_block_types_all', [$this, 'setupAllowedBlocks'], 10, 2);
     // if (!$this->useFullSiteEditing) {
     //   remove_theme_support('block-templates');
     // }
@@ -287,11 +278,11 @@ class BlockEditor implements BlockEditorInterface {
   /**
    * Callback for the 'acf/init' action.
    */
-  public function setupAcfBlocks(int $version): void {
-    foreach ($this->acfBlocks as $settings) {
-      acf_register_block_type($settings);
-    }
-  }
+  // public function setupAcfBlocks(int $version): void {
+  //   foreach ($this->acfBlocks as $settings) {
+  //     acf_register_block_type($settings);
+  //   }
+  // }
 
 
 

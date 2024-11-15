@@ -1,0 +1,8 @@
+.accordion-button:not(.bg-default) {
+	--bs-accordion-btn-icon: #{ escape-svg(  accordion-icon-open($accordion-icon-active-color) ) };
+	--bs-accordion-btn-active-icon: #{ escape-svg(  accordion-icon-close($accordion-icon-active-color) ) };
+}
+.accordion-button.text-white {
+	--bs-accordion-btn-icon: #{ escape-svg(  accordion-icon-open($accordion-icon-color) ) };
+	--bs-accordion-btn-active-icon: #{ escape-svg(  accordion-icon-close($accordion-icon-color) ) };
+}

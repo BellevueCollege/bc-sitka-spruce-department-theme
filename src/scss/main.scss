@@ -14,6 +14,8 @@
 // Stories that should be included globally
 $header-tablet-breakpoint: sm;
 $header-desktop-breakpoint: lg;
+@import "blocks/block-spacing";
+
 @import "stories/header";
 @import "stories/site-search-form";
 @import "stories/section-heading";
