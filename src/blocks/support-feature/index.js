@@ -23,9 +23,6 @@ import coreSiteApiFetch from '../shared-elements/coreSiteApiFetch';
 import './style.scss';
 import './editor.scss';
 
-Twig.extendFunction('__', (input, namespace) => {
-	return input;
-});
 /**
  * Register: aa Gutenberg Block.
  *

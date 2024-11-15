@@ -4,7 +4,7 @@
 	"name": "bc-sitka-spruce/department-feature",
 	"version": "1.0.0",
 	"title": "BC Core Site Department Feature",
-	"category": "layout",
+	"category": "sitka-core-content",
 	"icon": "heart",
 	"description": "Highlight a supportive department at Bellevue College, with context about that organization and a link to more information.",
 	"supports": {

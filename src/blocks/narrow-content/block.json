@@ -10,7 +10,8 @@
     "textdomain": "bc-sitka-spruce",
     "supports": {
         "html": false,
-		"multiple": false
+		"multiple": false,
+		"inserter": false
     },
     "editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css"

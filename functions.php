@@ -32,7 +32,6 @@ $menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
  */
 function register_blocks() {
 	$blocks = array(
-		'bc-brand-bar',
 		'differentiator-section',
 		'differentiator-section/differentiator',
 		'contact-selector',
@@ -61,7 +60,7 @@ function register_blocks() {
 		'media-gallery-section',
 		'listing-section',
 		'listing-section/listing-section-list-item',
-		'listing-section-list-item-links',
+		'listing-section/listing-section-list-item-links',
 		'course-information-section',
 		'course-information-section/course-information-section-content',
 		'narrow-content',

@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/listing-section",
     "title": "Listing Section",
-    "category": "layout",
+    "category": "sitka-sections",
     "icon": "align-pull-right",
     "description": "Template that displays a group of List Items",
     "version": "1.0.0",

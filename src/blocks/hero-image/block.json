@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/hero-image",
     "title": "Hero Image",
-    "category": "layout",
+    "category": "media",
     "icon": "cover-image",
     "description": "Displays an image, usually at the top of a page",
     "version": "1.0.0",

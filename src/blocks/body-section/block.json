@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/body-section",
     "title": "Body Section",
-    "category": "layout",
+    "category": "sitka-sections",
     "icon": "align-left",
     "description": "Provides the ability to have a callout alongside the editor in order to provide a pathway to a related, important user goal, and the option to use a form.",
     "version": "1.0.0",
