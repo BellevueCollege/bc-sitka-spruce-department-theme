@@ -17,7 +17,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 64,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -37,7 +38,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 128,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -82,7 +84,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 256,
+            "allow_in_bindings": 1,
             "rows": "",
             "placeholder": "",
             "new_lines": ""
@@ -118,7 +121,8 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "maxlength": "",
+                    "maxlength": 64,
+                    "allow_in_bindings": 1,
                     "placeholder": "Janet Doe",
                     "prepend": "",
                     "append": ""
@@ -138,7 +142,8 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "maxlength": "",
+                    "maxlength": 64,
+                    "allow_in_bindings": 1,
                     "placeholder": "Class of 2050",
                     "prepend": "",
                     "append": ""
@@ -180,5 +185,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1724108904
+    "modified": 1731714535
 }
