@@ -1,5 +1,5 @@
 {#  use {{dump()}} for troubleshooting- timber documentation for more dump options #}
-<div class="profile-overview-wrapper bg-trees-dark">
+<section class="profile-overview-wrapper bg-trees-dark">
 	<div class="container-xl profile-overview">
 		<div class="row">
 			<div class="profile-overview-column2 col-md-6 order-md-1 mb-4">
@@ -10,9 +10,7 @@
 				{% endif %}
 			</div>
 			<div class="profile-overview-column1 col-md-6">
-				<h1>{{ first_name }}
-					{{ last_name }}
-				</h1>
+				<h1>{{ first_name }} {{ last_name }}</h1>
 				<p class="position-text lead">{{ position }}</p>
 				<dl class="profile-dept">
 					{% if department %}
@@ -73,4 +71,4 @@
 			</div>
 		</div>
 	</div>
-</div>
+</section>
