@@ -6,19 +6,19 @@ $context = Timber::context();
 $context['content']          = $content;
 
 // Rich Text Fields
-$context['heading']          = $attributes['heading'];
-$context['summary']          = $attributes['summary'];
+$context['heading']          = esc_html( $attributes['heading'] ?? '' );
+$context['summary']          = wp_kses_post( $attributes['summary'] ?? '' );
 
 // Custom fields from Options
-$context['display_location'] = get_field( 'display_location_card', 'option' );
+$context['display_location'] = get_field( 'display_location_card', 'option' ) ? true : false;
 $image                       = get_field( 'location_image', 'option' );
 if ( $image ) {
-	$context['image']['src'] = $image['url'];
-	$context['image']['alt'] = $image['alt'];
+	$context['image']['src'] = esc_url( $image['url'] ?? '' );
+	$context['image']['alt'] = esc_attr( $image['alt'] ?? '' );
 }
-$context['location']      = get_field( 'location', 'option' );
-$context['hours']         = get_field( 'hours', 'option' );
-$context['contact_url']   = get_field( 'contact_page_url', 'option' );
+$context['location']      = wp_kses_post( get_field( 'location', 'option' ) ?? '' );
+$context['hours']         = wp_kses_post( get_field( 'hours', 'option' ) ?? '' );
+$context['contact_url']   = esc_url( get_field( 'contact_page_url', 'option' ) ?? '' );
 
 // Wrapper
 $context['wrapper_attrs'] = get_block_wrapper_attributes(
