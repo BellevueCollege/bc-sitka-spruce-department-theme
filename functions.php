@@ -32,17 +32,14 @@ $menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
  */
 function register_blocks() {
 	$blocks = array(
-		'bc-brand-bar',
-		'differentiators',
-		'differentiator-group',
-		'differentiator',
-		'section-heading',
+		'differentiator-section',
+		'differentiator-section/differentiator',
 		'contact-selector',
 		'content-and-location',
 		'template-homepage',
 		'hero-image',
 		'card-section',
-		'card-section-card',
+		'card-section/card-section-card',
 		'tabcordion',
 		'tabcordion/tabcordion-list',
 		'tabcordion/tabcordion-list-tab',
@@ -63,12 +60,13 @@ function register_blocks() {
 		'media-gallery-section',
 		'listing-section',
 		'listing-section/listing-section-list-item',
-		'listing-section-list-item-links',
+		'listing-section/listing-section-list-item-links',
 		'course-information-section',
 		'course-information-section/course-information-section-content',
 		'narrow-content',
 		'body-section',
 		'body-section/body-section-content',
+		'profiles-section',
 		'template-program-info',
 		'degrees-certificates-section',
 		'checkerboard-section',
@@ -118,9 +116,18 @@ $enqueuer->addBlockStyle(
 	)
 );
 $enqueuer->addBlockStyle(
-	handle: 'accordion',
+	handle: 'table',
 	blocks: array(
-		'mayflower-blocks/collapsibles',
+		'core/table',
+		'mayflower-blocks/tablepress',
+		'tablepress/table',
+	)
+);
+$enqueuer->addBlockStyle(
+	handle: 'tablepress',
+	blocks: array(
+		'mayflower-blocks/tablepress',
+		'tablepress/table',
 	)
 );
 $enqueuer->addBlockStyle(
@@ -173,6 +180,8 @@ $image_crops->addImageSize( 'listing-section', 360, 240, true );
 // Profile Detail Overview Image Sizing
 $image_crops->addImageSize( 'profile-overview-image', 460, 460, true );
 
+$image_crops->addImageSize( 'profile-list-image', 260, 260, true );
+// Checkerboard Image
 $image_crops->addImageSize( 'checkerboard', 660, 550, true );
 
 
@@ -472,3 +481,38 @@ add_filter( 'gform_default_styles', function( $styles ) {
 
 // Force disable legacy markup
 add_filter( 'gform_enable_legacy_markup', '__return_false' );
+
+// TablePress
+
+/**
+ * Add Bootstrap Classes to TablePress Tables.
+ */
+/**
+ * Add 'table' class to tablepress tables
+ *
+ * @param array  $classes List of classes.
+ * @param string $table_id Current Table ID?.
+ */
+function tablepress_classes( $classes, $table_id ) {
+	$classes[] = 'table';
+	$classes[] = 'table-bordered';
+	$classes[] = 'table-hover';
+	return $classes;
+}
+add_filter( 'tablepress_table_css_classes',  __NAMESPACE__ . '\tablepress_classes', 10, 2 );
+
+/**
+ * Wrap tablepress tables in a div
+ *
+ * @param string $data Tablepress output.
+ */
+function tablepress_add_wrapper( $data ) {
+	$data = '<div class="sitka-tablepress-wrapper table-responsive-lg">' . $data . '</div>';
+	return $data;
+}
+add_filter( 'tablepress_table_output', __NAMESPACE__ . '\tablepress_add_wrapper', 10, 2 );
+
+/**
+ * Disable TablePress CSS
+ */
+add_filter( 'tablepress_use_default_css', '__return_false' );

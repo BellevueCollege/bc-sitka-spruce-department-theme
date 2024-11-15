@@ -9,7 +9,8 @@
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
-        "html": false
+        "html": false,
+		"inserter": false
     },
 	"allowedBlocks": [
 		"core/paragraph",

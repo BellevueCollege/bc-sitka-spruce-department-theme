@@ -41,6 +41,14 @@ Twig.extendFilter("esc_url", (input) => {
 	return input;
 });
 
+/**
+ * Mock the Timber esc_attr function. Note that NO SANITIZATION is done. This is purely for a preview.
+ */
+Twig.extendFilter("esc_attr", (input) => {
+	return input;
+});
+
+
 
 /**
  * Mock the Timber wp_kses_post function. Note that NO SANITIZATION is done. This is purely for a preview.

@@ -1,0 +1,11 @@
+@import '/src/scss/block-styles';
+
+.wp-block-bc-sitka-spruce-card-section-card {
+	&.card {
+		padding: 0;
+		max-width: 100%;
+	}
+	.card-body {
+		padding-bottom: 0 !important;
+	}
+}

@@ -20,7 +20,7 @@ class Differentiator extends PostData {
 			'top_layout'      => esc_attr( $differentiator_top[0]['acf_fc_layout'] ?? null ),
 			'top_text'        => esc_html( $differentiator_top[0]['text'] ?? null ),
 			'top_superscript' => esc_html( $differentiator_top[0]['superscript'] ?? null ),
-			'top_icon'        => wp_kses_post( $differentiator_top[0]['icon'] ?? null ),
+			'top_icon'        => wp_kses_post( $differentiator_top[0]['icon'] ?? '' ),
 			'top_image'       => isset( $differentiator_top[0]['image']['ID'] ) ? wp_get_attachment_image( $differentiator_top[0]['image']['ID'], array( '580', '322' ) ) : null,
 			'title'           => esc_html( get_field( 'title', $id ) ),
 			'text'            => wp_kses_post( get_field( 'text', $id ) ),

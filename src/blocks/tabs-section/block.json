@@ -4,7 +4,7 @@
 	"name": "bc-sitka-spruce/tabs-section",
 	"version": "1.0.0",
 	"title": "Tabs Section",
-	"category": "layout",
+	"category": "sitka-sections",
 	"icon": "align-wide",
 	"description": "Section with a vertical tab component. Different from normal Tabs in that it includes a title and description built in.",
 	"supports": {

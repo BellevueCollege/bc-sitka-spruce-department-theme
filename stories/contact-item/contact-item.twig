@@ -9,7 +9,11 @@
                 <p><i class="fas fa-phone-flip" aria-hidden="true"></i>&nbsp;<a href="tel:{{ phone }}">{{ phone }}</a></p>
             {% endif %}
             {% if email %}
-                <p><i class="fas fa-envelope" aria-hidden="true"></i>&nbsp;<a href="mailto:{{ email }}">{{ email }}</a></p>
+                <p>
+                    <span class="i-a-same-line">
+                        <i class="fas fa-envelope" aria-hidden="true"></i>&nbsp;<a href="mailto:{{ email }}">{{ email }}</a>
+                    </span>
+                </p>
             {% endif %}
             {% if scheduling_link %}
                 <p>

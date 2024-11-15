@@ -1,0 +1,23 @@
+@import '/src/scss/block-styles';
+@import "~bootstrap/scss/tables";
+
+.wp-block-table {
+	@extend .table-responsive-lg;
+
+	td, th, thead {
+		border: inherit;
+		padding: inherit;
+	}
+}
+.wp-block-table table,
+.tablepress {
+	@extend .table;
+	@extend .table-bordered;
+	@extend .table-hover;
+
+	thead {
+		@extend .table-primary;
+		--bs-table-color: var(--white);
+		--bs-table-bg: var(--bc-brutus-blue);
+	}
+}

@@ -1,0 +1,17 @@
+// Spacing for non-bundled blocks
+
+$block-spacing: 1.5rem;
+
+.wp-block-mayflower-blocks-panel.card,
+.wp-block-mayflower-blocks-tabs.card,
+.wp-block-mayflower-blocks-collapsibles.accordion {
+	margin-bottom: $block-spacing;
+}
+
+.wp-block-mayflower-blocks-alert {
+	--bs-alert-margin-bottom: #{$block-spacing};
+}
+
+.wp-block-mayflower-blocks-button .btn {
+	margin-bottom: $block-spacing;
+}

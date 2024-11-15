@@ -2,10 +2,10 @@
     "$schema": "https://schemas.wp.org/trunk/block.json",
     "apiVersion": 3,
     "name": "bc-sitka-spruce/contact-selector",
-    "title": "Contact Selector",
-    "category": "theme",
+    "title": "Contact Selector Section",
+    "category": "sitka-sections",
     "icon": "groups",
-    "description": "Over-arching container that displays the contact profile(s)",
+    "description": "Section to display contact information for one or more people. Pulls from Profiles section, but doesn't link to profile pages.",
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
@@ -18,5 +18,5 @@
         "mode": "preview",
         "renderTemplate": "../../../../src/blocks/contact-selector/render.php"
     }
-    
+
 }

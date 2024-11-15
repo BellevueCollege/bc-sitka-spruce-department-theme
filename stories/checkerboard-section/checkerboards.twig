@@ -4,8 +4,12 @@
  * Bellevue template for the checkerboard component.
  */
 #}
-<section class="checkerboard global-spacing global-margin--12x">
-  <div class="checkerboards container-xl">
+<section class="checkerboard section section-white">
+	{% include '/stories/section-heading/section-heading.twig' with {
+		heading: title,
+		subheading: description
+	} %}
+  <div class="checkerboards container-xl mt-5">
     {% for checkerboard in checkerboards %}
       {% include '/stories/checkerboard-section/checkerboard.twig' with {
         video: checkerboard.video,
@@ -17,4 +21,6 @@
       } %}
     {% endfor %}
   </div>
+	<hr class="section-divider">
 </section>
+

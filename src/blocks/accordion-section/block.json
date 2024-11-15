@@ -3,7 +3,7 @@
     "apiVersion": 3,
     "name": "bc-sitka-spruce/accordion-section",
     "title": "Accordion Section",
-    "category": "layout",
+    "category": "sitka-sections",
     "icon": "align-pull-right",
     "description": "Template that displays an accordion with a heading and introduction and optional callout.",
     "version": "1.0.0",

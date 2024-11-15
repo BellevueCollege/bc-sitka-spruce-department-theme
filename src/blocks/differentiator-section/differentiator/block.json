@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/differentiator",
+    "title": "Differentiator",
+    "category": "widgets",
+    "icon": "welcome-learn-more",
+    "description": "Single Differentiator within a Differentiator Group",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "parent": [
+        "bc-sitka-spruce/differentiators"
+    ],
+    "attributes": {
+        "differentiatorPostId": {
+            "type": "string"
+        }
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

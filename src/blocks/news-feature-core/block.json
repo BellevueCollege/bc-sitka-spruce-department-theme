@@ -4,7 +4,7 @@
 	"name": "bc-sitka-spruce/news-feature-core",
 	"version": "1.0.0",
 	"title": "BC Core Site News Feature",
-	"category": "layout",
+	"category": "sitka-core-content",
 	"icon": "megaphone",
 	"description": "Display featured news stories from the main BC news site.",
 	"supports": {

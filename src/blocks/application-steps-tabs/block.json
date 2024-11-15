@@ -4,7 +4,7 @@
 	"name": "bc-sitka-spruce/application-steps-tabs",
 	"version": "1.0.0",
 	"title": "Application Steps (Tabs)",
-	"category": "layout",
+    "category": "sitka-sections",
 	"icon": "slides",
 	"description": "Component for displaying tabs for various application audiences, with steps for each tab.",
 	"supports": {

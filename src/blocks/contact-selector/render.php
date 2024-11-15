@@ -29,7 +29,7 @@ foreach ((get_field('profiles')??[]) as $profile) {
    // going into contact item data to grab nested data
     $profile_data['scheduling_link'] = $schedule_data['schedule_appointment_link']['url'] ?? null;
     $profile_data['scheduling_text'] = $schedule_data['schedule_appointment_link']['title'] ?? null;
-    
+
     $profiles_data[] = $profile_data;
 } // END OF FOR LOOP
 
@@ -38,17 +38,11 @@ $context['profiles'] = $profiles_data;
 
 // Showing message if use does not input any contacts (in preview, on editor side)
 if ( $is_preview && ! $context['profiles'] ) {
-	echo '<div class="callout-wrapper callout-disabled col"><p>';
+	echo '<div class="callout-wrapper callout-disabled"><p>';
 	_e( 'YOU HAVE NOT ADDED ANY CONTACTS! <br />Edit this element to add some!', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }
 
-// Showing message if use does not input any contacts (in preview, on editor side)
-if ( $is_preview && ! $context['profiles'] ) {
-	echo '<div class="callout-wrapper callout-disabled col"><p>';
-	_e( 'YOU HAVE NOT ADDED ANY CONTACTS! <br />Edit this element to add some!', 'bc-sitka-spruce' );
-	echo '</p></div>';
-}
 
 // Render Twig Template, and if it's empty, return nothing
 if ( $context['profiles'] ) {
