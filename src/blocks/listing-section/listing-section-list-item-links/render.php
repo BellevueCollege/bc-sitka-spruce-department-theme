@@ -4,9 +4,9 @@ use Timber\Timber;
 $context = Timber::context();
 $context['links'] = get_field( 'links' ) ? array_map( function ( $link ) {
 	return array(
-		'title' => $link['link']['title'] ?? '',
-		'url' => $link['link']['url'] ?? '',
-		'target' => $link['link']['target'] ?? '',
+		'title'  => esc_html( $link['link']['title'] ?? '' ),
+		'url'    => esc_url( $link['link']['url'] ?? '' ),
+		'target' => esc_attr( $link['link']['target'] ?? '' ),
 	);
 }, get_field( 'links' ) ) : null;
 

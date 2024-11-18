@@ -8,12 +8,14 @@
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
 	"supports": {
-		"html": false,
-		"inserter": false
+		"html": false
 	},
+	"parent": [
+		"bc-sitka-spruce/listing-section-list-item"
+	],
     "acf": {
         "mode": "auto",
-        "renderTemplate": "../../../../src/blocks/listing-section-list-item-links/render.php"
+        "renderTemplate": "/src/blocks/listing-section/listing-section-list-item-links/render.php"
     },
 	"editorScript": "file:./index.js"
 }
