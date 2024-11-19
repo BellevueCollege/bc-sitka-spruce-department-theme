@@ -5,7 +5,7 @@
 
 // Hide navigation if swiper is not initialized
 .slider-navigation {
-	display: none;
+	visibility: hidden;
 
 	.swiper-initialized & {
 		display: flex;
