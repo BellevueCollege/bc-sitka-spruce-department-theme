@@ -104,5 +104,5 @@
 }
 
 .slider-navigation:has(.swiper-button-disabled + .swiper-button-disabled) {
-	display: none;
+	visibility: hidden;
 }

@@ -9,6 +9,9 @@ import {
 	InnerBlocks,
 } from '@wordpress/block-editor';
 
+import { textBlocks } from "../../shared-elements/block-sets";
+
+
 export default function Edit( props ) {
 	const blockProps = useBlockProps(
 		{
@@ -22,7 +25,7 @@ export default function Edit( props ) {
 	}, setAttributes, isSelected, clientId, context } = props;
 
 	let allowedBlocks = context['bc-sitka-spruce/tabcordion/allowedBlocks'];
-	allowedBlocks = allowedBlocks.length > 0 ? allowedBlocks : true;
+	allowedBlocks = allowedBlocks.length > 0 ? allowedBlocks : textBlocks;
 	const HeadingTag = context['bc-sitka-spruce/tabcordion/headingLevel'];
 	const displayHeadingsVisually = context['bc-sitka-spruce/tabcordion/displayHeadingsVisually'];
 
