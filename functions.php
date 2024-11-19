@@ -440,6 +440,26 @@ add_filter( 'register_program_post_type_args', function ( $args ) {
 	return $args;
 } );
 
+/**
+ * Filter Profile post type registration to add templates etc
+ *
+ */
+
+ add_filter( 'register_profile_post_type_args', function ( $args ) {
+	$args['template'] = array(
+		array(
+			'bc-sitka-spruce/bio-section',
+			array(
+				'lock' => array(
+					'move' => true,
+					'remove' => false,
+				),
+			)
+		)
+		);
+	return $args;
+} );
+
 
 /**
   * Profile Post Type
