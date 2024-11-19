@@ -65,6 +65,14 @@
 	padding-bottom: calc( var( --sitka-container-spacing ) + 10vw );
 }
 
+.section.section-xlight + .section.section-xlight {
+	border-top: 2px solid var(--white);
+}
+
+.section.section-dark + .section.section-dark {
+	border-top: 2px solid var(--bc-fountain-blue);
+}
+
 // Avoid extra spacing between last section and sock
 .section:last-child {
 	margin-bottom: 0;
