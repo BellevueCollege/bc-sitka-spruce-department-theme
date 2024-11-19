@@ -9,14 +9,15 @@ export default {
 };
 
 
-const Template = ( { callout_type,wrapper_classes, heading_tag, title, text, links }) =>
+const Template = ( { callout_type,wrapper_classes, heading_tag, title, text, links, button_url, button_text }) =>
     twigCallout({
 		callout_type,
 		wrapper_classes,
 		heading_tag,
         title,
         text,
-        links
+        links,
+        button,
     });
 
 export const Default = Template.bind({});
@@ -26,7 +27,8 @@ Default.args = {
 	heading_tag: 'h2',
     title: 'Spring Quarter Starts Monday!',
     text: '<p>Get ready to celebrate the new year with our new program. </p>',
-    links: "<ul><li><a href='#' class='link-arrow'>Learn more</a></li><li><a href='#' class='link-arrow'>Another Link</a></li></ul>"
+    links: "<ul><li><a href='#' class='link-arrow'>Learn more</a></li><li><a href='#' class='link-arrow'>Another Link</a></li></ul>",
+    button: { url: '#', title: 'Learn More' },
 };
 
 export const LightBlue = Template.bind({});
@@ -36,5 +38,6 @@ LightBlue.args = {
 	heading_tag: 'h2',
     title: 'Spring Quarter Starts Monday!',
     text: '<p>Get ready to celebrate the new year with our new program. </p>',
-    links: "<ul><li><a href='#' class='link-arrow'>Learn more</a></li><li><a href='#' class='link-arrow'>Another Link</a></li></ul>"
+    links: "<ul><li><a href='#' class='link-arrow'>Learn more</a></li><li><a href='#' class='link-arrow'>Another Link</a></li></ul>",
+    button: { url: '#', title: 'Learn More' },
 };

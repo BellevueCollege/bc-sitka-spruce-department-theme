@@ -126,6 +126,31 @@
                     "parent_repeater": "field_66b1338d05e6d"
                 }
             ]
+        },
+        {
+            "key": "field_673bccabb8e8e",
+            "label": "Button",
+            "name": "button",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66b1334b05e6b",
+                        "operator": "==",
+                        "value": "1"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "allow_in_bindings": 0
         }
     ],
     "location": [
@@ -146,5 +171,5 @@
     "active": true,
     "description": "Fields for Callout Block",
     "show_in_rest": 0,
-    "modified": 1727986290
+    "modified": 1731975297
 }

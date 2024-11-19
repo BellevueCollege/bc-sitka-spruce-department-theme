@@ -70,6 +70,8 @@ function register_blocks() {
 		'template-program-info',
 		'degrees-certificates-section',
 		'checkerboard-section',
+		'bio-section',
+		'bio-section/bio-section-content',
 	);
 
 	block_registration_helper( $blocks );
