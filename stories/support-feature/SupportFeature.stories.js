@@ -6,7 +6,6 @@ import twigTabContentPanel from "../tabcordion/components/content-panel.twig";
 
 
 import '/assets/dist/css/blocks/nav.css';
-import '/assets/dist/css/blocks/accordion.css';
 import '/assets/dist/css/blocks/tabcordion-list.css';
 import '/assets/dist/blocks/support-feature/style-index.css';
 
