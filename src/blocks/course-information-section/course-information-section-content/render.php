@@ -1,8 +1,8 @@
 <?php
 use Timber\Timber;
 
-$context = Timber::context();
-$context['title'] = $attributes['title'];
+$context            = Timber::context();
+$context['title']   = esc_attr( $attributes['title'] ?? '' );
 $context['content'] = $content;
 
 // Render Twig Template

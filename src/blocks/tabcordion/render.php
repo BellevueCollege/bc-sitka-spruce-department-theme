@@ -5,10 +5,10 @@ use Timber\Timber;
 $context = Timber::context();
 
 $context['structure'] = $content;
-$context['id'] = $attributes['blockId'];
+$context['id']        = esc_attr( $attributes['blockId'] ?? '' );
 
-$classes = array( 'tabcordion' );
-$classes[] = 'tabcordion-' . $attributes['format'];
+$classes   = array( 'tabcordion' );
+$classes[] = esc_attr( 'tabcordion-' . $attributes['format'] );
 
 if ( $attributes['_wrapContent'] ) {
 	$classes[] = 'wrap-content';
@@ -24,15 +24,15 @@ if ( $attributes['format'] === 'list' ) {
 
 $context['wrapper_attrs'] = get_block_wrapper_attributes(
 	array(
-		'id' => $attributes['blockId'],
+		'id'    => esc_attr( $attributes['blockId'] ?? '' ),
 		'class' => implode( ' ', $classes ),
 	)
 );
 
 // $wrapper_attrs = get_block_wrapper_attributes(
-// 	array(
-// 		'class' => 'card',
-// 	)
+//  array(
+//      'class' => 'card',
+//  )
 // );
 if ( $attributes['format'] === 'tabs' ) {
 	Timber::render( '/stories/tabcordion/tabcordion-top-tabs-card.twig', $context );
@@ -41,5 +41,3 @@ if ( $attributes['format'] === 'tabs' ) {
 } else {
 	Timber::render( '/stories/tabcordion/tabcordion-side-tabs.twig', $context );
 }
-
-
