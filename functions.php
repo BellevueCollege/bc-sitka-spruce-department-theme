@@ -70,6 +70,8 @@ function register_blocks() {
 		'template-program-info',
 		'degrees-certificates-section',
 		'checkerboard-section',
+		'bio-section',
+		'bio-section/bio-section-content',
 	);
 
 	block_registration_helper( $blocks );
@@ -431,6 +433,26 @@ add_filter( 'register_program_post_type_args', function ( $args ) {
 				'lock' => array(
 					'move' => true,
 					'remove' => true,
+				),
+			)
+		)
+		);
+	return $args;
+} );
+
+/**
+ * Filter Profile post type registration to add templates etc
+ *
+ */
+
+ add_filter( 'register_profile_post_type_args', function ( $args ) {
+	$args['template'] = array(
+		array(
+			'bc-sitka-spruce/bio-section',
+			array(
+				'lock' => array(
+					'move' => true,
+					'remove' => false,
 				),
 			)
 		)

@@ -6,6 +6,7 @@ $context = Timber::context();
 $context['enabled'] = get_field( 'display_callout' );
 $context['title'] = get_field( 'title' ) ?? '';
 $context['text'] = get_field( 'text' ) ?? '';
+$context['button'] = get_field( 'button' ) ?? '';
 $links = get_field( 'links' );
 $context['links'] = is_array( $links ) ? array_map( function ( $link ) {
 	return $link['link'] ?? '';

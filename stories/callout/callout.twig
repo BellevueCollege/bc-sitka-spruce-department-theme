@@ -27,5 +27,8 @@
 				{% endif %}
 			</div>
 		{% endif %}
+		{% if button %}
+			<a href="{{ button.url|esc_url }}" class="btn btn-primary">{{ button.title|e }}</a>
+		{% endif %}
 	</aside>
 </div>

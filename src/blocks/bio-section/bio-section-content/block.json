@@ -1,0 +1,26 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/bio-section-content",
+    "title": "Biography Section Content",
+    "category": "layout",
+    "icon": "align-pull-right",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "html": false
+    },
+	"allowedBlocks": [
+		"core/paragraph",
+        "core/heading",
+        "core/list"
+	],
+	"parent": [
+		"bc-sitka-spruce/bio-section"
+	],
+    "attributes": {
+
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}
