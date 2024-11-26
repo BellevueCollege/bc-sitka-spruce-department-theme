@@ -28,7 +28,7 @@ Default.args = {
     title: 'Spring Quarter Starts Monday!',
     text: '<p>Get ready to celebrate the new year with our new program. </p>',
     links: "<ul><li><a href='#' class='link-arrow'>Learn more</a></li><li><a href='#' class='link-arrow'>Another Link</a></li></ul>",
-    button: '{ url: '#', title: 'Learn More' }',
+    button: "{ url: '#', title: 'Learn More' }",
 };
 
 export const LightBlue = Template.bind({});
