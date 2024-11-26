@@ -17,14 +17,14 @@ use Timber\Timber;
 use BcSitkaSpruce\Library\Theme;
 
 
-$context = Timber::context();
-$context['post'] = Timber::get_post();
-$context['listing'] = build_profile_listing();
-$context['acf'] = get_fields();
-$context['breadcrumbs'] = Theme::breadcrumbs()->getItems( 2 );
+$context                 = Timber::context();
+$context['post']         = Timber::get_post();
+$context['listing']      = build_profile_listing();
+$context['acf']          = get_fields();
+$context['breadcrumbs']  = Theme::breadcrumbs()->getItems( 2 );
 $context['header_image'] = get_field( 'header_image' ) ?
 	wp_get_attachment_image( get_field( 'header_image' ), 'full', false, array( 'class' => 'img-fluid rounded' ) ) : null;
-$context['intro_text'] = get_field( 'intro_text' );
+$context['intro_text']   = esc_html( get_field( 'intro_text' ) ?? '' );
 
 
 Timber::render( 'content/page--profile-listing.twig', $context );
@@ -36,24 +36,24 @@ function build_profile_listing() {
 		'subcomponents/profile-list-element.twig',
 	);
 
-	$profiles_post_view->addMetaSortOrder('pin_profile_in_listing', 'DESC');
-	$profiles_post_view->addMetaSortOrder('last_name', 'ASC');
-	$profiles_post_view->addMetaSortOrder('first_name', 'ASC');
+	$profiles_post_view->addMetaSortOrder( 'pin_profile_in_listing', 'DESC' );
+	$profiles_post_view->addMetaSortOrder( 'last_name', 'ASC' );
+	$profiles_post_view->addMetaSortOrder( 'first_name', 'ASC' );
 
 	$search_filter = new SearchExposedFilter(
-		__('Search by Name', 'bc-sitka-spruce'),
-		__('Search All...', 'bc-sitka-spruce'),
+		__( 'Search by Name', 'bc-sitka-spruce' ),
+		__( 'Search All...', 'bc-sitka-spruce' ),
 	);
 
 	$department_filter = new TaxonomySelectExposedFilter(
 		'department',
-		__('Office or Department', 'bc-sitka-spruce'),
+		__( 'Office or Department', 'bc-sitka-spruce' ),
 	);
-	$department_filter->addAllOption(__('All Offices and Departments', 'bc-sitka-spruce'));
+	$department_filter->addAllOption( __( 'All Offices and Departments', 'bc-sitka-spruce' ) );
 
 	$profile_type_filter = new TaxonomyCheckboxExposedFilter( // this should be checkboxes, but they aren't working as expected
 		'profile-type',
-		__('Profile Type', 'bc-sitka-spruce'),
+		__( 'Profile Type', 'bc-sitka-spruce' ),
 		'profile_type',
 		'IN',
 	);
@@ -61,14 +61,13 @@ function build_profile_listing() {
 
 	$taxonomy_filters = new AndFilterGroup();
 	$taxonomy_filters
-		->addFilter('department', $department_filter)
-		->addFilter('profile-type', $profile_type_filter);
+		->addFilter( 'department', $department_filter )
+		->addFilter( 'profile-type', $profile_type_filter );
 
 	$view_filters = new FilterContainer();
 	$view_filters
-		->addTaxonomyFilterGroup($taxonomy_filters)
-		->addSpecialFilter('search', $search_filter);
-
+		->addTaxonomyFilterGroup( $taxonomy_filters )
+		->addSpecialFilter( 'search', $search_filter );
 
 	$profiles_view = new View( $profiles_post_view );
 	$profiles_view->addViewFilters( $view_filters );

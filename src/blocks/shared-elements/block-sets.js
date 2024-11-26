@@ -27,4 +27,14 @@ const wysiwygBlocks = [
 	'core/spacer',
 ];
 
-export { wysiwygBlocks };
+const textBlocks = [
+	'core/paragraph',
+	'core/heading',
+	'core/list',
+	'core/file',
+	'core/separator',
+	'mayflower-blocks/button',
+	'mayflower-blocks/lead',
+];
+
+export { wysiwygBlocks, textBlocks };

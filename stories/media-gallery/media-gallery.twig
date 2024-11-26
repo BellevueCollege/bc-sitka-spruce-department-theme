@@ -40,8 +40,10 @@
 											</div>
 										</div>
 										<figcaption class="col-md-3">
-											<h3 class="card-title-big">{{ slide.slide_title|e }}</h3>
-											<hr>
+											{% if slide.slide_title %}
+												<h3 class="card-title-big">{{ slide.slide_title|e }}</h3>
+												<hr>
+											{% endif %}
 											<p>{{ slide.slide_description|e }}</p>
 										</figcaption>
 									</figure>

@@ -13,7 +13,13 @@
 	}
 
 	&.section-white {
+		// these sections have a divider between them
+		// add the spacing below the inner container, below the divider
 		padding-bottom: 0;
+
+		.container-xl:has(+ hr) {
+			margin-bottom: var( --sitka-container-spacing );
+		}
 	}
 
 	&.section-xlight {
@@ -39,11 +45,12 @@
 	& + .arch-shape {
 		display: none;
 	}
-	& + .section.section-dark.curved-top {
+	& + .arch-shape + .section.section-dark.curved-top {
 		margin-top: 0;
 		padding-top: 0;
-		.arch-shape {
-			display: none;
+
+		.diffs--container {
+			padding-top: var( --sitka-container-spacing );
 		}
 	}
 }
@@ -58,10 +65,21 @@
 	padding-bottom: calc( var( --sitka-container-spacing ) + 10vw );
 }
 
+.section.section-xlight + .section.section-xlight {
+	border-top: 2px solid var(--white);
+}
+
+.section.section-dark + .section.section-dark {
+	border-top: 2px solid var(--bc-fountain-blue);
+}
+
 // Avoid extra spacing between last section and sock
 .section:last-child {
 	margin-bottom: 0;
-	padding-bottom: 0;
+
+	&.curved-top {
+		padding-bottom: 0;
+	}
 }
 
 // Hide divider if next section has a colored background, arch shape, or is the last section

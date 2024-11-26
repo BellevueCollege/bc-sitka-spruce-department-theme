@@ -9,7 +9,7 @@
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
-        "inserter": true,
+        "inserter": false,
         "multiple": false,
         "html": false
     },

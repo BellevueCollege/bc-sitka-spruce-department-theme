@@ -3,8 +3,8 @@
 use Timber\Timber;
 $context = Timber::context();
 
-$context['title'] = esc_html( get_field( 'title' ) ?? '' );
-$context['description'] = esc_html( get_field( 'description' ) ?? '' );
+$context['title']         = esc_html( get_field( 'title' ) ?? '' );
+$context['description']   = esc_html( get_field( 'description' ) ?? '' );
 $context['checkerboards'] = get_field( 'checkerboards' ) ? array_map(
 	function ( $checkerboard ) {
 		return array_merge(

@@ -37,7 +37,9 @@
 		a {
 			@include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
 		}
+	}
 
+	&-menu-legal {
 		a::after {
 			position: relative;
 			display: inline-block;

@@ -4,6 +4,11 @@
 	color: var(--white);
 	background-color: var(--bc-rainy-night-blue);
 
+	.section-heading {
+		--bs-heading-color: var(--white);
+		--text-color: var(--white);
+	}
+
 
 	.tab-wrapper {
 		padding-top: 0;
