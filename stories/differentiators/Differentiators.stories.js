@@ -14,12 +14,11 @@ export default {
 	tags: ['autodocs'],
 };
 
-const TemplateDifferentiators = ({ title, description, linkTitle, linkUrl, content }) =>
+const TemplateDifferentiators = ({ title, description, link_custom, content }) =>
 	twigDifferentiators({
 		title,
 		description,
-		linkTitle,
-		linkUrl,
+		link_custom,
 		content,
 	});
 
@@ -48,8 +47,10 @@ export const Default = TemplateDifferentiators.bind({});
 Default.args = {
 	title: 'Heading',
 	description: 'Subheading',
-	linkTitle: 'Link Title',
-	linkUrl: '#',
+	link_custom: {
+		url: '#',
+		title: 'Link',
+	},
 	content: [
 		twigDifferentiator({ ...differentiatorText }),
 		twigDifferentiator({ ...differentiatorIcon }),
