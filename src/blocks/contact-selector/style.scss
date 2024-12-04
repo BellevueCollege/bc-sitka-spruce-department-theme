@@ -41,22 +41,21 @@
 //Styling Specific to button(s)
 .contact-info {
     .contact-info-email {
-            // Ensure long email addresses don't break layout
-            // For some reason, hiding overflow doesn't work on smaller breakpoints
-            word-break: break-all;
-            @include media-breakpoint-up(md) {
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
+        // Ensure long email addresses don't break layout
+        // For some reason, hiding overflow doesn't work on smaller breakpoints
+        word-break: break-all;
+        @include media-breakpoint-up(md) {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
-
     .btn {
         color: var(--white);
     }
 
-//Styling for icon in button
-.fa-external-link-square {
-    padding-inline: 0.5rem;
+    //Styling for icon in button
+    .fa-external-link-square {
+        padding-inline: 0.5rem;
+    }
 }

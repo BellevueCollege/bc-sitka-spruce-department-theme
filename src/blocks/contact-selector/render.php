@@ -17,11 +17,11 @@ if (is_array(get_field('profiles'))) {
         $profile_data = array();
 
         // fetch each individual field for each profile
-        $profile_data['first_name'] = esc_html(get_field('first_name', $profile->ID));
-        $profile_data['last_name'] = esc_html(get_field('last_name', $profile->ID));
-        $profile_data['position'] = esc_html(get_field('position_role', $profile->ID));
-        $profile_data['email'] = esc_html(get_field('email', $profile->ID));
-        $profile_data['phone'] = esc_html(get_field('phone_number', $profile->ID));
+        $profile_data['first_name'] = esc_html(get_field('first_name', $profile->ID) ?? '');
+        $profile_data['last_name'] = esc_html(get_field('last_name', $profile->ID) ?? '');
+        $profile_data['position'] = esc_html(get_field('position_role', $profile->ID) ?? '');
+        $profile_data['email'] = esc_html(get_field('email', $profile->ID) ?? '');
+        $profile_data['phone'] = esc_html(get_field('phone_number', $profile->ID) ?? '');
 
         // getting data specifically for contact item
         $schedule_data = get_field('scheduling_section', $profile->ID);
