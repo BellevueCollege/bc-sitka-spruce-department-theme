@@ -1,45 +1,47 @@
 <?php
 use Timber\Timber;
+use function Symfony\Component\VarDumper\Dumper\esc;
 
 $context = Timber::context();
 
-// Area for Title & Description
-$context['title'] = get_field('title');
-$context['description'] = get_field('description');
+$context['title'] = esc_html (get_field('title') ?? '');
+$context['description'] = wp_kses_post(get_field('description') ?? '');
 
 // holds data from profiles
-$profiles_data = [];
+$profiles_data = array();
 
 // for loop, loops through each profile
-foreach ((get_field('profiles')??[]) as $profile) {
+if (is_array(get_field('profiles'))) {
+    foreach ((get_field('profiles')) as $profile) {
+        // defining profile data
+        $profile_data = array();
 
-    // defining variables
-    $profile_data = [];
+        // fetch each individual field for each profile
+        $profile_data['first_name'] = esc_html(get_field('first_name', $profile->ID) ?? '');
+        $profile_data['last_name'] = esc_html(get_field('last_name', $profile->ID) ?? '');
+        $profile_data['position'] = esc_html(get_field('position_role', $profile->ID) ?? '');
+        $profile_data['email'] = esc_html(get_field('email', $profile->ID) ?? '');
+        $profile_data['phone'] = esc_html(get_field('phone_number', $profile->ID) ?? '');
 
-    // for loop, loops through each field in each profile
-    $profile_data['first_name'] = get_field('first_name', $profile->ID);
-    $profile_data['last_name'] = get_field('last_name', $profile->ID);
-    $profile_data['position'] = get_field('position_role', $profile->ID);
-    $profile_data['email'] = get_field('email', $profile->ID);
-    $profile_data['phone'] = get_field('phone_number', $profile->ID);
+        // getting data specifically for contact item
+        $schedule_data = get_field('scheduling_section', $profile->ID);
 
-    // getting data specifically for contact item
-    $schedule_data = get_field('scheduling_section', $profile->ID);
+    // going into contact item data to grab nested data
+        $profile_data['scheduling_link'] = esc_url($schedule_data['schedule_appointment_link']['url'] ?? null);
+        $profile_data['scheduling_text'] = esc_html($schedule_data['schedule_appointment_link']['title'] ?? null);
 
-   // going into contact item data to grab nested data
-    $profile_data['scheduling_link'] = $schedule_data['schedule_appointment_link']['url'] ?? null;
-    $profile_data['scheduling_text'] = $schedule_data['schedule_appointment_link']['title'] ?? null;
-
-    $profiles_data[] = $profile_data;
-} // END OF FOR LOOP
-
+        //add processed profile data to list
+        $profiles_data[] = $profile_data;
+    } // END OF FOR LOOP
+}
 // copying data from profiles to context
 $context['profiles'] = $profiles_data;
 
 // Showing message if use does not input any contacts (in preview, on editor side)
 if ( $is_preview && ! $context['profiles'] ) {
-	echo '<div class="callout-wrapper callout-disabled"><p>';
-	_e( 'YOU HAVE NOT ADDED ANY CONTACTS! <br />Edit this element to add some!', 'bc-sitka-spruce' );
+	//echo '<div class="callout-wrapper callout-disabled"></div>';
+    echo '<div class="contact-selector-wrapper-preview col"><p>';
+	_e( 'The  \'Contact Selector Component\' is not configured. <br />Edit this element to configure it!', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }
 

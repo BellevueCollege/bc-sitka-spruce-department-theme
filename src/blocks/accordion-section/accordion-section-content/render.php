@@ -2,7 +2,7 @@
 use Timber\Timber;
 
 $context                = Timber::context();
-$context['title']       = esc_attr( $attributes['title'] ?? '' );
+$context['title']       = esc_html( $attributes['title'] ?? '' );
 $context['description'] = wp_kses_post( $attributes['description'] ?? '' );
 $context['accordion']   = $content;
 
