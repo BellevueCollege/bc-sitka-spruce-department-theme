@@ -15,7 +15,7 @@
     h3 {
         color: var(--black);
     }
-
+    // description/paragraph styling
     .position-text {
         color: var(--black);
     }
@@ -40,30 +40,21 @@
 
 //Styling Specific to button(s)
 .contact-info {
-    &:last-child {
-
-
-        .i-a-same-line {
-            display: inline-block;
-            white-space: nowrap;
-        }
-
-        a {
-            overflow-wrap: break-word;
-            font-weight: bold;
-            color: var(--accent-link-blue);
-
-            &:hover {
-                color: var(--black);
+    .contact-info-email {
+            // Ensure long email addresses don't break layout
+            // For some reason, hiding overflow doesn't work on smaller breakpoints
+            word-break: break-all;
+            @include media-breakpoint-up(md) {
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
             }
         }
-
     }
 
     .btn {
         color: var(--white);
     }
-}
 
 //Styling for icon in button
 .fa-external-link-square {
