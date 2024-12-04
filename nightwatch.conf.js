@@ -31,6 +31,18 @@ module.exports = {
 	page_objects_path: '',
 	globals_path: '',
 	plugins: ['@nightwatch/vrt'],
+	skip_testcases_on_fail: false,
+	end_session_on_fail: false,
+	'@nightwatch/vrt': {
+		generate_screenshot_path: defaultScreenshotPath,
+		//latest_screenshots_path: 'vrt/latest',
+		latest_suffix: '.latest',
+		//baseline_screenshots_path: 'vrt/baseline',
+		baseline_suffix: '.baseline',
+		//diff_screenshots_path: 'vrt/diff',
+		diff_suffix: '.diff',
+		threshold: 0.00,
+	},
 	selenium: {
 		start_process: false,
 		server_path: '',
@@ -50,22 +62,12 @@ module.exports = {
 	test_settings: {
 		default: {
 			silent: true,
-			visual_regression_settings: {
-				generate_screenshot_path: defaultScreenshotPath,
-				//"latest_screenshots_path": '',
-				latest_suffix: '.latest',
-				//"baseline_screenshots_path": '',
-				baseline_suffix: '.baseline',
-				//"diff_screenshots_path": ''
-				diff_suffix: '.diff',
-				threshold: 0.01,
-				prompt: true,
-				updateScreenshots: false,
-			},
+			skip_testcases_on_fail: false,
+			end_session_on_fail: false,
 			screenshots: {
 				enabled: true,
 				path: SCREENSHOT_PATH,
-				on_failure: false,
+				on_failure: true,
 				on_error: false,
 			},
 			request_timeout_options: {
