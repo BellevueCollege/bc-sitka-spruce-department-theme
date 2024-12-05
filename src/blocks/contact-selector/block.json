@@ -1,5 +1,5 @@
 {
-    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "$schema": "https://raw.githubusercontent.com/AdvancedCustomFields/schemas/refs/heads/main/json/block.json",
     "apiVersion": 3,
     "name": "bc-sitka-spruce/contact-selector",
     "title": "Contact Selector Section",
@@ -9,13 +9,14 @@
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
-        "html": false
+        "html": false,
+		"align": false
     },
     "editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
     "style": "file:./style-index.css",
     "acf": {
-        "mode": "preview",
+        "mode": "auto",
         "renderTemplate": "../../../../src/blocks/contact-selector/render.php"
     }
 

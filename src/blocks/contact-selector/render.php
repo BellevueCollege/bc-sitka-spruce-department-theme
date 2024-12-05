@@ -40,8 +40,10 @@ $context['profiles'] = $profiles_data;
 // Showing message if use does not input any contacts (in preview, on editor side)
 if ( $is_preview && ! $context['profiles'] ) {
 	//echo '<div class="callout-wrapper callout-disabled"></div>';
-    echo '<div class="contact-selector-wrapper-preview col"><p>';
-	_e( 'The  \'Contact Selector Component\' is not configured. <br />Edit this element to configure it!', 'bc-sitka-spruce' );
+    echo '<div class="contact-selector-wrapper-preview col card"><p><strong>';
+	_e( 'The  \'Contact Selector Section\' is not configured.', 'bc-sitka-spruce' );
+	echo '</strong></p><p>';
+	_e( 'Select this element, then use the Settings sidebar to add a title, description, and choose contacts to display.', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }
 
