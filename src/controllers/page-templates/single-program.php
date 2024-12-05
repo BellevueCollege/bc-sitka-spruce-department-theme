@@ -1,12 +1,19 @@
 <?php
 use Timber\Timber;
-use BcSitkaSpruce\Library\Theme;
 use BcSitkaSpruce\Controllers\Program;
 
 
 $context                     = Timber::context();
 $context['post']             = Timber::get_post();
-$context['breadcrumbs']      = Theme::breadcrumbs()->getItems( 2 );
+
+$breadcrumb_parent = get_field( 'program_parent', 'options' ) ?? null;
+if ( $breadcrumb_parent ) {
+	$context['breadcrumbs']      = array(
+		'<a href="' . get_the_permalink( $breadcrumb_parent ) . '">' . get_the_title( $breadcrumb_parent ) . '</a>',
+		get_the_title( $context['post']->ID ),
+	);
+}
+
 $related_program_data        = get_posts(
 	array(
 		'post_type'      => 'program',
