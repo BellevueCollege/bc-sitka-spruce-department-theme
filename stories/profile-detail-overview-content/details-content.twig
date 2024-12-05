@@ -17,7 +17,7 @@
 						<dt>Department</dt>
 						<dd>
 							{% for single_dept in department %}
-								{{ single_dept.name }}
+								{{ single_dept.name|e }}{% if not loop.last %}, {% endif %}
 							{% endfor %}
 						</dd>
 					{% endif %}
