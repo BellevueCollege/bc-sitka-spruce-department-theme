@@ -27,6 +27,31 @@
             "other_choice": 0,
             "layout": "vertical",
             "save_other_choice": 0
+        },
+        {
+            "key": "field_6751de79f726d",
+            "label": "Parent Division",
+            "name": "parent_division",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "If this site is part of an overarching division, set the URL for the 'parent' site here.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66a11fe69987f",
+                        "operator": "!=",
+                        "value": "div"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "allow_in_bindings": 0
         }
     ],
     "location": [
@@ -47,5 +72,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1721835729
+    "modified": 1733418680
 }
