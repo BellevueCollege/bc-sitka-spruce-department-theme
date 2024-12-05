@@ -52,6 +52,10 @@
 				color: var(--bc-brutus-blue);
 			}
 		}
+
+		& + .callout__button {
+			margin-top: 1rem;
+		}
 	}
 
 	:last-child {

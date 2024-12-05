@@ -8,7 +8,7 @@ export default {
 };
 
 
-const Template = ( { 
+const Template = ( {
     image,
     location,
     hours,
@@ -24,7 +24,7 @@ const Template = ( {
 export const Default = Template.bind({});
 Default.args = {
     image: {
-        src: "https://via.placeholder.com/360x218",
+        src: "https://placehold.co/360x218",
         alt: "Placeholder Image"
     },
     location: "<p>R Building, First Floor, Room R130</p>",

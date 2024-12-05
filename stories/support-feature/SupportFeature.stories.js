@@ -39,7 +39,7 @@ console.log(twigSupportFeature({
 			active: true,
 			title: 'Tab 1',
 			heading: 'Tab 1 heading',
-			image: '<img src="https://via.placeholder.com/300x200">',
+			image: '<img src="https://placehold.co/300x200">',
 			content: 'Tab 1 content',
 			links: [
 				{
@@ -61,7 +61,7 @@ Default.args = {
 			active: true,
 			title: 'Tab 1',
 			heading: 'Tab 1 heading',
-			image: '<img src="https://via.placeholder.com/560x320" class="img-fluid rounded">',
+			image: '<img src="https://placehold.co/560x320" class="img-fluid rounded">',
 			content: 'Tab 1 content',
 			links: [
 				{
