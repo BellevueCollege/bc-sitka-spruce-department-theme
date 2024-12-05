@@ -1,5 +1,6 @@
 <?php
 use Timber\Timber;
+use BcSitkaSpruce\Library\Theme;
 
 $context         = Timber::context();
 $context['post'] = Timber::get_post();
@@ -24,6 +25,14 @@ if ( is_array( get_field( 'scheduling_section' ) ) ) {
 	$context ['button']      = get_field( 'scheduling_section' )['schedule_appointment_link'];
 }
 
+
+$breadcrumb_parent = get_field( 'profile_parent', 'options' ) ?? null;
+if ( $breadcrumb_parent ) {
+	$context['breadcrumbs']      = array(
+		'<a href="' . get_the_permalink( $breadcrumb_parent ) . '">' . get_the_title( $breadcrumb_parent ) . '</a>',
+		$context ['first_name'] . ' ' . $context ['last_name'],
+	);
+}
 // uses WP command to grab photo @ correct size
 $context['profile_image'] = get_field( 'profile_image' ) ? wp_get_attachment_image(
 	get_field( 'profile_image' )['ID'],
