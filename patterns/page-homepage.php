@@ -1,6 +1,6 @@
 <?php
 /**
- * Title: Homepage Layout
+ * Title: Homepage Layout: Empty
  * Slug: bc-sitka-spruce/page-homepage
  * Categories: page, featured
  * Keywords: starter

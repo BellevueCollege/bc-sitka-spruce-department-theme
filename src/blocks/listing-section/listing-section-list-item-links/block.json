@@ -15,7 +15,7 @@
 	],
     "acf": {
         "mode": "auto",
-        "renderTemplate": "../../../../src/blocks/listing-section/listing-section-list-item-links/render.php"
+        "renderTemplate": "../../../../../src/blocks/listing-section/listing-section-list-item-links/render.php"
     },
 	"editorScript": "file:./index.js"
 }
