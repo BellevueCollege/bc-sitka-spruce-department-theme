@@ -5,9 +5,9 @@
 	background-color: var(--bc-brutus-blue);
 	color: var(--white);
 	-webkit-text-size-adjust: 100%;
+	padding-top: max( var(--sitka-container-spacing), 2rem );
 
 	.profile-overview {
-		padding-top: var(--sitka-container-spacing);
 		padding-bottom: var(--sitka-container-spacing);
 	}
 

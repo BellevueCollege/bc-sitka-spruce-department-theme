@@ -9,6 +9,8 @@ $context['content']          = $content;
 $context['heading']          = esc_html( $attributes['heading'] ?? '' );
 $context['summary']          = wp_kses_post( $attributes['summary'] ?? '' );
 
+$context['parent_division']  = get_field( 'parent_division', 'option' ) ?? null;
+
 // Custom fields from Options
 $context['display_location'] = get_field( 'display_location_card', 'option' ) ? true : false;
 $image                       = get_field( 'location_image', 'option' );

@@ -1,5 +1,6 @@
 {#  use {{dump()}} for troubleshooting- timber documentation for more dump options #}
 <section class="profile-overview-wrapper bg-trees-dark">
+	{% include '/stories/breadcrumbs/breadcrumbs.twig' %}
 	<div class="container-xl profile-overview">
 		<div class="row">
 			<div class="profile-overview-column2 col-md-6 order-md-1 mb-4">
@@ -17,7 +18,7 @@
 						<dt>Department</dt>
 						<dd>
 							{% for single_dept in department %}
-								{{ single_dept.name }}
+								{{ single_dept.name|e }}{% if not loop.last %}, {% endif %}
 							{% endfor %}
 						</dd>
 					{% endif %}

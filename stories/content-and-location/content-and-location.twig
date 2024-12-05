@@ -2,7 +2,10 @@
     <div class="row">
         <div class="col">
             <h1 class="content-and-location-heading">{{ heading }}</h1>
-            <p class="content-and-location-summary">{{ summary }}</p>
+			{% if parent_division %}
+				<p class="fw-bold">{{ __( "Located within:", "bc-sitka-spruce" ) }} <a class="link-accent" href="{{ parent_division.url }}">{{ parent_division.title }}</a></p>
+			{% endif %}
+            <p class="content-and-location-summary lead">{{ summary }}</p>
             {{ content }}
         </div>
         {% if display_location %}
