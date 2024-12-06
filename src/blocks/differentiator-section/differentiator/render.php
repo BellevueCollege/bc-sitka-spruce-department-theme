@@ -11,7 +11,7 @@ $context['assetPath']   = get_template_directory_uri() . '/assets';
 $context['wrapperAtts'] = get_block_wrapper_attributes();
 
 $content = Differentiator::get_single_from_core(
-	$attributes['differentiatorPostId']
+	$attributes['differentiatorPostId'] ?? 0
 ) ?? array();
 
 if ( ! is_array( $content ) || ! isset( $content ) ) {
