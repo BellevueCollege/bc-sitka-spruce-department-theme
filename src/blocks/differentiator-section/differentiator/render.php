@@ -21,4 +21,4 @@ if ( ! is_array( $content ) || ! isset( $content ) ) {
 $context += $content;
 
 // Render Twig Template
-Timber::render( get_template_directory() . '/stories/differentiators/differentiator.twig', $context );
+Timber::render( '/stories/differentiators/differentiator.twig', $context );

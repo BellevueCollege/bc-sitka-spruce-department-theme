@@ -19,4 +19,4 @@ if ( $attributes['linkTitle'] && $attributes['linkUrl'] ) {
 
 
 // Render Twig Template
-Timber::render( get_template_directory() . '/stories/differentiators/differentiators.twig', $context );
+Timber::render( '/stories/differentiators/differentiators.twig', $context );
