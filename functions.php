@@ -209,6 +209,36 @@ $block_editor->addStylesheet( 'editor', 'assets/dist/css/editor.css' );
 $block_editor->useGlobally( true );
 
 
+
+/**
+ * Set Page Title Format
+ */
+/**
+ * Output optimized document titles
+ *
+ * Uses WordPress 4.1+ title framework
+ *
+ * @param array $title_parts Page title parts.
+ * @global $post
+ */
+add_filter( 'document_title_parts', function( $title_parts ) {
+	global $post;
+
+	if ( is_front_page() ) {
+		$title_parts['tagline'] = '';
+		$title_parts['site']    = __( 'Bellevue College', 'bc-sitka-spruce' );
+	}
+	// Output custom title if available.
+	$post_meta_data = get_post_custom( $post->ID ?? null );
+	return $title_parts;
+}, 10, 1 );
+
+/** Set Page Title Separator */
+add_filter( 'document_title_separator', function( $sep ) {
+	return is_front_page() ? '@' : '::';
+}, 10, 1 );
+
+
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
  *
