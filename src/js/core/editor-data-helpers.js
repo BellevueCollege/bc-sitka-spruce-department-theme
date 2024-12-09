@@ -28,8 +28,9 @@ export const pageTemplate = async () => {
 	return new Promise( ( resolve ) => {
 		const unsubscribe = subscribe( () => {
 			const { getEditedPostAttribute } = select('core/editor');
-			const templateSlug = getEditedPostAttribute('template');
-			if ( templateSlug ) {
+			let templateSlug = getEditedPostAttribute('template');
+			if ( templateSlug !== undefined ) {
+				templateSlug = templateSlug || 'default';
 				unsubscribe();
 				resolve( templateSlug );
 			}
@@ -62,4 +63,35 @@ export const getAllBlocks = async () => {
 			}
 		});
 	} );
+}
+
+/**
+ * Ensure that a specific pattern is at the top of the editor
+ *
+ * @param {array} allBlocks - An array of all blocks in the editor
+ * @param {string} blockName - The name of the block to check for
+ * @param {string} patternName - The name of the pattern to insert
+ */
+export function forcePatternToTop( allBlocks, blockName, patternName ) {
+
+	const templateIndex = allBlocks.findIndex( ( block ) => {
+		return block.name === blockName;
+	});
+
+	// No template found - create one!
+	if ( -1 === templateIndex ) {
+		console.log('Notice: ' + blockName + ' not found; applying template.');
+		const newBlock = createBlock( 'core/pattern', { 'slug': patternName } );
+		dispatch( 'core/block-editor' ).insertBlock( newBlock, 0 );
+		return;
+	} else if ( templateIndex > 0 ) {
+		console.log('Notice: ' + blockName + ' found at index', templateIndex, 'and will be migrated.');
+
+		// Move other blocks after the template - we can't move the template because it's locked
+		allBlocks.forEach( block => {
+			dispatch('core/block-editor').moveBlockToPosition( block.clientId, '', '', templateIndex + 1 );
+		});
+	} else {
+		console.log('Success: Block ' + blockName + ' found at index', templateIndex);
+	}
 }
