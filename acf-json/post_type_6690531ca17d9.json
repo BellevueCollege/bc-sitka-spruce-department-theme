@@ -71,7 +71,7 @@
         "thumbnail"
     ],
     "taxonomies": [
-        "profile-type",
+        "profile_type",
         "department"
     ],
     "has_archive": false,
