@@ -77,6 +77,11 @@ class BlockEditor implements BlockEditorInterface {
     'core/widget-group',
   ];
 
+	// Third party / Mayflower Blocks to disable
+	protected array $thirdPartyBlocksDenylist = [
+		'mayflower-blocks/child-pages',
+	];
+
   protected array $acfBlocks = [];
 
   protected array $jsBlocks = [];
@@ -267,6 +272,11 @@ class BlockEditor implements BlockEditorInterface {
       $core_blocks,
       $this->coreBlocksBlacklist
     );
+
+		$third_party_blocks = array_diff(
+			$third_party_blocks,
+			$this->thirdPartyBlocksDenylist
+		);
 
     return array_unique(array_merge(
       $allowed_core_blocks,
