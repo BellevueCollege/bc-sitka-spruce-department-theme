@@ -95,10 +95,20 @@ function block_registration_helper( array $blocks ) {
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-mainjsassets', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
-
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css' );
-// $enqueuer->addStyle('bc-sitka-spruce-icons', '/node_modules/@fortawesome/fontawesome-pro/css/all.css', [], get_template_directory_uri());
+
 $enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
+
+// Enqueue Script in Block Editor to Handle Automated Block Insertion Etc
+add_action( 'enqueue_block_editor_assets', function () {
+	$asset = include get_parent_theme_file_path( '/assets/dist/js/editor.asset.php' );
+	wp_enqueue_script(
+		'sitka-editor-js',
+		get_template_directory_uri() . '/assets/dist/js/editor.js',
+		array_unique( array_merge( array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ) , $asset['dependencies'] ) ),
+		$asset['version']
+	);
+} );
 
 // Enqueue Block Styles
 $enqueuer->addBlockStyle(
@@ -425,26 +435,6 @@ add_filter(
 	10,
 	3
 );
-
-
-// // Filter post content to add blocks that are missing or are in the wrong place
-// add_filter(
-// 	'block_editor_settings_all',
-// 	function ( $settings, $context ) {
-// 		echo '<h2>Settings</h2><pre>' . print_r( $settings, true ) . '</pre>';
-// 		echo '<h2>Context</h2><pre>' . print_r( $context, true ) . '</pre>';
-// 		die();
-// 		return $settings;
-// 	}, 10, 2
-// );
-
-add_action( 'enqueue_block_editor_assets', function () {
-	wp_enqueue_script(
-		'apply-templates',
-		get_template_directory_uri() . '/assets/dist/js/editor.js',
-		['wp-blocks', 'wp-dom-ready', 'wp-edit-post'],
-	);
-} );
 
 /*
  * Custom Post Type Functionality
