@@ -1,12 +1,12 @@
 import { dispatch, select } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
-import { isNewPost, isFrontPage, pageTemplate, getAllBlocks, forcePatternToTop } from './core/editor-data-helpers';
+import { isNewPost, isFrontPage, pageTemplate, getAllBlocks, forcePatternToTop, deleteNarrowContentSection } from './core/editor-data-helpers';
 
 
 // Thanks to https://github.com/WordPress/gutenberg/issues/28032#issuecomment-772720637 for the dom ready code!
 wp.domReady( async function () {
 
-	const blocks = await getAllBlocks();
+	let blocks = await getAllBlocks();
 
 	if ( await isNewPost() ) {
 		console.log('Editing a New Post - No migration needed');
@@ -15,27 +15,23 @@ wp.domReady( async function () {
 
 	// Check if we are editing the front page
 	if ( await isFrontPage() ) {
+		console.log('Editing the Front Page - checking if block migration is needed');
+		deleteNarrowContentSection( blocks );
+		blocks = await getAllBlocks(); // update blocks
 		forcePatternToTop( blocks, 'bc-sitka-spruce/template-homepage', 'bc-sitka-spruce/page-homepage' );
 		return;
 	}
 
 	// Check if we are editing a page using the default template
 	if ( await pageTemplate() === 'default' ) {
+		console.log('Editing a page using the default template - checking if block migration is needed');
 		forcePatternToTop( blocks, 'bc-sitka-spruce/narrow-content', 'bc-sitka-spruce/page' );
 	}
 
 	// Check if narrow content section exists somewhere on the 'no nav sidebar' page
 	if ( await pageTemplate() === 'template--no-sidebar.php' ) {
-		const templateIndex = blocks.findIndex( ( block ) => {
-			return block.name === 'bc-sitka-spruce/narrow-content';
-		});
-
-		// Move children out of the narrow content section and delete it
-		if ( -1 !== templateIndex ) {
-			const children = select( 'core/block-editor' ).getClientIdsOfDescendants( blocks[templateIndex].clientId );
-			dispatch( 'core/block-editor' ).moveBlocksToPosition( children, blocks[templateIndex].clientId, '', 0 );
-			dispatch( 'core/block-editor' ).removeBlock( blocks[templateIndex].clientId );
-		}
+		console.log('Editing a page using the no-nav-sidebar template - checking if block migration is needed');
+		deleteNarrowContentSection( blocks );
 	}
 
 });
