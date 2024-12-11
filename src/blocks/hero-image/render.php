@@ -26,8 +26,8 @@ if ( get_field( 'hero_image' ) ) : ?>
 <?php else: ?>
 	<?php
 		if ( $is_preview ) {
-			echo '<div class="card"><p>';
-			_e( 'Edit this element to add a \'Hero Image\' image to display at the top of the page!', 'bc-sitka-spruce' );
+			echo '<div class="card mw-100"><p class="my-0">';
+			_e( 'Add an optional \'Hero Image\' by selecting this block and using the Settings sidebar to choose or upload an image.', 'bc-sitka-spruce' );
 			echo '</p></div>';
 		} else {
 			echo '';

@@ -13,7 +13,7 @@
         "align": false
     },
     "acf": {
-        "mode": "edit",
+        "mode": "auto",
         "renderTemplate": "../../../../src/blocks/hero-image/render.php"
     }
 }

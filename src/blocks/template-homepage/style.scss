@@ -1,6 +1,7 @@
 @import '/src/scss/block-styles';
 
 .homepage-intro {
+	padding-top: 1px; // prevent margins from combining with hero image
     @include media-breakpoint-up('lg') {
         background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 100%);
     }
@@ -25,7 +26,7 @@
 
         // Add padding to sides and top
         @include make-container();
-        padding-top : var( --sitka-container-spacing );
+        padding-top : calc( var( --sitka-container-spacing ) * 0.5 );
 
         // Allow for intentional looking offset of hero image width and content below
         @include media-breakpoint-only('lg') {
