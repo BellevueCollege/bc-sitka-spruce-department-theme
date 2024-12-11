@@ -18,7 +18,7 @@ $context['media']        = $attributes['cardImageUrl'] ? array(
 ) : null;
 
 $context['card_title_tag'] = 'h3';
-$context['card_title']     = esc_html( $attributes['cardTitle'] ?? '' );
+$context['card_title']     = wp_kses_post( $attributes['cardTitle'] ?? '' );
 $context['card_content']   = wp_kses_post( $content ?? '' );
 
 
