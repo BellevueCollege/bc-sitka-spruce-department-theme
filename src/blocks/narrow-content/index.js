@@ -2,6 +2,7 @@ import { __ } from "@wordpress/i18n";
 import { registerBlockType } from "@wordpress/blocks";
 import { useBlockProps } from "@wordpress/block-editor";
 import { InnerBlocks } from "@wordpress/block-editor";
+import { wysiwygBlocks } from "../shared-elements/block-sets";
 
 import "./editor.scss";
 
@@ -27,6 +28,7 @@ registerBlockType("bc-sitka-spruce/narrow-content", {
 				<div className="col-lg py-3 narrow-content-area">
 					<InnerBlocks
 						template={ TEMPLATE }
+						allowedBlocks={ wysiwygBlocks }
 					/>
 				</div>
 			</div>
