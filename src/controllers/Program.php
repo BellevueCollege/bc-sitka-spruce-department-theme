@@ -26,20 +26,20 @@ class Program extends PostData {
 		) ?? array();
 
 		// Verify that the post exists
-		if ( ! is_array( $post ) && ! $post[0] ) {
+		if ( ! is_array( $post ) || ! array_key_exists( 0, $post ) ) {
 			return;
 		}
 
 		// Remove unneeded array from variable
 		$post = $post[0];
 
-		$pathways = array_map( function ( $pathway ) {
+		$pathways = get_field( 'pathways', $post->ID ) ? array_map( function ( $pathway ) {
 			return array(
 				'id'    => $pathway->ID,
 				'title' => $pathway->post_title,
 				'url'   => get_permalink( $pathway->ID ),
 			);
-		}, get_field( 'pathways', $post->ID ));
+		}, get_field( 'pathways', $post->ID )) : array();
 
 		return array(
 			'short_name'    => get_field( 'short_name', $post->ID ),
