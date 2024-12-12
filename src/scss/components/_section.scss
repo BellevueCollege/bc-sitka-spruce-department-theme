@@ -73,6 +73,11 @@
 	border-top: 2px solid var(--bc-fountain-blue);
 }
 
+
+.section.section-dark.diffs:has(+ .section.section-dark) {
+	padding-bottom: 0;
+}
+
 // Avoid extra spacing between last section and sock
 .section:last-child {
 	margin-bottom: 0;
