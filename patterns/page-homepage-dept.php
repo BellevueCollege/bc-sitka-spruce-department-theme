@@ -24,7 +24,7 @@
 <!-- wp:bc-sitka-spruce/body-section -->
 <!-- wp:bc-sitka-spruce/body-section-content -->
 <!-- wp:heading -->
-<h2 class="wp-block-heading">Why [X] at Bellevue</h2>
+<h2 class="wp-block-heading">Why [X] at Bellevue College</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
@@ -43,7 +43,7 @@
 <!-- wp:bc-sitka-spruce/differentiator /-->
 <!-- /wp:bc-sitka-spruce/differentiator-section -->
 
-<!-- wp:bc-sitka-spruce/degrees-certificates-section {"name":"bc-sitka-spruce/degrees-certificates-section","data":{"field_671a6f98ffac1":"Degrees and Certificates","field_671a6fccffac2":"","field_671a6fe2ffac3":{"row-0":{"field_671a7041ffac4":"Degree options","field_671a7062ffac5":"","field_671a706dffac6":""},"6751d05c095a8":{"field_671a7041ffac4":"Certificate options","field_671a7062ffac5":"","field_671a706dffac6":""}}},"mode":"auto"} /-->
+<!-- wp:bc-sitka-spruce/degrees-certificates-section {"name":"bc-sitka-spruce/degrees-certificates-section","data":{"field_671a6f98ffac1":"Degrees and Certificates","field_671a6fccffac2":"","field_671a6fe2ffac3":{"row-0":{"field_671a7041ffac4":"Degree Options","field_671a7062ffac5":"","field_671a706dffac6":""},"6751d05c095a8":{"field_671a7041ffac4":"Certificate Options","field_671a7062ffac5":"","field_671a706dffac6":""}}},"mode":"auto"} /-->
 
 <!-- wp:bc-sitka-spruce/announcement-banner {"name":"bc-sitka-spruce/announcement-banner","data":{"field_66e4c35bcf5ea":"Announcement Banner","field_66e4c38bcf5eb":"Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.","field_66e4c50d2ef34":"","field_66e4c39ecf5ec":{"title":"","url":"","target":""},"field_66e4c40bcf5ed":""},"mode":"auto"} /-->
 

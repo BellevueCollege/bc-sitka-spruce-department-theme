@@ -70,7 +70,7 @@
 <!-- wp:bc-sitka-spruce/body-section -->
 <!-- wp:bc-sitka-spruce/body-section-content -->
 <!-- wp:heading -->
-<h2 class="wp-block-heading">Why [X] at Bellevue</h2>
+<h2 class="wp-block-heading">Why [X] at Bellevue College</h2>
 <!-- /wp:heading -->
 
 <!-- wp:paragraph -->
