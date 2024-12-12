@@ -1,6 +1,7 @@
 import { __ } from "@wordpress/i18n";
 import { registerBlockType } from "@wordpress/blocks";
 import { InnerBlocks, RichText, useBlockProps } from "@wordpress/block-editor";
+import { __experimentalConfirmDialog as ConfirmDialog } from '@wordpress/components';
 import {
 	BlockControls,
 	MediaUpload,
@@ -60,7 +61,7 @@ registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 								onSelect={(value) => {
 									setAttributes({
 										imageId: value.id,
-										imageUrl: value.sizes["listing-section"].url,
+										imageUrl: value.sizes["listing-section"] ? value.sizes["listing-section"].url : value.url,
 										imageAlt: value.alt,
 									});
 									onClose();
@@ -126,10 +127,9 @@ registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 								<MediaUpload
 									allowedTypes={["image"]}
 									value={imageId}
-									onSelect={(value) =>
-										setAttributes({
+									onSelect={(value) => setAttributes({
 											imageId: value.id,
-											imageUrl: value.sizes["listing-section"].url,
+											imageUrl: value.sizes["listing-section"] ? value.sizes["listing-section"].url : value.url,
 											imageAlt: value.alt,
 										})
 									}
@@ -137,8 +137,9 @@ registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 										<Card>
 											<CardBody>
 												<Button className="button button-large" onClick={open}>
-													{__("Add an Image", "bc-sitka-spruce")}
+													{__("Add an Image (Optional)", "bc-sitka-spruce")}
 												</Button>
+												<p className="mt-2">{__("Image should be 360px x 240px or larger", "bc-sitka-spruce")}</p>
 											</CardBody>
 										</Card>
 									)}
