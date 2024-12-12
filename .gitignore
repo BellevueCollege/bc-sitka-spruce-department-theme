@@ -70,7 +70,7 @@ yarn-error.log
 /vrt/diff
 /vrt/latest
 /vrt-report
-/reports
+/reports/*
 /DivisionHomepage
 /FlexiblePage
 /homepage
