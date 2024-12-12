@@ -1,0 +1,31 @@
+@import '/src/scss/block-styles';
+
+blockquote.wp-block-quote {
+	margin: 1rem 0;
+	@include secondary-typeface(blockquote);
+	@include global-spacing(4x, padding-left);
+	position: relative;
+	color: var(--bc-brutus-blue);
+
+	&::before {
+		position: absolute;
+		top: 0;
+		left: 0;
+		display: block;
+		width: 3px;
+		height: 100%;
+		content: "";
+		border-radius: 1.5px;
+		background-color: var(--bc-rain-garden-green);
+	}
+
+	p {
+		@include secondary-typeface(blockquote);
+		font-style: normal !important; // override italics client have mentioned uat-071
+	}
+
+	.quotee {
+		@include typeface(p);
+		font-family: $sans-serif;
+	}
+}
