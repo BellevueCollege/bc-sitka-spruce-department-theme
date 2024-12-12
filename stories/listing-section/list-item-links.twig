@@ -1,10 +1,10 @@
 {%  if links|length > 0 %}
 	<p>
-		{% for link in links %}
+		{% for link in links %} {% if link.title %}
 			<a class="link-arrow" href="{{ link.url|esc_url }}">{{ link.title|e }}</a>
-		{% endfor %}
+		{% endif %}{% endfor %}
 	</p>
 {% endif %}
-{% if button %}
+{% if button and button.title %}
 	<a class="btn btn-primary" href="{{ button.url|esc_url }}">{{ button.title|e }}</a>
 {% endif %}
