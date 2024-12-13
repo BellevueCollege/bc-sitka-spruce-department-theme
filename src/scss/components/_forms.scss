@@ -122,14 +122,14 @@ select.view__select {
 }
 
 #main-content {
-	input[type="checkbox"],
+	input[type="checkbox"]:not(.gfield-choice-input),
 	.wFormContainer .oneField input[type="checkbox"] {
 		appearance: none;
 		width: 1em;
 		margin-bottom: 1em;
 	}
 
-	input[type="checkbox"]:after,
+	input[type="checkbox"]:not(.gfield-choice-input):after,
 	.wFormContainer .oneField input[type="checkbox"]::after {
 		display: inline-block;
 		width: 1em;
@@ -145,7 +145,7 @@ select.view__select {
 		top: 0.125em;
 	}
 
-	input[type="checkbox"]:checked:after,
+	input[type="checkbox"]:not(.gfield-choice-input):checked:after,
 	.wFormContainer .oneField input[type="checkbox"]:checked::after {
 		border: 1px solid var(--bc-fountain-blue);
 		background-image: url(/assets/img/checked.svg);
