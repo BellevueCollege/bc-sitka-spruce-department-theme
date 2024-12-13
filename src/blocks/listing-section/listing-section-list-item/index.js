@@ -114,7 +114,7 @@ registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 							value={title}
 							onChange={(title) => setAttributes({ title })}
 							identifier="title"
-							placeholder={ placeholder || __("List Item Title...", "bc-sitka-spruce") }
+							placeholder={ placeholder || __("List Item Title (required)...", "bc-sitka-spruce") }
 							allowedFormats={[]}
 						/>
 						<InnerBlocks
