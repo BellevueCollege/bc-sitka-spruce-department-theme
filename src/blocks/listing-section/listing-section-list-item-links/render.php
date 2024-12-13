@@ -9,6 +9,7 @@ $context['links'] = get_field( 'links' ) ? array_map( function ( $link ) {
 		'target' => esc_attr( $link['link']['target'] ?? '' ),
 	);
 }, get_field( 'links' ) ) : null;
+$context['is_preview'] = $is_preview;
 
 $context['button'] = get_field( 'button' );
 
