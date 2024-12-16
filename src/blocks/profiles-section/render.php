@@ -63,7 +63,7 @@ $context['sections'] = get_field( 'sections' ) ? array_map(
 							'first_name'    => esc_html( get_field( 'first_name', $profile ) ?? '' ),
 							'last_name'     => esc_html( get_field( 'last_name', $profile ) ?? '' ),
 							'position'      => esc_html( get_field( 'position_role', $profile ) ?? '' ),
-							'profile_image' => get_field( 'profile_image', $profile )['ID'] ?
+							'profile_image' => get_field( 'profile_image', $profile ) ?
 								wp_get_attachment_image( get_field( 'profile_image', $profile )['ID'], 'profile-list-image', false, array( 'class' => 'img-fluid rounded-top' ) )
 								: '',
 							'profile_url'   => esc_url( get_permalink( $profile ) ?? '' ),
