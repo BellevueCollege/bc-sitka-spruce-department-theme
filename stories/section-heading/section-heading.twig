@@ -4,6 +4,8 @@
  * Bellevue include to display a section lead in.
  */
 #}
+
+
 {%
   set section_heading_classes = [
     'section-heading',
@@ -19,7 +21,7 @@
 {% if link_custom or link_field %}
   {% set link %}
   {% if link_custom %}
-    <a class="{{ applied_link_classes|join(' ') }}" href="{{ link_custom.url }}">
+    <a class="{{ applied_link_classes|join(' ') }}" {% if link_custom.target %}target="_blank" rel="noopener noreferrer"{% endif %} href="{{ link_custom.url }}">
       {{ link_custom.title }}
     </a>
   {% endif %}
