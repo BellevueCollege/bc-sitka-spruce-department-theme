@@ -16,7 +16,6 @@ const Template = ( {
     position,
     phone,
     email,
-    scheduling_text,
     scheduling_link
  }) =>
     contactItem({
@@ -25,7 +24,6 @@ const Template = ( {
         position,
         phone,
         email,
-        scheduling_text,
         scheduling_link
     });
 
@@ -37,8 +35,10 @@ Default.args = {
     position: "Manager",
     phone: "555-555-5555",
     email: "XKZfH@example.com",
-    scheduling_text: "Schedule Appointment",
-    scheduling_link: "https://example.com"
+    scheduling_link: {
+		title: "Schedule Appointment",
+		url: "https://example.com"
+	}
 
 };
 
@@ -51,7 +51,6 @@ RequiredOnly.args = {
     position: "Manager",
     phone: null,
     email: null,
-    scheduling_text: null,
     scheduling_link: null
 
 };

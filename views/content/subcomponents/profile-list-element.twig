@@ -53,8 +53,12 @@
 					{% endif %}
 					{% if scheduling_link %}
 						<li>
-							<a class="btn btn-primary btn-small mt-1" href="{{ scheduling_link.url }}">
+							<a class="btn btn-primary btn-small mt-1" {% if scheduling_link.target %} target="{{ scheduling_link.target }}" {% endif %} href="{{ scheduling_link.url }}">
 								{{ scheduling_link.title|default(__('Schedule with %s', 'bc-sitka-spruce')|format(first_name)) }}
+								{% if scheduling_link.target %}
+									<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
+									<i class="fa fa-external-link-square text-white ms-1" aria-hidden="true"></i>
+								{% endif %}
 							</a>
 						</li>
 					{% endif %}
