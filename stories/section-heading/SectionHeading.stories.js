@@ -21,7 +21,7 @@ export default {
 };
 
 
-const Template = ( { 
+const Template = ( {
     eyebrow,
     heading,
     subheading,
@@ -63,6 +63,16 @@ WithCustomLink.args = {
     link_custom: {
         url: '#',
         title: 'Link Custom',
+    },
+}
+
+export const WithCustomLinkNewTab = Template.bind({});
+WithCustomLinkNewTab.args = {
+    ... Default.args,
+    link_custom: {
+        url: '#',
+        title: 'Link Custom',
+		target: '_blank',
     },
 }
 
