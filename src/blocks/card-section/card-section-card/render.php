@@ -24,4 +24,9 @@ $context['card_content']   = wp_kses_post( $content ?? '' );
 
 
 // Render Twig Template
-Timber::render( '/stories/card-bootstrap/card-bootstrap.twig', $context );
+if ( $context['media'] && $context['card_title'] && $context['card_content'] ) {
+	Timber::render( '/stories/card-bootstrap/card-bootstrap.twig', $context );
+} else {
+	echo '';
+}
+

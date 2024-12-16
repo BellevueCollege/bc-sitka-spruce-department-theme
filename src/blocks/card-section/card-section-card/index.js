@@ -46,6 +46,12 @@ registerBlockType("bc-sitka-spruce/card-section-card", {
 			};
 		});
 
+		const BLOCK_TEMPLATE = [
+			[ 'core/paragraph', {
+				'placeholder': __( 'Card Content (required)...', 'bc-sitka-spruce' )
+			} ]
+		];
+
 		return (
 			<>
 				<BlockControls group="block">
@@ -121,8 +127,9 @@ registerBlockType("bc-sitka-spruce/card-section-card", {
 										<Card>
 											<CardBody>
 												<Button className="button button-large" onClick={open}>
-													{__("Add an Image", "mayflower-blocks")}
+													{__("Add an Image (required)", "bc-sitka-spruce")}
 												</Button>
+												<p className="mt-3">{__("Minimum image size: 360px x 200px", "bc-sitka-spruce")}</p>
 											</CardBody>
 										</Card>
 									)}
@@ -144,11 +151,13 @@ registerBlockType("bc-sitka-spruce/card-section-card", {
 							tagName="h3"
 							className="card-title"
 							allowedFormats={["core/link"]}
-							placeholder="Heading Text or Link"
+							placeholder="Heading Text or Link (required)..."
 							value={cardTitle}
 							onChange={(cardTitle) => setAttributes({ cardTitle })}
 						/>
-						<InnerBlocks />
+						<InnerBlocks
+							template={ BLOCK_TEMPLATE }
+						/>
 					</div>
 				</div>
 			</>
