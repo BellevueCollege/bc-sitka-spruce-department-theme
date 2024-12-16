@@ -65,3 +65,13 @@ NoLinks.args = {
     ...Default.args,
     links: null
 }
+
+export const ButtonOpensInNewTab = Template.bind({});
+ButtonOpensInNewTab.args = {
+	...Default.args,
+	button: {
+		title: "Click Me",
+		url: "#",
+		target: "_blank"
+	}
+};
