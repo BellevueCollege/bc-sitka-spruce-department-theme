@@ -51,6 +51,7 @@ registerBlockType("bc-sitka-spruce/card-section", {
 				<div className="container-xl">
 					<InnerBlocks
 						template={TEMPLATE}
+						renderAppender={ InnerBlocks.ButtonBlockAppender }
 					/>
 				</div>
 			</div>

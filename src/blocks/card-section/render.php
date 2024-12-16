@@ -16,7 +16,9 @@ $context['wrapper_attrs'] = get_block_wrapper_attributes(
 	)
 );
 
-
-
 // Render Twig Template
-Timber::render( '/stories/card-section/card-section.twig', $context );
+if ( $context['cards'] && $context['title'] ) {
+	Timber::render( '/stories/card-section/card-section.twig', $context );
+} else {
+	echo '';
+}
