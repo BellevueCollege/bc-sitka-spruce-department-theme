@@ -19,10 +19,12 @@ $context ['office_hours']    = wp_kses_post( get_field( 'office_hours' ) ?? '' )
 $context ['linkedin']        = get_field( 'linkedin' );
 $context ['additional_url']  = get_field( 'additional_url' );
 // Below is for grabbing fields for scheduled appointments
-if ( is_array( get_field( 'scheduling_section' ) ) ) {
-	$context ['title']       = esc_html( get_field( 'scheduling_section' )['scheduling_section_title'] ?? '' );
-	$context ['description'] = wp_kses_post( get_field( 'scheduling_section' )['scheduling_section_description'] ?? '' );
-	$context ['button']      = get_field( 'scheduling_section' )['schedule_appointment_link'];
+
+
+if ( is_array( get_field( 'scheduling_section' ) ) && array_key_exists( 0, get_field( 'scheduling_section' ) ) ) {
+	$context ['title']       = esc_html( get_field( 'scheduling_section' )[0]['scheduling_section_title'] ?? '' );
+	$context ['description'] = wp_kses_post( get_field( 'scheduling_section' )[0]['scheduling_section_description'] ?? '' );
+	$context ['button']      = get_field( 'scheduling_section' )[0]['schedule_appointment_link'];
 }
 
 

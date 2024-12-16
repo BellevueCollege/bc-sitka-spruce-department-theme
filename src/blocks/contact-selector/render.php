@@ -27,8 +27,8 @@ if (is_array(get_field('profiles'))) {
         $schedule_data = get_field('scheduling_section', $profile->ID);
 
     // going into contact item data to grab nested data
-        $profile_data['scheduling_link'] = esc_url($schedule_data['schedule_appointment_link']['url'] ?? '');
-        $profile_data['scheduling_text'] = esc_html($schedule_data['schedule_appointment_link']['title'] ?? '');
+        $profile_data['scheduling_link'] = esc_url($schedule_data[0]['schedule_appointment_link']['url'] ?? '');
+        $profile_data['scheduling_text'] = esc_html($schedule_data[0]['schedule_appointment_link']['title'] ?? '');
 
         //add processed profile data to list
         $profiles_data[] = $profile_data;
