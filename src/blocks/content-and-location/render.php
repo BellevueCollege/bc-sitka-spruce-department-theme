@@ -9,6 +9,7 @@ $context['content']          = $content;
 $context['heading']          = esc_html( $attributes['heading'] ?? '' );
 $context['summary']          = wp_kses_post( $attributes['summary'] ?? '' );
 
+$context['site_type']        = get_field( 'site_type', 'option' );
 $context['parent_division']  = get_field( 'parent_division', 'option' ) ?? null;
 
 // Custom fields from Options
