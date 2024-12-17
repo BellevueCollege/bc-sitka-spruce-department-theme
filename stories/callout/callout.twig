@@ -11,15 +11,21 @@
 	<aside class="callout text-margin-reset {{ callout_type }}">
 		<{{ heading_tag|e('html_attr') }} class="callout__heading card-title-small">{{ title|e }}</{{ heading_tag|e('html_attr') }}>
 		<p>{{ text|wp_kses_post }}</p>
-
 		{% if links %}
 			<div class="callout__links">
 				{% if links is iterable %}
 					<ul>
 						{% for link in links %}
-							<li>
-								<a href="{{ link.url|esc_url }}" class="link-arrow">{{ link.title|e }}</a>
-							</li>
+							{% if link.title and link.url %}
+								<li>
+									<a href="{{ link.url|esc_url }}" {% if link.target %} target="{{ link.target }}" {% endif %} class="link-arrow">
+										{{ link.title|e }}
+										{% if link.target %}
+											<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
+										{% endif %}
+									</a>
+								</li>
+							{% endif %}
 						{% endfor %}
 					</ul>
 				{% elseif links %}
@@ -27,8 +33,14 @@
 				{% endif %}
 			</div>
 		{% endif %}
-		{% if button %}
-			<p class="callout__button"><a href="{{ button.url|esc_url }}" class="btn btn-primary">{{ button.title|e }}</a></p>
+		{% if button and button.title and button.url %}
+			<p class="callout__button"><a href="{{ button.url|esc_url }}" {% if button.target %} target="{{ button.target }}" {% endif %} class="btn btn-primary">
+				{{ button.title|e }}
+				{% if button.target %}
+					<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
+					<i class="fa fa-external-link-square ms-1" aria-hidden="true"></i>
+				{% endif %}
+			</a></p>
 		{% endif %}
 	</aside>
 </div>
