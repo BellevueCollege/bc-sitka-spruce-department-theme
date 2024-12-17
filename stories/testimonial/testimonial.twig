@@ -24,7 +24,13 @@
 				<p class="attribution-desc">{{ attribution_desc }}</p>
 				{%  if cta %}
 					<div class="cta">
-						<a class="btn btn-primary" href="{{ cta.url }}">{{ cta.title }}</a>
+						<a class="btn btn-primary" {% if cta.target %} target="{{ cta.target }}" {% endif %} href="{{ cta.url }}">
+							{{ cta.title }}
+							{% if cta.target %}
+								<span class="visually-hidden"> {{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
+								<i class="fa fa-external-link-square text-white ms-2" aria-hidden="true"></i>
+							{% endif %}
+						</a>
 					</div>
 				{% endif %}
 			</div>
