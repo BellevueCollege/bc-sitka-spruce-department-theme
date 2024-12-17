@@ -36,7 +36,7 @@ describe('Flexiblepage', function () {
 		});
 	}); 
 
-//HERO AREA & SITE INTRO TESTS★ [WIP]
+//HERO AREA & SITE INTRO TESTS★ [No adjustments needed]
 //class="container-xl flexible-page-intro"
 test('Flexibile page Hero Area & Site Intro UI Results', function (browser) {
 	//Iterates over each screen size, sets the browser window size, 
@@ -44,24 +44,22 @@ test('Flexibile page Hero Area & Site Intro UI Results', function (browser) {
 	screenSizes.forEach(screenSize => {
 		browser
 			.window.setSize(screenSize.width, screenSize.height)
-			.waitForElementVisible('flexible-page-intro')
-			.assert.screenshotIdenticalToBaseline('flexible-page-intro',`HeroIntro-${screenSize.name}`);
+			.waitForElementVisible('.flexible-page-intro')
+			.assert.screenshotIdenticalToBaseline('.flexible-page-intro',`HeroIntro-${screenSize.name}`);
 	});
 }); 
 
-//LEAD/INTRO TEST [WIP]
-//class="wp-block-mayflower-blocks-lead lead"
+//LEAD/INTRO TEST [Works enough for now]
 test('Intro UI Results', function (browser) {
 	/* Iterates over each screen size, sets the browser window size, 
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
 			.window.setSize(screenSize.width, screenSize.height)
-			.waitForElementVisible('wp-block-bc-sitka-spruce-narrow-content narrow-content')
-			.assert.screenshotIdenticalToBaseline('wp-block-bc-sitka-spruce-narrow-content narrow-content',`lead/intro-${screenSize.name}`);
+			.waitForElementVisible('.wp-block-mayflower-blocks-lead')
+			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-lead',`lead_intro-${screenSize.name}`);
 	});
 });
-
 
 //HEADING TEST [No Adjustments needed]
 test('Heading Block UI Results', function (browser) {
@@ -100,8 +98,7 @@ test('Quote Block UI Results', function (browser) {
 	});
 });
 
-//CODE BLOCK TEST
-//class="wp-block-code"
+//CODE BLOCK TEST [No Adjustments needed]
 test('Code Block UI Results', function (browser) {
 	/* Iterates over each screen size, sets the browser window size, 
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
@@ -113,9 +110,7 @@ test('Code Block UI Results', function (browser) {
 	});
 });
 
-
-	//DETAILS BLOCK
-	//wp-block-details is-layout-flow wp-block-details-is-layout-flow
+//DETAILS BLOCK [works enough for now]
 test('Details Block UI Results', function (browser) {
 	/* Iterates over each screen size, sets the browser window size, 
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
@@ -126,14 +121,31 @@ test('Details Block UI Results', function (browser) {
 			.assert.screenshotIdenticalToBaseline('.wp-block-details',`Details-block-${screenSize.name}`);
 	});
 });
-	//PREFORMATTED BLOCK TEST
-	//class="wp-block-preformatted"
 
-	//TABLE TEXT
-	//class="wp-block-table"
+//PREFORMATTED BLOCK TEST [BEING DUMB]
+//class="wp-block-preformatted"
+test('Preformatted Block UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-preformatted')
+			.waitForElementVisible('.wp-block-preformatted')
+			.assert.screenshotIdenticalToBaseline('.wp-block-preformatted',`Preformatted-block-${screenSize.name}`);
+	});
+});
 
-	//CLAssIC BLOCK VISUAl TEST CANNOT BE MADE- EDITOR ONLY
-
+//TABLE TEXT [No Adjustments needed]
+//class="wp-block-table"
+test('Table Block UI Results', function (browser) {
+	/* Iterates over each screen size, sets the browser window size, 
+	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-table')
+			.assert.screenshotIdenticalToBaseline('.wp-block-table',`Table-block-${screenSize.name}`);
+	});
+});
 //CARDS SECTION [No Adjustments needed]
 test('Cards Section UI Results', function (browser) {
 	screenSizes.forEach(screenSize => {
@@ -145,20 +157,37 @@ test('Cards Section UI Results', function (browser) {
 	});
 });
 
-//APPLICATION STEPS
-//application-steps-component section section-xlight
+//APPLICATION STEPS SECTION [No Adjustments needed]
+test('Application Steps Section UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('section.application-steps-component')
+			.assert.screenshotIdenticalToBaseline('section.application-steps-component',`Application-section-${screenSize.name}`);
+	});
+});
 
-//TABS SECTION
-//section section-dark tabs-section-component dark-bg bg-navy
+//TABS SECTION [No Adjustments needed]
+test('Application Steps Section UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.section.section-dark.tabs-section-component')
+			.assert.screenshotIdenticalToBaseline('.section.section-dark.tabs-section-component',`Tabs-section-${screenSize.name}`);
+	});
+});
 
-//ACCORDION SECTION
-//accordion-section-content col-md-8
-
-//CALLOUT 
-//class="callout-wrapper col"
+//ACCORDION SECTION [No Adjustments needed]
+test('Application Steps Section UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.section.accordion-section-content')
+			.assert.screenshotIdenticalToBaseline('.section.accordion-section-content',`Accordion-section-${screenSize.name}`);
+	});
+});
 
 //LISTING SECTION [No adjustments needed]
-//class="section section-xlight listing-section-wrapper"
 test('Listing Section UI Results', function (browser) {
 	screenSizes.forEach(screenSize => {
 		browser
@@ -168,10 +197,15 @@ test('Listing Section UI Results', function (browser) {
 	});
 });
 
-
-//COURSE & CRED REQUIREMENTS
-//class="course-information-section-wrapper section section-xlight"
-
+//COURSE & CRED REQUIREMENTS [No adjustments needed]
+test('Course & Credit Requirements UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('section.course-information-section-wrapper')
+			.assert.screenshotIdenticalToBaseline('section.course-information-section-wrapper',`Course-cred-${screenSize.name}`);
+	});
+});
 
 //BODY SECTION [No Adjustments needed]
 test('Body Section UI Results', function (browser) {
@@ -183,15 +217,36 @@ test('Body Section UI Results', function (browser) {
 	});
 });
 
-//BIO SECTION
-//class="bio-section-wrapper section section-white"
+//BIO SECTION [No Adjustments needed]
+test('Bio Section UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('section.bio-section-wrapper')
+			.assert.screenshotIdenticalToBaseline('section.bio-section-wrapper',`bio-section-wrapper-${screenSize.name}`);
+	});
+});
 
-//CONTACT SECTION
-//class="section section-accent-blue-extralight contact-section container-fluid"
+//CONTACT SECTION [No Adjustments needed]
+test('Contact Section UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('section.section-accent-blue-extralight')
+			.assert.screenshotIdenticalToBaseline('section.section-accent-blue-extralight',`contact-section-wrapper-${screenSize.name}`);
+	});
+});
 
-//TESTIMONIAL SECTION
+//TESTIMONIAL SECTION [No Adjustments needed]
 //class="section section-xlight testimonial-section-wrapper"
-
+test('Testimonial Section UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.section.section-xlight.testimonial-section-wrapper')
+			.assert.screenshotIdenticalToBaseline('.section.section-xlight.testimonial-section-wrapper',`Testimonial-section-wrapper-${screenSize.name}`);
+	});
+});
 
 //ANNOUNCEMENT BANNER TESTS [No Adjustments needed]
 	test('Announcement Banner UI Results', function (browser) {
@@ -205,8 +260,17 @@ test('Body Section UI Results', function (browser) {
 		});
 	});
 
-//MEDIA GALLERY
-//class="media-gallery-wrapper section section-dark text-white swiper container-fluid"
+//MEDIA GALLERY [No Adjustments needed]
+test('Media Gallery UI Results', function (browser) {
+	/* Iterates over each screen size, sets the browser window size, 
+	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('section.media-gallery-wrapper')
+			.assert.screenshotIdenticalToBaseline('section.media-gallery-wrapper',`media-gallery-${screenSize.name}`);
+	});
+});
 
 //PROFILE SECTION [No Adjustments needed]
 test('Profiles Section UI Results', function (browser) {
@@ -218,9 +282,17 @@ test('Profiles Section UI Results', function (browser) {
 	});
 });
 
-//DEGREE & CERT SECTION 
-//class="degrees-certificates-section-wrapper section section-dark text-white"
-
+//DEGREE & CERT SECTION [No Adjustments needed]
+test('Degree & Certification Results UI Results', function (browser) {
+	/* Iterates over each screen size, sets the browser window size, 
+	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.section.degrees-certificates-section-wrapper')
+			.assert.screenshotIdenticalToBaseline('.section.degrees-certificates-section-wrapper',`degree-cert-${screenSize.name}`);
+	});
+});
 
 //CHECKERBOARDS -BEL02 [No adjustments needed]
 test('Checkerboard Section UI Results', function (browser) {
@@ -243,7 +315,6 @@ test('Checkerboard Section UI Results', function (browser) {
 		});
 	}); 
 
-
 //NEWS FEATURE [No adjustments needed]
 	test('News Feature UI Results', function (browser) {
 		screenSizes.forEach(screenSize => {
@@ -254,87 +325,217 @@ test('Checkerboard Section UI Results', function (browser) {
 		});
 	});
 
+//IDENTITY SUPPORT/ STUDENT SUPPORT FEATURE [No adjustments needed]
+test('Identity/Support Feature UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.support-feature-component')
+			.assert.screenshotIdenticalToBaseline('.support-feature-component',`support-feature-${screenSize.name}`);
+	});
+});
 
-//IDENTITY SUPPORT/ STUDENT SUPPORT FEATURE
-//class="section section-dark support-feature-component tab-wrapper tab-wrapper-dark curved-top"
+//DEPARTMENT FEATURE [No adjustments needed]
+test('Department Feature UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('section.section.section-white.organization-feature')
+			.assert.screenshotIdenticalToBaseline('section.section.section-white.organization-feature',`department-feature-${screenSize.name}`);
+	});
+});
 
-//DEPARTMENT FEATURE
-//class="section section-white organization-feature"
+//WP IMAGE BLOCK [No Adjustments needed]
+test('WP Image block UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-image')
+			.assert.screenshotIdenticalToBaseline('.wp-block-image',`wp-image-${screenSize.name}`);
+	});
+});
 
-//WP IMAGE BLOCK
-//class="wp-block-image size-full"
+//WP IMAGE GALLERY [No Adjustments needed]
+test('WP Image Gallery UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-gallery')
+			.assert.screenshotIdenticalToBaseline('.wp-block-gallery',`wp-gallery-${screenSize.name}`);
+	});
+});
 
-//WP IMAGE GALLERY
-//class="wp-block-gallery has-nested-images columns-default is-cropped wp-block-gallery-1 is-layout-flex wp-block-gallery-is-layout-flex"
-
-
-//WP GENERAL EMBED
-//class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube wp-embed-aspect-16-9 wp-has-aspect-ratio"
+//WP YT EMBED
+test('WP YT Embed UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-embed')
+			.assert.screenshotIdenticalToBaseline('.wp-block-embed',`wp-YT-embed-${screenSize.name}`);
+	});
+});
 
 //WP COVER BLOCK
-//class="wp-block-cover"
+test('WP Cover UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-cover')
+			.assert.screenshotIdenticalToBaseline('.wp-block-cover',`wp-cover-${screenSize.name}`);
+	});
+});
 
-//WP FILE BLOCK
-//class="wp-block-file"
+//WP FILE BLOCK [No Adjustments needed]
+test('WP File UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-file')
+			.assert.screenshotIdenticalToBaseline('.wp-block-file',`wp-file-${screenSize.name}`);
+	});
+});
 
-//WP MEDIA & TEXT BLOCK
-//wp-block-media-text is-stacked-on-mobile
+//WP MEDIA & TEXT BLOCK [No Adjustments needed]
+test('WP Media-Text UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-media-text')
+			.assert.screenshotIdenticalToBaseline('.wp-block-media-text',`wp-med-txt-${screenSize.name}`);
+	});
+});
 
-//WP SEPERATOR BLOCK
+//WP SEPERATOR BLOCK[WIP]
 //wp-block-separator has-alpha-channel-opacity
+test('WP Separator UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.hr.wp-block-separator')
+			.assert.screenshotIdenticalToBaseline('.hr.wp-block-separator',`wp-separator-${screenSize.name}`);
+	});
+});
 
-//WP SPACER BLOCK
-//class="wp-block-spacer"
+//WP SPACER BLOCK [No Adjustments needed]
+test('WP Spacer UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-spacer')
+			.assert.screenshotIdenticalToBaseline('.wp-block-spacer',`wp-spacer-${screenSize.name}`);
+	});
+});
 
-//TABS (MOBILE)
-//tabcordion tabcordion-pills wrap-content wp-block-bc-sitka-spruce-tabcordion
-
+//TABS (MOBILE)/Tabcordian is used in application steps so doesn't need to be tested independately
 
 //GROUP BLOCK
 //wp-block-group is-layout-constrained wp-block-group-is-layout-constrained
+test('WP GROUP UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-group')
+			.assert.screenshotIdenticalToBaseline('.wp-block-group',`wp-group-${screenSize.name}`);
+	});
+});
 
-//SHORTCODE
-//??
+//SHORTCODE: literal shortcut to specificed block- no screenshot needed
 
 //CUSTOM HTML
 //??
 
-//TWITTER EMBED
-//class="wp-block-embed is-type-rich is-provider-twitter wp-block-embed-twitter"
+//TWITTER/X EMBED
+//class=".wp-block-embed.is-type-rich.is-provider-twitter.wp-block-embed-twitter"
+test('X EMBED UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-embed.is-type-rich.is-provider-twitter.wp-block-embed-twitter')
+			.assert.screenshotIdenticalToBaseline('.wp-block-embed.is-type-rich.is-provider-twitter.wp-block-embed-twitter',`x-embed-${screenSize.name}`);
+	});
+});
 
-//GENERAL/YT EMBED
-//wp-block-embed is-type-rich is-provider-embed-handler wp-block-embed-embed-handler
-//class="wp-block-embed__wrapper"
+//VIEMO EMBED [No Adjustments needed]
+test('Vimeo embed UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-embed.is-type-video.is-provider-vimeo.wp-block-embed-vimeo')
+			.assert.screenshotIdenticalToBaseline('.wp-block-embed.is-type-video.is-provider-vimeo.wp-block-embed-vimeo',`vimeo-embed-${screenSize.name}`);
+	});
+});
 
 
-//VIEMO EMBED
-//class="wp-block-embed is-type-video is-provider-vimeo wp-block-embed-vimeo wp-embed-aspect-16-9 wp-has-aspect-ratio"
+//ALERT BLOCK [No Adjustments needed]
+test('Alert block UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-mayflower-blocks-alert')
+			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-alert',`mf-alert-block-${screenSize.name}`);
+	});
+});
+
+//MF BUTTON BLOCK [WIP]
+test('Button block UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-mayflower-blocks-button')
+			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-button',`mf-block-button-${screenSize.name}`);
+	});
+}); 
+
+//MF BLOCK CARD [No Adjustments needed]
+test('MF panel UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-mayflower-blocks-panel.card.bg-default')
+			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-panel.card.bg-default',`mf-block-panel-${screenSize.name}`);
+	});
+}); 
 
 
+//MF INTRO TEXT already tested
 
-//ALERT BLOCK
-//class="wp-block-mayflower-blocks-alert alert alert-success"
-
-//MF BUTTON BLOCK
-//class="wp-block-mayflower-blocks-button"
-
-//MF BLOCK CARD
-//class="wp-block-mayflower-blocks-panel card bg-default"
-
-//MF INTRO TEXT
-//class="wp-block-mayflower-blocks-lead lead"
 
 //MF COLUMN/ROW
 //class="wp-block-mayflower-blocks-column col-md-4"
+test('MF column/row UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-mayflower-blocks-column.col-md-4')
+			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-column.col-md-4',`mf-column-${screenSize.name}`);
+	});
+}); 
 
-//MF TABS
-//class="wp-block-mayflower-blocks-tabs card"
 
-//MF ACCORDION
-//class="wp-block-mayflower-blocks-collapsibles accordion"
+
+//MF TABS {No Adjustments needed}
+test('MF tabs UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-mayflower-blocks-tabs.card')
+			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-tabs.card',`mf-tabs-${screenSize.name}`);
+	});
+}); 
+
+
+//MF ACCORDION {No Adjustments needed}
+test('MF Accordion UI Results', function (browser) {
+	screenSizes.forEach(screenSize => {
+		browser
+			.window.setSize(screenSize.width, screenSize.height)
+			.waitForElementVisible('.wp-block-mayflower-blocks-collapsibles.accordion')
+			.assert.screenshotIdenticalToBaseline('..wp-block-mayflower-blocks-collapsibles.accordion',`mf-accordion-${screenSize.name}`);
+	});
+}); 
+
 
 
 // CLOSING BROWSER/ END TESTS	
 	after(browser => browser.end());
 });
-
