@@ -104,7 +104,7 @@
                 "class": "",
                 "id": ""
             },
-            "layout": "block",
+            "layout": "row",
             "sub_fields": [
                 {
                     "key": "field_66c3c92af5205",
@@ -112,7 +112,7 @@
                     "name": "name",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "",
+                    "instructions": "Required. Name of the quote author.",
                     "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -133,7 +133,7 @@
                     "name": "description",
                     "aria-label": "",
                     "type": "text",
-                    "instructions": "",
+                    "instructions": "Required. Title, graduation year, or other context associated with the author.",
                     "required": 1,
                     "conditional_logic": 0,
                     "wrapper": {
@@ -185,5 +185,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1731714535
+    "modified": 1734461419
 }
