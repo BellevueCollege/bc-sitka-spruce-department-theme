@@ -4,6 +4,10 @@ use Timber\Timber;
 $context                      = Timber::context();
 $context['heading']           = esc_html( $attributes['title'] );
 $context['subheading']        = esc_html( $attributes['description'] );
+$context['link_custom']       = $attributes['linkTitle'] && $attributes['linkUrl'] ? array(
+	'title' => esc_html( $attributes['linkTitle'] ),
+	'url'   => esc_url( $attributes['linkUrl'] ),
+) : null;
 $context['large_story_id']    = esc_attr( $attributes['largeStoryId'] );
 $context['small_story_types'] = $attributes['smallStoryTypes'];
 $context['featured_news']     = News::get_single_from_core( $attributes['largeStoryId'] );

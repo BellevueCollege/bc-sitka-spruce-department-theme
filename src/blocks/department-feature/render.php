@@ -4,6 +4,10 @@ use Timber\Timber;
 $context                  = Timber::context();
 $context['heading']       = esc_html( $attributes['title'] );
 $context['subheading']    = esc_html( $attributes['description'] );
+$context['link_custom']       = $attributes['linkTitle'] && $attributes['linkUrl'] ? array(
+	'title' => esc_html( $attributes['linkTitle'] ),
+	'url'   => esc_url( $attributes['linkUrl'] ),
+) : null;
 $context['department_id'] = esc_attr( $attributes['departmentId'] );
 $dept                     = Department::get_single_from_core( $attributes['departmentId'] );
 $context                  = is_array( $dept ) ? array_merge( $context, Department::get_single_from_core( $attributes['departmentId'] ) ) : $context; // Merge in the content from the core
