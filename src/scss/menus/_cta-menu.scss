@@ -5,10 +5,15 @@
 		display: flex;
 		gap: 1rem;
 
+		a {
+			white-space: nowrap;
+		}
+
 		@include media-breakpoint-down($header-desktop-breakpoint) {
 			flex-direction: column;
 			a {
 				display: block;
+				white-space: wrap;
 			}
 		}
 	}
