@@ -327,7 +327,7 @@
         },
         {
             "key": "field_66fb2303e3d00",
-            "label": "Office or Department",
+            "label": "Office, Department, or Group",
             "name": "dept_office",
             "aria-label": "",
             "type": "taxonomy",
@@ -396,5 +396,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1734387622
+    "modified": 1734537528
 }
