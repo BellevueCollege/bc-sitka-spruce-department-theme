@@ -9,18 +9,21 @@
 		heading: title,
 		subheading: description
 	} %}
-  <div class="checkerboards container-xl mt-5">
-    {% for checkerboard in checkerboards %}
-      {% include '/stories/checkerboard-section/checkerboard.twig' with {
-        video: checkerboard.video,
-        image: checkerboard.image,
-        caption: checkerboard.caption,
-        title: checkerboard.title,
-        text: checkerboard.text,
-        links: checkerboard.links,
-      } %}
-    {% endfor %}
-  </div>
+	<div class="checkerboards container-xl mt-5">
+		{% for checkerboard in checkerboards %}
+			{% if checkerboard.image and checkerboard.title %}
+				{% include '/stories/checkerboard-section/checkerboard.twig' with {
+					video: checkerboard.video,
+					image: checkerboard.image,
+					caption: checkerboard.caption,
+					title: checkerboard.title,
+					text: checkerboard.text,
+					links: checkerboard.links,
+				} %}
+			{% elseif is_preview %}
+				<p class="text-danger">{{ __('Add content to this checkerboard section so that it can display!', 'bc-sitka-spruce') }}</p>
+			{% endif %}
+		{% endfor %}
+	</div>
 	<hr class="section-divider">
 </section>
-
