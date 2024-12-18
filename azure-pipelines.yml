@@ -20,6 +20,7 @@ pool:
 variables:
     phpVersion: 8.2
     npm_config_cache: $(Pipeline.Workspace)/.npm
+    COMPOSER_CACHE_DIR: $(Pipeline.Workspace)/.composer
 
 steps:
   - script: |
@@ -30,6 +31,14 @@ steps:
       sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
       php -version
     displayName: 'Use PHP version $(phpVersion)'
+  - task: Cache@2
+    inputs:
+      key: 'composer | "$(Agent.OS)" | composer.lock'
+      restoreKeys: |
+        composer | "$(Agent.OS)"
+        composer
+      path: $(COMPOSER_CACHE_DIR)
+    displayName: Cache composer
   - script: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
     displayName: 'composer install'
   - task: NodeTool@0
@@ -46,22 +55,25 @@ steps:
   - task: Npm@1
     inputs:
       command: 'ci'
+    displayName: NPM Clean Install
   - task: Npm@1
     inputs:
       command: 'custom'
       customCommand: 'run build'
+    displayName: NPM Build
   - task: Bash@3
     inputs:
       targetType: 'inline'
       script: |
         npm prune --production
+    displayName: NPM Prune Dev Deps
   - task: replacetokens@6
     inputs:
       sources: 'style.css'
       addBOM: true
   - task: DeleteFiles@1
     inputs:
-      SourceFolder: 
+      SourceFolder:
       Contents: |
         /vrt
         /reports
