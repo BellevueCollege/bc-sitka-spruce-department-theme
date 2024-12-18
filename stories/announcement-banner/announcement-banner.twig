@@ -19,8 +19,8 @@
 					<div class="announcement__text col">
 						<h2 class="card-title-big">{{ title }}</h2>
 						{{ description }}
-						<div class="announcement__button mt-3">
-							{% if button %}
+						{% if button and button.url and button.title %}
+							<div class="announcement__button mt-3">
 								<a class='btn btn-primary' {% if button.target %} target="{{ button.target }}" {% endif %} href="{{ button.url }}">
 									{{button.title}}
 									{% if button.target %}
@@ -28,18 +28,19 @@
 										<i class="fa fa-external-link-square text-white ms-2" aria-hidden="true"></i>
 									{% endif %}
 								</a>
-							{% endif %}
-						</div>
-
+							</div>
+						{% endif %}
 						{% if links %}
 							<ul class="announcement__links list-unstyled row mt-3">
 								{% for link in links %}
-									<li class="col-auto"><a class="link-arrow" {% if link.target %} target="{{ link.target }}" {% endif %} href="{{ link.url }}">
-										{{ link.title }}
-										{% if link.target %}
-											<span class="visually-hidden">({{ __('Opens in a new tab', 'bc-sitka-spruce') }})</span>
-										{% endif %}
-									</a></li>
+									{% if link.title and link.url %}
+										<li class="col-auto"><a class="link-arrow" {% if link.target %} target="{{ link.target }}" {% endif %} href="{{ link.url }}">
+											{{ link.title }}
+											{% if link.target %}
+												<span class="visually-hidden">({{ __('Opens in a new tab', 'bc-sitka-spruce') }})</span>
+											{% endif %}
+										</a></li>
+									{% endif %}
 								{% endfor %}
 							</ul>
 						{% endif %}
