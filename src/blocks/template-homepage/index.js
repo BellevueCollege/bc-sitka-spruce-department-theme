@@ -20,7 +20,6 @@ registerBlockType( 'bc-sitka-spruce/template-homepage', {
 
         return (
             <>
-                <div className="nothing-above-this"><strong>{__( 'No content above this line!', 'bc-sitka-spruce' )}</strong></div>
                 <div { ...blockProps }>
                     <InnerBlocks
                         template={ BLOCK_TEMPLATE }
