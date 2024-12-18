@@ -33,7 +33,14 @@
 					{% if links %}
 						<ul class="link">
 							{% for link in links %}
-								<li><a class='link-arrow' href="{{ link.url|esc_url }}" {% if link.target %}target="{{ link.target|esc_attr }}"{% endif %}>{{ link.title|e }}</a></li>
+								{% if link.title and link.url %}
+									<li><a class='link-arrow' href="{{ link.url|esc_url }}" {% if link.target %}target="{{ link.target|esc_attr }}"{% endif %}>
+										{{ link.title|e }}
+										{% if link.target %}
+											<span class="visually-hidden">({{ __('Opens in a new tab', 'bc-sitka-spruce') }})</span>
+										{% endif %}
+									</a></li>
+								{% endif %}
 							{% endfor %}
 						</ul>
 					{% endif %}
