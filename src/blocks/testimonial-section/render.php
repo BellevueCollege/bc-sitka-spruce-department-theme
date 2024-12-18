@@ -22,6 +22,7 @@ if ( $cta ) {
 	$context['cta'] = array(
 		'url'   => esc_url( $cta['url'] ?? '' ),
 		'title' => esc_html( $cta['title'] ?? '' ),
+		'target' => esc_attr( $cta['target'] ?? '' ),
 	);
 }
 
