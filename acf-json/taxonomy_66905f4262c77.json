@@ -1,6 +1,6 @@
 {
     "key": "taxonomy_66905f4262c77",
-    "title": "Offices or Departments",
+    "title": "Offices, Departments, and Groups",
     "menu_order": 0,
     "active": true,
     "taxonomy": "department",
@@ -11,7 +11,7 @@
     "import_source": "",
     "import_date": "",
     "labels": {
-        "name": "Offices or Departments",
+        "name": "Offices, Departments, and Groups",
         "singular_name": "Office, Department, or Group",
         "menu_name": "Office\/Department\/Group",
         "all_items": "All Offices\/Departments\/Groups",
@@ -71,5 +71,5 @@
     "meta_box": "default",
     "meta_box_cb": "",
     "meta_box_sanitize_cb": "",
-    "modified": 1734537499
+    "modified": 1734554869
 }
