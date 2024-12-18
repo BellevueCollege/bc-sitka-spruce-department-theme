@@ -75,3 +75,21 @@ Some Block Editor blocks are bundled as part of the theme. These blocks are loca
 Each block folder should include a `block.json` that defines the block and calls any stylesheets, render files, and scripts. 
 
 Once the block has been created, ensure that it is registered in `functions.php`
+
+### Running Visual Regression Tests
+
+This repo is set up to support Visual Regression Testing (VRT) using NightwatchJS and LambdaTest.
+
+In order to use LambdaTest, a username and token must be available. These can be set using environmental variables, or as an export in your terminal session.
+
+To set within your session, use the following command (after filling in your credentials from LambdaTest):
+
+```bash
+export LT_USERNAME="USERNAME_GOES_HERE" export LT_ACCESS_KEY="TOKEN_GOES_HERE"
+```
+
+Once this is set, you can run the tests via:
+
+```bash
+npx nightwatch --env chrome,firefox
+```
