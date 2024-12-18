@@ -29,7 +29,7 @@ steps:
       sudo update-alternatives --set phar.phar /usr/bin/phar.phar$(phpVersion)
       php -version
     displayName: 'Use PHP version $(phpVersion)'
-  - script: composer install --no-interaction --prefer-dist
+  - script: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
     displayName: 'composer install'
   - task: NodeTool@0
     inputs:
@@ -67,6 +67,15 @@ steps:
     inputs:
       sources: 'style.css'
       addBOM: true
+  - task: DeleteFiles@1
+    inputs:
+      SourceFolder: 
+      Contents: |
+        /vrt
+        /reports
+        /.git
+        /.git*
+      RemoveDotFiles: true
   - task: PublishPipelineArtifact@1
     inputs:
       targetPath: '$(Pipeline.Workspace)'
