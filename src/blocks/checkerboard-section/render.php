@@ -26,17 +26,17 @@ $context['checkerboards'] = get_field( 'checkerboards' ) ? array_map(
 	},
 	get_field( 'checkerboards' )
 ) : array();
+$context['is_preview'] = $is_preview;
 
 
-
-if ( $context['checkerboards'] ) {
+if ( $context['title'] && $context['checkerboards'] ) {
 	Timber::render( '/stories/checkerboard-section/checkerboards.twig', $context );
 } else {
 	echo '';
 }
 
-if ( $is_preview && ! $context['checkerboards'] ) {
+if ( $is_preview && ( ! $context['checkerboards'] || ! $context['title'] ) ) {
 	echo '<div class="card"><p>';
-	_e( 'Add checkerboards to this element so that it can display!', 'bc-sitka-spruce' );
+	_e( 'Add title and checkerboards to this element so that it can display!', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }
