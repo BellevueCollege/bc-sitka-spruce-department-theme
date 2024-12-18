@@ -13,7 +13,7 @@
 <div class="wp-block-bc-sitka-spruce-template-homepage homepage-intro alignfull"><!-- wp:bc-sitka-spruce/hero-image {"name":"bc-sitka-spruce/hero-image","data":{"hero_image":"","_hero_image":"field_66a037a5b53bb"},"mode":"preview"} /-->
 
 <!-- wp:bc-sitka-spruce/content-and-location {"heading":"Division Name","summary":"Mission statement/service provision overview for this Division. Curabitur fringilla sapien a mauris cursus efficitur. Quisque vel neque vitae tortor congue malesuada. Duis faucibus molestie lacus id gravida. Nunc sed lacus molestie, vel laoreet risus malesuada doler ipsum lorem sed nullam."} -->
-<!-- wp:mayflower-blocks/button {"buttonText":"Optional Button","isBootstrap5":true,"lock":{"move":false,"remove":false}} -->
+<!-- wp:mayflower-blocks/button {"buttonText":"Optional Button","buttonType":"primary","isBootstrap5":true,"lock":{"move":false,"remove":false}} -->
 <div class="wp-block-mayflower-blocks-button"><a class="btn btn-primary   disabled" aria-disabled="true">Optional Button</a></div>
 <!-- /wp:mayflower-blocks/button -->
 
@@ -24,15 +24,27 @@
 <!-- wp:bc-sitka-spruce/announcement-banner {"name":"bc-sitka-spruce/announcement-banner","data":{"title":"Announcement Banner","_title":"field_66e4c35bcf5ea","description":"Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis magna aliquam in leo pretium viverra.","_description":"field_66e4c38bcf5eb","image":"","_image":"field_66e4c50d2ef34","button":"","_button":"field_66e4c39ecf5ec","links":"","_links":"field_66e4c40bcf5ed"},"mode":"auto"} /-->
 
 <!-- wp:bc-sitka-spruce/card-section {"title":"Our Departments/Sub-units"} -->
-<!-- wp:bc-sitka-spruce/card-section-card /-->
-
 <!-- wp:bc-sitka-spruce/card-section-card -->
+<!-- wp:paragraph {"placeholder":"Card Content (required)..."} -->
+<p></p>
+<!-- /wp:paragraph -->
+
 <!-- wp:paragraph -->
 <p></p>
 <!-- /wp:paragraph -->
 <!-- /wp:bc-sitka-spruce/card-section-card -->
 
-<!-- wp:bc-sitka-spruce/card-section-card /-->
+<!-- wp:bc-sitka-spruce/card-section-card -->
+<!-- wp:paragraph {"placeholder":"Card Content (required)..."} -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- /wp:bc-sitka-spruce/card-section-card -->
+
+<!-- wp:bc-sitka-spruce/card-section-card -->
+<!-- wp:paragraph {"placeholder":"Card Content (required)..."} -->
+<p></p>
+<!-- /wp:paragraph -->
+<!-- /wp:bc-sitka-spruce/card-section-card -->
 <!-- /wp:bc-sitka-spruce/card-section -->
 
 <!-- wp:bc-sitka-spruce/listing-section {"title":"Our Services/Facilities"} -->
