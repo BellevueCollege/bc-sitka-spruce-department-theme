@@ -13,6 +13,7 @@ $context['links']       = get_field( 'links' ) ? array_map(
 		return array(
 			'title' => $link['link']['title'] ?? '',
 			'url'   => $link['link']['url'] ?? '',
+			'target' => $link['link']['target'] ?? '',
 		);
 	},
 	get_field( 'links' )

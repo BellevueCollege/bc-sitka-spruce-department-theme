@@ -21,14 +21,25 @@
 						{{ description }}
 						<div class="announcement__button mt-3">
 							{% if button %}
-								<a class='btn btn-primary' {% if button.target %} target="{{ button.target }}" {% endif %} href="{{ button.url }}">{{button.title}} {{button_icon}}</a>
+								<a class='btn btn-primary' {% if button.target %} target="{{ button.target }}" {% endif %} href="{{ button.url }}">
+									{{button.title}}
+									{% if button.target %}
+										<span class="visually-hidden">({{ __('Opens in a new tab', 'bc-sitka-spruce') }})</span>
+										<i class="fa fa-external-link-square text-white ms-2" aria-hidden="true"></i>
+									{% endif %}
+								</a>
 							{% endif %}
 						</div>
 
 						{% if links %}
 							<ul class="announcement__links list-unstyled row mt-3">
 								{% for link in links %}
-									<li class="col-auto"><a class="link-arrow" {% if link.target %} target="{{ link.target }}" {% endif %} href="{{ link.url }}">{{ link.title }}</a></li>
+									<li class="col-auto"><a class="link-arrow" {% if link.target %} target="{{ link.target }}" {% endif %} href="{{ link.url }}">
+										{{ link.title }}
+										{% if link.target %}
+											<span class="visually-hidden">({{ __('Opens in a new tab', 'bc-sitka-spruce') }})</span>
+										{% endif %}
+									</a></li>
 								{% endfor %}
 							</ul>
 						{% endif %}
