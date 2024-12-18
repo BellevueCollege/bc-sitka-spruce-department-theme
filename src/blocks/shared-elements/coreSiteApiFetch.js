@@ -33,7 +33,7 @@ const fetchPage = async ( url, allPages = false, page = 1, data = [] ) => {
 
 		// If there are more pages, call the function again.
 		if ( allPages && ( page < pages ) ) {
-			await fetchAllPages( url, true, page + 1, data );
+			await fetchPage( url, true, page + 1, data );
 		}
 		return data;
 
@@ -55,8 +55,10 @@ const coreSiteApiFetch = async ( path, allPages = true )=> {
 
 		if ( allPages ) {
 			restUrl.searchParams.append( 'per_page', 100 );
+			// console.log( 'coreSiteApiFetch: Fetching ALL data from ', restUrl.href );
+		} else {
+			// console.log( 'coreSiteApiFetch: Fetching data from ', restUrl.href );
 		}
-
 		const data = await fetchPage( restUrl, allPages );
 		// console.log( `Data from ${restUrl}`, data );
 		return data;

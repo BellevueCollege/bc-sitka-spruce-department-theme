@@ -70,7 +70,6 @@ registerBlockType( 'bc-sitka-spruce/department-feature', {
 
 					const deptArray = depts.map(
 						( dpt ) => {
-							console.log( dpt );
 							const noImageNotice = ! dpt.acf.image ? __( ' (No Image)', 'bc-sitka-spruce' ) : '';
 							return {
 								value: dpt.id,
@@ -94,7 +93,7 @@ registerBlockType( 'bc-sitka-spruce/department-feature', {
 
 		// Load department data for preview
 		if ( departmentId && ! departmentData ) {
-			coreSiteApiFetch( 'wp-json/wp/v2/organization/' + departmentId ).then(
+			coreSiteApiFetch( 'wp-json/wp/v2/organization/' + departmentId, false ).then(
 				( data ) => {
 					setDepartmentData( data );
 				}
