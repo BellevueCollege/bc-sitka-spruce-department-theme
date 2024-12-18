@@ -26,7 +26,7 @@ if (is_array(get_field('profiles'))) {
         // getting data specifically for contact item
         $schedule_data = get_field('scheduling_section', $profile->ID);
 
-        $profile_data['scheduling_link']   = $schedule_data[0]['schedule_appointment_link'];
+        $profile_data['scheduling_link']   = $schedule_data[0]['schedule_appointment_link'] ?? null;
 
 
         //add processed profile data to list
