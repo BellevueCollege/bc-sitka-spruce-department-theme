@@ -34,16 +34,7 @@
         rules: [{
       test: /\.css$/,
       sideEffects: true,
-      use: [
-          require.resolve("style-loader"),
-          {
-              loader: require.resolve("css-loader"),
-              options: {
-                  
-                  
-              },
-          },
-      ],
+      use: ["style-loader", "css-loader"],
     },],
       }
     }),
