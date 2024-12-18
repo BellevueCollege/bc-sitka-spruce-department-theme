@@ -2,7 +2,7 @@
 import Twig from "twig";
 import '../assets/dist/css/main.css';
 
-// import '/node_modules/@fortawesome/fontawesome-pro/css/all.css'
+// import '/node_modules/@awesome.me/kit-7a7c3bfd75/icons/css/all.css'
 const preview = {
   parameters: {
     controls: {
