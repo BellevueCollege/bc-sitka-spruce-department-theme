@@ -61,11 +61,10 @@ steps:
       command: 'custom'
       customCommand: 'run build'
     displayName: NPM Build
-  - task: Bash@3
+  - task: Npm@1
     inputs:
-      targetType: 'inline'
-      script: |
-        npm prune --production
+      command: 'custom'
+      customCommand: 'prune --omit=dev'
     displayName: NPM Prune Dev Deps
   - task: replacetokens@6
     inputs:
