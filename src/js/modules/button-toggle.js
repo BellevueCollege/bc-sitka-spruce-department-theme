@@ -226,7 +226,9 @@ export default class ButtonToggle extends ComponentBase {
           button.enableAt <= resize.width && resize.width < maxBreakpoint
         );
         if (disabled) {
-					button.toggleButton(false);
+					if (button.isToggled) {
+						button.toggleButton(false);
+					}
           button.setAttribute('disabled', 'disabled');
         } else {
           button.removeAttribute('disabled');
