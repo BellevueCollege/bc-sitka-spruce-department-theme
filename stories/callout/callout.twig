@@ -18,12 +18,7 @@
 						{% for link in links %}
 							{% if link.title and link.url %}
 								<li>
-									<a href="{{ link.url|esc_url }}" {% if link.target %} target="{{ link.target }}" {% endif %} class="link-arrow">
-										{{ link.title|e }}
-										{% if link.target %}
-											<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
-										{% endif %}
-									</a>
+									{% include '/stories/atoms/links/link-arrow.twig' %}
 								</li>
 							{% endif %}
 						{% endfor %}
@@ -34,13 +29,9 @@
 			</div>
 		{% endif %}
 		{% if button and button.title and button.url %}
-			<p class="callout__button"><a href="{{ button.url|esc_url }}" {% if button.target %} target="{{ button.target }}" {% endif %} class="btn btn-primary">
-				{{ button.title|e }}
-				{% if button.target %}
-					<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
-					<i class="fa fa-external-link-square ms-1" aria-hidden="true"></i>
-				{% endif %}
-			</a></p>
+			<p class="callout__button">
+				{% include '/stories/atoms/links/link-button.twig' with { link: button } %}
+			</p>
 		{% endif %}
 	</aside>
 </div>

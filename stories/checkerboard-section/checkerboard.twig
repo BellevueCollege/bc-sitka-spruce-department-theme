@@ -34,12 +34,9 @@
 						<ul class="link">
 							{% for link in links %}
 								{% if link.title and link.url %}
-									<li><a class='link-arrow' href="{{ link.url|esc_url }}" {% if link.target %}target="{{ link.target|esc_attr }}"{% endif %}>
-										{{ link.title|e }}
-										{% if link.target %}
-											<span class="visually-hidden">({{ __('Opens in a new tab', 'bc-sitka-spruce') }})</span>
-										{% endif %}
-									</a></li>
+									<li>
+										{% include '/stories/atoms/links/link-arrow.twig' %}
+									</li>
 								{% endif %}
 							{% endfor %}
 						</ul>

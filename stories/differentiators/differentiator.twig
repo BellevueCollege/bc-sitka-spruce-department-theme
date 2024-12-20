@@ -26,9 +26,7 @@
       {% if text %}
         <p>{{ text }}</p>
       {% endif %}
-      {% if link %}
-        <a href="{{ link.url }}" class="link-arrow">{{ link.title }}</a>
-      {% endif %}
+      {% include '/stories/atoms/links/link-arrow.twig' %}
     </div>
   </article>
 </div>

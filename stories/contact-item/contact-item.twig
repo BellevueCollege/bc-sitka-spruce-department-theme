@@ -18,13 +18,7 @@
 			{% endif %}
 			{% if scheduling_link and scheduling_link.title and scheduling_link.url %}
 				<p>
-					<a class="btn btn-primary" {% if scheduling_link.target %} target="{{ scheduling_link.target }}" {% endif %} href="{{ scheduling_link.url|esc_url }}">
-						{{ scheduling_link.title|e }}
-						{% if scheduling_link.target %}
-							<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
-							<i class="fa fa-external-link-square" aria-hidden="true"></i>
-						{% endif %}
-					</a>
+					{% include '/stories/atoms/links/link-button.twig' with { link: scheduling_link } %}
 				</p>
 			{% endif %}
 		</div>

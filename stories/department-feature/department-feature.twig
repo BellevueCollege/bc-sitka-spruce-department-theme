@@ -15,7 +15,15 @@
 
     {# Content for the Card #}
     {% set card_content %}
-        <h3><a href="{{ dept_url }}" class="link-arrow external">{{ dept_title }}</a></h3>
+        <h3>
+			{% include '/stories/atoms/links/link-arrow.twig' with {
+				link: {
+					title: dept_title,
+					url: dept_url,
+				},
+				linkClass: 'link-accent external',
+			} %}
+		</h3>
         <div class="global-spacing--3x">{{ dept_summary }}</div>
         {% if dept_services %}
             <div class='organization-feature__resource'>

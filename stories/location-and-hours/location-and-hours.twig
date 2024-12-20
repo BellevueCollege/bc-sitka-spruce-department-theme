@@ -10,7 +10,12 @@
 			{{ hours }}
 		{% endif %}
 		{% if contact_url %}
-			<a class="btn btn-primary" href="{{ contact_url }}">{{ __('Contact Information', 'bc-sitka-spruce') }}</a>
+			{% include '/stories/atoms/links/link-button.twig' with {
+				link: {
+					title: __('Contact Information', 'bc-sitka-spruce'),
+					url: contact_url
+				}
+			} %}
 		{% endif %}
 	</div>
 </aside>
