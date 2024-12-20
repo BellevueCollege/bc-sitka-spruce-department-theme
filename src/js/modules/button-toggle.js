@@ -4,6 +4,7 @@
  */
 import ComponentBase from '../core/component-base';
 import WindowState from '../core/window-state';
+import * as focusTrap from 'focus-trap';
 /**
  * The ButtonToggle class provides an easy way to add a toggleable button. The
  * class toggles a class on <body>, updates the button label based on state,
@@ -50,6 +51,9 @@ export default class ButtonToggle extends ComponentBase {
      *   Whether or not the button should be closeable with an escape key press.
      *   Defaults to true, or the value of the [data-menu-escapable]
      *   attribute.
+		 * @property {Boolean|String} focusTrap
+		 *   If false, none. If a string, the id of the element to trap focus within.
+		 *   Defaults to false, or the value of the [data-button-focus-trap] attribute.
      */
     this.options = {
       ...{
@@ -59,6 +63,7 @@ export default class ButtonToggle extends ComponentBase {
         openClassElement: 'body',
         duration: 400,
         escapable: 1,
+				focusTrap: false,
       },
       ...options,
     };
@@ -75,6 +80,15 @@ export default class ButtonToggle extends ComponentBase {
       // Track if the button has been clicked once.
       button.isClicked = false;
       // Add a click event listener to the button.
+
+
+			// If a focus trap is set, create the focus trap
+			const focusTrapElement = button.focusTrap ? document.getElementById(button.focusTrap) : null;
+			button.trap = button.focusTrap ? focusTrap.createFocusTrap( `#${button.focusTrap}`, {
+				onActivate: () => focusTrapElement.classList.add('is-active'),
+				onDeactivate: () => focusTrapElement.classList.remove('is-active'),
+			} ) : null;
+
       button.addEventListener('click', () => {
         button.toggleButton(null, true, true);
       });
@@ -83,10 +97,13 @@ export default class ButtonToggle extends ComponentBase {
         document.addEventListener('keydown', (event) => {
           // If escape has been clicked, and the button is toggled
           if (event.key === 'Escape' && button.isToggled) {
-            button.toggleButton(false);
+            button.toggleButton(false, true, false);
           }
         });
       }
+
+
+
       /**
        * Toggle a button.
        * @param {Boolean|null} state
@@ -130,6 +147,16 @@ export default class ButtonToggle extends ComponentBase {
           } else {
             classElement.classList.remove(button.openClass);
           }
+
+					// If a focus trap is set, activate or deactivate
+					if (button.trap) {
+						if (button.trap.active) {
+							button.trap.deactivate();
+						} else {
+							button.trap.activate();
+						}
+					}
+
           // Update expanded aria attributes based on toggle type
           if (button.getAttribute('aria-expanded') != null) {
             button.setAttribute('aria-expanded', button.isToggled);
@@ -199,6 +226,7 @@ export default class ButtonToggle extends ComponentBase {
           button.enableAt <= resize.width && resize.width < maxBreakpoint
         );
         if (disabled) {
+					button.toggleButton(false);
           button.setAttribute('disabled', 'disabled');
         } else {
           button.removeAttribute('disabled');
