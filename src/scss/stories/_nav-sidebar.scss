@@ -86,6 +86,7 @@
 
 	.menu > ul > li.menu-item--open > ul.children {
 		display: block;
+		width: 100%;
 		border-style: solid;
 		border-color: var(--bc-fountain-blue);
 		border-width: 0 0 0 2px;
