@@ -226,6 +226,24 @@ $block_editor->addStylesheet( 'editor', 'assets/dist/css/editor.css' );
 $block_editor->useGlobally( true );
 
 
+/**
+ * Register Block Pattern Categories
+ */
+add_action( 'init', function () {
+	register_block_pattern_category(
+		'sitka-homepage-patterns',
+		array(
+			'label' => __('Homepage Patterns', 'bc-sitka-spruce'),
+		)
+	);
+
+	register_block_pattern_category(
+		'sitka-page-patterns',
+		array(
+			'label' => __('Page Patterns', 'bc-sitka-spruce'),
+		)
+	);
+});
 
 /**
  * Set Page Title Format

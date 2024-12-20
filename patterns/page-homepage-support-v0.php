@@ -2,10 +2,10 @@
 /**
  * Title: Homepage Layout: Support Area Homepage
  * Slug: bc-sitka-spruce/page-homepage-support
- * Categories: page, featured
- * Keywords: starter
- * Block Types: core/post-content
- * Post Types: page, wp_template
+ * Categories: sitka-homepage-patterns
+ * Keywords: homepage
+ * Post Types: page
+ *
  * Viewport width: 1445
  */
 ?>

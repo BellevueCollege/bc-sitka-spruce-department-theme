@@ -2,7 +2,7 @@
 /**
  * Title: Standard Page Layout: Empty
  * Slug: bc-sitka-spruce/page
- * Categories: page
+ * Categories: sitka-page-patterns, featured
  * Keywords: starter
  * Block Types: core/post-content
  * Post Types: page, wp_template

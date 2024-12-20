@@ -2,8 +2,8 @@
 /**
  * Title: Application Guide Template
  * Slug: bc-sitka-spruce/page-application-guide
- * Categories: page, featured
- * Keywords: starter
+ * Categories: sitka-page-patterns, featured
+ * Keywords: starter, page, application
  * Block Types: core/post-content
  * Post Types: page, wp_template
  * Viewport width: 1445
