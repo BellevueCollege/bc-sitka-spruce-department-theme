@@ -10,6 +10,7 @@
 	.fa-solid,
 	.fa-thin,
 	.fa-regular {
+		margin-left: .25rem;
 		color: var(--sitka-link-accent-icon-color, #0055b8 );
 		transition:
 			transform $primary-transition,
