@@ -25,7 +25,7 @@ registerBlockType( 'bc-sitka-spruce/application-step-single-content', {
 					className="application-step-single-heading h2"
 					value={ heading }
 					onChange={ ( heading ) => setAttributes( { heading } ) }
-					placeholder={ __( 'Enter Step Heading...', 'bc-sitka-spruce' ) }
+					placeholder={ __( 'Enter Step Heading (required)...', 'bc-sitka-spruce' ) }
 				/>
 				<InnerBlocks
 					allowedBlocks={ wysiwygBlocks }
