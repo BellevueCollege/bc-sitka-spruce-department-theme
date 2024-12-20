@@ -12,7 +12,7 @@
 
 <!-- wp:bc-sitka-spruce/narrow-content {"lock":{"move":true,"remove":false}} -->
 <div class="wp-block-bc-sitka-spruce-narrow-content narrow-content"><!-- wp:mayflower-blocks/lead -->
-<div class="wp-block-mayflower-blocks-lead lead"></div>
+<p class="wp-block-mayflower-blocks-lead lead"></p>
 <!-- /wp:mayflower-blocks/lead -->
 
 <!-- wp:paragraph -->
