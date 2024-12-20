@@ -21,6 +21,6 @@ if ( $context['links'] || $context['button'] ) {
 
 if ( $is_preview && ! $context['links'] && ! $context['button'] ) {
 	echo '<div class="card"><p><i>';
-	_e( 'Edit this element to add optional links or button..', 'bc-sitka-spruce' );
+	_e( 'Edit this element to add optional links or button', 'bc-sitka-spruce' );
 	echo '</i></p></div>';
 }
