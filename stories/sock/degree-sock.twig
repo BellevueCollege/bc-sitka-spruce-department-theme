@@ -13,10 +13,25 @@
 							{% if segment.title %}<h3>{{ segment.title|e }}</h3>{% endif %}
 							{% if segment.description %}<p>{{ segment.description|e }}</p>{% endif %}
 							{% if segment.button %}
-								<p><a href="{{ segment.button.url|e }}" class="btn btn-light">{{ segment.button.title|e }}</a></p>
+								<p>
+									{% include '/stories/atoms/links/link-button.twig' with {
+										link: segment.button,
+										linkClass: 'btn btn-light',
+										iconClass: 'ms-2 text-dark',
+									} %}
+								</p>
 							{% endif %}
 							{% if segment.link %}
-								<p><a href="{{ segment.link.url|e }}" class="link-arrow">{{ segment.link.title|e }}</a></p>
+								<p>
+									{% include '/stories/atoms/links/link-arrow.twig' with {
+										link: {
+											title: segment.link.title,
+											url: segment.link.url,
+											target: segment.link.target
+										},
+										linkClass: 'link-accent-lg text-white',
+									} %}
+								</p>
 							{% endif %}
 						</div>
 					{% endfor %}
@@ -27,7 +42,11 @@
 							<p>{{ admissions_contact_description|wp_kses_post }}</p>
 						{% endif %}
 						{% if admissions_contact_button %}
-							<p><a href="{{ admissions_contact_button.url|e }}" class="btn btn-light">{{ admissions_contact_button.title|e }}</a></p>
+							{% include '/stories/atoms/links/link-button.twig' with {
+								link: admissions_contact_button,
+								linkClass: 'btn btn-light',
+								iconClass: 'ms-2 text-dark',
+							} %}
 						{% endif %}
 					{% endset %}
 
