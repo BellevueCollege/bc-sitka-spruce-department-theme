@@ -181,6 +181,9 @@ $image_crops->addImageSize( 'featured-home-dept-md', 1360, 500, true );
 // Support Unit Sizing - no larger size needed, as it is not dependent on the screen size
 $image_crops->addImageSize( 'featured-home-suppt', 1160, 500, true );
 
+$image_crops->addImageSize( 'featured-page', 560, 440, true );
+
+
 // Card Header Image
 $image_crops->addImageSize( 'card-header', 360, 200, true );
 

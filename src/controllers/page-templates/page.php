@@ -9,7 +9,7 @@ $context = Timber::context();
 $context['breadcrumbs']  = Theme::breadcrumbs()->getItems( 2 );
 $context['post']         = Timber::get_post();
 $context['header_image'] = get_field( 'header_image' ) ?
-	wp_get_attachment_image( get_field( 'header_image' ), 'full', false, array( 'class' => 'img-fluid rounded' ) ) : null;
+	wp_get_attachment_image( get_field( 'header_image' ), 'featured-page', false, array( 'class' => 'img-fluid rounded' ) ) : null;
 $context['intro_text']   = esc_html( get_field( 'intro_text' ) ?? '' );
 
 
