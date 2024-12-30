@@ -46,10 +46,9 @@
 		display: none;
 	}
 	& + .arch-shape + .section.section-dark.curved-top {
-		margin-top: 0;
-		padding-top: 0;
 
-		.diffs--container {
+		.diffs--container,
+		& > .container-xl {
 			padding-top: var( --sitka-container-spacing );
 		}
 	}
@@ -69,12 +68,14 @@
 	border-top: 2px solid var(--white);
 }
 
-.section.section-dark + .section.section-dark {
+.section.section-dark + .section.section-dark,
+.section.section-dark + .arch-shape + .section.section-dark {
 	border-top: 2px solid var(--bc-fountain-blue);
 }
 
 
-.section.section-dark.diffs:has(+ .section.section-dark) {
+.section.section-dark.diffs:has(+ .section.section-dark),
+.section.section-dark.diffs:has(+ .arch-shape) {
 	padding-bottom: 0;
 }
 
@@ -82,7 +83,7 @@
 .section:last-child {
 	margin-bottom: 0;
 
-	&.curved-top {
+	&.curved-top.diffs { // only apply to differentiator section
 		padding-bottom: 0;
 	}
 }
