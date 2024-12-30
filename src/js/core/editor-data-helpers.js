@@ -105,17 +105,20 @@ export function forcePatternToTop( allBlocks, blockName, patternName ) {
  * @param {array} allBlocks - An array of all blocks in the editor
  */
 
-export function deleteNarrowContentSection( allBlocks ) {
+export function deleteNarrowContentSection( allBlocks, hardDelete = false ) {
 	const templateIndex = allBlocks.findIndex( ( block ) => {
 		return block.name === 'bc-sitka-spruce/narrow-content';
 	});
 
 	// Move children out of the narrow content section and delete it
 	if ( -1 !== templateIndex ) {
-		console.log('Migrating content from narrow content section and deleting narrow content section');
-		const children = select( 'core/block-editor' ).getClientIdsOfDescendants( allBlocks[templateIndex].clientId );
-		console.log('Moving the following blocks to index 0:', children);
-		dispatch( 'core/block-editor' ).moveBlocksToPosition( children, allBlocks[templateIndex].clientId, '', 0 );
+		if ( ! hardDelete ) {
+			console.log('Migrating content from narrow content section and deleting narrow content section');
+			const children = select( 'core/block-editor' ).getClientIdsOfDescendants( allBlocks[templateIndex].clientId );
+			console.log('Moving the following blocks to index 0:', children);
+			dispatch( 'core/block-editor' ).moveBlocksToPosition( children, allBlocks[templateIndex].clientId, '', 0 );
+		}
+
 		console.log('Deleting the narrow content section');
 		dispatch( 'core/block-editor' ).removeBlock( allBlocks[templateIndex].clientId );
 	}

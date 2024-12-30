@@ -34,5 +34,11 @@ wp.domReady( async function () {
 		deleteNarrowContentSection( blocks );
 	}
 
+	// Check if narrow content section exists somewhere on the 'profile listing' page
+	if ( await pageTemplate() === 'template--profile-listing.php' ) {
+		console.log('Editing a page using the profile listing template - checking if block migration is needed');
+		deleteNarrowContentSection( blocks, true );
+	}
+
 });
 
