@@ -63,7 +63,7 @@ registerBlockType("bc-sitka-spruce/card-section-card", {
 								onSelect={(value) => {
 									setAttributes({
 										cardImageId: value.id,
-										cardImageUrl: value.sizes["card-header"].url,
+										cardImageUrl: value.sizes["card-header"] ? value.sizes["card-header"].url : value.url,
 										cardImageAlt: value.alt,
 									});
 									onClose();
@@ -119,7 +119,7 @@ registerBlockType("bc-sitka-spruce/card-section-card", {
 									onSelect={(value) =>
 										setAttributes({
 											cardImageId: value.id,
-											cardImageUrl: value.sizes["card-header"].url,
+											cardImageUrl: value.sizes["card-header"] ? value.sizes["card-header"].url : value.url,
 											cardImageAlt: value.alt,
 										})
 									}
