@@ -1,6 +1,10 @@
 @import '/src/scss/block-styles';
 
 .location-and-hours.card {
+	max-width: 360px;
+	margin-left: auto;
+	margin-right: auto;
+
     background-color: var( --accent-fountain-blue-extralight );
     border: none;
 }
