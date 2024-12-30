@@ -12,7 +12,7 @@ $context['content']     = $content;
 
 if ( $attributes['linkTitle'] && $attributes['linkUrl'] ) {
 	$context['link_custom'] = array(
-		'title' => esc_html( $attributes['linkTitle'] ),
+		'title' =>  html_entity_decode( esc_html( $attributes['linkTitle'] ) ), // This appears to be escaped elsewhere, and adding additional escaping here causes issues
 		'url'   => esc_url( $attributes['linkUrl'] ),
 	);
 }

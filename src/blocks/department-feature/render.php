@@ -5,7 +5,7 @@ $context                  = Timber::context();
 $context['heading']       = esc_html( $attributes['title'] );
 $context['subheading']    = esc_html( $attributes['description'] );
 $context['link_custom']       = $attributes['linkTitle'] && $attributes['linkUrl'] ? array(
-	'title' => esc_html( $attributes['linkTitle'] ),
+	'title' => html_entity_decode( esc_html( $attributes['linkTitle'] ) ), // This appears to be escaped elsewhere, and adding additional escaping here causes issues
 	'url'   => esc_url( $attributes['linkUrl'] ),
 ) : null;
 $context['department_id'] = esc_attr( $attributes['departmentId'] );
