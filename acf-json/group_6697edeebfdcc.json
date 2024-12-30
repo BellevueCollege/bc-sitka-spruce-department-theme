@@ -46,7 +46,7 @@
             "name": "location_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "",
+            "instructions": "Minimum size: 360px x 218px",
             "required": 1,
             "conditional_logic": [
                 [
@@ -64,13 +64,14 @@
             },
             "return_format": "array",
             "library": "all",
-            "min_width": "",
-            "min_height": "",
+            "min_width": 360,
+            "min_height": 218,
             "min_size": "",
             "max_width": "",
             "max_height": "",
             "max_size": "",
             "mime_types": "",
+            "allow_in_bindings": 1,
             "preview_size": "medium"
         },
         {
@@ -1017,5 +1018,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1733419726
+    "modified": 1735582406
 }

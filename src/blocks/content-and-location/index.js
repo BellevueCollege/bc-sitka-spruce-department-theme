@@ -21,7 +21,7 @@ import {
 
 /**
  * Mock the WordPress __ Function in Timber
- * 
+ *
  * Return the input, ignore namespace. __() is used to provide localization.
  */
 Twig.extendFunction("__", (input, namespace) => {
@@ -61,8 +61,7 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
             } )
                 .then( ( response ) => {
                     setLocationSidebarContent( response );
-                    console.log( locationSidebarContent );
-
+                    // console.log( response );
                 }
             );
         }
@@ -79,8 +78,8 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                 <RawHTML>{
                     locationSidebarContent.display_location_card && (
                         locationAndHours({
-                            image: {
-                                src: locationSidebarContent.location_image.url,
+                            image_array: {
+                                src: locationSidebarContent.location_image.sizes['homepage-location'] ?? locationSidebarContent.location_image.url,
                                 alt: locationSidebarContent.location_image.alt
                             },
                             location: locationSidebarContent.location,

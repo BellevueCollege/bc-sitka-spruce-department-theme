@@ -9,13 +9,13 @@ export default {
 
 
 const Template = ( {
-    image,
+    image_array,
     location,
     hours,
     contact_url,
  }) =>
     locationAndHours({
-        image,
+        image_array,
         location,
         hours,
         contact_url
@@ -23,7 +23,7 @@ const Template = ( {
 
 export const Default = Template.bind({});
 Default.args = {
-    image: {
+    image_array: {
         src: "https://placehold.co/360x218",
         alt: "Placeholder Image"
     },

@@ -1,6 +1,8 @@
 <aside class="location-and-hours card">
-	{% if image %}
-		<img class="card-img-top" src="{{ image.src }}" alt="{{ image.alt }}">
+	{% if image_html %}
+		{{ image_html }}
+	{% elseif image_array %}
+		<img class="card-img-top" src="{{ image_array.src }}" alt="{{ image_array.alt }}">
 	{% endif %}
 	<div class="card-body">
 		<h2>{{ __('Location', 'bc-sitka-spruce') }}</h2>

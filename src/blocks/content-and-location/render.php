@@ -15,10 +15,9 @@ $context['parent_division']  = get_field( 'parent_division', 'option' ) ?? null;
 // Custom fields from Options
 $context['display_location'] = get_field( 'display_location_card', 'option' ) ? true : false;
 $image                       = get_field( 'location_image', 'option' );
-if ( $image ) {
-	$context['image']['src'] = esc_url( $image['url'] ?? '' );
-	$context['image']['alt'] = esc_attr( $image['alt'] ?? '' );
-}
+
+$context['image_html']       = is_array( $image ) ? wp_get_attachment_image( $image['ID'], 'homepage-location', false, array( 'class' => 'card-img-top img-fluid' ) ) : '';
+
 $context['location']      = wp_kses_post( get_field( 'location', 'option' ) ?? '' );
 $context['hours']         = wp_kses_post( get_field( 'hours', 'option' ) ?? '' );
 $context['contact_url']   = esc_url( get_field( 'contact_page_url', 'option' ) ?? '' );

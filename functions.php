@@ -188,6 +188,8 @@ $image_crops->addImageSize( 'testimonial', 560, 680, true );
 
 $image_crops->addImageSize( 'announcement-banner', 260, 174, false );
 
+$image_crops->addImageSize( 'homepage-location', 360, 218, true );
+
 $image_crops->addImageSize( 'sock-location', 300, 200, true );
 
 $image_crops->addImageSize( 'sock-admissions-contact', 360, 240, true );
@@ -213,6 +215,7 @@ add_filter(
 			array(
 				'card-header' => __( 'Card Header Image', 'bc-sitka-spruce' ),
 				'listing-section' => __( 'Listing Section Image', 'bc-sitka-spruce' ),
+				'homepage-location' => __( 'Homepage Location Image', 'bc-sitka-spruce' ),
 			)
 		);
 	}

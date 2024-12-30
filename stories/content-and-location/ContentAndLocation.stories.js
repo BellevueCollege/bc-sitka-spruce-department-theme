@@ -14,7 +14,7 @@ const Template = ( {
     summary,
     content,
     display_location,
-    image,
+    image_array,
     location,
     hours,
     contact_url
@@ -25,7 +25,7 @@ const Template = ( {
         summary,
         content,
         display_location,
-        image,
+        image_array,
         location,
         hours,
         contact_url
@@ -38,7 +38,7 @@ Default.args = {
     summary: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
     content: "<div><a class=\"btn btn-primary\" href=\"#\">Get Started</a></div>",
     display_location: true,
-    image: {
+    image_array: {
         src: "https://placehold.co/360x218",
         alt: "Placeholder Image"
     },
