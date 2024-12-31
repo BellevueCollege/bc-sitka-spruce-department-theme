@@ -10,6 +10,8 @@
     {% block mediaElement %}
       <img src="{{ media.src }}" class="card-img-top {{ media.classes|join(' ') }}" alt="{{ media.alt ?? '' }}">
     {% endblock %}
+	{% elseif media_html %}
+		{{ media_html }}
   {% endif %}
   {%  if card_header %}
     <div class="card-header">
