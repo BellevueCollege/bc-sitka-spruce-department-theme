@@ -1,0 +1,46 @@
+@import "/src/scss/block-styles";
+
+
+figure.wp-block-image {
+
+	border-radius: var(--bs-border-radius) var(--bs-border-radius);
+
+	display: table;
+
+	figcaption {
+		display: table-caption;
+	}
+
+	img {
+		border-radius: var(--bs-border-radius);
+	}
+
+	img:has( + figcaption ) {
+		border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0;
+	}
+
+	figcaption {
+		@include secondary-typeface(caption);
+		margin-top: 0;
+		padding: 0.5rem 1rem;
+		caption-side: bottom;
+		background-color: var(--accent-fountain-blue-extralight);
+		border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+	}
+
+
+	&.alignleft {
+		float: left;
+		margin-right: $line-height-base + rem;
+	}
+
+	&.alignright {
+		float: right;
+		margin-left: $line-height-base + rem;
+	}
+
+	&.aligncenter {
+		margin-left: auto;
+		margin-right: auto;
+	}
+}

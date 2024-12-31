@@ -160,6 +160,13 @@ $enqueuer->addBlockStyle(
 		'core/quote',
 	)
 );
+
+$enqueuer->addBlockStyle(
+	handle: 'image',
+	blocks: array(
+		'core/image',
+	)
+);
 /**
  * Image Crops
  */
