@@ -167,6 +167,13 @@ $enqueuer->addBlockStyle(
 		'core/image',
 	)
 );
+
+$enqueuer->addBlockStyle(
+	handle: 'bs-forms',
+	blocks: array(
+		'lmc-search-plugin/lmc-search-block',
+	)
+);
 /**
  * Image Crops
  */
