@@ -19,6 +19,8 @@ $related_program_data        = get_posts(
 		'post_type'      => 'program',
 		'posts_per_page' => -1,
 		'exclude'        => $context['post']->ID,
+		'orderby'        => 'title',
+		'order'          => 'ASC',
 	)
 );
 $context['related_programs'] = array_map(
