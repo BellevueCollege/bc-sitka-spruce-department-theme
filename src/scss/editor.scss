@@ -44,13 +44,6 @@ html :where(.wp-block) {
   font-family: apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen-Sans,
     Ubuntu, Cantarell, "Helvetica Neue", sans-serif;
 
-  // Prevent double numbers on ordered lists in the editor
-  ol.wp-block-list {
-    margin-left: none;
-    li.wp-block-list-item {
-      list-style-type: none;
-    }
-  }
 
 	// Fix combobox formatting
 	.components-form-token-field__suggestions-list {
