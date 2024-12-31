@@ -13,6 +13,12 @@
         "multiple": false,
         "html": false
     },
+	"allowedBlocks": [
+		"mayflower-blocks/button",
+		"core/shortcode",
+		"gravityforms/form",
+		"lmc-search-plugin/lmc-search-block"
+	],
     "attributes": {
         "heading": {
             "type": "string"

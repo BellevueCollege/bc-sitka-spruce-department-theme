@@ -117,11 +117,6 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                         />
                         <InnerBlocks
                             template={ BLOCK_TEMPLATE }
-                            allowedBlocks={[
-                                'mayflower-blocks/button',
-                                'core/shortcode',
-                                'gravityforms/form',
-                            ]}
                             renderAppender={ InnerBlocks.ButtonBlockAppender }
                             templateLock=""
                         />
