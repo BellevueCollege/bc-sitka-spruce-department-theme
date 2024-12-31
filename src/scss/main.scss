@@ -65,3 +65,20 @@ $header-desktop-breakpoint: lg;
 		}
 	}
 }
+
+// Override link colors within colorful areas
+.text-bg-primary,
+.text-bg-secondary,
+.text-bg-success,
+.text-bg-danger,
+.text-bg-dark {
+	a:link,
+	a:visited {
+		color: var(--white);
+	}
+	a:hover,
+	a:active {
+		color: var(--gray--xlight);
+	}
+
+}
