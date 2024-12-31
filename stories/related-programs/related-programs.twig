@@ -29,22 +29,24 @@
 				</div>
 				<div class="swiper-wrapper">
 					{% for program in programs %}
-						<article class="swiper-slide card related-program-card">
-							<div class="card-body">
-								<div class="row related-programs-pathway mb-2">
-									<div class="col-auto">
-										<i class="fa-solid fa-signs-post" aria-hidden="true"></i>
-										<span class="visually-hidden">Pathways</span>
+						{% if program.short_name %}
+							<article class="swiper-slide card related-program-card">
+								<div class="card-body">
+									<div class="row related-programs-pathway mb-2">
+										<div class="col-auto">
+											<i class="fa-solid fa-signs-post" aria-hidden="true"></i>
+											<span class="visually-hidden">Pathways</span>
+										</div>
+										<div class="col">
+											{{ program.pathway_names|join('<br>') }}
+										</div>
 									</div>
-									<div class="col">
-										{{ program.pathway_names|join('<br>') }}
-									</div>
+									<h3 class="card-title card-title-big"><a href="{{ program.url }}">{{ program.short_name }}</a></h3>
+									<p class="card-text"><strong>{{ program.type }}</strong></p>
+									<p class="card-text">{{ program.overview }}</p>
 								</div>
-								<h3 class="card-title card-title-big"><a href="{{ program.url }}">{{ program.short_name }}</a></h3>
-								<p class="card-text"><strong>{{ program.type }}</strong></p>
-								<p class="card-text">{{ program.overview }}</p>
-							</div>
-						</article>
+							</article>
+						{% endif %}
 					{% endfor %}
 				</div>
 			</div>

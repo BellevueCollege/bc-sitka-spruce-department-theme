@@ -13,7 +13,8 @@
 			opacity: .3;
 		}
 
-		&-fully-visible {
+		&-fully-visible,
+		&-active {
 			opacity: 1;
 		}
 	}
