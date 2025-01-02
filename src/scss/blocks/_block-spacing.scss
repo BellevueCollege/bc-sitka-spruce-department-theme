@@ -15,3 +15,8 @@ $block-spacing: 1.5rem;
 .wp-block-mayflower-blocks-button .btn {
 	margin-bottom: $block-spacing;
 }
+
+// Hide empty paragraph blocks on the front-end
+.block-wrapper:has(p:only-child:empty) {
+	display: none;
+}

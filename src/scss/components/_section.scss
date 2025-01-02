@@ -38,6 +38,15 @@
 		padding-bottom: calc( var( --sitka-container-spacing ) * 0.5);
 	}
 
+	&:has(+ .section) {
+		margin-bottom: 0;
+	}
+
+}
+
+// Add margin between sections and content blocks
+.section + .block-wrapper {
+	margin-top: var( --sitka-container-spacing );
 }
 
 // Hide arch shape if next section is dark
