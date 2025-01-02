@@ -50,7 +50,7 @@ registerBlockType('bc-sitka-spruce/support-feature', {
 		}
 
 		const blockProps = useBlockProps({
-			className: 'section section-dark alignfull',
+			className: 'section section-rainy-night-blue alignfull',
 			id: sectionId,
 		});
 

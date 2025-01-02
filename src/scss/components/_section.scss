@@ -30,7 +30,11 @@
 		background-color: var(--accent-fountain-blue-extralight);
 	}
 
-	.bg-navy {
+	&.section-brutus-blue {
+		background-color: var(--bc-brutus-blue);
+	}
+
+	&.section-rainy-night-blue {
 		background-color: var(--bc-rainy-night-blue);
 	}
 
@@ -50,11 +54,11 @@
 }
 
 // Hide arch shape if next section is dark
-.section.section-dark {
+.section.section-rainy-night-blue {
 	& + .arch-shape {
 		display: none;
 	}
-	& + .arch-shape + .section.section-dark.curved-top {
+	& + .arch-shape + .section.section-rainy-night-blue.curved-top {
 
 		.diffs--container,
 		& > .container-xl {
@@ -65,10 +69,12 @@
 
 // Overlap Arch Shape with background, if the previous section is not white
 .section.section-accent-blue-extralight + .arch-shape,
+.section.section-brutus-blue + .arch-shape,
 .section.section-xlight + .arch-shape {
 	margin-top: -10vw;
 }
 .section.section-accent-blue-extralight:has(+ .arch-shape),
+.section.section-brutus-blue:has(+ .arch-shape),
 .section.section-xlight:has(+ .arch-shape) {
 	padding-bottom: calc( var( --sitka-container-spacing ) + 10vw );
 }
@@ -77,14 +83,14 @@
 	border-top: 2px solid var(--white);
 }
 
-.section.section-dark + .section.section-dark,
-.section.section-dark + .arch-shape + .section.section-dark {
+.section.section-rainy-night-blue + .section.section-rainy-night-blue,
+.section.section-rainy-night-blue + .arch-shape + .section.section-rainy-night-blue {
 	border-top: 2px solid var(--bc-fountain-blue);
 }
 
 
-.section.section-dark.diffs:has(+ .section.section-dark),
-.section.section-dark.diffs:has(+ .arch-shape) {
+.section.section-rainy-night-blue.diffs:has(+ .section.section-rainy-night-blue),
+.section.section-rainy-night-blue.diffs:has(+ .arch-shape) {
 	padding-bottom: 0;
 }
 
@@ -98,7 +104,8 @@
 }
 
 // Hide divider if next section has a colored background, arch shape, or is the last section
-.section.section-white:has(+ .section.section-dark),
+.section.section-white:has(+ .section.section-rainy-night-blue),
+.section.section-white:has(+ .section.section-brutus-blue),
 .section.section-white:has(+ .section.section-xlight),
 .section.section-white:has(+ .section.section-accent-blue-extralight),
 .section.section-white:has(+ .arch-shape),

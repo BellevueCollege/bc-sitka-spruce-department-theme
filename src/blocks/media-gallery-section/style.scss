@@ -1,11 +1,9 @@
 @import "/src/scss/block-styles";
 .media-gallery-wrapper {
 	&, .section-heading {
-		background-color: var(--bc-rainy-night-blue);
 		--bs-heading-color: var(--white);
 		--text-color: var(--white);
 	}
-
 
 	.swiper-slide {
 

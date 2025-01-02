@@ -25,13 +25,13 @@ registerBlockType( 'bc-sitka-spruce/differentiator-section', {
 			isSelected,
 		} = props;
         const blockProps = useBlockProps({
-			className: "section section-dark diffs curved-top alignfull",
+			className: "section section-rainy-night-blue diffs curved-top alignfull",
 		});
 
         return (
             <div { ...blockProps }>
 				<div className="arch-shape"></div>
-				<div className="diffs--container text-white bg-navy">
+				<div className="diffs--container text-white">
 					<div className="container-xl">
 						<div className="row">
 							<div className="col-md-9">
