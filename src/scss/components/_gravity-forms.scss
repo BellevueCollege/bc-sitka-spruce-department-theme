@@ -9,22 +9,22 @@
 	--gf-color-in-ctrl-primary-darker: var(--black) !important;
 
 	// button
-	--gf-color-primary: var(--bc-brutus-blue);
+	--gf-color-primary: var(--bc-brutus-blue) !important;
 	--gf-ctrl-btn-radius: 3rem !important;
 	--gf-ctrl-btn-font-size: 1.25rem !important;
 	--gf-ctrl-btn-padding-x: 2rem !important;
 	--gf-ctrl-btn-padding-y: 1rem !important;
 
 	// button text
-	--gf-color-primary-contrast: var(--white);
+	--gf-color-primary-contrast: var(--white) !important;
 
 	// field background
-	--gf-color-in-ctrl: var(--white);
+	--gf-color-in-ctrl: var(--white) !important;
 
 	// field border
 	--gf-ctrl-border-color: var(--bc-bulldog-silver) !important;
-	--gf-ctrl-shadow: none;
-	--gf-ctrl-border-width: 1px;
+	--gf-ctrl-shadow: none !important;
+	--gf-ctrl-border-width: 1px !important;
 	--gf-radius: 0 !important;
 
 	//field size
@@ -34,5 +34,5 @@
 	--gf-font-weight-secondary: bold !important;
 
 	// progress bar color
-	--gf-field-pg-prog-bar-bg-color-blue: var(--bc-brutus-blue);
+	--gf-field-pg-prog-bar-bg-color-blue: var(--bc-brutus-blue) !important;
 }
