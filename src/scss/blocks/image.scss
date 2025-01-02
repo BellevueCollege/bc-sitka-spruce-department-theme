@@ -1,7 +1,11 @@
 @import "/src/scss/block-styles";
 
+.wp-block-media-text {
+	margin-bottom: 1.5rem;
+}
 
-figure.wp-block-image {
+figure.wp-block-image,
+figure.wp-block-media-text__media {
 
 	border-radius: var(--bs-border-radius) var(--bs-border-radius);
 

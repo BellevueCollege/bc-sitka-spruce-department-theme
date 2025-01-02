@@ -165,6 +165,7 @@ $enqueuer->addBlockStyle(
 	handle: 'image',
 	blocks: array(
 		'core/image',
+		'core/media-text',
 	)
 );
 
