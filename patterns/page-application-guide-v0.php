@@ -18,9 +18,11 @@
 <ul class="wp-block-list"><!-- wp:list-item -->
 <li>In the Settings sidebar, go to Page Settings, and under 'Template' choose 'No Navigation Sidebar'</li>
 <!-- /wp:list-item -->
-
 <!-- wp:list-item -->
-<li>Fill in content as needed</li>
+<li>Save the page as draft, then refresh the page to remove the unneeded 'narrow content area'</li>
+<!-- /wp:list-item -->
+<!-- wp:list-item -->
+<li>Fill in content as needed. <br><strong>Note that some blocks have required fields!</strong> You will need to fill those in or delete the blocks before the page can be published.</li>
 <!-- /wp:list-item -->
 
 <!-- wp:list-item -->
