@@ -31,7 +31,7 @@ wp.domReady( async function () {
 	// Check if narrow content section exists somewhere on the 'no nav sidebar' page
 	if ( await pageTemplate() === 'template--no-sidebar.php' ) {
 		console.log('Editing a page using the no-nav-sidebar template - checking if block migration is needed');
-		deleteNarrowContentSection( blocks );
+		deleteNarrowContentSection( blocks, true );
 	}
 
 	// Check if narrow content section exists somewhere on the 'profile listing' page
