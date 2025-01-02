@@ -80,7 +80,38 @@ class BlockEditor implements BlockEditorInterface {
 	// Third party / Mayflower Blocks to disable
 	protected array $thirdPartyBlocksDenylist = [
 		'mayflower-blocks/child-pages',
+		'mayflower-blocks/tabs',
 	];
+
+	protected array $postTypeBlockDenylist = array(
+		'page' => array(
+			'bc-sitka-spruce/bio-section',
+			'bc-sitka-spruce/course-information-section',
+		),
+		'post' => array(
+			'bc-sitka-spruce/bio-section',
+			'bc-sitka-spruce/course-information-section',
+		),
+		'program' => array(
+			'bc-sitka-spruce/bio-section',
+		),
+	);
+
+	protected array $postTypeBlockAllowlist = array(
+		'profile' => array(
+			'core/heading',
+			'core/paragraph',
+			'core/list',
+			'core/list-item',
+			'bc-sitka-spruce/callout',
+			'bc-sitka-spruce/bio-section',
+			'bc-sitka-spruce/bio-section-content',
+			'bc-sitka-spruce/listing-section',
+			'bc-sitka-spruce/listing-section-list-item',
+			'bc-sitka-spruce/listing-section-list-item-links',
+			'bc-sitka-spruce/news-feature-core',
+		),
+	);
 
   protected array $acfBlocks = [];
 
@@ -262,10 +293,24 @@ class BlockEditor implements BlockEditorInterface {
 			$allowed_block_types = array_keys(\WP_Block_Type_Registry::get_instance()->get_all_registered());
 		}
 
+		// Check if a specific allowlist should be used for this post type
+		$post_type_block_allowlist = array();
+		if ( array_key_exists( $context->post->post_type, $this->postTypeBlockAllowlist ) ) {
+			$post_type_block_allowlist = $this->postTypeBlockAllowlist[ $context->post->post_type ];
+			return array_unique( array_merge( $post_type_block_allowlist ) );
+		}
+
+		// Check if specific blocks should be disabled for this post type
+		$post_type_block_denylist = array();
+		if ( array_key_exists( $context->post->post_type, $this->postTypeBlockDenylist ) ) {
+			$post_type_block_denylist = $this->postTypeBlockDenylist[ $context->post->post_type ];
+		}
+
 		$allowed_block_types = array_diff(
 			$allowed_block_types,
 			$this->coreBlocksBlacklist,
-			$this->thirdPartyBlocksDenylist
+			$this->thirdPartyBlocksDenylist,
+			$post_type_block_denylist,
 		);
 
 		return array_unique( array_merge( $allowed_block_types ) );
