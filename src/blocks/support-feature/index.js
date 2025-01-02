@@ -97,7 +97,7 @@ registerBlockType('bc-sitka-spruce/support-feature', {
 
 		// Render block
 		return (
-			<div {...blockProps}>
+			<>
 				<InspectorControls>
 					<PanelBody
 						title={__(
@@ -129,79 +129,80 @@ registerBlockType('bc-sitka-spruce/support-feature', {
 						)}
 					</PanelBody>
 				</InspectorControls>
-				<div className="arch-shape"></div>
-
-				<div className="tab-wrapper-dark tabcordion tabcordion-list curved-top">
-					<div className="container-xl">
-						<div className="row">
-							<div className="col-md-12">
-								<RichText
-									tagName="h2"
-									value={heading}
-									allowedFormats={[]}
-									onChange={(heading) =>
-										setAttributes({ heading })
-									}
-									placeholder={__(
-										'Enter section title (required)...',
-										'bc-sitka-spruce'
-									)}
-								/>
-							</div>
-						</div>
-						{!supportPosts || supportPosts.length === 0 ? (
-							<Card>
-								<CardHeader>
-									<h3>
-										{__(
-											'No Story or Story Types Selected!',
+				<div className="arch-shape alignfull"></div>
+				<div {...blockProps}>
+					<div className="tab-wrapper-dark tabcordion tabcordion-list curved-top">
+						<div className="container-xl">
+							<div className="row">
+								<div className="col-md-12">
+									<RichText
+										tagName="h2"
+										value={heading}
+										allowedFormats={[]}
+										onChange={(heading) =>
+											setAttributes({ heading })
+										}
+										placeholder={__(
+											'Enter section title (required)...',
 											'bc-sitka-spruce'
 										)}
-									</h3>
-								</CardHeader>
-								<CardBody>
-									{__(
-										'Select this block and use the Settings sidebar to configure what should be displayed.',
-										'bc-sitka-spruce'
-									)}
-								</CardBody>
-							</Card>
-						) : (
-							<div className="tab-editor-row">
-								<div className="tab-header left-pane">
-									<ul className="nav flex-column d-flex card-header-tabs">
-										{supportPosts.map((post) => {
-											return (
-												<li className="nav-item">
-													<span className="nav-link placeholder col-5"></span>
-												</li>
-											);
-										})}
-									</ul>
-								</div>
-
-								<div className="tab-editor-body">
-									<div className="tab-image-placeholder rounded"></div>
-									<div>
-										<span className="h2 placeholder col-8"></span>
-									</div>
-									<div>
-										<span className="placeholder col-4"></span>
-										<span className="placeholder col-3"></span>
-										<span className="placeholder col-2"></span>
-										<span className="placeholder col-4"></span>
-										<span className="placeholder col-7"></span>
-										<span className="placeholder col-5"></span>
-										<span className="placeholder col-3"></span>
-										<span className="placeholder col-4"></span>
-										<span className="placeholder col-5"></span>
-									</div>
+									/>
 								</div>
 							</div>
-						)}
+							{!supportPosts || supportPosts.length === 0 ? (
+								<Card>
+									<CardHeader>
+										<h3>
+											{__(
+												'No Story or Story Types Selected!',
+												'bc-sitka-spruce'
+											)}
+										</h3>
+									</CardHeader>
+									<CardBody>
+										{__(
+											'Select this block and use the Settings sidebar to configure what should be displayed.',
+											'bc-sitka-spruce'
+										)}
+									</CardBody>
+								</Card>
+							) : (
+								<div className="tab-editor-row">
+									<div className="tab-header left-pane">
+										<ul className="nav flex-column d-flex card-header-tabs">
+											{supportPosts.map((post) => {
+												return (
+													<li className="nav-item">
+														<span className="nav-link placeholder col-5"></span>
+													</li>
+												);
+											})}
+										</ul>
+									</div>
+
+									<div className="tab-editor-body">
+										<div className="tab-image-placeholder rounded"></div>
+										<div>
+											<span className="h2 placeholder col-8"></span>
+										</div>
+										<div>
+											<span className="placeholder col-4"></span>
+											<span className="placeholder col-3"></span>
+											<span className="placeholder col-2"></span>
+											<span className="placeholder col-4"></span>
+											<span className="placeholder col-7"></span>
+											<span className="placeholder col-5"></span>
+											<span className="placeholder col-3"></span>
+											<span className="placeholder col-4"></span>
+											<span className="placeholder col-5"></span>
+										</div>
+									</div>
+								</div>
+							)}
+						</div>
 					</div>
 				</div>
-			</div>
+			</>
 		);
 	},
 	save: (props) => {

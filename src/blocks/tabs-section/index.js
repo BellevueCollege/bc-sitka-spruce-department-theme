@@ -73,7 +73,7 @@ registerBlockType( 'bc-sitka-spruce/tabs-section', {
 								onChangeUrl={ ( linkUrl ) => setAttributes( { linkUrl } ) }
 								target=""
 								isSelected={ isSelected }
-								className= "link-arrow"
+								className= "link-accent-lg text-white"
 							/>
 						</div>
 					</div>
