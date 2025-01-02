@@ -253,37 +253,23 @@ class BlockEditor implements BlockEditorInterface {
    * @return string[]
    *   Array of allowed blocks.
    */
-  public function setupAllowedBlocks(
-    $allowed_block_types,
-    WP_Block_Editor_Context $context
-  ): array {
-    if (!is_array($allowed_block_types)) {
-      $allowed_block_types = array_keys(\WP_Block_Type_Registry::get_instance()->get_all_registered());
-    }
+	public function setupAllowedBlocks(
+		$allowed_block_types,
+		WP_Block_Editor_Context $context
+	): array {
 
-    $core_blocks = array_filter($allowed_block_types, function($value) {
-      return strpos($value, 'core/') === 0;
-    });
-    $third_party_blocks = array_filter($allowed_block_types, function($value) {
-      return strpos($value, 'core/') === false;
-    });
+		if (!is_array($allowed_block_types)) {
+			$allowed_block_types = array_keys(\WP_Block_Type_Registry::get_instance()->get_all_registered());
+		}
 
-    $allowed_core_blocks = array_diff(
-      $core_blocks,
-      $this->coreBlocksBlacklist
-    );
-
-		$third_party_blocks = array_diff(
-			$third_party_blocks,
+		$allowed_block_types = array_diff(
+			$allowed_block_types,
+			$this->coreBlocksBlacklist,
 			$this->thirdPartyBlocksDenylist
 		);
 
-    return array_unique(array_merge(
-      $allowed_core_blocks,
-      $third_party_blocks,
-      $this->jsBlocks
-    ));
-  }
+		return array_unique( array_merge( $allowed_block_types ) );
+	}
 
   /**
    * Callback for the 'acf/init' action.
