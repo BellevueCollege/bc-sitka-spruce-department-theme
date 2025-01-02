@@ -6,6 +6,7 @@
             "key": "field_62ff804b719f6",
             "label": "Image",
             "name": "image",
+            "aria-label": "",
             "type": "image",
             "instructions": "Please use an image with dimensions of 660px by 500px.",
             "required": 1,
@@ -30,6 +31,7 @@
             "key": "field_62ff8067719f7",
             "label": "Video",
             "name": "video",
+            "aria-label": "",
             "type": "url",
             "instructions": "",
             "required": 0,
@@ -46,6 +48,7 @@
             "key": "field_62ff8073719f8",
             "label": "Caption",
             "name": "caption",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 0,
@@ -56,15 +59,17 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": 128,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "append": ""
         },
         {
             "key": "field_62ff807d719f9",
             "label": "Title",
             "name": "title",
+            "aria-label": "",
             "type": "text",
             "instructions": "",
             "required": 1,
@@ -75,15 +80,17 @@
                 "id": ""
             },
             "default_value": "",
+            "maxlength": 64,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
-            "append": "",
-            "maxlength": ""
+            "append": ""
         },
         {
             "key": "field_62ff8fabc1964",
             "label": "Text",
             "name": "text",
+            "aria-label": "",
             "type": "textarea",
             "instructions": "",
             "required": 0,
@@ -94,15 +101,17 @@
                 "id": ""
             },
             "default_value": "",
-            "placeholder": "",
-            "maxlength": "",
+            "maxlength": 512,
+            "allow_in_bindings": 1,
             "rows": 4,
+            "placeholder": "",
             "new_lines": "wpautop"
         },
         {
             "key": "field_62ff8082719fa",
             "label": "Links",
             "name": "links",
+            "aria-label": "",
             "type": "repeater",
             "instructions": "",
             "required": 0,
@@ -117,11 +126,13 @@
             "max": 3,
             "layout": "row",
             "button_label": "Add Link",
+            "rows_per_page": 20,
             "sub_fields": [
                 {
                     "key": "field_62ff808c719fb",
                     "label": "Link",
                     "name": "link",
+                    "aria-label": "",
                     "type": "link",
                     "instructions": "",
                     "required": 1,
@@ -131,7 +142,8 @@
                         "class": "",
                         "id": ""
                     },
-                    "return_format": "array"
+                    "return_format": "array",
+                    "parent_repeater": "field_62ff8082719fa"
                 }
             ]
         }
@@ -139,7 +151,8 @@
     "location": [
         [
             {
-                "param": "oho_acf_hidden"
+                "param": "post_type",
+                "operator": "=="
             }
         ]
     ],
@@ -152,5 +165,5 @@
     "active": false,
     "description": "Component: Checkerboard",
     "show_in_rest": 0,
-    "modified": 1665583267
+    "modified": 1735851112
 }

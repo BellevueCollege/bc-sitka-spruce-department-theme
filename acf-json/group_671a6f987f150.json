@@ -17,7 +17,7 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 64,
             "allow_in_bindings": 0,
             "placeholder": "",
             "prepend": "",
@@ -38,7 +38,7 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 128,
             "allow_in_bindings": 0,
             "rows": "",
             "placeholder": "",
@@ -80,8 +80,8 @@
                         "class": "",
                         "id": ""
                     },
-                    "default_value": "Degree Options",
-                    "maxlength": "",
+                    "default_value": "Degree options",
+                    "maxlength": 32,
                     "allow_in_bindings": 0,
                     "placeholder": "",
                     "prepend": "",
@@ -103,7 +103,7 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "maxlength": "",
+                    "maxlength": 128,
                     "allow_in_bindings": 0,
                     "placeholder": "",
                     "prepend": "",
@@ -161,5 +161,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1729787782
+    "modified": 1735851412
 }

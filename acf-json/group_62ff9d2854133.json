@@ -17,7 +17,7 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": 50,
+            "maxlength": 64,
             "allow_in_bindings": 0,
             "placeholder": "",
             "prepend": "",
@@ -38,7 +38,7 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 128,
             "allow_in_bindings": 0,
             "rows": "",
             "placeholder": "",
@@ -109,5 +109,5 @@
     "active": true,
     "description": "Component: Checkerboard",
     "show_in_rest": 0,
-    "modified": 1731456119
+    "modified": 1735851128
 }

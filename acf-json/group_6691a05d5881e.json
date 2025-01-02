@@ -62,7 +62,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 32,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -82,7 +83,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 32,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -102,7 +104,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 32,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -163,7 +166,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 128,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -277,7 +281,7 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "maxlength": "",
+                    "maxlength": 64,
                     "allow_in_bindings": 0,
                     "placeholder": "",
                     "prepend": "",
@@ -299,7 +303,7 @@
                         "id": ""
                     },
                     "default_value": "",
-                    "maxlength": "",
+                    "maxlength": 128,
                     "allow_in_bindings": 0,
                     "rows": "",
                     "placeholder": "",
@@ -396,5 +400,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1734537528
+    "modified": 1735851351
 }

@@ -42,7 +42,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 256,
+            "allow_in_bindings": 1,
             "rows": "",
             "placeholder": "",
             "new_lines": ""
@@ -71,5 +72,5 @@
     "active": true,
     "description": "Custom Fields displayed on Pages that aren't the homepage",
     "show_in_rest": 0,
-    "modified": 1729702493
+    "modified": 1735851193
 }

@@ -17,7 +17,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 64,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -37,7 +38,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 64,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -57,7 +59,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 128,
+            "allow_in_bindings": 1,
             "rows": "",
             "placeholder": "",
             "new_lines": ""
@@ -84,7 +87,7 @@
             {
                 "param": "block",
                 "operator": "==",
-                "value": "bc-sitka-spruce\/section-heading"
+                "value": "all"
             }
         ]
     ],
@@ -97,5 +100,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1719958576
+    "modified": 1735851432
 }

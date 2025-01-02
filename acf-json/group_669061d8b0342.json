@@ -17,7 +17,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 64,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -37,7 +38,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 128,
+            "allow_in_bindings": 1,
             "rows": "",
             "placeholder": "",
             "new_lines": ""
@@ -89,5 +91,5 @@
     "active": true,
     "description": "Contact Selector block",
     "show_in_rest": 0,
-    "modified": 1727986311
+    "modified": 1735851144
 }

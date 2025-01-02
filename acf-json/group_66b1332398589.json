@@ -45,7 +45,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 32,
+            "allow_in_bindings": 1,
             "placeholder": "",
             "prepend": "",
             "append": ""
@@ -73,7 +74,8 @@
                 "id": ""
             },
             "default_value": "",
-            "maxlength": "",
+            "maxlength": 256,
+            "allow_in_bindings": 1,
             "rows": "",
             "placeholder": "",
             "new_lines": ""
@@ -171,5 +173,5 @@
     "active": true,
     "description": "Fields for Callout Block",
     "show_in_rest": 0,
-    "modified": 1731975297
+    "modified": 1735851083
 }
