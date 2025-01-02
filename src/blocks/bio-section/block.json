@@ -9,7 +9,8 @@
   "version": "1.0.0",
   "textdomain": "bc-sitka-spruce",
   "supports": {
-    "html": false
+    "html": false,
+		"multiple": false
   },
   "allowedBlocks": [
     "bc-sitka-spruce/bio-section-content",
