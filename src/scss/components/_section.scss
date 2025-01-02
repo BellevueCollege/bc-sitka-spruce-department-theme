@@ -97,10 +97,6 @@
 // Avoid extra spacing between last section and sock
 .section:last-child {
 	margin-bottom: 0;
-
-	&.curved-top.diffs { // only apply to differentiator section
-		padding-bottom: 0;
-	}
 }
 
 // Hide divider if next section has a colored background, arch shape, or is the last section
