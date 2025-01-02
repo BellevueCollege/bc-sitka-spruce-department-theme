@@ -13,6 +13,10 @@
   $menu-submenu-background-color-hover: css_color('accent-fountain-blue-extralight');
   $menu-open-link-color: $menu-link-color;
 
+	& > ul.menu {
+		padding-left: 0;
+	}
+
 
   // All Breakpoints
   // ---------------
