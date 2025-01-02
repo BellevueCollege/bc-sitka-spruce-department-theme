@@ -12,9 +12,15 @@
 <div class="wp-block-bc-sitka-spruce-template-homepage homepage-intro alignfull"><!-- wp:bc-sitka-spruce/hero-image {"name":"bc-sitka-spruce/hero-image","data":{"hero_image":"","_hero_image":"field_66a037a5b53bb"},"mode":"preview"} /-->
 
 <!-- wp:bc-sitka-spruce/content-and-location {"heading":"Division Name","summary":"Mission statement/service provision overview for this Division. Curabitur fringilla sapien a mauris cursus efficitur. Quisque vel neque vitae tortor congue malesuada. Duis faucibus molestie lacus id gravida. Nunc sed lacus molestie, vel laoreet risus malesuada doler ipsum lorem sed nullam."} -->
-<!-- wp:mayflower-blocks/button {"buttonText":"Optional Button","buttonType":"primary","isBootstrap5":true,"lock":{"move":false,"remove":false}} -->
+<!-- wp:mayflower-blocks/button-group {"_btnDisableBlockInline":true,"_btnTypeDefault":"primary","lock":{"move":false,"remove":false}} -->
+<div class="wp-block-mayflower-blocks-button-group btn-group"><!-- wp:mayflower-blocks/button {"buttonText":"Optional Button","isBootstrap5":true,"lock":{"move":false,"remove":false}} -->
 <div class="wp-block-mayflower-blocks-button"><a class="btn btn-primary   disabled" aria-disabled="true">Optional Button</a></div>
 <!-- /wp:mayflower-blocks/button -->
+
+<!-- wp:mayflower-blocks/button {"buttonText":"Optional Button","isBootstrap5":true,"lock":{"move":false,"remove":false}} -->
+<div class="wp-block-mayflower-blocks-button"><a class="btn btn-primary   disabled" aria-disabled="true">Optional Button</a></div>
+<!-- /wp:mayflower-blocks/button --></div>
+<!-- /wp:mayflower-blocks/button-group -->
 
 <!-- wp:gravityforms/form {"formId":"","inputPrimaryColor":"#204ce5","lock":{"move":false,"remove":false}} /-->
 <!-- /wp:bc-sitka-spruce/content-and-location --></div>

@@ -15,6 +15,7 @@
     },
 	"allowedBlocks": [
 		"mayflower-blocks/button",
+		"mayflower-blocks/button-group",
 		"core/shortcode",
 		"gravityforms/form",
 		"lmc-search-plugin/lmc-search-block"

@@ -30,13 +30,29 @@ Twig.extendFunction("__", (input, namespace) => {
 
 
 const BLOCK_TEMPLATE = [
-    [ 'mayflower-blocks/button', {
-        'buttonText': 'Optional Button',
-        'lock': {
-            'move': false,
-            'remove': false
-        }
-    }],
+	[ 'mayflower-blocks/button-group', {
+		'_btnDisableBlockInline': true,
+		'_btnTypeDefault': 'primary',
+		'lock': {
+			'move': false,
+			'remove': false
+		},
+	}, [
+		[ 'mayflower-blocks/button', {
+			'buttonText': 'Optional Button',
+			'lock': {
+				'move': false,
+				'remove': false
+			}
+		}],
+		[ 'mayflower-blocks/button', {
+			'buttonText': 'Optional Button',
+			'lock': {
+				'move': false,
+				'remove': false
+			}
+		}]],
+	],
     ['gravityforms/form', {
         'lock': {
             'move': false,
