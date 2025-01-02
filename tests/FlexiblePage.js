@@ -26,7 +26,7 @@ describe('Flexiblepage', function () {
 
 //FULL PAGE TEST [No adjustments needed]
 	test('Full Flexibile page UI Results', function (browser) {
-		//Iterates over each screen size, sets the browser window size, 
+		//Iterates over each screen size, sets the browser window size,
 		//and performs the actions (e.g., wait, screenshot, assertion) for each size.
 		screenSizes.forEach(screenSize => {
 			browser
@@ -34,12 +34,12 @@ describe('Flexiblepage', function () {
 				.waitForElementVisible('body')
 				.assert.screenshotIdenticalToBaseline('body',`Fullpage-${screenSize.name}`);
 		});
-	}); 
+	});
 
 //HERO AREA & SITE INTRO TESTS★ [No adjustments needed]
 //class="container-xl flexible-page-intro"
 test('Flexibile page Hero Area & Site Intro UI Results', function (browser) {
-	//Iterates over each screen size, sets the browser window size, 
+	//Iterates over each screen size, sets the browser window size,
 	//and performs the actions (e.g., wait, screenshot, assertion) for each size.
 	screenSizes.forEach(screenSize => {
 		browser
@@ -47,11 +47,11 @@ test('Flexibile page Hero Area & Site Intro UI Results', function (browser) {
 			.waitForElementVisible('.flexible-page-intro')
 			.assert.screenshotIdenticalToBaseline('.flexible-page-intro',`HeroIntro-${screenSize.name}`);
 	});
-}); 
+});
 
 //LEAD/INTRO TEST [Works enough for now]
 test('Intro UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -63,7 +63,7 @@ test('Intro UI Results', function (browser) {
 
 //HEADING TEST [No Adjustments needed]
 test('Heading Block UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -75,7 +75,7 @@ test('Heading Block UI Results', function (browser) {
 
 //LIST TEST [No Adjustments needed]
 test('List Block UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -88,7 +88,7 @@ test('List Block UI Results', function (browser) {
 //BLOCK QUOTE TEST[WIP- buggy]
 //class="wp-block-quote is-layout-flow wp-block-quote-is-layout-flow"
 test('Quote Block UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -100,7 +100,7 @@ test('Quote Block UI Results', function (browser) {
 
 //CODE BLOCK TEST [No Adjustments needed]
 test('Code Block UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -112,7 +112,7 @@ test('Code Block UI Results', function (browser) {
 
 //DETAILS BLOCK [works enough for now]
 test('Details Block UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -137,7 +137,7 @@ test('Preformatted Block UI Results', function (browser) {
 //TABLE TEXT [No Adjustments needed]
 //class="wp-block-table"
 test('Table Block UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -172,8 +172,8 @@ test('Application Steps Section UI Results', function (browser) {
 	screenSizes.forEach(screenSize => {
 		browser
 			.window.setSize(screenSize.width, screenSize.height)
-			.waitForElementVisible('.section.section-dark.tabs-section-component')
-			.assert.screenshotIdenticalToBaseline('.section.section-dark.tabs-section-component',`Tabs-section-${screenSize.name}`);
+			.waitForElementVisible('.section.section-rainy-night-blue.tabs-section-component')
+			.assert.screenshotIdenticalToBaseline('.section.section-rainy-night-blue.tabs-section-component',`Tabs-section-${screenSize.name}`);
 	});
 });
 
@@ -250,7 +250,7 @@ test('Testimonial Section UI Results', function (browser) {
 
 //ANNOUNCEMENT BANNER TESTS [No Adjustments needed]
 	test('Announcement Banner UI Results', function (browser) {
-		/* Iterates over each screen size, sets the browser window size, 
+		/* Iterates over each screen size, sets the browser window size,
 		and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 		screenSizes.forEach(screenSize => {
 			browser
@@ -262,7 +262,7 @@ test('Testimonial Section UI Results', function (browser) {
 
 //MEDIA GALLERY [No Adjustments needed]
 test('Media Gallery UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -284,7 +284,7 @@ test('Profiles Section UI Results', function (browser) {
 
 //DEGREE & CERT SECTION [No Adjustments needed]
 test('Degree & Certification Results UI Results', function (browser) {
-	/* Iterates over each screen size, sets the browser window size, 
+	/* Iterates over each screen size, sets the browser window size,
 	and performs the actions (e.g., wait, screenshot, assertion) for each size.*/
 	screenSizes.forEach(screenSize => {
 		browser
@@ -302,7 +302,7 @@ test('Checkerboard Section UI Results', function (browser) {
 			.waitForElementVisible('section.checkerboard')
 			.assert.screenshotIdenticalToBaseline('section.checkerboard',`checkerboard-${screenSize.name}`);
 	});
-}); 
+});
 
 //DIFFERENTIATOR SECTION -BEL02 [No adjustments needed]
 	test('Differentiator Section UI Results', function (browser) {
@@ -313,7 +313,7 @@ test('Checkerboard Section UI Results', function (browser) {
 				.waitForElementVisible('section.diffs')
 				.assert.screenshotIdenticalToBaseline('section.diffs',`diffs-${screenSize.name}`);
 		});
-	}); 
+	});
 
 //NEWS FEATURE [No adjustments needed]
 	test('News Feature UI Results', function (browser) {
@@ -484,7 +484,7 @@ test('Button block UI Results', function (browser) {
 			.waitForElementVisible('.wp-block-mayflower-blocks-button')
 			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-button',`mf-block-button-${screenSize.name}`);
 	});
-}); 
+});
 
 //MF BLOCK CARD [No Adjustments needed]
 test('MF panel UI Results', function (browser) {
@@ -494,7 +494,7 @@ test('MF panel UI Results', function (browser) {
 			.waitForElementVisible('.wp-block-mayflower-blocks-panel.card.bg-default')
 			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-panel.card.bg-default',`mf-block-panel-${screenSize.name}`);
 	});
-}); 
+});
 
 
 //MF INTRO TEXT already tested
@@ -509,7 +509,7 @@ test('MF column/row UI Results', function (browser) {
 			.waitForElementVisible('.wp-block-mayflower-blocks-column.col-md-4')
 			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-column.col-md-4',`mf-column-${screenSize.name}`);
 	});
-}); 
+});
 
 
 
@@ -521,7 +521,7 @@ test('MF tabs UI Results', function (browser) {
 			.waitForElementVisible('.wp-block-mayflower-blocks-tabs.card')
 			.assert.screenshotIdenticalToBaseline('.wp-block-mayflower-blocks-tabs.card',`mf-tabs-${screenSize.name}`);
 	});
-}); 
+});
 
 
 //MF ACCORDION {No Adjustments needed}
@@ -532,10 +532,10 @@ test('MF Accordion UI Results', function (browser) {
 			.waitForElementVisible('.wp-block-mayflower-blocks-collapsibles.accordion')
 			.assert.screenshotIdenticalToBaseline('..wp-block-mayflower-blocks-collapsibles.accordion',`mf-accordion-${screenSize.name}`);
 	});
-}); 
+});
 
 
 
-// CLOSING BROWSER/ END TESTS	
+// CLOSING BROWSER/ END TESTS
 	after(browser => browser.end());
 });
