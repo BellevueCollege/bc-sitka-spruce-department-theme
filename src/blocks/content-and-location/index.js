@@ -28,6 +28,14 @@ Twig.extendFunction("__", (input, namespace) => {
     return input;
 });
 
+/**
+ * Mock the Sanitize Filter in Timber
+ */
+Twig.extendFilter("esc_html", (input) => {
+	return input;
+});
+
+
 
 const BLOCK_TEMPLATE = [
 	[ 'mayflower-blocks/button-group', {

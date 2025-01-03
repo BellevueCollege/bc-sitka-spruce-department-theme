@@ -22,6 +22,14 @@ import './editor.scss';
 Twig.extendFunction("__", (input, namespace) => {
     return input;
 });
+
+/**
+ * Mock the Sanitize Filter in Timber
+ */
+Twig.extendFilter("esc_html", (input) => {
+	return input;
+});
+
 /**
  * Register: aa Gutenberg Block.
  *
