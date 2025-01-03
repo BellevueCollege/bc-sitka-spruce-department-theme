@@ -11,9 +11,11 @@ const wysiwygBlocks = [
 	'core/paragraph',
 	'core/image',
 	'core/list',
+	'core/list-item',
 	'core/quote',
 	'core/embed',
 	'gravityforms/form',
+	'core/table',
 	'tablepress/table',
 	'mayflower-blocks/alert',
 	'mayflower-blocks/course',
@@ -25,12 +27,14 @@ const wysiwygBlocks = [
 	'core/separator',
 	'core/shortcode',
 	'core/spacer',
+	'bawb/program', // acalog block
 ];
 
 const textBlocks = [
 	'core/paragraph',
 	'core/heading',
 	'core/list',
+	'core/list-item',
 	'core/file',
 	'core/separator',
 	'mayflower-blocks/button',
