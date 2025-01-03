@@ -3,8 +3,11 @@
 ## Required Plugins
 This theme requires the following plugins to be installed and activated:
 - [Advanced Custom Fields Pro](https://www.advancedcustomfields.com)
-- [Advanced Custom Fields: Font Awesome Field](https://wordpress.org/plugins/advanced-custom-fields-font-awesome/)
 - [Breadcrumb Trail](https://wordpress.org/plugins/breadcrumb-trail/)
+- OHO Views (Part of Bellevue 2022 Theme Plugins repo)
+- OHO Disable Posts (Part of Bellevue 2022 Theme Plugins repo)
+- Mayflower Blocks
+
 
 ## System Preparation
 
