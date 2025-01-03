@@ -6,7 +6,7 @@
 
 {% if link.title and link.url %}
 	<a href="{{ link.url }}" {% if link.target %} target="{{ link.target|esc_attr }}" {% endif %} class="{{ linkClass }}">
-		{{ link.title|e }}
+		{{ link.title|esc_html }}
 		{% if link.target %}
 			<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
 			<i class="{{ newPageIcon }} {{ iconClass }}" aria-hidden="true"></i>
