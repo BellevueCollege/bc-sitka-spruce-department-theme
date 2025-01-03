@@ -1,5 +1,6 @@
 const wysiwygBlocks = [
 	'mayflower-blocks/button',
+	'mayflower-blocks/button-group',
 	'mayflower-blocks/card',
 	//'mayflower-blocks/collapse',
 	'mayflower-blocks/collapsibles',
@@ -38,6 +39,7 @@ const textBlocks = [
 	'core/file',
 	'core/separator',
 	'mayflower-blocks/button',
+	'mayflower-blocks/button-group',
 	'mayflower-blocks/lead',
 ];
 
