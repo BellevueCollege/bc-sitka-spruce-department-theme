@@ -18,22 +18,22 @@
 <div class="row profile-list-element">
 	<div class="col-sm-6 col-md-auto">
 		{% if profile_image_id %}
-			<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name, last_name ) }}" class="img-fluid rounded">
+			<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
 		{% endif %}
 	</div>
 	<div class="col-sm-6 col-md">
-		<h3 class="card-title-small"><a href="{{ profile_url }}">{{ first_name }} {{ last_name }}</a></h3>
+		<h3 class="card-title-small"><a href="{{ profile_url|esc_url }}">{{ first_name|esc_html }} {{ last_name|esc_html }}</a></h3>
 		<div class="row">
 			<div class="col-md-6">
 				<ul class="list-unstyled">
-					{% if position_title %}<li class="position-title">{{ position_title }}</li>{% endif %}
+					{% if position_title %}<li class="position-title">{{ position_title|esc_html }}</li>{% endif %}
 					{% if type or department %}
 						<li>
 							{% if type %}
-								{{ type }} /
+								{{ type|esc_html }} /
 							{% endif %}
 							{% if department %}
-								<strong>{{ department }}</strong>
+								<strong>{{ department|esc_html }}</strong>
 							{% endif %}
 						</li>
 					{% endif %}
@@ -43,18 +43,18 @@
 				<ul class="list-unstyled contact-info-list">
 					{% if email %}
 						<li>
-							<i class="fa-solid fa-envelope me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Email:', 'bc-sitka-spruce') }}</span> <a href="mailto:{{ email }}">{{ email }}</a>
+							<i class="fa-solid fa-envelope me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Email:', 'bc-sitka-spruce') }}</span> <a href="mailto:{{ email|esc_html }}">{{ email|esc_html }}</a>
 						</li>
 					{% endif %}
 					{% if phone_number %}
 						<li>
-							<i class="fa-solid fa-phone-flip me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Phone:', 'bc-sitka-spruce') }}</span> <a href="tel:{{ phone_number }}">{{ phone_number }}</a>
+							<i class="fa-solid fa-phone-flip me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Phone:', 'bc-sitka-spruce') }}</span> <a href="tel:{{ phone_number|esc_html }}">{{ phone_number|esc_html }}</a>
 						</li>
 					{% endif %}
 					{% if scheduling_link %}
 						<li>
-							<a class="btn btn-primary btn-small mt-1" {% if scheduling_link.target %} target="{{ scheduling_link.target }}" {% endif %} href="{{ scheduling_link.url }}">
-								{{ scheduling_link.title|default(__('Schedule with %s', 'bc-sitka-spruce')|format(first_name)) }}
+							<a class="btn btn-primary btn-small mt-1" {% if scheduling_link.target %} target="{{ scheduling_link.target }}" {% endif %} href="{{ scheduling_link.url|esc_url }}">
+								{{ scheduling_link.title|default(__('Schedule with %s', 'bc-sitka-spruce')|format(first_name))|esc_html }}
 								{% if scheduling_link.target %}
 									<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
 									<i class="fa fa-external-link-square text-white ms-1" aria-hidden="true"></i>
