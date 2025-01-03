@@ -10,6 +10,8 @@ import {
 } from '@wordpress/block-editor';
 
 import { textBlocks } from "../../shared-elements/block-sets";
+import { decode } from 'html-entities';
+
 
 
 export default function Edit( props ) {
@@ -34,7 +36,7 @@ export default function Edit( props ) {
 			<HeadingTag
 				className={ ! displayHeadingsVisually ? 'tab-heading indicate-hidden' : 'tab-heading' }
 			>
-				{ tabTitle } &nbsp;
+				{ decode( tabTitle ) } &nbsp;
 				<span class="badge text-bg-secondary">
 					{ HeadingTag } { ! displayHeadingsVisually && (
 						<>

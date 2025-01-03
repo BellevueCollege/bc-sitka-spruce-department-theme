@@ -59,6 +59,7 @@
     "@popperjs/core": "^2.11.8",
     "bootstrap": "^5.3.3",
     "focus-trap": "^7.6.2",
+    "html-entities": "^2.5.2",
     "swiper": "^11.1.0",
     "twig-loader": "^0.5.5"
   },
