@@ -48,6 +48,12 @@ Twig.extendFilter("esc_attr", (input) => {
 	return input;
 });
 
+/**
+ * Mock the Timber esc_html function. Note that NO SANITIZATION is done. This is purely for a preview.
+ */
+Twig.extendFilter("esc_html", (input) => {
+	return input;
+});
 
 
 /**

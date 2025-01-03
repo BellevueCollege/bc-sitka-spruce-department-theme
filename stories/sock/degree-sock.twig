@@ -2,16 +2,16 @@
 <aside class="sock sock-degree dark-bg">
 	{% if enable %}
 		<div class="container-xl sock-heading mb-4">
-			<h2>{{ main_heading|e }}</h2>
-			<p class="lead">{{ main_text|e }}</p>
+			<h2>{{ main_heading|esc_html }}</h2>
+			<p class="lead">{{ main_text|esc_html }}</p>
 		</div>
 		<div class="container-xl sock-segments">
 			<div class="row">
 				<div class="col-md-8">
 					{% for segment in message_segments %}
 						<div class="sock-segment mb-4">
-							{% if segment.title %}<h3>{{ segment.title|e }}</h3>{% endif %}
-							{% if segment.description %}<p>{{ segment.description|e }}</p>{% endif %}
+							{% if segment.title %}<h3>{{ segment.title|esc_html }}</h3>{% endif %}
+							{% if segment.description %}<p>{{ segment.description|esc_html }}</p>{% endif %}
 							{% if segment.button %}
 								<p>
 									{% include '/stories/atoms/links/link-button.twig' with {

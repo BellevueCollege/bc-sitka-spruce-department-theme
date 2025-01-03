@@ -41,10 +41,10 @@
 										</div>
 										<figcaption class="col-md-3">
 											{% if slide.slide_title %}
-												<h3 class="card-title-big">{{ slide.slide_title|e }}</h3>
+												<h3 class="card-title-big">{{ slide.slide_title|esc_html }}</h3>
 												<hr>
 											{% endif %}
-											<p>{{ slide.slide_description|e }}</p>
+											<p>{{ slide.slide_description|esc_html }}</p>
 										</figcaption>
 									</figure>
 								</div>

@@ -6,7 +6,7 @@
 				<a href="{{ core_homepage_url|esc_url }}" class="footer-logo" title="{{ __('Link to college homepage', 'bc-sitka-spruce') }}">
 					<img src="{{ logo_url|esc_url }}" class="img-fluid" alt="{{ __('Bellevue College (links to college homepage)', 'bc-sitka-spruce') }}">
 				</a>
-				<h2 class="footer-site-name h5">{{ site_title|e }}</h2>
+				<h2 class="footer-site-name h5">{{ site_title|esc_html }}</h2>
 				<hr class="accent">
 				{%  if phone %}
 					<div class="row gx-2">
@@ -15,7 +15,7 @@
 							<span class="visually-hidden">Phone Number</span>
 						</div>
 						<div class="col">
-							<p><a href="tel:{{ phone|e }}">{{ phone|e }}</a></p>
+							<p><a href="tel:{{ phone|esc_html }}">{{ phone|esc_html }}</a></p>
 						</div>
 					</div>
 				{% endif %}

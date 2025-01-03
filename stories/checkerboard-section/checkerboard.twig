@@ -17,7 +17,7 @@
 				{% endif %}
 				{% if caption %}
 					<figcaption>
-						{{ caption|e }}
+						{{ caption|esc_html }}
 					</figcaption>
 				{% endif %}
 			</figure>
@@ -25,7 +25,7 @@
 
 		<div class="col">
 			<div class="card-body p-0 p-sm-auto">
-				<h3 class="h3">{{ title|e }}</h3>
+				<h3 class="h3">{{ title|esc_html }}</h3>
 				{% if text %}
 					{{ text|wp_kses_post }}
 				{% endif %}
