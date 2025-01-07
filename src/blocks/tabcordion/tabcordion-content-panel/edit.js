@@ -9,7 +9,7 @@ import {
 	InnerBlocks,
 } from '@wordpress/block-editor';
 
-import { textBlocks } from "../../shared-elements/block-sets";
+import { textBlocks } from "../../shared-elements/block-sets/text.json";
 import { decode } from 'html-entities';
 
 
