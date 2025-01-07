@@ -5,7 +5,6 @@
 		"mayflower-blocks/card",
 		"mayflower-blocks/collapsibles",
 		"mayflower-blocks/row",
-		"core/group",
 		"core/heading",
 		"core/paragraph",
 		"core/image",
