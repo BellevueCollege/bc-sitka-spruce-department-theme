@@ -177,6 +177,8 @@ body.menu-expanded {
 		display: flex;
 		justify-content: flex-end;
 		@include media-breakpoint-down($header-desktop-breakpoint) {
+			padding-left: 0;
+			padding-right: 0;
 			flex-direction: column;
 		}
 
