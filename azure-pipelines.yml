@@ -4,7 +4,6 @@ trigger:
   branches:
     include:
       - trunk
-      - release-v1
   paths:
     exclude:
       - azure-pipelines.yml
@@ -16,7 +15,6 @@ pr:
       - hotfix-v*
 pool:
     vmImage: ubuntu-latest
-
 variables:
     phpVersion: 8.2
     npm_config_cache: $(Pipeline.Workspace)/.npm
