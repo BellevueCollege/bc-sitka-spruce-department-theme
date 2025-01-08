@@ -1,0 +1,32 @@
+{#
+/**
+* @file
+* Bellevue template for a differentiator.
+*/
+#}
+<div class="col-sm-6 col-md-4 text-margin-reset">
+  <article class="diff--item oho-animate fade-in-down">
+    {% if top_layout == 'image' %}
+      <div class="diff--hero diff--hero__photo aspect-ratio-frame" style="--aspect-ratio: 200/360">
+        {{ top_image }}
+      </div>
+    {% endif %}
+    {% if top_layout == 'text' %}
+      <div class="diff--hero">
+        <span class="diff__number oho-animate-count">{{ top_text }}{% if top_superscript %}<sup class="diff__superscript">{{ top_superscript }}</sup>{% endif %} </span>
+      </div>
+    {% endif %}
+    {% if top_layout == 'icon' %}
+      <div class="diff--hero">
+        {{ top_icon }}
+      </div>
+    {% endif %}
+    <div class="diff--text padding-4x text-margin-reset">
+      <h3>{{ title }}</h3>
+      {% if text %}
+        <p>{{ text }}</p>
+      {% endif %}
+      {% include '/stories/atoms/links/link-arrow.twig' %}
+    </div>
+  </article>
+</div>

@@ -1,0 +1,19 @@
+@import '/src/scss/block-styles';
+
+.card-section {
+	.cards {
+		display: grid;
+		grid-column-gap: 2.5rem;
+		grid-row-gap: 2.5rem;
+
+		padding-bottom: var( --sitka-container-spacing );
+
+		@include media-breakpoint-up(sm) {
+			grid-template-columns: 1fr 1fr;
+		}
+
+		@include media-breakpoint-up(lg) {
+			grid-template-columns: 1fr 1fr 1fr;
+		}
+	}
+}

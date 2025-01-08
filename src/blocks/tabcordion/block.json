@@ -1,0 +1,70 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bc-sitka-spruce/tabcordion",
+	"version": "1.1.0",
+	"title": "Tabs (Accordion on Mobile)",
+	"category": "layout",
+	"icon": "category",
+	"description": "Organize content with a number of clickable tabs. Transforms to an accordion on mobile for ease of use.",
+	"supports": {
+		"html": false,
+		"lock": false,
+		"align": ["wide"]
+	},
+	"textdomain": "bc-sitka-spruce",
+	"attributes": {
+
+		"blockId": {
+			"type": "string",
+			"default": "initialblockid"
+		},
+
+		"format": {
+			"type": "string",
+			"enum": [
+				"tabs",
+				"pills",
+				"list"
+			],
+			"default": "pills"
+		},
+		"headingLevel": {
+			"type": "string",
+			"default": "h2"
+		},
+		"displayHeadingsVisually": {
+			"type": "boolean",
+			"default": true
+		},
+		"_allowedBlocks": {
+			"type": "array",
+			"default": []
+		},
+		"_wrapContent": {
+			"type": "boolean",
+			"default": true
+		},
+		"_hideFormats": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"providesContext": {
+		"bc-sitka-spruce/tabcordion/allowedBlocks": "_allowedBlocks",
+		"bc-sitka-spruce/tabcordion/hideFormats": "_hideFormats",
+		"bc-sitka-spruce/tabcordion/blockId": "blockId",
+		"bc-sitka-spruce/tabcordion/format": "format",
+		"bc-sitka-spruce/tabcordion/headingLevel": "headingLevel",
+		"bc-sitka-spruce/tabcordion/displayHeadingsVisually": "displayHeadingsVisually"
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": [
+		"bc-sitka-spruce-style-nav",
+		"bc-sitka-spruce-style-tabs",
+		"bc-sitka-spruce-style-tabcordion-list",
+		"file:./style-index.css"
+	],
+	"render": "file:./render.php"
+}

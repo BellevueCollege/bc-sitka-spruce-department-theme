@@ -1,0 +1,111 @@
+<footer class="footer">
+	<div class="footer-mountains"></div>
+	<div class="footer-content container-xl">
+		<div class="row">
+			<div class="col-md-6 col-lg">
+				<a href="{{ core_homepage_url|esc_url }}" class="footer-logo" title="{{ __('Link to college homepage', 'bc-sitka-spruce') }}">
+					<img src="{{ logo_url|esc_url }}" class="img-fluid" alt="{{ __('Bellevue College (links to college homepage)', 'bc-sitka-spruce') }}">
+				</a>
+				<h2 class="footer-site-name h5">{{ site_title|esc_html }}</h2>
+				<hr class="accent">
+				{%  if phone %}
+					<div class="row gx-2">
+						<div class="col-auto">
+							<i class="fa-solid fa-phone-flip" aria-hidden="true"></i>
+							<span class="visually-hidden">Phone Number</span>
+						</div>
+						<div class="col">
+							<p><a href="tel:{{ phone|esc_html }}">{{ phone|esc_html }}</a></p>
+						</div>
+					</div>
+				{% endif %}
+				{% if address %}
+					<div class="row gx-2">
+						<div class="col-auto">
+							<i class="fa-solid fa-location-dot" aria-hidden="true"></i>
+							<span class="visually-hidden">Address</span>
+						</div>
+						<div class="col">
+							<p>{{ address|wp_kses_post }}</p>
+						</div>
+					</div>
+				{% endif %}
+
+				{% if social %}
+					<ul class="list-inline social-links">
+						{% for s in social %}
+							{% if s.network == 'facebook' %}
+								{% set icon = 'fa-brands fa-square-facebook' %}
+								{% set title = 'Facebook' %}
+							{% elseif s.network == 'instagram' %}
+								{% set icon = 'fa-brands fa-square-instagram' %}
+								{% set title = 'Instagram' %}
+							{% elseif s.network == 'linkedin' %}
+								{% set icon = 'fa-brands fa-linkedin' %}
+								{% set title = 'LinkedIn' %}
+							{% elseif s.network == 'mastadon' %}
+								{% set icon = 'fa-brands fa-mastodon' %}
+								{% set title = 'Mastadon' %}
+							{% elseif s.network == 'threads' %}
+								{% set icon = 'fa-brands fa-square-threads' %}
+								{% set title = 'Threads' %}
+							{% elseif s.network == 'tiktok' %}
+								{% set icon = 'fa-brands fa-tiktok' %}
+								{% set title = 'TikTok' %}
+							{% elseif s.network == 'wechat' %}
+								{% set icon = 'fa-brands fa-weixin' %}
+								{% set title = 'WeChat' %}
+							{% elseif s.network == 'x' %}
+								{% set icon = 'fa-brands fa-square-x-twitter' %}
+								{% set title = 'X (formerly Twitter)' %}
+							{% elseif s.network == 'youtube' %}
+								{% set icon = 'fa-brands fa-youtube' %}
+								{% set title = 'YouTube' %}
+							{% endif %}
+
+							<li class="list-inline-item">
+								<a
+									href="{{ s.url|esc_url }}"
+									target="_blank"
+									rel="noopener noreferrer"
+									class="social-link"
+									data-bs-toggle="tooltip"
+									data-bs-placement="top"
+									title="{{ title }}"
+									data-bs-custom-class="tooltip-bg-primary"
+								>
+									<i class="{{ icon }}" aria-hidden="true"></i>
+									<span class="visually-hidden">{{ title }}</span>
+								</a>
+							</li>
+						{% endfor %}
+					</ul>
+				{% endif %}
+			</div>
+			<div class="col-md-6 col-lg">
+				<nav class="footer-menu-main" aria-label="{{ __('Major Site Sections', 'bc-sitka-spruce') }}">
+					{{ menu }}
+				</nav>
+			</div>
+			<div class="col-md-6 col-lg">
+				<nav class="footer-menu-utility" aria-label="{{ __('Footer Utility Links', 'bc-sitka-spruce') }}">
+					<ul class="menu">
+						{% include '/views/static-content/menu-utility.twig' %}
+					</ul>
+				</nav>
+			</div>
+			<div class="col-md-6 col-lg">
+				<nav class="footer-menu-legal" aria-label="{{ __('Global Links', 'bc-sitka-spruce') }}">
+					<ul class="menu">
+						{% include '/views/static-content/menu-legal.twig' %}
+					</ul>
+				</nav>
+			</div>
+		</div>
+	</div>
+	<div class="footer-copyright text-bg-primary">
+		<div class="container-xl">
+			<p>&copy; {{ current_year }} {{ __('Bellevue College. All Rights Reserved.', 'bc-sitka-spruce') }} <a target="_blank" class="text-white" href="https://www.bellevuecollege.edu/accessibility/">{{ __('Privacy Notice', 'bc-sitka-spruce') }}</a></p>
+		</div>
+	</div>
+</footer>

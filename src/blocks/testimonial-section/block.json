@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "name": "bc-sitka-spruce/testimonial-section",
+    "title": "Testimonial Section",
+    "category": "sitka-sections",
+    "icon": "admin-users",
+    "description": "Section for displaying a testimonial or featured experience. ",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "../../../../src/blocks/testimonial-section/render.php"
+    },
+	"editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": ["file:./style-index.css", "tabcordion-list"]
+}

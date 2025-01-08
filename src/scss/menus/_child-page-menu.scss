@@ -1,0 +1,45 @@
+////
+/// @group menus
+/// Child page menu styles.
+////
+
+.child-page-menu {
+
+  ul,
+  li {
+    list-style: none;
+  }
+
+  // ul {
+  //   @include xy-grid;
+  //   @include xy-gutters($negative: true);
+  // }
+
+  // li {
+  //   @include xy-cell(12);
+
+  //   @include media-breakpoint-up(md) {
+  //     @include xy-cell(4);
+  //   }
+  // }
+
+  a {
+    @include link-arrow;
+    @include typeface(h4);
+    @include global-spacing(xsmall, padding-top padding-bottom);
+    display: block;
+    width: 100%;
+    border-top: rem-calc(2) solid $gray--light;
+  }
+
+  // Borders
+  li:first-child a {
+    border-top: 0;
+  }
+
+  li:nth-child(-n + 3) a {
+    @include media-breakpoint-up(md) {
+      border-top: 0;
+    }
+  }
+}

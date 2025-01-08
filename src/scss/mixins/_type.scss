@@ -1,0 +1,83 @@
+////
+/// @group type
+/// Functions and mixins for type.
+////
+
+/// Generates Font Awesome font rules.
+/// @param {Number} $weight - The font weight to use. Defaults to 400.
+@mixin font-awesome($weight: 400) {
+	font-family: $font-awesome;
+	font-weight: $weight;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-smoothing: antialiased;
+}
+
+/// Generates Font Awesome duotone font rules.
+@mixin font-awesome-duotone {
+	font-family: $font-awesome-duotone;
+	font-weight: 900;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	font-smoothing: antialiased;
+}
+
+/// Generate type styles for an element or a list of elements.
+/// @param {Keyword|List} $elements - A list or single text element to print selectors and styles for.
+/// @param {Boolean} $print-class - Print a corresponding class for each selector.
+/// @example scss - Include a typeface map with responsive behaviors to any HTML element
+///   h1 {
+///     @include typeface(h1);
+///   }
+@mixin typefaces($elements, $print-class: false) {
+	@each $element in $elements {
+		$selector: #{$element};
+
+		@if $print-class {
+			$selector: "#{$selector}" + ", .#{$element}";
+		}
+
+		#{$selector} {
+			@include typeface($element);
+		}
+	}
+}
+
+/// Generate a type style for a single element.
+/// @param {String} $element - The element to print text styles for.
+@mixin typeface($element) {
+	@each $breakpoint, $properties in map-get($type-styles, $element) {
+		@include breakpoint(min, $breakpoint) {
+			@each $property, $value in $properties {
+				#{$property}: #{$value};
+			}
+		}
+	}
+}
+
+/// Generate a type style for a single element at a single breakpoint.
+/// @param {String} $element - The element to print text styles for.
+/// @param {String} $breakpoint - The breakpoint to generate rules for.
+@mixin typeface-rules($element, $breakpoint) {
+	$el: map-get($type-styles, $element);
+	$properties: map-get($el, $breakpoint);
+	@each $property, $value in $properties {
+		#{$property}: #{$value};
+	}
+}
+
+/// Generate a secondary type style.
+/// @param {String} $style - The type of style to print.
+/// @example scss - Include a typeface map element with non-HTML name with responsive behaviors to any HTML element
+///   .small-text {
+///     @include secondary-typeface(small-text);
+///   }
+@mixin secondary-typeface($style) {
+	@each $breakpoint, $properties in map-get($secondary-type-styles, $style) {
+		@include breakpoint(min, $breakpoint) {
+			@each $property, $value in $properties {
+				#{$property}: #{$value};
+			}
+		}
+	}
+}

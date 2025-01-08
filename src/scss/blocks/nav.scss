@@ -1,0 +1,25 @@
+@import '/src/scss/block-styles';
+
+@import "~bootstrap/scss/nav";
+
+.nav-pills {
+	.nav-item {
+		margin-right: .5rem;
+		&:last-child {
+			margin-right: 0;
+		}
+	}
+	.nav-link {
+		background-color: var( --bc-brutus-blue);
+		color: var( --white);
+		border: 1px solid var( --bc-brutus-blue);
+
+		&.active {
+			border: 1px solid var( --bc-fountain-blue);
+		}
+
+	}
+
+	--bs-nav-pills-link-active-bg: var( --white);
+	--bs-nav-pills-link-active-color: var( --black);
+}

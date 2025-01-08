@@ -1,0 +1,18 @@
+@import '/src/scss/block-styles';
+
+.tabs-section-component {
+	color: var(--white);
+	background-color: var(--bc-rainy-night-blue);
+
+	.section-heading {
+		--bs-heading-color: var(--white);
+		--text-color: var(--white);
+	}
+
+
+	.tab-wrapper {
+		padding-top: 0;
+		padding-bottom: 0;
+	}
+}
+

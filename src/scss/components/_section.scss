@@ -1,0 +1,112 @@
+.section-divider {
+	max-width: 1160px;
+	margin: 0 auto;
+}
+
+.section,
+.section.swiper {
+	padding-top: var( --sitka-container-spacing );
+	padding-bottom: var( --sitka-container-spacing );
+
+	&.curved-top {
+		padding-top: 0;
+	}
+
+	&.section-white {
+		// these sections have a divider between them
+		// add the spacing below the inner container, below the divider
+		padding-bottom: 0;
+
+		.container-xl:has(+ hr) {
+			margin-bottom: var( --sitka-container-spacing );
+		}
+	}
+
+	&.section-xlight {
+		background-color: var(--gray--xlight);
+	}
+
+	&.section-accent-blue-extralight {
+		background-color: var(--accent-fountain-blue-extralight);
+	}
+
+	&.section-brutus-blue {
+		background-color: var(--bc-brutus-blue);
+	}
+
+	&.section-rainy-night-blue {
+		background-color: var(--bc-rainy-night-blue);
+	}
+
+	.section-heading > .container-xl {
+		padding-bottom: calc( var( --sitka-container-spacing ) * 0.5);
+	}
+
+	&:has(+ .section) {
+		margin-bottom: 0;
+	}
+
+}
+
+// Add margin between sections and content blocks
+.section + .block-wrapper {
+	margin-top: var( --sitka-container-spacing );
+}
+
+// Hide arch shape if next section is dark
+.section.section-rainy-night-blue {
+	& + .arch-shape {
+		display: none;
+	}
+	& + .arch-shape + .section.section-rainy-night-blue.curved-top {
+
+		.diffs--container,
+		& > .container-xl {
+			padding-top: var( --sitka-container-spacing );
+		}
+	}
+}
+
+// Overlap Arch Shape with background, if the previous section is not white
+.section.section-accent-blue-extralight + .arch-shape,
+.section.section-brutus-blue + .arch-shape,
+.section.section-xlight + .arch-shape {
+	margin-top: -10vw;
+}
+.section.section-accent-blue-extralight:has(+ .arch-shape),
+.section.section-brutus-blue:has(+ .arch-shape),
+.section.section-xlight:has(+ .arch-shape) {
+	padding-bottom: calc( var( --sitka-container-spacing ) + 10vw );
+}
+
+.section.section-xlight + .section.section-xlight {
+	border-top: 2px solid var(--white);
+}
+
+.section.section-rainy-night-blue + .section.section-rainy-night-blue,
+.section.section-rainy-night-blue + .arch-shape + .section.section-rainy-night-blue {
+	border-top: 2px solid var(--bc-fountain-blue);
+}
+
+
+.section.section-rainy-night-blue.diffs:has(+ .section.section-rainy-night-blue),
+.section.section-rainy-night-blue.diffs:has(+ .arch-shape) {
+	padding-bottom: 0;
+}
+
+// Avoid extra spacing between last section and sock
+.section:last-child {
+	margin-bottom: 0;
+}
+
+// Hide divider if next section has a colored background, arch shape, or is the last section
+.section.section-white:has(+ .section.section-rainy-night-blue),
+.section.section-white:has(+ .section.section-brutus-blue),
+.section.section-white:has(+ .section.section-xlight),
+.section.section-white:has(+ .section.section-accent-blue-extralight),
+.section.section-white:has(+ .arch-shape),
+.section.section-white:last-child {
+	.section-divider {
+		display: none;
+	}
+}

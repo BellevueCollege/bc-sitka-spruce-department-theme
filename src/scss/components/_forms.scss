@@ -1,0 +1,163 @@
+////
+/// @group global
+/// Base styles for form elements for any CMS.
+////
+
+form .form-label,
+form .form-control {
+	font-family: $myriad-pro;
+}
+
+@mixin text-input-defaults() {
+	// Styles that used to apply to buttons
+	transition:
+		color 0.5s $bezier-ease,
+		background 0.5s $bezier-ease,
+		border 0.5s $bezier-ease;
+	display: inline-block;
+	position: relative;
+	z-index: 2;
+	line-height: 1.2;
+	text-decoration: none;
+	text-transform: none;
+	max-width: 100%;
+
+	&:hover,
+	&:focus {
+		text-decoration: none;
+		outline: none;
+	}
+
+	&:disabled {
+		cursor: not-allowed;
+		pointer-events: none;
+		opacity: 0.6;
+	}
+}
+
+@mixin form-input() {
+	border: 2px solid get_color($sitka-colors, 'gray--xlight');
+	border-radius: calc( var(--bs-border-radius) * 0.5 );
+	color: var(--sitka-form-input-color, var( --black ));
+	text-transform: none;
+	background: var( --sitka-form-input-background, var( --white ) );
+	box-shadow: none;
+
+	line-height: 3.5rem;
+	padding: 0rem 1rem;
+
+
+	&:hover {
+		border-color: var(--bc-brutus-blue);
+	}
+
+	&:focus {
+		border-color: var(--bc-rain-garden-green);
+	}
+}
+
+.view__wrap {
+	margin-bottom: 1rem;
+
+	label {
+		font-weight: 600;
+
+	}
+}
+
+.view__legend {
+	font-size: 1rem;
+	font-weight: 600;
+}
+
+ul.view__items {
+	list-style: none;
+	padding-left: 0;
+	margin-bottom: 0;
+
+	label {
+		font-weight: normal;
+		margin-left: 0.5rem;
+	}
+
+	input.view__checkbox {
+		//font-size: 1.25em;
+		//outline: 1px solid var(--gray--light);
+		//border: none;
+	}
+}
+
+input.view__input,
+select.view__select {
+	@include form-input();
+	width: 100%;
+}
+
+// Selects.
+select.view__select {
+	width: 100%;
+	// Webkit
+	margin: 0;
+	color: var(--gray--dark);
+	border-color: var(--white);
+
+
+	// This is a basic triangle. We need to convert the # in the color to it's
+	// HTML encoded form, '%23', for Blink and Gecko.
+	// stylelint-disable
+	// Disable linting so we can break the svg across lines for readability.
+	// background-image:
+	//   url(
+	//     'data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" width="20" height="10"><polygon points="10,10 20,0 0,0" fill="#{str-insert(str-slice(quote($gray--dark), 2), '%23', 1)}"/></svg>'
+	//   );
+	// stylelint-enable
+	background: var(--white) url(/assets/img/chevron-down-accent.svg) no-repeat;
+	background-repeat: no-repeat;
+	background-position: calc(100% - 0.625em) 50%;
+	background-size: 1em;
+	font-family: $sans-serif;
+	font-weight: 400;
+	// Remove all user-agent set appearance.
+	appearance: none;
+}
+
+#main-content {
+	input[type="checkbox"]:not(.gfield-choice-input),
+	.wFormContainer .oneField input[type="checkbox"] {
+		appearance: none;
+		width: 1em;
+		margin-bottom: 1em;
+	}
+
+	input[type="checkbox"]:not(.gfield-choice-input):after,
+	.wFormContainer .oneField input[type="checkbox"]::after {
+		display: inline-block;
+		width: 1em;
+		height: 1em;
+		//margin-top: -4px;
+		//margin-left: -4px;
+		content: "";
+		cursor: pointer;
+		border: 1px solid rgb(192, 192, 192);
+		border-radius: calc( var(--bs-border-radius) * 0.5 );
+		background: var(--white);
+		position: relative;
+		top: 0.125em;
+	}
+
+	input[type="checkbox"]:not(.gfield-choice-input):checked:after,
+	.wFormContainer .oneField input[type="checkbox"]:checked::after {
+		border: 1px solid var(--bc-fountain-blue);
+		background-image: url(/assets/img/checked.svg);
+		background-repeat: no-repeat;
+		background-repeat: no-repeat;
+		background-size: 0.75em;
+		background-position: 1px 0.125em;
+
+		&:focus {
+			border: 2px solid var(--bc-fountain-blue);
+		}
+	}
+}
+
+

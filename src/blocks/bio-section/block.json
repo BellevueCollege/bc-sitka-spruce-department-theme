@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/block.json",
+  "apiVersion": 3,
+  "name": "bc-sitka-spruce/bio-section",
+  "title": "Biography Section",
+  "category": "sitka-sections",
+  "icon": "admin-users",
+  "description": "Section for displaying biography information. ",
+  "version": "1.0.0",
+  "textdomain": "bc-sitka-spruce",
+  "supports": {
+    "html": false,
+		"multiple": false
+  },
+  "allowedBlocks": [
+    "bc-sitka-spruce/bio-section-content",
+    "bc-sitka-spruce/callout"
+  ],
+    "attributes": {
+  },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": [ "file:./style-index.css"],
+    "render": "file:./render.php"
+}

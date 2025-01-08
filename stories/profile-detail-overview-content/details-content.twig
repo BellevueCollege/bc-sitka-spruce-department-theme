@@ -1,0 +1,75 @@
+{#  use {{dump()}} for troubleshooting- timber documentation for more dump options #}
+<section class="profile-overview-wrapper bg-trees-dark">
+	{% include '/stories/breadcrumbs/breadcrumbs.twig' %}
+	<div class="container-xl profile-overview">
+		<div class="row">
+			<div class="profile-overview-column2 col-md-6 order-md-1 mb-4">
+				{% if profile_image %}
+					<div class="profile__image text-center">
+							{{ profile_image }}
+					</div>
+				{% endif %}
+			</div>
+			<div class="profile-overview-column1 col-md-6">
+				<h1>{{ first_name }} {{ last_name }}</h1>
+				<p class="position-text lead">{{ position }}</p>
+				<dl class="profile-dept">
+					{% if department %}
+						<dt>Department</dt>
+						<dd>
+							{% for single_dept in department %}
+								{{ single_dept.name|esc_html }}{% if not loop.last %}, {% endif %}
+							{% endfor %}
+						</dd>
+					{% endif %}
+				</dl>
+				<dl class="profile-content">
+					{% if email %}
+						<dt>Email</dt>
+						<dd>
+							<a href="mailto:{{ email }}">{{ email }}</a>
+						</dd>
+					{% endif %}
+
+					{% if phone %}
+						<dt>Phone</dt>
+						<dd>
+							<a href="tel:{{ phone }}">{{ phone }}</a>
+						</dd>
+					{% endif %}
+
+					{% if languages %}
+						<dt>Languages Spoken</dt>
+						<dd>{{ languages }}</dd>
+					{% endif %}
+
+					{% if office_location %}
+						<dt>Office Location</dt>
+						<dd>{{ office_location }}</dd>
+					{% endif %}
+
+					{% if office_hours %}
+						<dt>Office Hours</dt>
+						<dd>{{ office_hours }}</dd>
+					{% endif %}
+
+					{% if linkedin %}
+						<dt>LinkedIn</dt>
+						<dd>
+							<a href="{{ linkedin.url }}" target="_blank">{{ linkedin.title }}<span class="visually-hidden"> {{ __(' Opens in a new window', 'bc-sitka-spruce') }}</span></a>
+							<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
+						</dd>
+					{% endif %}
+
+					{% if additional_url %}
+						<dt>Additional URL</dt>
+						<dd>
+							<a href="{{ additional_url.url }}" target="_blank">{{additional_url.title|default('Additional URL')}} <span class="visually-hidden"> {{ __(' Opens in a new window', 'bc-sitka-spruce') }}</span></a>
+							<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
+						</dd>
+					{% endif %}
+				</dl>
+			</div>
+		</div>
+	</div>
+</section>

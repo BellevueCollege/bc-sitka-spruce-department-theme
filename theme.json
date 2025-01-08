@@ -1,0 +1,64 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/theme.json",
+    "version": 2,
+    "customTemplates": [
+        
+    ],
+    "templateParts": [
+
+    ],
+    "styles": {
+        "typography": {
+            "fontFamily": "var(--bs-font-sans-serif)"
+        }
+    },
+    "settings": {
+        "layout": {
+            "contentSize": "760px",
+            "wideSize": "1280px"
+        },
+        "typography": {
+            "fontSizes": [],
+            "customFontSize": false
+        },
+        "color": {
+            "defaultPalette": false,
+            "custom": false,
+            "gradients": [],
+            "customGradient": false,
+            "defaultGradients": false,
+            "palette": [
+                {
+                    "slug": "brutus-blue",
+                    "name": "Brutus Blue",
+                    "color": "var(--bc-brutus-blue)"
+                },
+                {
+                    "slug": "bulldog-silver",
+                    "name": "Bulldog Silver",
+                    "color": "var(--bc-bulldog-silver)"
+                },
+                {
+                    "slug": "fall-maple-red",
+                    "name": "Fall Maple Red",
+                    "color": "var(--bc-fall-maple-red)"
+                },
+                {
+                    "slug": "fountain-blue",
+                    "name": "Fountain Blue",
+                    "color": "var(--bc-fountain-blue)"
+                },
+                {
+                    "slug": "rain-garden-green",
+                    "name": "Rain Garden Green",
+                    "color": "var(--bc-rain-garden-green)"
+                },
+                {
+                    "slug": "rainy-night-blue",
+                    "name": "Rainy Night Blue",
+                    "color": "var(--bc-rainy-night-blue)"
+                }
+            ]
+        }
+    }
+}

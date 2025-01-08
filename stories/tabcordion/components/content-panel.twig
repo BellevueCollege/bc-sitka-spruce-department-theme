@@ -1,0 +1,28 @@
+{% set heading_level = heading_level|default('h2') %}
+
+{%  if display_heading_visually %}
+	{% set heading_classes ='d-none d-md-block' %}
+{% else %}
+	{% set heading_classes = 'd-none d-md-block visually-hidden' %}
+{% endif %}
+
+<div
+	class="tab-pane {{ active }} accordion-item"
+	id="{{ title|sanitize }}-content"
+	role="tabpanel"
+	aria-labelledby="{{ title|sanitize }}-tab"
+>
+	<{{ heading_level }} class="accordion-header d-md-none" id="{{ title|sanitize }}-acc-header">
+		<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#{{ title|sanitize }}-acc-content" aria-expanded="false" aria-controls="{{ title|sanitize }}-acc-content">
+			{{ title }}
+		</button>
+	</{{ heading_level }}>
+	<div id="{{ title|sanitize }}-acc-content" class="accordion-collapse collapse d-md-block" aria-labelledby="{{ title|sanitize }}-acc-header" data-bs-parent="#{{ parent_id }}">
+		<div class="accordion-body">
+			<{{ heading_level }} class="{{ heading_classes }}">{{ title }}</{{ heading_level }}>
+			{% block content %}
+				{{ content }}
+			{% endblock %}
+		</div>
+	</div>
+</div>

@@ -1,0 +1,49 @@
+{#
+/**
+ * @file
+ * Bellevue template for the organizations feature component.
+ */
+#}
+<section class="section section-white organization-feature">
+    {# Heading for the Department Feature #}
+    {% include '/stories/section-heading/section-heading.twig' with {
+        heading,
+        subheading,
+        link,
+        eyebrow,
+    } %}
+
+    {# Content for the Card #}
+    {% set card_content %}
+        <h3>
+			{% include '/stories/atoms/links/link-arrow.twig' with {
+				link: {
+					title: dept_title,
+					url: dept_url,
+				},
+				linkClass: 'link-accent-lg',
+			} %}
+		</h3>
+        <div class="global-spacing--3x">{{ dept_summary }}</div>
+        {% if dept_services %}
+            <div class='organization-feature__resource'>
+                <h4 class="eyebrow-small">{{ __('Services &amp; Resources', 'bc-sitka-spruce') }}</h4>
+                <ul>
+                    {% for service in dept_services %}
+                        <li>{{ service }}</li>
+                    {% endfor %}
+                </ul>
+            </div>
+        {% endif %}
+    {% endset %}
+
+    <div class="organization-feature__container container-xl">
+        {% include '/stories/card-horizontal/card-horizontal.twig' with {
+            media: dept_image,
+            card_content: card_content,
+            aspect_ratio: '.72',
+        } %}
+    </div>
+	<hr class="section-divider" />
+</section>
+

@@ -1,0 +1,38 @@
+@import '/src/scss/block-styles';
+
+.application-steps-component {
+
+	background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 10rem);
+
+	@include media-breakpoint-up('lg') {
+		background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 25rem);
+	}
+
+	.accordion-body > .application-step-single {
+		& :last-child {
+			margin-bottom: 0;
+		}
+		&:nth-child(even) > .container-xl  {
+			background-color: var(--gray--xxlight);
+			border-top: 1px solid var(--bc-bulldog-silver);
+		}
+		&:nth-child(odd) > .container-xl  {
+			background-color: var(--gray--xlight);
+		}
+
+		& > .container-xl {
+			padding-top: var( --sitka-container-spacing );
+			padding-bottom: var( --sitka-container-spacing );
+		}
+
+
+		@include media-breakpoint-up('md') {
+			&:nth-child(even) > .container-xl {
+				background-color: var(--gray--xxlight);
+			}
+			&:nth-child(odd) > .container-xl {
+				background-color: var(--gray--xlight);
+			}
+		}
+	}
+}

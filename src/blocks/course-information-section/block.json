@@ -1,0 +1,24 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/course-information-section",
+    "title": "Course Information Section",
+    "category": "sitka-sections",
+    "icon": "align-pull-right",
+    "description": "Course information for a degree or certificate.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "html": false
+    },
+	"allowedBlocks": [
+		"bc-sitka-spruce/course-information-section-content",
+		"bc-sitka-spruce/callout"
+	],
+    "attributes": {
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": [ "file:./style-index.css"],
+    "render": "file:./render.php"
+}

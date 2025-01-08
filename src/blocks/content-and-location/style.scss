@@ -1,0 +1,48 @@
+@import '/src/scss/block-styles';
+
+.location-and-hours.card {
+	max-width: 360px;
+	margin-left: auto;
+	margin-right: auto;
+
+    background-color: var( --accent-fountain-blue-extralight );
+    border: none;
+}
+
+.content-and-location.container-xl {
+    padding-top: var( --sitka-container-spacing );
+	margin-bottom: var( --sitka-container-spacing);
+
+    @include media-breakpoint-up('lg') {
+        position: relative;
+        margin-top: calc( var( --sitka-container-spacing ) * -0.5 );
+        background-color: css_color('white');
+        border-radius: calc(var(--bs-border-radius) * 1.5);
+        border-bottom-left-radius: 0;
+        border-bottom-right-radius: 0;
+    }
+
+    @include media-breakpoint-only('lg') {
+        --bs-gutter-x: 5.5rem;
+        margin-left: 1.5rem;
+        margin-right: 1.5rem;
+        width: calc( 100% - 3rem );
+    }
+
+	// If there is no hero image
+	&:first-child {
+		@include media-breakpoint-up('lg') {
+			margin-top: calc( var( --sitka-container-spacing ) );
+		}
+	}
+
+}
+
+.site-type-suppt .content-and-location.container-xl {
+
+    @include media-breakpoint-up('lg') {
+        margin-top: calc( var(--bs-gutter-x ) * -0.5 );
+        position: initial;
+        padding-top: calc( var(--bs-gutter-x )  );
+    }
+}

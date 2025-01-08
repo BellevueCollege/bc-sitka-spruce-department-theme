@@ -1,0 +1,25 @@
+{#
+/**
+ * @file
+ * Bellevue template for news feature featured news article.
+ */
+#}
+<div class="row news-feature--featured-item ">
+  {% if image %}
+    <div class="col-sm-12 col-md-8">
+      <figure class="aspect-ratio-frame oho-animate fade-in" style="--aspect-ratio: 40/76">
+        {{ image }}
+      </figure>
+    </div>
+  {% endif %}
+
+  <div class="col-sm-12 col-md-4">
+    <div class="text-margin-reset oho-animate fade-in-right">
+      <div class="eyebrow">{{ __('Featured Story', 'bellevue_2022') }}</div>
+      <h3>
+        <a href="{{ url }}">{{ title }}</a>
+      </h3>
+      {{ summary }}
+    </div>
+  </div>
+</div>

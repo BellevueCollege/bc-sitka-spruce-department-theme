@@ -1,0 +1,201 @@
+////
+/// @group spacing
+/// Global spacing variables.
+////
+@use 'sass:math';
+
+
+$rem-base: 1;
+$space-base: .5rem;
+
+@function strip-unit($number) {
+  @if type-of($number) == 'number' and not unitless($number) {
+    @return $number / ($number * 0 + 1);
+  }
+
+  @return $number;
+}
+
+
+@function convert-to-space($value, $base-value: $rem-base, $space-value: $space-base) {
+  $value: math.div(strip-unit($value) * $space-value, strip-unit($base-value));
+
+  @if ($value ==0rem) {
+    $value: 0;
+  }
+
+  @return $value;
+}
+
+@function space-calc($values, $base-value: $rem-base) {
+  $max: length($values);
+
+  @if $max ==1 {
+    @return convert-to-space(nth($values, 1), $base-value);
+  }
+
+  $remValues: (
+  );
+
+  @for $i from 1 through $max {
+    $remValues: append($remValues, convert-to-space(nth($values, $i), $base-value));
+  }
+
+  @return $remValues;
+}
+
+/// these can be phased out
+$spacing--4xsmall: space-calc(1);
+$spacing--3xsmall: space-calc(1);
+$spacing--2xsmall: space-calc(1);
+$spacing--xsmall:  space-calc(2);
+$spacing--small: space-calc(3);
+$spacing--medium: space-calc(4);
+$spacing--default: space-calc(5);
+$spacing--large: space-calc(6);
+$spacing--xlarge:  space-calc(6);
+$spacing--2xlarge:  space-calc(10);
+$spacing--3xlarge: space-calc(12);
+$spacing--4xlarge: space-calc(12);
+
+
+/// Global Spacing Maps. Grouping custom spacing variables into responsive behaviors
+/// Duplicates are included only to keep the flats from breaking, no need to use them
+/// @type Map
+$global-spacing: (
+
+  /* 40,48,96 or 5x,8x,12x */
+  12x: (
+    xs: space-calc(5),
+    md: space-calc(6),
+    lg: space-calc(12),
+  ),
+  4xlarge: (
+    xs: space-calc(5),
+    md: space-calc(6),
+    lg: space-calc(12),
+  ),
+  3xlarge: (
+    xs: space-calc(5),
+    md: space-calc(6),
+    lg: space-calc(12),
+  ),
+
+  /* 40,56,80 or 5x,7x,10x */
+  10x: (
+    xs: space-calc(5),
+    md: space-calc(7),
+    lg: space-calc(10),
+  ),
+  2xlarge: (
+    xs: space-calc(5),
+    md: space-calc(7),
+    lg: space-calc(10),
+  ),
+
+  /* 32/48/56 or 4x,6x,7x */
+  7x: (
+    xs: space-calc(4),
+    md: space-calc(6),
+    lg: space-calc(7),
+  ),
+  xlarge: (
+    xs: space-calc(4),
+    md: space-calc(6),
+    lg: space-calc(7),
+  ),
+
+  /* 32/40/48 or 4x,5x,6x */
+  6x: (
+    xs: space-calc(4),
+    md: space-calc(5),
+    lg: space-calc(6),
+  ),
+  lg: (
+    xs: space-calc(4),
+    md: space-calc(5),
+    lg: space-calc(6),
+  ),
+
+  /* 24/32/40 or 3x,4x,5x */
+  5x: (
+    xs: space-calc(3),
+    md: space-calc(4),
+    lg: space-calc(5),
+  ),
+  default: (
+    xs: space-calc(3),
+    md: space-calc(4),
+    lg: space-calc(5),
+  ),
+
+  /* 24,32,32 or 3x,4x,4x */
+  4x: (
+    xs: space-calc(3),
+    md: space-calc(4),
+  ),
+  md: (
+    xs: space-calc(3),
+    md: space-calc(4),
+  ),
+
+  /* 16,24,24 or 2x,3x,3x */
+  3x: (
+    xs: space-calc(2),
+    md: space-calc(3),
+  ),
+  small: (
+    xs: space-calc(2),
+    md: space-calc(3),
+  ),
+
+  /* 16 or 2x */
+  2x: (
+    xs: space-calc(2),
+  ),
+  xsmall: (
+    xs: space-calc(2),
+  ),
+
+  /* 8 or 1x */
+  1x: (
+    xs: space-calc(2),
+  ),
+  2xsmall: (
+    xs: space-calc(2),
+  ),
+  3xsmall: (
+    xs: space-calc(2),
+  ),
+  4xsmall: (
+    xs: space-calc(2),
+  ),
+);
+
+/// Generate global spacing rules.
+/// @param {String} $size - The size of the global spacing rules to generate.
+/// @param {String|List} $properties - The properties to apply the spacing to.
+/// @example scss - Pass a size defined in spacing maps, and any css rules it should be applied to
+///   .block {
+///     @include global-spacing(medium, margin-top padding left);
+///   }
+
+@mixin global-spacing($size, $properties) {
+  @each $breakpoint, $spacing in map-get($global-spacing, $size) {
+    @include breakpoint(min, $breakpoint) {
+      @each $type in $properties {
+        #{$type}: #{$spacing};
+      }
+    }
+  }
+}
+
+/// Generate a single global spacing rule.
+///
+/// @param {String} $size - The size of the global spacing rules to generate.
+/// @param {String} $breakpoint - The Foundation breakpoint value to get.
+
+@function global-spacing($size, $breakpoint) {
+  $spacing: map-get($global-spacing, $size);
+  @return map-get($spacing, $breakpoint);
+}

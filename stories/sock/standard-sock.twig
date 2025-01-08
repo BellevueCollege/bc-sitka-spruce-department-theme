@@ -1,0 +1,52 @@
+
+<aside class="sock sock-standard dark-bg">
+	{% if standard_sock.cta|length > 0 %}
+		<div class="container-xl sock-cta">
+			{# This is technically an array, but should only loop 0 or 1 times #}
+			{% for cta in standard_sock.cta %}
+				<h2>{{ cta.headline|esc_html }}</h2>
+				<p class="lead">{{ cta.additional_text|esc_html }}</p>
+				{% if cta.buttons|length > 0 %}
+					{% for b in cta.buttons %}
+						{% include '/stories/atoms/links/link-button.twig' with {
+							link: b.button,
+							linkClass: 'btn btn-lg btn-light mb-2',
+							iconClass: 'ms-2 text-dark'
+						} %}
+					{% endfor %}
+				{% endif %}
+			{% endfor %}
+		</div>
+	{% endif %}
+	<div class="container-xl sock-location-hours">
+		<div class="sock-location-hours-content p-4">
+			<div class="row">
+				{% if display_location_card %}
+					<div class="col sock-location">
+						<h2 class="h4">{{ __('Location', 'bc-sitka-spruce') }}</h2>
+						{{ location }}
+						{{ location_image }}
+					</div>
+					<div class="col sock-hours">
+						<h2 class="h4">{{ __('Hours', 'bc-sitka-spruce') }}</h2>
+						{{ hours }}
+						{% include '/stories/atoms/links/link-button.twig' with {
+							link: {
+								title: __('Contact Information', 'bc-sitka-spruce'),
+								url: contact_page_url
+							},
+							linkClass: 'btn btn-light',
+							iconClass: 'ms-2 text-dark'
+						} %}
+					</div>
+				{% endif %}
+				<div class="col sock-manager">
+					<h2 class="h4">{{ website_manager.message|esc_html }}</h2>
+					<p><strong>{{ website_manager.first_name|esc_html }} {{ website_manager.last_name|esc_html }}</strong><br>
+					{{ website_manager.position|esc_html }} <br>
+					<i class="email-icon fa-solid fa-envelope" aria-hidden="true"></i> <a href="mailto:{{ website_manager.email|esc_html }}">{{ website_manager.email|esc_html }}</a></p>
+				</div>
+			</div>
+		</div>
+	</div>
+</aside>

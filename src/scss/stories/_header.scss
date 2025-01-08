@@ -1,0 +1,189 @@
+#header-wrapper {
+	background: css_color("white");
+	background: linear-gradient(
+		180deg,
+		css_color("gray--xlight") 60px,
+		css_color("white") 60px
+	);
+
+	// Show and hide menus based on screen size and expanded state
+	@include media-breakpoint-down($header-desktop-breakpoint) {
+		#site-header--site-title {
+			padding-right: 0;
+		}
+
+		#site-header--utility-nav,
+		#site-header--main-nav,
+		#site-header--cta,
+		#site-header--search {
+			display: none;
+		}
+
+	}
+
+	// Hide and display Search Box based on screen size and expanded state
+	@include media-breakpoint-up($header-desktop-breakpoint) {
+		#site-header--search {
+			display: none;
+		}
+		&.search-expanded #site-header--search {
+			display: block;
+		}
+	}
+
+	#site-header--search {
+		background-color: css_color("accent-fountain-blue-light");
+		.container-xl {
+			--bs-gutter-x: 1rem;
+		}
+	}
+
+	// Header State/Sticky Styles
+	// Display sticky header on scroll-up
+	&.site-header--beyond-threshold-animate {
+		transform: translateY(-100%);
+		transition: transform 150ms cubic-bezier(0.42, 0.08, 0.06, 0.98) 250ms;
+		transition: top 150ms cubic-bezier(0.42, 0.08, 0.06, 0.98);
+
+
+		&.site-header--scroll-up {
+			position: sticky;
+			top: -68px; // top off screen to make the bar minimal
+			z-index: 10000;
+			background: var(--white);
+			box-shadow: $box-shadow-sm;
+			transform: translateY(0%);
+		}
+
+	}
+}
+
+// Display Header
+body.menu-expanded {
+	overflow: hidden;
+
+	#header-wrapper {
+		.menu-toggle {
+			background-color: css_color("bc-brutus-blue");
+			color: css_color("white");
+		}
+
+		@include media-breakpoint-down($header-desktop-breakpoint) {
+			position: sticky;
+			overflow: auto;
+			height: 100vh;
+			z-index: 10000;
+			transform: translateY(0%);
+
+			#site-header--utility-nav,
+			#site-header--main-nav,
+			#site-header--cta,
+			#site-header--search {
+				display: block;
+			}
+
+			&.site-header--beyond-threshold-animate {
+
+				top: 0;
+			}
+		}
+	}
+}
+
+// Offset sticky header if WP admin bar is present
+.admin-bar #header-wrapper.site-header--scroll-up {
+	@include media-breakpoint-up("sm") {
+		top: -36px; // position below WP admin bar, but 68px off screen
+	}
+}
+
+#site-header {
+
+	&.container-xl {
+		--bs-gutter-x: 3rem;
+	}
+	@include media-breakpoint-up("xl") {
+		&.container-xl {
+			--bs-gutter-x: 0rem;
+		}
+	}
+
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+	grid-template-rows: auto;
+
+	// Mobile Header Layout
+	grid-template-areas:
+		"logo logo logo logo logo logo"
+		"navbar navbar navbar navbar navbar navbar"
+		"utilitynav utilitynav utilitynav utilitynav utilitynav utilitynav";
+
+	// Desktop Header Layout
+	@include media-breakpoint-up($header-desktop-breakpoint) {
+		grid-template-areas:
+			"logo logo utilitynav utilitynav utilitynav utilitynav"
+			"navbar navbar navbar navbar navbar navbar";
+	}
+
+	&--logo {
+		grid-area: logo;
+
+		img {
+			height: 40px;
+			width: auto;
+			margin: 10px 1rem 10px 0;
+		}
+	}
+	&--utility-nav {
+		grid-area: utilitynav;
+	}
+	&--site-navbar {
+		grid-area: navbar;
+	}
+
+	// Hamburger Menu
+	.menu-toggle {
+		border-radius: 0;
+		padding: 0 0.25em;
+		font-size: 1.75em;
+
+		.fas-bars::before {
+			color: css_color("bc-brutus-blue");
+		}
+	}
+
+	.site-title {
+		margin-top: 0.5rem;
+
+		a {
+			text-decoration: none;
+			color: css_color("black");
+		}
+	}
+
+	// Hide and display Search Box based on screen size and expanded state
+	@include media-breakpoint-up($header-desktop-breakpoint) {
+		&--main-nav {
+			padding-top: 0.5rem;
+		}
+		&--cta {
+			padding-top: 0.75rem;
+			padding-left: 1rem;
+		}
+	}
+
+	// Style Main and CTA menu interaction
+	&--menu-wrapper {
+		display: flex;
+		justify-content: flex-end;
+		@include media-breakpoint-down($header-desktop-breakpoint) {
+			padding-left: 0;
+			padding-right: 0;
+			flex-direction: column;
+		}
+
+		.menu {
+			flex: 0 1 auto;
+		}
+	}
+}

@@ -1,0 +1,23 @@
+{
+    "$schema": "https://raw.githubusercontent.com/AdvancedCustomFields/schemas/refs/heads/main/json/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/contact-selector",
+    "title": "Contact Selector Section",
+    "category": "sitka-sections",
+    "icon": "groups",
+    "description": "Section to display contact information for one or more people. Pulls from Profiles section, but doesn't link to profile pages.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "html": false,
+		"align": false
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css",
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "../../../../src/blocks/contact-selector/render.php"
+    }
+
+}

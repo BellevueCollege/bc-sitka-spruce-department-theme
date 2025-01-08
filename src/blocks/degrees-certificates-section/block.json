@@ -1,0 +1,17 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "name": "bc-sitka-spruce/degrees-certificates-section",
+    "title": "Degrees and Certificates Section",
+    "category": "sitka-sections",
+    "icon": "menu",
+    "description": "Section for displaying programs (degrees and certificates) offered by the department. ",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "../../../../src/blocks/degrees-certificates-section/render.php"
+    },
+	"editorScript": "file:./index.js",
+    "editorStyle": "file:./index.css",
+    "style": "file:./style-index.css"
+}

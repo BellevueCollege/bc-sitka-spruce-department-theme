@@ -1,0 +1,24 @@
+<?php
+/**
+ * Title: Standard Page Layout: Empty
+ * Slug: bc-sitka-spruce/page
+ * Categories: sitka-page-patterns, featured
+ * Keywords: starter
+ * Block Types: core/post-content
+ * Post Types: page, wp_template
+ * Viewport width: 1400
+ */
+?>
+
+<!-- wp:bc-sitka-spruce/narrow-content {"lock":{"move":true,"remove":false}} -->
+<div class="wp-block-bc-sitka-spruce-narrow-content narrow-content"><!-- wp:mayflower-blocks/lead -->
+<p class="wp-block-mayflower-blocks-lead lead"></p>
+<!-- /wp:mayflower-blocks/lead -->
+
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph --></div>
+<!-- /wp:bc-sitka-spruce/narrow-content -->
+<!-- wp:paragraph -->
+<p></p>
+<!-- /wp:paragraph -->

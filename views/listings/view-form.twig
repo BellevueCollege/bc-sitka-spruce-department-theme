@@ -1,0 +1,38 @@
+{#
+/**
+ * @file
+ * Default Bellevue template for the view form.
+ *
+ * Available variables:
+ * - view_name: The machine name of the view.
+ * - view_url: The form submit url.
+ * - method: The form submit method ('get' or 'post', depending on whether AJAX
+ *   is enabled).
+ * - exposed_filters: An array of exposed filter rendered HTML, keyed by filter name.
+ * - ajax: Hidden input elements used for AJAX requests. These elements must be
+ *   printed in the template if AJAX is enabled.
+ */
+#}
+<div class="filter-form-col">
+	<div class="filter-form-block rounded p-3">
+		<div class="form-block__title mb-4">{% block title %}{% endblock %}</div>
+		<form id="oho-views-form-{{ view_name }}" class="view__form" action="{{ view_url }}" method="{{ method }}">
+			{{ ajax }}
+			<div class="view__form--content">
+				{% block exposed_filters %}
+					{% for exposed_filter in exposed_filters %}
+						<div class="col-lg-4">
+							{{ exposed_filter }}
+						</div>
+					{% endfor %}
+				{% endblock %}
+				{% block submit %}
+					<button id="oho-views-submit-{{ view_name }}" class="view__button btn btn-primary btn-lg mb-1 view__button--submit">{{ __('Submit Search', 'oho-views') }}</button>
+				{% endblock %}
+				{% block reset %}
+					<a href="{{ view_url }}" id="oho-views-reset-{{ view_name }}" class="view__button btn btn-link view__button--reset">{{ __('Clear All Filters', 'oho-views') }}</a>
+				{% endblock %}
+			</div>
+		</form>
+	</div>
+</div>

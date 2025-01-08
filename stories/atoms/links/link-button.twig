@@ -1,0 +1,15 @@
+
+{% set samePageIcon = samePageIcon|default( '' ) %}
+{% set newPageIcon = newPageIcon|default( 'fa-solid fa-square-arrow-up-right' ) %}
+{% set linkClass = linkClass|default( 'btn btn-primary' ) %}
+{% set iconClass = iconClass|default( 'ms-2 text-white' ) %}
+
+{% if link.title and link.url %}
+	<a href="{{ link.url }}" {% if link.target %} target="{{ link.target|esc_attr }}" {% endif %} class="{{ linkClass }}">
+		{{ link.title|esc_html }}
+		{% if link.target %}
+			<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
+			<i class="{{ newPageIcon }} {{ iconClass }}" aria-hidden="true"></i>
+		{% endif %}
+	</a>
+{% endif %}

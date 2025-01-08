@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/listing-section-list-item",
+    "title": "List Item",
+    "category": "sitka-sections",
+    "icon": "editor-ul",
+    "description": "A single list item within a Listing Section",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "html": false
+    },
+	"allowedBlocks": [
+		"core/paragraph",
+		"bc-sitka-spruce/list-item-links"
+	],
+	"parent": [
+		"bc-sitka-spruce/listing-section"
+	],
+    "attributes": {
+        "title": {
+            "type": "string"
+        },
+		"placeholder": {
+			"type": "string"
+		},
+		"imageId": {
+			"type": "number",
+			"default": 0
+		},
+		"imageUrl": {
+			"type": "string",
+			"default": ""
+		},
+		"imageAlt": {
+			"type": "string",
+			"default": ""
+		}
+    },
+    "editorScript": "file:./index.js",
+    "render": "file:./render.php"
+}

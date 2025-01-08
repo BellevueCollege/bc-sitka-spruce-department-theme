@@ -1,0 +1,71 @@
+
+<aside class="sock sock-degree dark-bg">
+	{% if enable %}
+		<div class="container-xl sock-heading mb-4">
+			<h2>{{ main_heading|esc_html }}</h2>
+			<p class="lead">{{ main_text|esc_html }}</p>
+		</div>
+		<div class="container-xl sock-segments">
+			<div class="row">
+				<div class="col-md-8">
+					{% for segment in message_segments %}
+						<div class="sock-segment mb-4">
+							{% if segment.title %}<h3>{{ segment.title|esc_html }}</h3>{% endif %}
+							{% if segment.description %}<p>{{ segment.description|esc_html }}</p>{% endif %}
+							{% if segment.button %}
+								<p>
+									{% include '/stories/atoms/links/link-button.twig' with {
+										link: segment.button,
+										linkClass: 'btn btn-light',
+										iconClass: 'ms-2 text-dark',
+									} %}
+								</p>
+							{% endif %}
+							{% if segment.link %}
+								<p>
+									{% include '/stories/atoms/links/link-arrow.twig' with {
+										link: {
+											title: segment.link.title,
+											url: segment.link.url,
+											target: segment.link.target
+										},
+										linkClass: 'link-accent-lg text-white',
+									} %}
+								</p>
+							{% endif %}
+						</div>
+					{% endfor %}
+				</div>
+				<div class="col sock-admissions-contact">
+					{% set admissions_card_content %}
+						{% if admissions_contact_description %}
+							<p>{{ admissions_contact_description|wp_kses_post }}</p>
+						{% endif %}
+						{% if admissions_contact_button %}
+							{% include '/stories/atoms/links/link-button.twig' with {
+								link: admissions_contact_button,
+								linkClass: 'btn btn-light',
+								iconClass: 'ms-2 text-dark',
+							} %}
+						{% endif %}
+					{% endset %}
+
+
+					{% include '/stories/card-bootstrap/card-bootstrap.twig' with {
+						card_classes: ['card-sitka'],
+						media: admissions_contact_image,
+						card_title_tag: 'h3',
+						card_title: admissions_contact_title,
+						card_content: admissions_card_content,
+					} %}
+				</div>
+			</div>
+		</div>
+	{% else %}
+		<div class="container-xl">
+			<div class="alert alert-danger text-bg-danger p-4 rounded">
+				<p>{{ __('Error: The "Degree Sock" is not currently configured! Report this issue to the website manager.', 'bc-sitka-spruce') }}</p>
+			</div>
+		</div>
+	{% endif %}
+</aside>

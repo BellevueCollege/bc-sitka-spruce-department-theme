@@ -1,0 +1,19 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/hero-image",
+    "title": "Hero Image",
+    "category": "media",
+    "icon": "cover-image",
+    "description": "Displays an image, usually at the top of a page",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "inserter": false,
+        "align": false
+    },
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "../../../../src/blocks/hero-image/render.php"
+    }
+}

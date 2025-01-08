@@ -1,0 +1,68 @@
+@import '/src/scss/block-styles';
+
+.program-intro-section {
+
+    ul {
+        line-height: 180%;
+    }
+
+}
+
+
+.program-information-section {
+    margin-top: 0.25rem;
+    margin-bottom: 1.25rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.25rem;
+    background-color: var(--accent-fountain-blue-extralight);
+    border-radius: var(--bs-border-radius);
+
+    a {
+        @include link-accent-underline(get_color($sitka-colors, 'accent-link-blue'));
+
+        &:hover,
+        &:focus {
+            color: var(--black);
+        }
+    }
+
+    dt {
+        font-size: 1.375rem !important;
+
+    }
+}
+
+.pathway-information-section {
+    margin-top: 1.25rem;
+    margin-bottom: 0.25rem;
+    margin-left: 0.25rem;
+    margin-right: 0.25rem;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+    padding-left: 1.5rem;
+    padding-right: 1.25rem;
+    background-color: var(--gray--xlight);
+    border-radius: var(--bs-border-radius);
+
+    a {
+        @include link-accent-underline(get_color($sitka-colors, 'accent-link-blue'));
+
+        &:hover,
+        &:focus {
+            color: var(--black);
+        }
+    }
+
+    h3.card-title-small {
+        font-size: 1.375rem !important;
+        font-weight: 700 !important;
+    }
+
+    ul {
+        line-height: 220%;
+    }
+}

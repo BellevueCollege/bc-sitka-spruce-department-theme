@@ -1,0 +1,98 @@
+{#
+/**
+ * @file
+ * Bellevue template for the page wrapper.
+ *
+ * Available variables:
+ * - menus: All menus registered on the site, keyed by menu slug.
+ */
+#}
+{% extends 'system/html.twig' %}
+
+{% set main_menu %}
+	{% include 'system/menu.twig' with {
+		items: menu_main_menu.items,
+		depth: 2,
+		ul_class: 'menu',
+		li_active_class: 'menu-item--active-trail menu-item--expanded',
+		li_has_children_class: 'menu-item--expanded',
+	} %}
+{% endset %}
+
+{% set menu_cta %}
+	{% include 'system/menu.twig' with {
+		items: menu_cta_menu.items|slice(0, 2),
+		depth: 1,
+		ul_class: 'menu',
+		li_class: 'menu-item',
+		li_active_class: 'menu-item',
+		a_class: 'btn btn-info',
+	} %}
+{% endset %}
+
+{% set footer_menu %}
+	{% include 'system/menu.twig' with {
+		items: menu_main_menu.items,
+		depth: 1,
+		ul_class: 'menu',
+		li_active_class: 'menu-item--active-trail menu-item--expanded',
+		a_class: 'link-arrow',
+	} %}
+{% endset %}
+
+{% block wrapper %}
+
+	{% block header %}
+		{% include '/stories/header/header.twig' with {
+			core_homepage_url: 'https://www.bellevuecollege.edu',
+			site_homepage_url: site.siteurl,
+			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
+			site_title: site.blogname,
+			search_expanded: false,
+			menu_expanded: false,
+			menu: main_menu
+		}
+
+		%}
+	{% endblock %}
+
+	<main id="main-content" class="main-content">
+		{% block content %}
+
+		{% endblock %}
+	</main>
+
+	{% block sock %}
+		{% set location_image_html %}
+			<img src = "{{ acf_options.location_image.sizes['sock-location'] }}" alt = "{{ acf_options.location_image.alt }}" class = "img-fluid rounded">
+		{% endset %}
+
+		{% include '/stories/sock/standard-sock.twig' with {
+			standard_sock: acf_options.standard_sock,
+			display_location_card: acf_options.display_location_card,
+			location: acf_options.location,
+			location_image: location_image_html,
+			hours: acf_options.hours,
+			contact_page_url: acf_options.contact_page_url,
+			website_manager: acf_options.website_manager
+		} %}
+	{% endblock %}
+
+	{% block footer %}
+		{% include '/stories/footer/footer.twig' with {
+			core_homepage_url: 'https://www.bellevuecollege.edu',
+			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
+			mountains_url: theme.uri ~ '/assets/img/footer-mountains.svg',
+			site_homepage_url: site.siteurl,
+			site_title: site.blogname,
+			menu: footer_menu,
+			address: acf_options.address,
+			phone: acf_options.phone,
+			social: acf_options.social
+		} %}
+	{% endblock %}
+
+
+	{{ function('wp_footer') }}
+{% endblock %}
+

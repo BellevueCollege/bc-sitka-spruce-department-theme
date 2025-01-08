@@ -1,0 +1,58 @@
+@import '/src/scss/block-styles';
+
+.degrees-certificates-section-wrapper {
+	--bs-heading-color: var(--white);
+
+	.section-heading {
+		--text-color: var(--white);
+	}
+
+	hr.accent {
+		margin-top: 2rem;
+		margin-bottom: 3.5rem;
+
+		// this can likely be removed; another pull request has global styling
+		--bs-border-width: 2px;
+		border-color: var(--bc-fountain-blue);
+		opacity: 1;
+	}
+
+	.program-card {
+		--bs-heading-color: var(--black);
+		color: var(--black);
+
+		// Handle background color and border radius
+		& .row > div {
+			&:first-child {
+				background-color: var(--gray--xlight);
+				border-radius: var(--bs-border-radius) var(--bs-border-radius) 0 0;
+
+				@include media-breakpoint-up('md') {
+					border-radius: var(--bs-border-radius) 0 0 var(--bs-border-radius);
+				}
+
+				a {
+					color: get_color( $sitka-colors, 'accent-link-blue' );
+
+					&:hover,
+					&:focus {
+						color: var(--black);
+					}
+				}
+			}
+
+			&:last-child {
+				background-color: var(--white);
+				border-radius: 0 0 var(--bs-border-radius) var(--bs-border-radius);
+
+				@include media-breakpoint-up('md') {
+					border-radius: 0 var(--bs-border-radius)  var(--bs-border-radius) 0;
+				}
+
+				a {
+					@include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
+				}
+			}
+		}
+	}
+}

@@ -1,0 +1,16 @@
+{%  if links|length > 0 %}
+	<p>
+		{% for link in links %}
+			{% if link.title %}
+				{% include '/stories/atoms/links/link-arrow.twig' %}
+			{% elseif is_preview and link %}
+				<p class="text-danger">Notice: Link is missing title and will not be displayed!<p>
+			{% endif %}
+		{% endfor %}
+	</p>
+{% endif %}
+{% if button and button.title %}
+	{% include '/stories/atoms/links/link-button.twig' with { link: button } %}
+{% elseif is_preview and button %}
+	<p class="text-danger">Notice: Button is missing title and will not be displayed!</p>
+{% endif %}

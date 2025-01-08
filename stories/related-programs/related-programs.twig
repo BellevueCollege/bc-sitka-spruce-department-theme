@@ -1,0 +1,56 @@
+{#
+/**
+* @file
+* Bellevue template for the related programs component.
+*/
+#}
+<section class="related-programs-wrapper section section-white swiper">
+	{% set heading = __('Programs in this Department', 'bc-sitka-spruce') %}
+	{% set link_custom = {
+		url: site.siteurl|default('https://www.bellevuecollege.edu'),
+		title: __('Explore our Department', 'bc-sitka-spruce'),
+	} %}
+	{% include '/stories/section-heading/section-heading.twig' with {
+		heading,
+		link_custom
+	} %}
+	<div class="container-xl">
+		<div class="related-program-slides">
+			<div class="swiper-container">
+				<div class="slider-navigation">
+					<button class="slider-navigation__prev">
+						<span class="far fa-arrow-left" aria-hidden="true"></span>
+						<span class="visually-hidden">{{ __('Go to the previous program.', 'bc-sitka-spruce') }}</span>
+					</button>
+					<button class="slider-navigation__next">
+						<span class="far fa-arrow-right" aria-hidden="true"></span>
+						<span class="visually-hidden">{{ __('Go to the next program.', 'bc-sitka-spruce') }}</span>
+					</button>
+				</div>
+				<div class="swiper-wrapper">
+					{% for program in programs %}
+						{% if program.short_name %}
+							<article class="swiper-slide card related-program-card">
+								<div class="card-body">
+									<div class="row related-programs-pathway mb-2">
+										<div class="col-auto">
+											<i class="fa-solid fa-signs-post" aria-hidden="true"></i>
+											<span class="visually-hidden">Pathways</span>
+										</div>
+										<div class="col">
+											{{ program.pathway_names|join('<br>') }}
+										</div>
+									</div>
+									<h3 class="card-title card-title-big"><a href="{{ program.url }}">{{ program.short_name }}</a></h3>
+									<p class="card-text"><strong>{{ program.type }}</strong></p>
+									<p class="card-text">{{ program.overview }}</p>
+								</div>
+							</article>
+						{% endif %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
+	</div>
+</section>

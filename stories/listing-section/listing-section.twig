@@ -1,0 +1,16 @@
+{#
+/**
+ * @file
+ * Bellevue template for the listing section component.
+ */
+#}
+
+<section class="section section-xlight listing-section-wrapper">
+	{% include '/stories/section-heading/section-heading.twig' with {
+		'heading': title,
+		'subheading': description
+	} %}
+	<div class="listing-section container-xl">
+		{{ list_items }}
+	</div>
+</section>

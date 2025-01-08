@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "name": "bc-sitka-spruce/listing-section-list-item-links",
+    "title": "List Item Links and Button",
+    "category": "layout",
+    "icon": "admin-links",
+    "description": "Displays a list of links and an optional button.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+	"supports": {
+		"html": false
+	},
+	"parent": [
+		"bc-sitka-spruce/listing-section-list-item"
+	],
+    "acf": {
+        "mode": "auto",
+        "renderTemplate": "../../../../../src/blocks/listing-section/listing-section-list-item-links/render.php"
+    },
+	"editorScript": "file:./index.js"
+}

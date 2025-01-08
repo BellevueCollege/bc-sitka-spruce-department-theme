@@ -1,0 +1,22 @@
+{% if format == 'pills' %}
+	{% set format_classes = 'nav nav-pills' %}
+	{% set container_classes = 'tab-header d-none d-md-block container-xl' %}
+{% elseif format == 'tabs' %}
+	{% set format_classes = 'nav nav-tabs card-header-tabs' %}
+	{% set container_classes = 'tab-header d-none d-md-block card-header' %}
+{% elseif format == 'list' %}
+	{% set format_classes = 'nav flex-column d-none d-md-flex card-header-tabs' %}
+	{% set container_classes = 'tab-header left-pane col-md-5' %}
+{% endif %}
+
+
+<div class="{{ container_classes }}">
+	<div class="nav-container">
+		{% block tab_list_heading %}{% endblock %}
+		<ul class="{{ format_classes }}" role="tablist">
+			{% block tab_links %}
+				{{ tab_links }}
+			{% endblock %}
+		</ul>
+	</div>
+</div>

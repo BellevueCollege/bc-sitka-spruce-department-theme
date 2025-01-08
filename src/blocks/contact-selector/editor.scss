@@ -1,0 +1,14 @@
+@import "style";
+
+.wp-block-bc-sitka-spruce-contact-selector {
+	background: #fff;
+	border-radius: 6px 6px 0 0;
+	padding: 20px 40px 0 40px;
+	max-width: var(--wp--style--global--wide-size) !important;
+
+	.contact.card {
+		padding: 0;
+		max-width: none;
+		box-shadow: none;
+	}
+}

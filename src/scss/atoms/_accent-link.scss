@@ -1,0 +1,31 @@
+.link-accent,
+.link-accent-lg {
+	@include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
+
+	&.text-white {
+		--sitka-link-accent-icon-color: var( --white );
+		--sitka-link-accent-icon-active-color: var( --white );
+	}
+
+	.fa-solid,
+	.fa-thin,
+	.fa-regular {
+		margin-left: .25rem;
+		color: var(--sitka-link-accent-icon-color, #0055b8 );
+		transition:
+			transform $primary-transition,
+			opacity $primary-transition;
+		transform: translateX(0);
+	}
+
+	&:hover .fa-solid,
+	&:hover .fa-thin,
+	&:hover .fa-regular {
+		transform: translateX(4px);
+		color: var(--sitka-link-accent-icon-active-color, var( --black ) );
+	}
+}
+
+.link-accent-lg {
+	font-size: 1.25rem;
+}

@@ -1,0 +1,76 @@
+{
+    "key": "group_66a11fe652dd1",
+    "title": "Admin Options fields",
+    "fields": [
+        {
+            "key": "field_66a11fe69987f",
+            "label": "Site Type",
+            "name": "site_type",
+            "aria-label": "",
+            "type": "radio",
+            "instructions": "",
+            "required": 1,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "choices": {
+                "div": "Division Site",
+                "dept": "Department Site",
+                "suppt": "Support Unit Site"
+            },
+            "default_value": "dept",
+            "return_format": "value",
+            "allow_null": 0,
+            "other_choice": 0,
+            "layout": "vertical",
+            "save_other_choice": 0
+        },
+        {
+            "key": "field_6751de79f726d",
+            "label": "Parent Division",
+            "name": "parent_division",
+            "aria-label": "",
+            "type": "link",
+            "instructions": "If this site is part of an overarching division, set the URL for the 'parent' site here.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_66a11fe69987f",
+                        "operator": "!=",
+                        "value": "div"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "return_format": "array",
+            "allow_in_bindings": 0
+        }
+    ],
+    "location": [
+        [
+            {
+                "param": "options_page",
+                "operator": "==",
+                "value": "admin-options"
+            }
+        ]
+    ],
+    "menu_order": 0,
+    "position": "normal",
+    "style": "seamless",
+    "label_placement": "top",
+    "instruction_placement": "label",
+    "hide_on_screen": "",
+    "active": true,
+    "description": "",
+    "show_in_rest": 0,
+    "modified": 1733418680
+}

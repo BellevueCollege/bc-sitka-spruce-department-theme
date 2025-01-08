@@ -1,0 +1,37 @@
+
+/// Create global spacing classes for margin-top.
+/// @see config at top of file for names and values.
+
+@each $size, $values in $global-spacing {
+
+	.global-spacing--#{$size},
+	%global-spacing--#{$size} {
+
+	  @include global-spacing($size, margin-top);
+	}
+  }
+
+  /// Create global spacing classes for margin-top AND margin-bottom
+  /// @see config at top of file for names and values.
+
+  @each $size,
+	$values in $global-spacing {
+
+	.global-margin--#{$size},
+	%global-margin--#{$size} {
+
+	  @include global-spacing($size, margin-top margin-bottom);
+	}
+  }
+
+  /// Create global padding classes.
+  @each $size,
+	$values in $global-spacing {
+
+	.global-padding--#{$size},
+	%global-padding--#{$size} {
+
+	  @include global-spacing($size, padding-top);
+	  @include global-spacing($size, padding-bottom);
+	}
+  }

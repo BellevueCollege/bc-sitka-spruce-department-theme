@@ -1,0 +1,21 @@
+{#
+/**
+* @file
+* Bellevue template for the differentiators section component.
+*/
+#}
+<div class="arch-shape"></div>
+<section class="section section-rainy-night-blue diffs curved-top">
+	<div class="diffs--container">
+			{% include '/stories/section-heading/section-heading.twig' with {
+				heading: title,
+				subheading: description,
+				linkClass: 'link-accent-lg text-white',
+			} %}
+			<div class="container-xl global-spacing--2x oho-animate-sequence">
+					<div class="row justify-content-sm-center gy-3">
+							{{ content }}
+					</div>
+			</div>
+	</div>
+</section>

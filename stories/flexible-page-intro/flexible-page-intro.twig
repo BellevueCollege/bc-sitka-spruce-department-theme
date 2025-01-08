@@ -1,0 +1,20 @@
+<section class="bg-trees-dark flexible-page-intro-wrapper">
+	{% include '/stories/breadcrumbs/breadcrumbs.twig' %}
+	<div class="container-xl flexible-page-intro">
+		<duv class="row">
+			<div class="col intro-text-content">
+				<h1>{{ title }}</h1>
+				{% if intro_text %}
+					<p class="lead">{{ intro_text }}</p>
+				{% endif %}
+			</div>
+			{% if header_image %}
+				<div class="col-md-6">
+					<div class="flexible-page-header-image">
+						{{ header_image }}
+					</div>
+				</div>
+			{% endif %}
+		</duv>
+	</div>
+</section>

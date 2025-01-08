@@ -1,0 +1,43 @@
+.related-programs-wrapper {
+	.section-heading {
+		margin-bottom: 1rem;
+	}
+	.swiper-initialized .swiper-slide {
+		opacity: .3;
+
+		&-visible {
+			opacity: .3;
+		}
+
+		&-fully-visible,
+		&-active {
+			opacity: 1;
+		}
+	}
+
+	// alternate background colors
+	.card.related-program-card {
+		--bs-card-bg: var(--accent-fountain-blue-extralight);
+		--bs-card-border-width: 0;
+
+		&:nth-child(even) {
+			--bs-card-bg: var(--accent-fountain-blue-light);
+		}
+
+		a {
+			color: var(--accent-link-blue)
+		}
+
+		i {
+			color: var(--bc-brutus-blue);
+		}
+
+		.row {
+			--bs-gutter-x: 1.5rem;
+
+			.col:last-child {
+				border-left: 2px solid var(--bc-brutus-blue);
+			}
+		}
+	}
+}

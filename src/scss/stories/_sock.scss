@@ -1,0 +1,69 @@
+.sock {
+	color: var(--white);
+	--bs-text-color: var(--white);
+	padding-top: var(--sitka-container-spacing);
+	padding-bottom: var(--sitka-container-spacing);
+	background-color: var(--bc-brutus-blue);
+
+	// Layer gradient on top of image to create texture
+	background-image: linear-gradient(
+		180deg,
+		transparent 33%,
+		var(--bc-brutus-blue) 100%
+	), url('/assets/img/sock-texture.svg');
+
+	&-cta {
+		padding-bottom: var(--sitka-container-spacing);
+
+		.btn {
+			margin-right: 1rem;
+
+			&:last-child {
+				margin-right: 0;
+			}
+		}
+	}
+
+	&-location-hours-content {
+		background-color: var(--bc-rainy-night-blue);
+		border-radius: var(--bs-border-radius);
+	}
+
+	.sock-location p {
+		font-weight: 600;
+	}
+
+	.sock-manager {
+		border-left: 2px solid var(--bc-fountain-blue);
+
+		a {
+			font-weight: 600;
+		}
+
+		.email-icon {
+			color: var(--bc-fountain-blue);
+			margin-right: 0.75rem
+		}
+	}
+
+	a:not(.btn) {
+		&,
+		&:link,
+		&:visited {
+			color: var(--white);
+		}
+
+		&:hover,
+		&:focus,
+		&:active {
+			color: var(--accent-fountain-blue-light);
+		}
+	}
+
+	&.sock-degree {
+		.card-sitka {
+			--bs-card-color: var(--white);
+			--bs-card-bg: var(--bc-rainy-night-blue);
+		}
+	}
+}

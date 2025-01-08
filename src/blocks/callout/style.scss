@@ -1,0 +1,77 @@
+@import '/src/scss/block-styles';
+
+.callout {
+	border-radius: 0.5rem;
+	background-color: var( --sitka-callout-bg, var( --white ) );
+	padding: 2rem;
+	margin-bottom: 2rem;
+
+	&.callout-info {
+		--sitka-callout-bg: var( --accent-fountain-blue-extralight );
+	}
+
+
+	&__heading {
+		margin-bottom: 1rem;
+	}
+
+	p {
+		//@include global-spacing(2x, margin-top);
+		//@include secondary-typeface(small-text);
+		margin-bottom: 1rem;
+	}
+
+
+	&__links {
+
+		ul {
+			list-style: none;
+			font-weight: bold;
+			padding-left: 0;
+		}
+
+		li {
+			line-height: 2.5rem;
+		}
+
+		a {
+			&,
+			&:hover,
+			&:focus,
+			&:active,
+			&:visited,
+			&:link {
+				color: var(--accent-link-blue);
+				text-decoration: underline;
+				text-underline-offset: .25rem;
+				text-decoration-color: var(--bc-fountain-blue);
+			}
+
+			&:hover,
+			&:focus {
+				color: var(--bc-brutus-blue);
+			}
+		}
+
+		& + .callout__button {
+			margin-top: 1rem;
+		}
+	}
+
+	:last-child {
+		margin-bottom: 0;
+	}
+}
+
+
+
+// this bit shouldn't be necessary, but we have nesting callout divs.
+.callout > .callout {
+	margin: 0 !important;
+	padding: 0;
+}
+
+
+.callout + .callout {
+	//@include global-spacing(2x, margin-top);
+}

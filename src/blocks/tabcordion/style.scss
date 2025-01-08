@@ -1,0 +1,133 @@
+@import '/src/scss/block-styles';
+
+.tabcordion {
+	.tab-pane.accordion-item {
+		@include media-breakpoint-up('md') {
+			--bs-accordion-border-radius: 0;
+			--bs-accordion-bg: none;
+			--bs-accordion-border-color: transparent;
+		}
+
+		@include media-breakpoint-down('md') {
+			opacity: 1;
+			display: block;
+		}
+	}
+}
+
+.tabcordion.tabcordion-pills {
+
+	.accordion {
+		--bs-accordion-body-padding-x: 0;
+		--bs-accordion-body-padding-y: 0;
+
+		--bs-accordion-border-color: transparent;
+		--bs-accordion-border-width: 0;
+
+		--bs-accordion-btn-bg: var(--bc-brutus-blue);
+		--bs-accordion-btn-color: var(--white);
+
+		--bs-accordion-active-color: var(--black);
+		--bs-accordion-active-bg: var(--white);
+		--bs-accordion-bg: transparent;
+
+		@include media-breakpoint-down('md') {
+			padding: 0 1rem;
+
+			.accordion-body {
+				padding-top: 1.5rem;
+				padding-bottom: 1rem;
+			}
+		}
+	}
+
+	.tab-header {
+		--bs-gutter-x: 3.25rem;
+		background: var(--gray--xlight);
+		padding-top: calc( var(--bs-gutter-x) * 0.5);
+		padding-bottom: calc( var(--bs-gutter-x) * 0.5);
+	}
+
+	// Inset container for tabs
+	.tab-header .nav-container{
+		.nav-link {
+			--bs-nav-link-font-size: 1rem;
+			--bs-nav-link-font-weight: 600;
+			--bs-nav-link-padding-y: 0.5em;
+			--bs-nav-link-padding-x: 2em;
+		}
+		//margin: 1rem 0rem 2rem 0rem;
+		padding: 0.75rem;
+		border-radius: calc( var(--bs-border-radius) * 2 );
+		background: darken(#ebeef2, 3%);
+		box-shadow: inset 0px 2px 4px 0px rgba(0,0,0,0.125);
+
+		@include media-breakpoint-up('lg') {
+			//margin: 0rem -2rem 2rem -2rem !important;
+		}
+
+	}
+
+	.accordion-button {
+		border: 2px solid var(--bc-fountain-blue);
+		border-radius: var( --bs-border-radius );
+		margin-top: 0.5rem;
+		&.collapsed {
+			border: 1px solid var(--bc-brutus-blue);
+		}
+	}
+
+	// Wrap content in a container to control width, when needed.
+	&.wrap-content {
+
+		margin-bottom: 3.25rem;
+
+		.accordion {
+			--bs-accordion-body-padding-x: 0;
+			--bs-accordion-body-padding-y: 0;
+
+			--bs-accordion-border-color: var(--bc-bulldog-silver);
+			--bs-accordion-border-width: 1;
+
+			--bs-accordion-btn-bg: var(--bc-brutus-blue);
+			--bs-accordion-btn-color: var(--white);
+
+			--bs-accordion-active-color: var(--black);
+			--bs-accordion-active-bg: var(--white);
+			--bs-accordion-bg: transparent;
+		}
+		.accordion .tab-content {
+			@include make-container();
+			padding-top: calc( var(--bs-gutter-x) * 0.25);
+			padding-bottom: calc( var(--bs-gutter-x) * 0.25);
+
+			background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('gray--xxlight') 100%);
+
+
+
+			@include media-breakpoint-up('lg') {
+				--bs-gutter-x: 7.5rem;
+			}
+			@include media-breakpoint-up('xl') {
+				max-width: 1140px;
+
+			}
+
+			@include media-breakpoint-up('xxl') {
+				max-width: 1280px;
+			}
+		}
+	}
+
+}
+
+.tabcordion.tabcordion-tabs {
+	margin-bottom: 1.5rem;
+	&:not(.alignwide) {
+		max-width: var(--wp--style--global--content-size);
+	}
+}
+
+.tab-wrapper.tab-wrapper-dark {
+	padding: var(--sitka-container-spacing) 0;
+}

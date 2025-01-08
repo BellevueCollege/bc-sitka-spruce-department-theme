@@ -1,0 +1,23 @@
+<aside class="location-and-hours card">
+	{% if image_html %}
+		{{ image_html }}
+	{% elseif image_array %}
+		<img class="card-img-top" src="{{ image_array.src }}" alt="{{ image_array.alt }}">
+	{% endif %}
+	<div class="card-body">
+		<h2>{{ __('Location', 'bc-sitka-spruce') }}</h2>
+		{{ location }}
+		{%  if hours %}
+			<h2>{{ __('Hours', 'bc-sitka-spruce') }}</h2>
+			{{ hours }}
+		{% endif %}
+		{% if contact_url %}
+			{% include '/stories/atoms/links/link-button.twig' with {
+				link: {
+					title: __('Contact Information', 'bc-sitka-spruce'),
+					url: contact_url
+				}
+			} %}
+		{% endif %}
+	</div>
+</aside>

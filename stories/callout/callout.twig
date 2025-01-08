@@ -1,0 +1,37 @@
+{#
+/**
+ * @file
+ * Bellevue template for the callout component.
+ */
+#}
+{% set heading_tag = heading_tag|default('h2') %}
+{% set enabled = enabled|default(true) %}
+{% set wrapper_classes = wrapper_classes|default('callout-wrapper col') %}
+<div class="{{ wrapper_classes }}">
+	<aside class="callout text-margin-reset {{ callout_type }}">
+		<{{ heading_tag|e('html_attr') }} class="callout__heading card-title-small">{{ title|esc_html }}</{{ heading_tag|e('html_attr') }}>
+		<p>{{ text|wp_kses_post }}</p>
+		{% if links %}
+			<div class="callout__links">
+				{% if links is iterable %}
+					<ul>
+						{% for link in links %}
+							{% if link.title and link.url %}
+								<li>
+									{% include '/stories/atoms/links/link-arrow.twig' %}
+								</li>
+							{% endif %}
+						{% endfor %}
+					</ul>
+				{% elseif links %}
+					{{ links|wp_kses_post }}
+				{% endif %}
+			</div>
+		{% endif %}
+		{% if button and button.title and button.url %}
+			<p class="callout__button">
+				{% include '/stories/atoms/links/link-button.twig' with { link: button } %}
+			</p>
+		{% endif %}
+	</aside>
+</div>

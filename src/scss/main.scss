@@ -1,0 +1,84 @@
+@import 'variables';
+@import 'variables/css';
+
+@import "lib";
+
+@import "mixins";
+
+@import "atoms";
+
+@import "components";
+
+@import "pages";
+
+// Stories that should be included globally
+$header-tablet-breakpoint: sm;
+$header-desktop-breakpoint: lg;
+@import "blocks/block-spacing";
+
+@import "stories/header";
+@import "stories/site-search-form";
+@import "stories/section-heading";
+@import "stories/footer";
+@import "stories/sock";
+@import "stories/profile-overview-details-content";
+@import "stories/announcement-banner";
+@import "stories/flexible-page-intro";
+@import "stories/nav-sidebar";
+@import "stories/breadcrumbs";
+@import "stories/related-programs";
+
+// Front-end only components
+@import "menus";
+
+// MOVE THESE ELSEWHERE
+// Temporary CSS that should be moved to appropriate files
+
+.container,
+.container-xl {
+	@include media-breakpoint-up("lg") {
+		--bs-gutter-x: calc(var(--sitka-container-spacing) * 2);
+	}
+}
+
+#main-content {
+	.block-wrapper {
+		@include make-container();
+
+		@include media-breakpoint-up("lg") {
+			--bs-gutter-x: calc(var(--sitka-container-spacing) * 2);
+		}
+
+		max-width: var(--wp--style--global--wide-size);
+
+		&.alignfull {
+			max-width: 100%;
+		}
+
+		&.alignstandard>*,
+		&.aligncenter {
+			max-width: var(--wp--style--global--content-size);
+		}
+
+		&.alignwide>* {
+			max-width: var(--wp--style--global--wide-size);
+		}
+	}
+}
+
+// Override link colors within colorful areas
+.text-bg-primary,
+.text-bg-secondary,
+.text-bg-success,
+.text-bg-danger,
+.text-bg-dark {
+	a:link,
+	a:visited {
+		color: var(--white);
+	}
+	a:hover,
+	a:active {
+		color: var(--gray--xlight);
+	}
+
+}

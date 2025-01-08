@@ -1,0 +1,39 @@
+{
+	"$schema": "https://schemas.wp.org/trunk/block.json",
+	"apiVersion": 3,
+	"name": "bc-sitka-spruce/tabcordion-list-tab",
+	"version": "1.0.2",
+	"title": "Tabcordion List Tab",
+	"category": "layout",
+	"icon": "category",
+	"supports": {
+		"html": false,
+		"inserter": false
+	},
+	"parent": [
+		"bc-sitka-spruce/tabcordion-list"
+	],
+	"textdomain": "bc-sitka-spruce",
+	"attributes": {
+		"tabActive": {
+			"type": "boolean",
+			"default": false
+		},
+		"tabId": {
+			"type": "string",
+			"default": ""
+		},
+		"tabTitle": {
+			"type": "string",
+			"default": ""
+		},
+		"tabDefault": {
+			"type": "boolean",
+			"default": false
+		}
+	},
+	"editorScript": "file:./index.js",
+	"editorStyle": "file:./index.css",
+	"style": "file:./style-index.css",
+	"render": "file:./render.php"
+}

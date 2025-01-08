@@ -1,0 +1,43 @@
+{#
+/**
+* @file
+* Bellevue template for the announcement banner component.
+*/
+#}
+<section class="announcement container-xl">
+	<div class="row">
+		<div class="col">
+			<article class="announcement--item oho-animate oho-animate-single fade-in-up rounded">
+				<div class="row">
+					{% if image %}
+						<div class="announcement__image col-sm-6 col-md-4 col-lg-3">
+							<figure class="aspect-ratio-frame" style="--aspect-ratio: 174/260">
+							{{ image }}
+							</figure>
+						</div>
+					{% endif %}
+					<div class="announcement__text col">
+						<h2 class="card-title-big">{{ title }}</h2>
+						{{ description }}
+						{% if button and button.url and button.title %}
+							<div class="announcement__button mt-3">
+								{% include '/stories/atoms/links/link-button.twig' with { link: button } %}
+							</div>
+						{% endif %}
+						{% if links %}
+							<ul class="announcement__links list-unstyled row mt-3">
+								{% for link in links %}
+									{% if link.title and link.url %}
+										<li class="col-auto">
+											{% include '/stories/atoms/links/link-arrow.twig' %}
+										</li>
+									{% endif %}
+								{% endfor %}
+							</ul>
+						{% endif %}
+					</div>
+				</div>
+			</article>
+		</div>
+	</div>
+</section>

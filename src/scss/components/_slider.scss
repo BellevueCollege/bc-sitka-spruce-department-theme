@@ -1,0 +1,109 @@
+////
+/// @group components
+/// Styles for Slider globals
+////
+
+// Hide navigation if swiper is not initialized
+.slider-navigation {
+	visibility: hidden;
+
+	.swiper-initialized & {
+		display: flex;
+		visibility: visible;
+	}
+}
+
+// If the slider is a list, we don't want list styles
+.swiper-wrapper {
+	list-style: none;
+
+	> li {
+		list-style: none;
+	}
+
+	.swiper-slide {
+		height: auto !important;
+	}
+}
+
+
+.swiper-container {
+	position: relative;
+	top: -44px;
+}
+// arrow buttons
+.slider-navigation {
+	justify-content: space-between;
+	align-items: center;
+
+	margin-left: -1rem;
+	margin-right: -1rem;
+
+	@include media-breakpoint-up(lg) {
+		margin-left: -50px;
+		margin-right: -50px;
+	}
+
+	@include media-breakpoint-up(xl) {
+		margin-left: -60px;
+		margin-right: -60px;
+	}
+
+	&__prev,
+	&__next {
+		position: relative;
+		z-index: 10;
+		top: calc( min(92vw - 44px, 600px - 44px) * 0.5 );
+
+
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		width: 44px;
+		height: 44px;
+		padding: 1rem;
+		text-align: center;
+		border: 2px solid transparent;
+		border-radius: 22px;
+		background-color: var(--bc-fountain-blue);
+
+		&:hover,
+		&:focus {
+			border: 2px solid transparent;
+			background-color: var(--bc-rain-garden-green);
+		}
+
+		&:focus {
+			border: 2px solid var(--bc-brutus-blue);
+		}
+
+		&:disabled {
+			pointer-events: none;
+			opacity: 0.5;
+		}
+	}
+
+	&__prev {
+		.far {
+			position: relative;
+			left: -2px;
+		}
+	}
+
+	&__next {
+		.far {
+			position: relative;
+			left: -2px;
+		}
+	}
+}
+
+
+.slider-navigation.hidden {
+	pointer-events: none;
+	opacity: 0;
+}
+
+.slider-navigation:has(.swiper-button-disabled + .swiper-button-disabled) {
+	visibility: hidden;
+}
