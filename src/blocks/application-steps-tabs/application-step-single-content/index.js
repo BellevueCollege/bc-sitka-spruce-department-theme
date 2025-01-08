@@ -3,7 +3,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
 
-import { wysiwygBlocks } from "../../shared-elements/block-sets";
+import { wysiwygBlocks }  from "../../shared-elements/block-sets/wysiwyg.json";
 
 registerBlockType( 'bc-sitka-spruce/application-step-single-content', {
 	edit: ( props ) => {

@@ -599,3 +599,20 @@ add_filter( 'tablepress_table_output', __NAMESPACE__ . '\tablepress_add_wrapper'
  * Disable TablePress CSS
  */
 add_filter( 'tablepress_use_default_css', '__return_false' );
+
+
+/**
+ * Limit what innerblocks are allowed in Mayflower Blocks
+ */
+add_filter( 'block_type_metadata', function ( $metadata ) {
+	if (
+			'mayflower-blocks/collapse'          === $metadata['name'] ||
+			'mayflower-blocks/column'            === $metadata['name'] ||
+			'mayflower-blocks/panel'             === $metadata['name'] ||
+			'mayflower-blocks/tab-content-panel' === $metadata['name']
+		) {
+		$allowed_blocks = json_decode( file_get_contents( get_template_directory() . '/src/blocks/shared-elements/block-sets/wysiwyg.json' ) );
+		$metadata['allowedBlocks'] = array_unique( array_merge( $metadata['allowedBlocks'] ?? array(), $allowed_blocks->wysiwygBlocks ) );
+	}
+	return $metadata;
+}, 10, 1 );
