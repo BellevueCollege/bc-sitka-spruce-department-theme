@@ -1,6 +1,6 @@
 import { dispatch, select } from '@wordpress/data';
 import { createBlock } from '@wordpress/blocks';
-import { isNewPost, isFrontPage, pageTemplate, getAllBlocks, forcePatternToTop, deleteNarrowContentSection } from './core/editor-data-helpers';
+import { isNewPost, isFrontPage, pageTemplate, getAllBlocks, forcePatternToTop, deleteNarrowContentSection, postType } from './core/editor-data-helpers';
 
 
 // Thanks to https://github.com/WordPress/gutenberg/issues/28032#issuecomment-772720637 for the dom ready code!
@@ -22,8 +22,19 @@ wp.domReady( async function () {
 		return;
 	}
 
+	if ( await postType() === 'program' ) {
+		console.log('Editing a Program - checking blocks need to be moved');
+		forcePatternToTop( blocks, 'bc-sitka-spruce/template-program-info', 'bc-sitka-spruce/program-empty' );
+		return;
+	}
+
+	if ( await postType() === 'profile' ) {
+		console.log('Editing a Profile');
+		return;
+	}
+
 	// Check if we are editing a page using the default template
-	if ( await pageTemplate() === 'default' ) {
+	if ( await pageTemplate() === 'default' && await postType() === 'page' ) {
 		console.log('Editing a page using the default template - checking if block migration is needed');
 		forcePatternToTop( blocks, 'bc-sitka-spruce/narrow-content', 'bc-sitka-spruce/page' );
 	}

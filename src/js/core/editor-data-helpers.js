@@ -38,6 +38,19 @@ export const pageTemplate = async () => {
 	} );
 }
 
+export const postType = async ( postType ) => {
+	return new Promise( ( resolve ) => {
+		const unsubscribe = subscribe( () => {
+			const { getCurrentPostType } = select('core/editor');
+			const postTypeSlug = getCurrentPostType();
+			if ( postTypeSlug !== undefined ) {
+				unsubscribe();
+				resolve( postTypeSlug );
+			}
+		});
+	} );
+}
+
 export const isNewPost = async () => {
 	return new Promise( ( resolve ) => {
 		const unsubscribe = subscribe( () => {
