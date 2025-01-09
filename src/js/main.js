@@ -82,7 +82,7 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 			},
 			breakpoints: {
 				640: {
-					slidesPerView: 2.25,
+					slidesPerView: 2,
 				},
 				1024: {
 					slidesPerView: 3,
