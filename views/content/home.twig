@@ -1,0 +1,15 @@
+{# Note: This template is used for the Blog Home, which is the page that lists all blog posts.#}
+{# For the site homepage, see `views/content/front-page.twig` #}
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+	<div class="flexible-page">
+		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+			title: post.title,
+			intro_text: intro_text
+		} only %}
+		<div class="container-xl post-list-page">
+			{{ listing }}
+		</div>
+	</div>
+{% endblock %}

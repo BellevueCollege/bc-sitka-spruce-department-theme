@@ -1,0 +1,31 @@
+{#
+/**
+ * @file
+ * Bellevue template for a view result rows.
+ *
+ * Available variables:
+ * - view_name: The machine name of the view.
+ * - rows: An array of results rows containing the following properties:
+ *    - html: The rendered row html.
+ *    - row: The Timber object for the row.
+ */
+#}
+
+<div id="oho-views-results-{{ view_name }}" class="views__results post-results">
+	{% if rows %}
+		<p class="result-count">
+			{% if row_info.total_posts == row_info.total_posts_in_query %}
+				{{ __('Showing %s of %s posts', 'bc-sitka-spruce')|format(row_info.posts_shown, row_info.total_posts) }}
+			{% else %}
+				{{ __('Showing %s of %s posts that match your filters (%s total posts)', 'bc-sitka-spruce')|format(row_info.posts_shown, row_info.total_posts_in_query, row_info.total_posts) }}
+			{% endif %}
+		</p>
+		{% for row in rows %}
+			<div class="listing__set mb-3">
+				{{ row.html }}
+			</div>
+		{% endfor %}
+	{% else %}
+		<h2>{{ __('No posts matching your filters.', 'bc-sitka-spruce') }}</h2>
+	{% endif %}
+</div>
