@@ -1,0 +1,18 @@
+{% extends 'system/wrapper.twig' %}
+
+{% set title = __( '404 Error: Page Not Found', 'bc-sitka-spruce' ) %}
+{% set intro_text = __( 'The page you are looking for does not exist. It may have moved to a new URL or been deleted.', 'bc-sitka-spruce' ) %}
+
+{% block content %}
+	<div class="flexible-page">
+		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+		} %}
+		<div class="container-xl mt-n4 mb-5">
+			<h2>{{ __( 'Find What You Are Looking For:', 'bc-sitka-spruce' ) }}</h2>
+			<ul>
+				<li>{{ __( 'Try clicking the "Back" button in your browser and trying another link', 'bc-sitka-spruce' ) }}</li>
+				<li><a href="https://www.bellevuecollege.edu/search-results">{{ __( 'Search the site', 'bc-sitka-spruce' ) }}</a> {{ __( 'for the information you need' , 'bc-sitka-spruce' ) }}</li>
+			</ul>
+		</div>
+	</div>
+{% endblock %}
