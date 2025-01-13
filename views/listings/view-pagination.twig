@@ -10,50 +10,52 @@
 * - pagination: The \Timber\Pagination object.
 */
 #}
+{% set pagination_view_id = pagination_view_id|default( 'oho-views-pagination-' ~ view_name ) %}
 {% if pagination.pages %}
-<nav id="oho-views-pagination-{{ view_name }}" class="view__pagination" aria-label="{{ __('Pagination', 'oho-views') }}">
-	<ul class="view__pagination-items">
-	{% if pagination.prev %}
-		<li class="view__pagination-item view__pagination-nav view__pagination-nav--first">
-		<a href="{{ pagination.pages.0.link }}" aria-label="{{ __('First page of results', 'oho-views') }}">
-			<span>{{ __('First', 'oho-views') }}</span>
-		</a>
-		</li>
-		<li class="view__pagination-item view__pagination-nav view__pagination-nav--previous">
-		<a href="{{ pagination.prev.link }}" aria-label="{{ __('Previous page of results', 'oho-views') }}">
-			<span>{{ __('Previous', 'oho-views') }}</span>
-		</a>
-		</li>
-	{% endif %}
-	{% for page in pagination.pages %}
-		{% if page.link %}
-		<li class="view__pagination-item view__pagination-number">
-			<a href="{{ page.link }}" aria-label="{{ __('Go to results page %s of %s', 'oho-views')|format(page.title, pagination.pages|length) }}">{{ page.title }}</a>
-		</li>
-		{% elseif page.current %}
-		<li class="view__pagination-item view__pagination-number view__pagination-number--current">
-			<span aria-current="true">{{ page.title }}</span>
-		</li>
-		{% else %}
-		<li class="view__pagination-item view__pagination-number view__pagination-number--dots">
-			<span>{{ page.title }}</span>
-		</li>
+	<nav id="{{ pagination_view_id }}" class="view__pagination" aria-label="{{ __('Pagination', 'bc-sitka-spruce') }}">
+		<ul class="view__pagination-items">
+		{% if pagination.prev %}
+			<li class="view__pagination-item view__pagination-nav view__pagination-nav--first">
+			<a href="{{ pagination.pages.0.link }}" aria-label="{{ __('First page of results', 'bc-sitka-spruce') }}">
+				<span>{{ __('First', 'bc-sitka-spruce') }}</span>
+			</a>
+			</li>
+			<li class="view__pagination-item view__pagination-nav view__pagination-nav--previous">
+			<a href="{{ pagination.prev.link }}" aria-label="{{ __('Previous page of results', 'bc-sitka-spruce') }}">
+				<span>{{ __('Previous', 'bc-sitka-spruce') }}</span>
+			</a>
+			</li>
 		{% endif %}
-	{% endfor %}
-	{% if pagination.next %}
-		<li class="view__pagination-item view__pagination-nav view__pagination-nav--next">
-		<a href="{{ pagination.next.link }}" aria-label="{{ __('Next page of results', 'oho-views') }}">
-			<span>{{ __('Next', 'oho-views') }}</span>
-		</a>
-		</li>
-		<li class="view__pagination-item view__pagination-nav view__pagination-nav--last">
-		<a href="{{ pagination.pages|last.link }}" aria-label="{{ __('Last page of results', 'oho-views') }}">
-			<span>{{ __('Last', 'oho-views') }}</span>
-		</a>
-		</li>
-	{% endif %}
-	</ul>
-</nav>
+		{% for page in pagination.pages %}
+			{% if page.link %}
+			<li class="view__pagination-item view__pagination-number">
+				<a href="{{ page.link }}" aria-label="{{ __('Go to results page %s of %s', 'bc-sitka-spruce')|format(page.title, pagination.pages|length) }}">{{ page.title }}</a>
+			</li>
+			{% elseif page.current %}
+			<li class="view__pagination-item view__pagination-number view__pagination-number--current">
+				<span aria-current="true">{{ page.title }}</span>
+			</li>
+			{% else %}
+			<li class="view__pagination-item view__pagination-number view__pagination-number--dots">
+				<span>{{ page.title }}</span>
+			</li>
+			{% endif %}
+		{% endfor %}
+		{% if pagination.next %}
+			<li class="view__pagination-item view__pagination-nav view__pagination-nav--next">
+			<a href="{{ pagination.next.link }}" aria-label="{{ __('Next page of results', 'bc-sitka-spruce') }}">
+				<span>{{ __('Next', 'bc-sitka-spruce') }}</span>
+			</a>
+			</li>
+			<li class="view__pagination-item view__pagination-nav view__pagination-nav--last">
+			<a href="{{ pagination.pages|last.link }}" aria-label="{{ __('Last page of results', 'bc-sitka-spruce') }}">
+				<span>{{ __('Last', 'bc-sitka-spruce') }}</span>
+			</a>
+			</li>
+		{% endif %}
+		</ul>
+	</nav>
+
 {% else %}
 {# This blank line is needed to avoid a template not found exception. #}
 
