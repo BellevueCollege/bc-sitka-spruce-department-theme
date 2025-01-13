@@ -21,7 +21,10 @@ class Breadcrumbs implements BreadcrumbsInterface {
       return [];
     }
 
-    $breadcrumbs = (new \Breadcrumb_Trail())->items;
+    $breadcrumbs = (new \Breadcrumb_Trail(
+			array(
+			)
+		))->items;
     if (!$show_home) {
       array_shift($breadcrumbs);
     }

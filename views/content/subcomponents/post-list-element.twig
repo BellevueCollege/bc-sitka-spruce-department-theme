@@ -1,17 +1,28 @@
 <div class="row post-list-element">
 	<div class="col-sm">
-		<h3><a href="{{ row.link|esc_url }}">{{ row.title|esc_html }}</a></h3>
-		<p>{{ acf.summary|esc_html }}</p>
+		<h3><a href="{{ post.link|esc_url }}">{{ post.title|esc_html }}</a></h3>
+		<p>
+			{% if post.meta('summary') %}
+				{{ post.meta('summary')|esc_html }}
+			{% else %}
+				{{ post.excerpt|esc_html }}
+			{% endif %}
+		</p>
 		<hr>
-		<p><strong>{{ __('Posted', 'bc-sitka-spruce') }} {{ row.date|date('F j, Y') }}</strong></p>
+		<p><strong>{{ __('Posted', 'bc-sitka-spruce') }} {{ post.date|date('F j, Y') }}</strong></p>
 	</div>
 	<div class="col-sm-auto">
-		{% if acf.featured_media_type == 'image_horizontal' or acf.featured_media_type == 'video' %}
-			<img src="{{ get_image(acf.featured_image_horizontal.ID).src('post-horiz-sm') }}" alt="{{ acf.featured_image_horizontal.alt }}" class="img-fluid rounded">
-		{% elseif acf.featured_media_type == 'image_vertical' %}
-			<img src="{{ get_image(acf.featured_image_vertical.ID).src('post-vert-sm') }}" alt="{{ acf.featured_image_vertical.alt }}" class="img-fluid rounded">
+		{% if post.meta('featured_media_type') == 'image_horizontal' or post.meta('featured_media_type') == 'video' %}
+			{% set img = get_image( post.meta('featured_image_horizontal') ) %}
+			{% if img %}
+				<img src="{{ img.src('post-horiz-sm') }}" alt="{{ img.alt }}" class="img-fluid rounded">
+			{% endif %}
+		{% elseif post.meta('featured_media_type') == 'image_vertical' %}
+			{% set img = get_image( post.meta('featured_image_vertical') ) %}
+			{% if img %}
+				<img src="{{ img.src('post-vert-sm') }}" alt="{{ img.alt }}" class="img-fluid rounded">
+			{% endif %}
 		{% endif %}
 	</div>
 </div>
-{# {{ dump(acf) }} #}
 <hr>
