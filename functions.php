@@ -679,3 +679,12 @@ add_action('parse_query', function( $query, $error = true ) {
 } );
 
 add_filter( 'get_search_form', '__return_null' );
+
+
+// Handle disabling posts
+if ( ! get_field( 'enable_posts', 'option' )  ) {
+	if ( is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
+		deactivate_plugins( 'oho-disable-posts/oho-disable-posts.php', true, false );
+	}
+	require_once( get_template_directory() . '/src/library/BundledPlugins/oho-disable-posts.php' );
+}
