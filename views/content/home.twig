@@ -6,10 +6,29 @@
 	<div class="flexible-page">
 		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
 			title: post.title,
-			intro_text: intro_text
+			intro_text: intro_text,
+			breadcrumbs: breadcrumbs
 		} only %}
-		<div class="container-xl post-list-page">
-			{{ listing }}
+		<div class="container-xl post-list-page mt-lg-n4">
+			<div class="row">
+				<div class="col-lg-4">
+					{% include '/stories/post-filter-sidebar/post-filter-sidebar.twig' %}
+				</div>
+				<div class="col-lg-8">
+					{% if posts is not empty %}
+						{% for post in posts %}
+							{% include '/views/content/subcomponents/post-list-element.twig' %}
+						{% endfor %}
+					{% endif %}
+
+					{% if posts.pagination.pages %}
+						{% include '/views/listings/view-pagination.twig' with {
+							pagination_view_id: 'sitka-pagination-post-listing',
+							pagination: posts.pagination
+						} %}
+					{% endif %}
+				</div>
+			</div>
 		</div>
 	</div>
 {% endblock %}

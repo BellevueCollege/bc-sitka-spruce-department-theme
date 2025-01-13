@@ -48,6 +48,20 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
+	// Enable Post Filter Navigation
+	const archiveFilterForm = document.getElementById('post-filter-by-date-form');
+	const categoryFilterForm = document.getElementById('post-filter-by-category-form');
+	archiveFilterForm.addEventListener('submit', event => {
+		event.preventDefault();
+		const url = event.target['post-date-filter'].value;
+		window.location.assign(url);
+	});
+	categoryFilterForm.addEventListener('submit', event => {
+		event.preventDefault();
+		const url = event.target['post-category-filter'].value;
+		window.location.assign(url);
+	});
+
 	// Enable Sliders
 	const mediaGallerySlider = new Slider({
 		sliderOpts: {
