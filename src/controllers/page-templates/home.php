@@ -25,6 +25,8 @@ $context['date_filter_options'] = PostFilters::get_archives_as_options();
 // Build options for category filter
 $context['category_filter_options'] = PostFilters::get_categories_as_options();
 
+$context['page_heading'] = __('All Posts', 'bc-sitka-spruce');
+
 //$context['post_home_url'] = get_post_type_archive_link('post');
 
 

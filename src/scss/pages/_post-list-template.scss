@@ -1,5 +1,25 @@
 .post-list-page {
 
+	.card-title-small a {
+		--bs-link-color-rgb: var(--accent-link-blue-rgb);
+
+		&:hover,
+		&:focus {
+			--bs-link-color-rgb: var(--bs-link-hover-color-rgb);
+		}
+	}
+
+	hr.accent {
+		max-width: 5.5rem;
+		border-top-width: 3px;
+	}
+
+	hr.light-rule {
+		@include media-breakpoint-up('sm') {
+			margin: 3rem 0;
+		}
+	}
+
 	.result-count {
 		font-weight: 600;
 	}
