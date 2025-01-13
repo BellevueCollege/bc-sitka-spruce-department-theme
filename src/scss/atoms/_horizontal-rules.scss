@@ -3,3 +3,9 @@ hr.accent {
 	color: var( --bc-fountain-blue );
 	opacity: 1;
 }
+
+hr.light-rule {
+	--bs-border-width: 1px;
+	color: var( --gray--xlight );
+	opacity: 1;
+}

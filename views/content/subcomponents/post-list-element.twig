@@ -1,6 +1,6 @@
 <div class="row post-list-element">
-	<div class="col-sm">
-		<h3><a href="{{ post.link|esc_url }}">{{ post.title|esc_html }}</a></h3>
+	<div class="col-sm order-last order-sm-first">
+		<h3 class="card-title-small"><a href="{{ post.link|esc_url }}">{{ post.title|esc_html }}</a></h3>
 		<p>
 			{% if post.meta('summary') %}
 				{{ post.meta('summary')|esc_html }}
@@ -8,21 +8,21 @@
 				{{ post.excerpt|esc_html }}
 			{% endif %}
 		</p>
-		<hr>
+		<hr class="accent">
 		<p><strong>{{ __('Posted', 'bc-sitka-spruce') }} {{ post.date|date('F j, Y') }}</strong></p>
 	</div>
-	<div class="col-sm-auto">
+	<div class="col-sm-auto order-first order-sm-last">
 		{% if post.meta('featured_media_type') == 'image_horizontal' or post.meta('featured_media_type') == 'video' %}
 			{% set img = get_image( post.meta('featured_image_horizontal') ) %}
 			{% if img %}
-				<img src="{{ img.src('post-horiz-sm') }}" alt="{{ img.alt }}" class="img-fluid rounded">
+				<img src="{{ img.src('post-horiz-sm') }}" alt="{{ img.alt }}" class="img-fluid rounded mb-3">
 			{% endif %}
 		{% elseif post.meta('featured_media_type') == 'image_vertical' %}
 			{% set img = get_image( post.meta('featured_image_vertical') ) %}
 			{% if img %}
-				<img src="{{ img.src('post-vert-sm') }}" alt="{{ img.alt }}" class="img-fluid rounded">
+				<img src="{{ img.src('post-vert-sm') }}" alt="{{ img.alt }}" class="img-fluid rounded mb-3 mb-sm-0">
 			{% endif %}
 		{% endif %}
 	</div>
 </div>
-<hr>
+<hr class="light-rule">

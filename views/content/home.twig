@@ -15,6 +15,10 @@
 					{% include '/stories/post-filter-sidebar/post-filter-sidebar.twig' %}
 				</div>
 				<div class="col-lg-8">
+					{% if page_heading %}
+						<h2 class="post-listing-page-heading h3">{{ page_heading }}</h2>
+						<hr class="light-rule mt-2">
+					{% endif %}
 					{% if posts is not empty %}
 						{% for post in posts %}
 							{% include '/views/content/subcomponents/post-list-element.twig' %}
