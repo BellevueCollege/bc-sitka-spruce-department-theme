@@ -1,0 +1,60 @@
+{#
+/**
+* @file
+* Base template for view pagination.
+*
+* @see \Timber\Pagination
+*
+* Available variables:
+* - view_name: The machine name of the view.
+* - pagination: The \Timber\Pagination object.
+*/
+#}
+{% if pagination.pages %}
+<nav id="oho-views-pagination-{{ view_name }}" class="view__pagination" aria-label="{{ __('Pagination', 'oho-views') }}">
+	<ul class="view__pagination-items">
+	{% if pagination.prev %}
+		<li class="view__pagination-item view__pagination-nav view__pagination-nav--first">
+		<a href="{{ pagination.pages.0.link }}" aria-label="{{ __('First page of results', 'oho-views') }}">
+			<span>{{ __('First', 'oho-views') }}</span>
+		</a>
+		</li>
+		<li class="view__pagination-item view__pagination-nav view__pagination-nav--previous">
+		<a href="{{ pagination.prev.link }}" aria-label="{{ __('Previous page of results', 'oho-views') }}">
+			<span>{{ __('Previous', 'oho-views') }}</span>
+		</a>
+		</li>
+	{% endif %}
+	{% for page in pagination.pages %}
+		{% if page.link %}
+		<li class="view__pagination-item view__pagination-number">
+			<a href="{{ page.link }}" aria-label="{{ __('Go to results page %s of %s', 'oho-views')|format(page.title, pagination.pages|length) }}">{{ page.title }}</a>
+		</li>
+		{% elseif page.current %}
+		<li class="view__pagination-item view__pagination-number view__pagination-number--current">
+			<span aria-current="true">{{ page.title }}</span>
+		</li>
+		{% else %}
+		<li class="view__pagination-item view__pagination-number view__pagination-number--dots">
+			<span>{{ page.title }}</span>
+		</li>
+		{% endif %}
+	{% endfor %}
+	{% if pagination.next %}
+		<li class="view__pagination-item view__pagination-nav view__pagination-nav--next">
+		<a href="{{ pagination.next.link }}" aria-label="{{ __('Next page of results', 'oho-views') }}">
+			<span>{{ __('Next', 'oho-views') }}</span>
+		</a>
+		</li>
+		<li class="view__pagination-item view__pagination-nav view__pagination-nav--last">
+		<a href="{{ pagination.pages|last.link }}" aria-label="{{ __('Last page of results', 'oho-views') }}">
+			<span>{{ __('Last', 'oho-views') }}</span>
+		</a>
+		</li>
+	{% endif %}
+	</ul>
+</nav>
+{% else %}
+{# This blank line is needed to avoid a template not found exception. #}
+
+{% endif %}
