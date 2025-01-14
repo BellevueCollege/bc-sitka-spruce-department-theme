@@ -74,6 +74,12 @@ function register_blocks() {
 		'bio-section/bio-section-content',
 	);
 
+	// Only register posts feature block if posts are enabled
+	if ( get_field( 'enable_posts', 'option' )  ) {
+		$blocks[] = 'posts-feature';
+	}
+
+	// Register Blocks
 	block_registration_helper( $blocks );
 }
 add_action( 'init', __NAMESPACE__ . '\register_blocks' );
@@ -647,5 +653,5 @@ if ( ! get_field( 'enable_posts', 'option' )  ) {
 	if ( is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
 		deactivate_plugins( 'oho-disable-posts/oho-disable-posts.php', true, false );
 	}
-	require_once( get_template_directory() . '/src/library/BundledPlugins/oho-disable-posts.php' );
+	include_once( get_template_directory() . '/src/library/BundledPlugins/oho-disable-posts.php' );
 }
