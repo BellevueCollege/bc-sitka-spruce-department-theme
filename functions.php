@@ -75,7 +75,7 @@ function register_blocks() {
 	);
 
 	// Only register posts feature block if posts are enabled
-	if ( get_field( 'enable_posts', 'option' )  ) {
+	if ( get_option( 'options_enable_posts') ) {
 		$blocks[] = 'posts-feature';
 	}
 
