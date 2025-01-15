@@ -651,8 +651,10 @@ add_action('parse_query', function( $query, $error = true ) {
 add_filter( 'get_search_form', '__return_null' );
 
 
-// Handle disabling posts
-if ( ! get_field( 'enable_posts', 'option' )  ) {
+// Handle disabling posts. Note we are getting an ACF-set option using
+// normal WP get_option function here, as this fires before ACF is fully
+// initialized.
+if ( ! get_option( 'options_enable_posts')  ) {
 	if ( is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
 		deactivate_plugins( 'oho-disable-posts/oho-disable-posts.php', true, false );
 	}
