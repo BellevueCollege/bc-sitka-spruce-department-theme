@@ -230,11 +230,14 @@ $image_crops->addImageSize( 'profile-list-image', 260, 260, true );
 $image_crops->addImageSize( 'checkerboard', 660, 550, true );
 
 // Post Image Sizing
-$image_crops->addImageSize( 'post-horiz-lg', 760, 418, true );
-$image_crops->addImageSize( 'post-vert-lg', 460, 690, true );
+// Used on Post Single and Feature Block
+$image_crops->addImageSize( 'post-horiz-lg', 760, 400, true );
+// Used on Post Single
+$image_crops->addImageSize( 'post-vert-lg', 460, 700, true );
 
-$image_crops->addImageSize( 'post-horiz-sm', 260, 173, true );
-$image_crops->addImageSize( 'post-vert-sm', 115, 173, true );
+// Used on listing page
+$image_crops->addImageSize( 'post-horiz-sm', 260, 137, true );
+$image_crops->addImageSize( 'post-vert-sm', 100, 150, true );
 
 
 // Make some image sizes available in the block editor
