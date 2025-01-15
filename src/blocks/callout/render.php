@@ -13,7 +13,7 @@ $context['links'] = is_array( $links ) ? array_map( function ( $link ) {
 }, $links ) : null;
 
 $context['wrapper_classes'] = 'callout-wrapper col';
-$context['heading_tag'] = 'h5';
+$context['heading_tag'] = 'h3';
 
 
 
