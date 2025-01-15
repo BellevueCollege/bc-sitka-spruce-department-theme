@@ -16,9 +16,11 @@ class Posts extends PostData {
 
 		if ( $image_type === 'horizontal' || $image_type === 'video' ) {
 			$featured_image = get_field( 'featured_image_horizontal', $id );
+			$featured_image_orientation = 'horizontal';
 			$featured_image_size = 'post-horiz-lg';
 		} else {
 			$featured_image = get_field( 'featured_image_vertical', $id );
+			$featured_image_orientation = 'vertical';
 			$featured_image_size = 'post-vert-lg';
 		}
 
@@ -42,6 +44,7 @@ class Posts extends PostData {
 			'link'     => esc_url( get_the_permalink( $id ) ),
 			'summary' => $summary,
 			'image'   => $featured_image_output,
+			'image_orientation' => $featured_image_orientation ?? null,
 		);
 
 		return $output;
