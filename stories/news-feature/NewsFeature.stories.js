@@ -42,11 +42,34 @@ Default.args = {
         image: '<img src="https://picsum.photos/id/120/760/400" alt="placeholder image" />',
         link: '#',
         title: 'Bellevue College Receives $0.0 Million Grant',
-        summary: 'BC was chosen to receive $0.0 million grant from the National Science Foundation (not the one you are thinking of!).'
-    },
+        summary: 'BC was chosen to receive $0.0 million grant from the National Science Foundation (not the one you are thinking of!).',
+		image_orientation: 'horizontal'
+	},
     news_listing: [
         news_story,
         news_story,
         news_story
     ]
+};
+
+export const NoFeaturedNews = Template.bind({});
+NoFeaturedNews.args = {
+	...Default.args,
+	featured_news: null,
+};
+
+export const NoNewsListing = Template.bind({});
+NoNewsListing.args = {
+	...Default.args,
+	news_listing: null,
+};
+
+export const VerticalFeaturedNews = Template.bind({});
+VerticalFeaturedNews.args = {
+	...Default.args,
+	featured_news: {
+		...Default.args.featured_news,
+		image: '<img src="https://picsum.photos/id/120/460/700" alt="placeholder image" />',
+		image_orientation: 'vertical'
+	},
 };
