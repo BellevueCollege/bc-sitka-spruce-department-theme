@@ -8,9 +8,7 @@ class Posts extends PostData {
 			return;
 		}
 
-		$post = get_post( $id );
-
-		if ( ! $post ) {
+		if ( false === get_post_status( $id ) ) {
 			return;
 		}
 
