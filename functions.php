@@ -305,7 +305,6 @@ add_filter(
 		$options['ld_json_searchbox'] = 0;
 		$options['sitemap_styles'] = 0;
 		$options['sitemap_logo'] = 0;
-		$options['ld_json_searchbox'] = 0;
 		return $options;
 	},
 	10,
