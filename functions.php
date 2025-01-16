@@ -291,9 +291,25 @@ add_filter( 'document_title_parts', function( $title_parts ) {
 
 /** Set Page Title Separator */
 add_filter( 'document_title_separator', function( $sep ) {
-	return is_front_page() ? '@' : '::';
+	return ' - ';
 }, 10, 1 );
 
+// SEO Framework Plugin Overrides to Preserve Title Format by Default
+add_filter(
+	'the_seo_framework_default_site_options',
+	function ( $options ) {
+		$options['author_noindex'] = 1;
+		$options['paged_noindex']  = 1;
+		$options['homepage_title_tagline'] = 'Bellevue College';
+		$options['knowledge_output'] = 0;
+		$options['ld_json_searchbox'] = 0;
+		$options['sitemap_styles'] = 0;
+		$options['sitemap_logo'] = 0;
+		return $options;
+	},
+	10,
+	1
+);
 
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
