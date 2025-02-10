@@ -61,7 +61,7 @@
         "type": "dashicons",
         "value": "dashicons-groups"
     },
-    "rename_capabilities": false,
+    "rename_capabilities": true,
     "singular_capability_name": "post",
     "plural_capability_name": "posts",
     "supports": [
@@ -86,5 +86,5 @@
     "delete_with_user": false,
     "register_meta_box_cb": "",
     "enter_title_here": "",
-    "modified": 1733943656
+    "modified": 1739208690
 }

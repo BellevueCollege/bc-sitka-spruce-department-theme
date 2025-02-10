@@ -18,9 +18,9 @@
     },
     "update_button": "Update",
     "updated_message": "Options Updated",
-    "capability": "manage_options",
+    "capability": "publish_pages",
     "data_storage": "options",
     "post_id": "",
     "autoload": 1,
-    "modified": 1721232829
+    "modified": 1739208663
 }
