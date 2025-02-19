@@ -270,8 +270,14 @@
 		div.tabcordion-pane.active {
 			display: block;
 		}
-	}
 
+		.components-button.block-editor-button-block-appender {
+			box-shadow: inset 0 0 0 1px #fff;
+			svg {
+				fill: #fff;
+			}
+		}
+	}
 }
 
 .wp-block-bc-sitka-spruce-tabcordion .tab-heading{
