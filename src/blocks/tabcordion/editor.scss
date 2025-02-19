@@ -261,6 +261,10 @@
 
 	.wp-block-bc-sitka-spruce-tabcordion-content {
 		color: var(--white);
+		--bs-link-color-rgb: 255, 255, 255 !important;
+		a:hover, a:focus {
+			color: var(--gray--light);
+		}
 		margin: 3.5rem 2rem;
 
 		div.tabcordion-pane {
