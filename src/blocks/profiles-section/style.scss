@@ -1,10 +1,14 @@
 @import '/src/scss/block-styles';
 
 .profiles-section {
-	a{
+	a {
 		color: var(--accent-link-blue);
 	}
 	.profile-card {
 		max-width: 260px; // match with image size
 	}
+}
+
+.flexible-page-intro-wrapper:has( + .profiles-section-wrapper ) {
+	margin-bottom: 0;
 }
