@@ -33,6 +33,7 @@ if ( $context['post']->post_parent > 0 ) {
 			'sort_column' => 'menu_order',
 			'echo'        => false,
 			'depth'       => 2,
+			'exclude'     => get_option('page_on_front') ?? array(),
 		)
 	);
 }
