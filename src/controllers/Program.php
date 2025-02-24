@@ -52,11 +52,11 @@ class Program extends PostData {
 				return $pathway['title'];
 			}, $pathways ),
 			'pathways'      => $pathways,
-			'focus_areas'   => get_field( 'focus_areas', $post->ID ) ? array_map( function ( $focus_area ) {
+			'focus_areas'   => get_field( 'focus_areas', $post->ID ) ? array_map( function ( $focus_area ) use ( $pathways ) {
 				return array(
 					'id'    => $focus_area->ID,
 					'title' => $focus_area->post_title,
-					'url'   => get_permalink( $focus_area->ID ),
+					'url'   => 1 === count( $pathways ) ? esc_url( $pathways[0]['url'] . '#' . $focus_area->post_name . '-tab-open' ) :  false,
 				);
 			}, get_field( 'focus_areas', $post->ID )) : array(),
 		);
