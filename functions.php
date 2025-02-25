@@ -655,8 +655,8 @@ add_filter( 'get_search_form', '__return_null' );
 // normal WP get_option function here, as this fires before ACF is fully
 // initialized.
 if ( ! get_option( 'options_enable_posts')  ) {
-	if ( is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
+	/*if ( \is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
 		deactivate_plugins( 'oho-disable-posts/oho-disable-posts.php', true, false );
-	}
+	}*/
 	include_once( get_template_directory() . '/src/library/BundledPlugins/oho-disable-posts.php' );
 }
