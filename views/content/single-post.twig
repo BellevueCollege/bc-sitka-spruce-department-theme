@@ -18,54 +18,74 @@
 				</div>
 				<div class="col-lg-8">
 					<!-- Displays the Post Title -->
-					<h1>{{ title }}</h1>
+					<article>
+						<h2>{{ post.title }}</h2>
 
-					<!--Summary-->
-					{% if summary %}
-						<p class="post-summary">{{ summary }}</p>
-					{% endif %}
-
-					<!-- Featured Media -->
-					<div class="single-post-featured-media">
-
-						{% if post.featured_video_url and post.featured_image_horizontal %}
-							<div class="aspect-ratio-frame" style="--aspect-ratio: .74">
-								<a class="video-overlay" data-fancybox href="{{ post.featured_video_url|esc_url }}" target="_blank">
-									<img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
-									{% include '/stories/play-button/play-button.twig' %}
-									<span class="visually-hidden">{{ __('Click to play video', 'bc-sitka-spruce') }}</span>
-								</a>
-							</div>
-						{% elseif post.featured_image_horizontal %}
-							<div class="aspect-ratio-frame" style="--aspect-ratio: .74">
-								<img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
-							</div>
+						<!--Summary-->
+						{% if summary %}
+							<p class="post-summary">{{ summary }}</p>
 						{% endif %}
-					</div>
 
-					<!-- Post Content -->
-					<div class="single-post-content">
-						{{ post.content }}
-					</div>
+						<!-- Featured Media -->
+						<div class="single-post-featured-media">
 
-					<!-- Additional Details-->
-					<div class="post-additonal">
-						<h3>{{ __('Additional Details', 'bc-sitka-spruce') }}</h3>
-						<!--Author/ Override Author-->
-						<h5>{{ __('Author', 'bc-sitka-spruce') }}</h5>
-						{{ author_override }}
-
-						<!--ADD PUBLISHED DATE-->
-						<h5>{{ __('Published', 'bc-sitka-spruce') }}</h5>
-
-						<!--Contact-->
-						<div class="post-contact-additional">
-							<h5>{{ __('Contact', 'bc-sitka-spruce') }}</h5>
-							{% include '/stories/contact-item/contact-loop.twig' with { profiles: contacts } %}
+							{% if post.featured_video_url and post.featured_image_horizontal %}
+								<div class="aspect-ratio-frame" style="--aspect-ratio: .74">
+									<a class="video-overlay" data-fancybox href="{{ post.featured_video_url|esc_url }}" target="_blank">
+										<img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
+										{% include '/stories/play-button/play-button.twig' %}
+										<span class="visually-hidden">{{ __('Click to play video', 'bc-sitka-spruce') }}</span>
+									</a>
+								</div>
+							{% elseif post.featured_image_horizontal %}
+								<div class="aspect-ratio-frame" style="--aspect-ratio: .74">
+									<img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
+								</div>
+							{% endif %}
 						</div>
-					</div>
+
+						<!-- Post Content -->
+						<div class="single-post-content">
+							{{ post.content }}
+						</div>
+
+						<!-- Additional Details-->
+						<div class="post-additional">
+							<h3>{{ __('Additional Details', 'bc-sitka-spruce') }}</h3>
+							<div class="row">
+								<div class="col-md">
+									<!--Author/ Override Author-->
+									<h4>{{ __('Author', 'bc-sitka-spruce') }}</h4>
+									{% if author_override %}
+										<p>{{ author_override }}</p>
+									{% else %}
+										<p>{{ post.author.name }}</p>
+									{% endif %}
+
+									<!--ADD PUBLISHED DATE-->
+									<h4>{{ __('Published', 'bc-sitka-spruce') }}</h4>
+									<p>{{ post.date }}</p>
+								</div>
+
+								<!--Contact-->
+								{% if contact %}
+									<div class="post-additional-contact col-md-8">
+										<h4>{{ __('Contact', 'bc-sitka-spruce') }}</h4>
+										{% include '/stories/contact-item/contact-item.twig' with {
+											first_name: contact.first_name,
+											last_name: contact.last_name,
+											position: contact.position,
+											phone: contact.phone,
+											email: contact.email,
+											scheduling_link: contact.scheduling_link,
+										} %}
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</article>
 					<!-- ADD RELATED POSTS-->
-					<div class="related-posts">
+					<aside class="related-posts">
 						<h2>{{ __('Related Posts', 'bc-sitka-spruce') }}</h2>
 						{% if related_posts %}
 							<ul>
@@ -84,7 +104,7 @@
 						{% else %}
 							<p>No related posts found.</p>
 						{% endif %}
-					</div>
+					</aside>
 				</div>
 			</div>
 		</div>
