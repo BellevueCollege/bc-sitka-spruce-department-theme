@@ -42,17 +42,25 @@ if ( $raw_contact ) {
 //breadcrumb stuff
 $context['breadcrumbs'] = Theme::breadcrumbs()->getItems( 2 );
 
-// uses WP command to grab photo @ correct size
-$featured_image = get_field('featured_image_horizontal');
-$context['featured_image_h'] = $featured_image ? $featured_image['url'] : null;
+$context['featured_media_type'] = get_field('featured_media_type') ?? 'image_horizontal';
+$context['featured_video_url'] = get_field('featured_video_url') ?? null;
 
+// uses WP command to grab photo @ correct size
+$context['featured_image_h'] = get_field( 'featured_image_horizontal' ) ? wp_get_attachment_image(
+	get_field( 'featured_image_horizontal' )['ID'],
+	'post-horiz-lg',
+	false,
+	array(
+		'class' => 'img-fluid',
+	)
+) : null;
 
 $context['featured_image_v'] = get_field( 'featured_image_vertical' ) ? wp_get_attachment_image(
 	get_field( 'featured_image_vertical' )['ID'],
-	'full',
+	'post-vert-lg',
 	false,
 	array(
-		'class' => 'img-fluid rounded',
+		'class' => 'img-fluid',
 	)
 ) : null;
 
