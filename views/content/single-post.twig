@@ -17,32 +17,36 @@
 					{% include '/stories/post-filter-sidebar/post-filter-sidebar.twig' %}
 				</div>
 				<div class="col-lg-8">
+					<p>
+						<a class="link-accent" href="{{ blog_home_url|esc_url }}"><i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
+					</p>
 					<!-- Displays the Post Title -->
 					<article>
 						<h2>{{ post.title }}</h2>
 
 						<!--Summary-->
 						{% if summary %}
-							<p class="post-summary">{{ summary }}</p>
+							<p class="post-summary lead">{{ summary }}</p>
 						{% endif %}
 
-						<!-- Featured Media -->
-						<div class="single-post-featured-media">
-
-							{% if post.featured_video_url and post.featured_image_horizontal %}
-								<div class="aspect-ratio-frame" style="--aspect-ratio: .74">
-									<a class="video-overlay" data-fancybox href="{{ post.featured_video_url|esc_url }}" target="_blank">
-										<img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
+						{% if featured_image_h or featured_image_v %}
+							<figure class="single-post-featured-media wp-block-image">
+								{% if 'image_horizontal' == featured_media_type %}
+									{{ featured_image_h }}
+								{% elseif 'image_vertical' == featured_media_type %}
+									{{ featured_image_v }}
+								{% elseif 'video' == featured_media_type and featured_video_url %}
+									<a class="video-overlay" data-fancybox href="{{ featured_video_url|esc_url }}" target="_blank">
+										{{ featured_image_h }}
 										{% include '/stories/play-button/play-button.twig' %}
 										<span class="visually-hidden">{{ __('Click to play video', 'bc-sitka-spruce') }}</span>
 									</a>
-								</div>
-							{% elseif post.featured_image_horizontal %}
-								<div class="aspect-ratio-frame" style="--aspect-ratio: .74">
-									<img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
-								</div>
-							{% endif %}
-						</div>
+								{% endif %}
+								{% if caption %}
+									<figcaption>{{ caption }}</figcaption>
+								{% endif %}
+							</figure>
+						{% endif %}
 
 						<!-- Post Content -->
 						<div class="single-post-content">
