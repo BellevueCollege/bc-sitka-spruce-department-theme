@@ -42,10 +42,14 @@
 										<dd><ul class="list-unstyled">
 											{% for focus_area in program.focus_areas %}
 												<li>
-													<a href="{{ focus_area.url|esc_url }}" target="_blank">
-														{{ focus_area.title|esc_html }}<i class="fa-regular fa-square-arrow-up-right ms-1" aria-hidden="true"></i>
-														<span class="visually-hidden">{{ __( 'Opens in a new tab', 'bc-sitka-spruce' ) }}</span>
-													</a>
+													{% if focus_area.url %}
+														<a href="{{ focus_area.url|esc_url }}" target="_blank">
+															{{ focus_area.title|esc_html }}<i class="fa-regular fa-square-arrow-up-right ms-1" aria-hidden="true"></i>
+															<span class="visually-hidden">{{ __( 'Opens in a new tab', 'bc-sitka-spruce' ) }}</span>
+														</a>
+													{% else %}
+														{{ focus_area.title|esc_html }}
+													{% endif %}
 												</li>
 											{% endfor %}
 										</ul></dd>

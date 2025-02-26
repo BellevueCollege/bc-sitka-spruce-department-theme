@@ -38,7 +38,7 @@
 
 }
 
-.site-type-suppt .content-and-location.container-xl {
+.site-type-suppt .hero + .content-and-location.container-xl {
 
     @include media-breakpoint-up('lg') {
         margin-top: calc( var(--bs-gutter-x ) * -0.5 );
