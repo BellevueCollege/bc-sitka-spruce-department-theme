@@ -87,6 +87,17 @@ export const getAllBlocks = async () => {
  */
 export function forcePatternToTop( allBlocks, blockName, patternName ) {
 
+	// Check if a pattern block exists- this is the case when a page
+	// was automatically created from a template
+	const patternIndex = allBlocks.findIndex( ( block ) => {
+		return block.name === 'core/pattern';
+	});
+	if ( patternIndex >= 0 ) {
+		console.log('Notice: A pattern block was found at index', patternIndex, '- skipping.');
+		return;
+	}
+
+	// Find the index of the block we're looking for
 	const templateIndex = allBlocks.findIndex( ( block ) => {
 		return block.name === blockName;
 	});
