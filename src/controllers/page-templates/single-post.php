@@ -25,6 +25,18 @@ $context['video_url']        = get_field( 'featured_video_url') ?? null;
 $context['caption']          = get_field( 'caption') ?? null;
 $context['author_override']  = get_field( 'author_override') ?? null;
 
+// Get ACF fields for contact
+$raw_contact = get_field('contact') ?? false;
+if ( $raw_contact ) {
+	$context['contact'] = array(
+		'first_name' => get_field('first_name', $raw_contact->ID),
+		'last_name' => get_field('last_name', $raw_contact->ID),
+		'position' => get_field('position_role', $raw_contact->ID),
+		'phone' => get_field('phone_number', $raw_contact->ID),
+		'email' => get_field('email', $raw_contact->ID),
+		'url' => get_permalink( $raw_contact->ID ),
+	);
+}
 
 //breadcrumb stuff
 $context['breadcrumbs'] = Theme::breadcrumbs()->getItems( 2 );
