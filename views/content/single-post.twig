@@ -5,89 +5,88 @@
 {% extends 'system/wrapper.twig' %}
 
 {% block content %}
-<div class="single-post-container">
-    <div class="single-post-wrapper">
-        <!-- Sidebar Navigation -->
-        <aside class="post-filter-sidebar">
-            {% include '/stories/post-filter-sidebar/post-filter-sidebar.twig' %}
-        </aside>
-
-		<!-- Breadcrumbs -->
-		<div>
-			{% include 'stories/breadcrumbs/breadcrumbs.twig' %}
-		</div>
-        <div class="single-post-main">
-			<!-- Displays the Post Title -->
-			<h1>{{ title }}</h1>
-			
-			<!--Summary-->
-				{% if summary %}
-					<p class="post-summary">{{ summary }}</p>
-				{% endif %}
-
-            <!-- Featured Media -->
-            <div class="single-post-featured-media">
-
-                {% if post.featured_video_url and post.featured_image_horizontal %}
-                    <div class="aspect-ratio-frame" style="--aspect-ratio: .74">
-                        <a class="video-overlay" data-fancybox href="{{ post.featured_video_url|esc_url }}" target="_blank">
-                            <img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
-                            {% include '/stories/play-button/play-button.twig' %}
-                            <span class="visually-hidden">{{ __('Click to play video', 'bc-sitka-spruce') }}</span>
-                        </a>
-                    </div>
-                {% elseif post.featured_image_horizontal %}
-                    <div class="aspect-ratio-frame" style="--aspect-ratio: .74">
-                        <img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
-                    </div>
-                {% endif %}
-            </div>
-
-            <!-- Post Content -->
-            <div class="single-post-content">
-                {{ post.content }}
-            </div>
-
-			<!-- Additional Details-->
-			<div class="post-additonal">
-				<h3>{{ __('Additional Details', 'bc-sitka-spruce') }}</h3>
-				<!--Author/ Override Author-->
-				<h5>{{ __('Author', 'bc-sitka-spruce') }}</h5>
-				{{ author_override }}
-
-				<!--ADD PUBLISHED DATE-->
-				<h5>{{ __('Published', 'bc-sitka-spruce') }}</h5>
-
-				<!--Contact-->
-				<div class="post-contact-additional">
-					<h5>{{ __('Contact', 'bc-sitka-spruce') }}</h5>
-					{% include '/stories/contact-item/contact-loop.twig' with { profiles: contacts } %}
+	<div class="flexible-page">
+		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+			title: post.title,
+			intro_text: intro_text,
+			breadcrumbs: breadcrumbs
+		} only %}
+		<div class="container-xl post-list-page mt-lg-n4">
+			<div class="row">
+				<div class="col-lg-4">
+					{% include '/stories/post-filter-sidebar/post-filter-sidebar.twig' %}
 				</div>
+				<div class="col-lg-8">
+					<!-- Displays the Post Title -->
+					<h1>{{ title }}</h1>
 
-				<!-- ADD RELATED POSTS-->
-				<div class="related-posts">
-				<h2>{{ __('Related Posts', 'bc-sitka-spruce') }}</h2>
-				{% if related_posts %}
-					<ul>
-						{% for related_post in related_posts %}
-							<li>
-								<a href="{{ related_post.link }}">
-									{% if related_post.thumbnail %}
-										<img src="{{ related_post.thumbnail.src }}" alt="{{ related_post.thumbnail.alt }}">
-									{% endif %}
-									<h3>{{ related_post.title }}</h3>
-									<p>{{ related_post.excerpt|length > 0 ? related_post.excerpt|slice(0, 100) ~ '...' }}</p>
+					<!--Summary-->
+					{% if summary %}
+						<p class="post-summary">{{ summary }}</p>
+					{% endif %}
+
+					<!-- Featured Media -->
+					<div class="single-post-featured-media">
+
+						{% if post.featured_video_url and post.featured_image_horizontal %}
+							<div class="aspect-ratio-frame" style="--aspect-ratio: .74">
+								<a class="video-overlay" data-fancybox href="{{ post.featured_video_url|esc_url }}" target="_blank">
+									<img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
+									{% include '/stories/play-button/play-button.twig' %}
+									<span class="visually-hidden">{{ __('Click to play video', 'bc-sitka-spruce') }}</span>
 								</a>
-							</li>
-						{% endfor %}
-					</ul>
-				{% else %}
-					<p>No related posts found.</p>
-				{% endif %}
+							</div>
+						{% elseif post.featured_image_horizontal %}
+							<div class="aspect-ratio-frame" style="--aspect-ratio: .74">
+								<img src="{{ post.featured_image_horizontal }}" alt="{{ post.title }}">
+							</div>
+						{% endif %}
+					</div>
+
+					<!-- Post Content -->
+					<div class="single-post-content">
+						{{ post.content }}
+					</div>
+
+					<!-- Additional Details-->
+					<div class="post-additonal">
+						<h3>{{ __('Additional Details', 'bc-sitka-spruce') }}</h3>
+						<!--Author/ Override Author-->
+						<h5>{{ __('Author', 'bc-sitka-spruce') }}</h5>
+						{{ author_override }}
+
+						<!--ADD PUBLISHED DATE-->
+						<h5>{{ __('Published', 'bc-sitka-spruce') }}</h5>
+
+						<!--Contact-->
+						<div class="post-contact-additional">
+							<h5>{{ __('Contact', 'bc-sitka-spruce') }}</h5>
+							{% include '/stories/contact-item/contact-loop.twig' with { profiles: contacts } %}
+						</div>
+					</div>
+					<!-- ADD RELATED POSTS-->
+					<div class="related-posts">
+						<h2>{{ __('Related Posts', 'bc-sitka-spruce') }}</h2>
+						{% if related_posts %}
+							<ul>
+								{% for related_post in related_posts %}
+									<li>
+										<a href="{{ related_post.link }}">
+											{% if related_post.thumbnail %}
+												<img src="{{ related_post.thumbnail.src }}" alt="{{ related_post.thumbnail.alt }}">
+											{% endif %}
+											<h3>{{ related_post.title }}</h3>
+											<p>{{ related_post.excerpt|length > 0 ? related_post.excerpt|slice(0, 100) ~ '...' }}</p>
+										</a>
+									</li>
+								{% endfor %}
+							</ul>
+						{% else %}
+							<p>No related posts found.</p>
+						{% endif %}
+					</div>
+				</div>
 			</div>
-				
-			</div>
-        </div>
-    </div>
-</div>
+		</div>
+	</div>
 {% endblock %}
