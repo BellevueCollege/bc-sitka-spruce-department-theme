@@ -18,15 +18,15 @@ registerBlockType("bc-sitka-spruce/course-information-section-content", {
 
 		const TEMPLATE = [
 			[ "core/paragraph", {
-				placeholder: "Add an introduction to the courses in this degree or certificate."
+				placeholder: __( "Add an introduction to the courses in this degree or certificate (required).", "bc-sitka-spruce" ),
 			} ],
 			[ "core/paragraph", {
-				placeholder: "Add list descriptor (aka 'Example courses')"
+				placeholder: __( "Add list descriptor (aka 'Example courses')", "bc-sitka-spruce" ),
 			} ],
 			[ "core/list", {} ],
 			[ "mayflower-blocks/button-group", {}, [
 				[ "mayflower-blocks/button", {
-					placeholder: "Add Call-to-Action",
+					placeholder: __( "Add Call-to-Action", "bc-sitka-spruce" ),
 				}]
 			] ],
 			[ "bawb/program", {
@@ -42,7 +42,7 @@ registerBlockType("bc-sitka-spruce/course-information-section-content", {
 		return (
 			<div {...blockProps}>
 				<RichText
-					placeholder={__("Section Title", "bc-sitka-spruce")}
+					placeholder={ __("Section Title (Required)", "bc-sitka-spruce") }
 					tagName="h2"
 					onChange={(title) => props.setAttributes({ title })}
 					value={props.attributes.title}
