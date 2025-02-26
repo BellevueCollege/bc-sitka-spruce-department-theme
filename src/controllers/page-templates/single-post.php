@@ -6,24 +6,25 @@ use BcSitkaSpruce\Library\Theme;
 $context         = Timber::context();
 $context['post'] = Timber::get_post();
 
+// Blog Home fields
+$blog_home_id = get_option('page_for_posts');
+if ( '0' !== $blog_home_id ) {
+	$context['blog_home_url'] = get_permalink( $blog_home_id );
+	$context['blog_home_title'] = get_the_title( $blog_home_id );
+	$context['blog_home_intro'] = get_field( 'intro_text', $blog_home_id );
+} else {
+	$context['blog_home_url'] = null;
+	$context['blog_home_title'] = __( 'Posts', 'bc-sitka-spruce' );
+}
+
+
 //ACF fields
-$context['title'] 			 = get_the_title();
-$context['summary']          = get_field( 'summary') ?: null;
-$context['media_type']       = get_field( 'featured_media_type') ?: null;
-$context['video_url']        = get_field( 'featured_video_url') ?: null; 
-$context['caption']          = get_field( 'caption') ?: null;
-$context['author_override']  = get_field( 'author_override') ?: null;
-$raw_contacts = get_field('contact') ?: []; // Get ACF field contacts
-// Passing in only needed fields
-$context['contacts'] = array_map(function ($contact) {
-    return [
-        'first_name'       => get_field('first_name', $contact->ID),
-        'last_name'        => get_field('last_name', $contact->ID),
-        'position'         => get_field('position_role', $contact->ID),
-        'phone'            => get_field('phone_number', $contact->ID),
-        'email'            => get_field('email', $contact->ID),
-    ];
-}, is_array($raw_contacts) ? $raw_contacts : [$raw_contacts]); // Ensure it's an array
+$context['summary']          = get_field( 'summary') ?? null;
+$context['media_type']       = get_field( 'featured_media_type') ?? null;
+$context['video_url']        = get_field( 'featured_video_url') ?? null;
+$context['caption']          = get_field( 'caption') ?? null;
+$context['author_override']  = get_field( 'author_override') ?? null;
+
 
 //breadcrumb stuff
 $context['breadcrumbs'] = Theme::breadcrumbs()->getItems( 2 );

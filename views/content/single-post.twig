@@ -7,8 +7,8 @@
 {% block content %}
 	<div class="flexible-page">
 		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
-			title: post.title,
-			intro_text: intro_text,
+			title: blog_home_title,
+			intro_text: blog_home_intro,
 			breadcrumbs: breadcrumbs
 		} only %}
 		<div class="container-xl post-list-page mt-lg-n4">
