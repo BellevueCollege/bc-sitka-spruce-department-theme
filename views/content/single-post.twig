@@ -36,11 +36,13 @@
 								{% elseif 'image_vertical' == featured_media_type %}
 									{{ featured_image_v }}
 								{% elseif 'video' == featured_media_type and featured_video_url %}
-									<a class="video-overlay" data-fancybox href="{{ featured_video_url|esc_url }}" target="_blank">
+									<div class="image-overlay-container" style="--aspect-ratio: 40/76;">
 										{{ featured_image_h }}
-										{% include '/stories/play-button/play-button.twig' %}
-										<span class="visually-hidden">{{ __('Click to play video', 'bc-sitka-spruce') }}</span>
-									</a>
+										<a class="image-overlay" data-fancybox href="{{ featured_video_url|esc_url }}" target="_blank">
+											<i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+											<span class="visually-hidden">{{ __('Open video', 'bc-sitka-spruce') }}</span>
+										</a>
+									</div>
 								{% endif %}
 								{% if caption %}
 									<figcaption>{{ caption }}</figcaption>
