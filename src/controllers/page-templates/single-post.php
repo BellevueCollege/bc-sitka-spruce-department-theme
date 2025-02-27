@@ -18,6 +18,12 @@ if ( '0' !== $blog_home_id ) {
 	$context['blog_home_title'] = __( 'Posts', 'bc-sitka-spruce' );
 }
 
+// Build options for date filter
+$context['date_filter_options'] = PostFilters::get_archives_as_options();
+
+// Build options for category filter
+$context['category_filter_options'] = PostFilters::get_categories_as_options();
+
 
 //ACF fields
 $context['summary']          = get_field( 'summary') ?? null;
