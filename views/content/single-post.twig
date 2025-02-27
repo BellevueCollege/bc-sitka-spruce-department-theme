@@ -11,7 +11,7 @@
 			intro_text: blog_home_intro,
 			breadcrumbs: breadcrumbs
 		} only %}
-		<div class="container-xl post-list-page mt-lg-n4">
+		<div class="container-xl post-single-page mt-lg-n4">
 			<div class="row">
 				<div class="col-lg-4">
 					{% include '/stories/post-filter-sidebar/post-filter-sidebar.twig' %}
@@ -20,11 +20,11 @@
 					<p>
 						<a class="link-accent" href="{{ blog_home_url|esc_url }}"><i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
 					</p>
-					<!-- Displays the Post Title -->
+					{# <!-- Displays the Post Title --> #}
 					<article>
 						<h2>{{ post.title }}</h2>
 
-						<!--Summary-->
+						{# <!--Summary--> #}
 						{% if summary %}
 							<p class="post-summary lead">{{ summary }}</p>
 						{% endif %}
@@ -48,33 +48,30 @@
 							</figure>
 						{% endif %}
 
-						<!-- Post Content -->
+						{# <!-- Post Content --> #}
 						<div class="single-post-content">
 							{{ post.content }}
 						</div>
 
-						<!-- Additional Details-->
+						{# <!-- Additional Details--> #}
 						<div class="post-additional">
-							<h3>{{ __('Additional Details', 'bc-sitka-spruce') }}</h3>
+							<h3 class="post-additional-title card-title">{{ __('Additional Details', 'bc-sitka-spruce') }}</h3>
 							<div class="row">
 								<div class="col-md">
-									<!--Author/ Override Author-->
-									<h4>{{ __('Author', 'bc-sitka-spruce') }}</h4>
+									{# <!--Author/ Override Author--> #}
+									<h4 class="h6">{{ __('Author', 'bc-sitka-spruce') }}</h4>
 									{% if author_override %}
 										<p>{{ author_override }}</p>
 									{% else %}
 										<p>{{ post.author.name }}</p>
 									{% endif %}
-
-									<!--ADD PUBLISHED DATE-->
-									<h4>{{ __('Published', 'bc-sitka-spruce') }}</h4>
+									<h4 class="h6">{{ __('Published', 'bc-sitka-spruce') }}</h4>
 									<p>{{ post.date }}</p>
 								</div>
-
-								<!--Contact-->
+								{# <!--Contact--> #}
 								{% if contact %}
 									<div class="post-additional-contact col-md-8">
-										<h4>{{ __('Contact', 'bc-sitka-spruce') }}</h4>
+										<h4 class="h6">{{ __('Contact', 'bc-sitka-spruce') }}</h4>
 										{% include '/stories/contact-item/contact-item.twig' with {
 											first_name: contact.first_name,
 											last_name: contact.last_name,
@@ -88,29 +85,26 @@
 							</div>
 						</div>
 					</article>
-					<!-- ADD RELATED POSTS-->
-					<aside class="related-posts">
-						<h2>{{ __('Related Posts', 'bc-sitka-spruce') }}</h2>
-						{% if related_posts %}
-							<ul>
-								{% for related_post in related_posts %}
-									<li>
-										<a href="{{ related_post.link }}">
-											{% if related_post.thumbnail %}
-												<img src="{{ related_post.thumbnail.src }}" alt="{{ related_post.thumbnail.alt }}">
-											{% endif %}
-											<h3>{{ related_post.title }}</h3>
-											<p>{{ related_post.excerpt|length > 0 ? related_post.excerpt|slice(0, 100) ~ '...' }}</p>
-										</a>
-									</li>
-								{% endfor %}
-							</ul>
-						{% else %}
-							<p>No related posts found.</p>
-						{% endif %}
-					</aside>
+					{# <!-- ADD RELATED POSTS--> #}
+
 				</div>
 			</div>
 		</div>
 	</div>
+	{% if related_posts is not empty %}
+		<aside class="related-posts">
+
+			{% include '/stories/section-heading/section-heading.twig' with {
+				heading: __('Related Posts', 'bc-sitka-spruce'),
+				link_custom: related_posts_link,
+			} %}
+			<div class="container-xl mt-4">
+
+				{% for post in related_posts %}
+					{% include '/views/content/subcomponents/post-list-element.twig' %}
+				{% endfor %}
+
+			</div>
+		</aside>
+	{% endif %}
 {% endblock %}

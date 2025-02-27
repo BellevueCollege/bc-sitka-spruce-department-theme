@@ -1,101 +1,31 @@
-.single-post-container {
-    display: flex;
-    justify-content: center;
-    padding: 20px;
 
-    .single-post-wrapper {
-        display: flex;
-        max-width: 1200px; // Adjust as needed
-        width: 100%;
-        gap: 30px; // Space between sidebar and content
+.post-single-page {
 
-        .post-filter-sidebar {
-            flex: 1; // Sidebar takes up a smaller portion
-            max-width: 300px; // Adjust sidebar width
-        }
+	.post-additional {
+		margin-top: var(--sitka-container-spacing);
+		margin-bottom: var(--sitka-container-spacing);
+	}
 
-        .single-post-main {
+	.post-additional-title {
+		border-bottom: 1px solid var(--gray--light);
+		padding-bottom: 1rem;
+		margin-bottom: 1rem;
+	}
 
-        }
-    }
-    .additional-details {
-        display: flex;
-        justify-content: space-between;
-        align-items: flex-start;
-        flex-wrap: wrap;
-        margin-top: 20px; // Space above the section
+	.post-additional-contact .contact-item {
+		background: var(--gray--xlight);
+		border-radius: var(--bs-border-radius);
 
-        .content-left {
-            flex: 1;
-            min-width: 60%;
-        }
-
-        .contact-info {
-            flex: 1;
-            min-width: 35%;
-            margin-left: auto; // Pushes it to the right
-        }
-
-        .author-override {
-            margin-bottom: 1.5rem; // Space below the author override
-        }
-    }
-    
-    .related-posts {
-        margin-top: 40px;
-        padding: 20px;
-        background: #f9f9f9;
-        border-radius: 8px;
-    
-        h2 {
-            font-size: 1.5rem;
-            margin-bottom: 15px;
-        }
-    
-        ul {
-            list-style: none;
-            padding: 0;
-            margin: 0;
-            display: flex;
-            gap: 15px;
-    
-            li {
-                flex: 1;
-                background: white;
-                border-radius: 5px;
-                overflow: hidden;
-                transition: transform 0.3s ease;
-    
-                a {
-                    text-decoration: none;
-                    color: #333;
-                    display: block;
-                    padding: 10px;
-    
-                    &:hover {
-                        color: #0073aa;
-                        transform: scale(1.05);
-                    }
-    
-                    img {
-                        width: 100%;
-                        height: auto;
-                        border-radius: 5px;
-                    }
-    
-                    h3 {
-                        font-size: 1.2rem;
-                        margin: 10px 0;
-                    }
-    
-                    p {
-                        font-size: 0.9rem;
-                        color: #666;
-                    }
-                }
-            }
-        }
-    }
+		.contact-item-r {
+			background: transparent;
+		}
+	}
 }
 
-
+// Prevent extra padding
+#main-content .single-post-content {
+	& > .block-wrapper {
+		padding-right: 0;
+		padding-left: 0;
+	}
+}
