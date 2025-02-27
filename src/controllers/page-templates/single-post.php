@@ -2,6 +2,7 @@
 use Timber\Timber;
 use Timber\Post;
 use BcSitkaSpruce\Library\Theme;
+use BcSitkaSpruce\Controllers\PostFilters;
 
 $context         = Timber::context();
 $context['post'] = Timber::get_post();
@@ -67,23 +68,35 @@ $context['featured_image_v'] = get_field( 'featured_image_vertical' ) ? wp_get_a
 // Related posts
 // Get the current post's categories
 $categories = get_the_category();
-$category_ids = [];
+$context['categories'] = $categories;
 
-if ($categories) {
-    foreach ($categories as $category) {
-        $category_ids[] = $category->term_id;
-    }
+
+if ( ! empty( $categories ) ) {
+
+	$category_ids = array_map( function( $category ) {
+		return $category->term_id;
+	}, $categories );
+
+	$context['related_posts_link'] = array(
+		'title' => __( 'More Related Posts', 'bc-sitka-spruce' ),
+		'url'  => get_category_link( $category_ids[0] ),
+	);
+
+
+	$context['category_ids'] = $category_ids;
+
+	// Query related posts
+	$args = [
+		'post_type'      => 'post',
+		'category__in'   => $category_ids,
+		'post__not_in'        => array( get_the_ID() ),
+		'posts_per_page' => 3,
+	];
+
+	$context['related_posts_args'] = $args;
+
+	$context['related_posts'] = Timber::get_posts($args);
 }
-
-// Query related posts
-$args = [
-    'post_type'      => 'post',
-    'category__in'   => $category_ids,
-    'post__not_in'   => [get_the_ID()],
-    'posts_per_page' => 3,
-];
-
-$context['related_posts'] = Timber::get_posts($args);
 
 ///needs to be last so everything before this line is rendered
 Timber::render( 'content/single-post.twig', $context );
