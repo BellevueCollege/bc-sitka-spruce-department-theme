@@ -311,6 +311,26 @@ add_filter(
 	1
 );
 
+// Use Summary or Intro as description by default
+// Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
+add_filter( 'the_seo_framework_generated_description', function( $description, $context ) {
+	// If ACF isn't activated, don't do anything.
+	if ( ! function_exists( 'get_field' ) ) return $description;
+
+	// If an Intro Text is available, return it.
+	if ( get_field( 'intro_text', $context['id'] ) && "" !== get_field( 'intro_text', $context['id'] ) ) {
+		return get_field( 'intro_text', $context['id'] );
+	}
+
+	// If a Summary is available, return it (used on Posts)
+	if ( get_field( 'summary', $context['id'] ) && "" !== get_field( 'summary', $context['id'] ) ) {
+		return get_field( 'summary', $context['id'] );
+	}
+
+	// Fall back to normal
+	return $description;
+}, 10, 2 );
+
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
  *
