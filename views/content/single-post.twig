@@ -12,38 +12,46 @@
 			breadcrumbs: breadcrumbs
 		} only %}
 		<div class="nav-sidebar-wrapper">
-			<div class="post-additional rounded">
-				<p>
-					<a class="link-accent link-accent-icon-left" href="{{ blog_home_url|esc_url }}"><i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
-				</p>
-				<h2 class="post-additional-title card-title-small">{{ __('Additional Details', 'bc-sitka-spruce') }}</h2>
+			<a class="visually-hidden-focusable" href="#after-nav-sidebar-landmark">Skip info sidebar</a>
+			<nav class="nav-sidebar rounded shadow accordion" id="nav-sidebar" aria-label="{{ __('Additional Information', 'bc-sitka-spruce') }}">
+				<div class="accordion-item">
+					<h2 class="accordion-header d-md-none">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nav-sidebar-collapse" aria-expanded="false" aria-controls="nav-sidebar-collapse">
+							{{ __('Additional Details', 'bc-sitka-spruce') }}
+						</button>
+					</h2>
+					<div id="nav-sidebar-collapse" class="accordion-collapse collapse p-3 d-md-block"  data-bs-parent="#nav-sidebar">
+						<a href="{{ blog_home_url|esc_url }}" class="parent-link"><i class="fa-regular fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
+						<hr>
+						<h2 class="post-additional-title card-title-small d-none d-md-block">{{ __('Additional Details', 'bc-sitka-spruce') }}</h2>
 
-				{# <!--Author/ Override Author--> #}
-				<h3 class="h6">{{ __('Author', 'bc-sitka-spruce') }}</h3>
-				{% if author_override %}
-					<p>{{ author_override }}</p>
-				{% else %}
-					<p>{{ post.author.name }}</p>
-				{% endif %}
-				<h3 class="h6">{{ __('Published', 'bc-sitka-spruce') }}</h3>
-				<p>{{ post.date }}</p>
+						<h3 class="h6">{{ __('Author', 'bc-sitka-spruce') }}</h3>
+						{% if author_override %}
+							<p>{{ author_override }}</p>
+						{% else %}
+							<p>{{ post.author.name }}</p>
+						{% endif %}
+						<h3 class="h6">{{ __('Published', 'bc-sitka-spruce') }}</h3>
+						<p>{{ post.date }}</p>
 
-				{# <!--Contact--> #}
-				{% if contact %}
-					<div class="post-additional-contact">
-						<h3 class="h6">{{ __('Contact', 'bc-sitka-spruce') }}</h3>
-						{% include '/stories/contact-item/contact-item.twig' with {
-							first_name: contact.first_name,
-							last_name: contact.last_name,
-							position: contact.position,
-							phone: contact.phone,
-							email: contact.email,
-							scheduling_link: contact.scheduling_link,
-						} %}
+						{% if contact %}
+							<div class="post-additional-contact">
+								<h3 class="h6">{{ __('Contact', 'bc-sitka-spruce') }}</h3>
+								{% include '/stories/contact-item/contact-item.twig' with {
+									first_name: contact.first_name,
+									last_name: contact.last_name,
+									position: contact.position,
+									phone: contact.phone,
+									email: contact.email,
+									scheduling_link: contact.scheduling_link,
+								} %}
+							</div>
+						{% endif %}
 					</div>
-				{% endif %}
-			</div>
+				</div>
+			</nav>
 		</div>
+		<div id="after-nav-sidebar-landmark" name="after-nav-sidebar-landmark" class="visually-hidden"></div>
 		{% if featured_image_h or featured_image_v %}
 			<figure class="single-post-featured-media wp-block-image">
 				{% if 'image_horizontal' == featured_media_type %}
