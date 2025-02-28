@@ -18,6 +18,13 @@
 		transform: translateX(0);
 	}
 
+	&.link-accent-icon-left:hover .fa-solid,
+	&.link-accent-icon-left:hover .fa-thin,
+	&.link-accent-icon-left:hover .fa-regular {
+		transform: translateX(-4px);
+		color: var(--sitka-link-accent-icon-active-color, var( --black ) );
+	}
+
 	&:hover .fa-solid,
 	&:hover .fa-thin,
 	&:hover .fa-regular {

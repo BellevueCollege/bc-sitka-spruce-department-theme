@@ -18,7 +18,7 @@
 				</div>
 				<div class="col-lg-8">
 					<p>
-						<a class="link-accent" href="{{ blog_home_url|esc_url }}"><i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
+						<a class="link-accent link-accent-icon-left" href="{{ blog_home_url|esc_url }}"><i class="fa-solid fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
 					</p>
 					{# <!-- Displays the Post Title --> #}
 					<article>
@@ -57,7 +57,7 @@
 
 						{# <!-- Additional Details--> #}
 						<div class="post-additional">
-							<h3 class="post-additional-title card-title">{{ __('Additional Details', 'bc-sitka-spruce') }}</h3>
+							<h3 class="post-additional-title card-title-small">{{ __('Additional Details', 'bc-sitka-spruce') }}</h3>
 							<div class="row">
 								<div class="col-md">
 									{# <!--Author/ Override Author--> #}
@@ -87,10 +87,9 @@
 							</div>
 						</div>
 					</article>
-					{# <!-- ADD RELATED POSTS--> #}
-
 				</div>
 			</div>
+			<hr class="light-rule">
 		</div>
 	</div>
 	{% if related_posts is not empty %}
@@ -105,7 +104,6 @@
 				{% for post in related_posts %}
 					{% include '/views/content/subcomponents/post-list-element.twig' %}
 				{% endfor %}
-
 			</div>
 		</aside>
 	{% endif %}
