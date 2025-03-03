@@ -18,6 +18,10 @@
 	}
 
 	.media-gallery-single-slide {
+		.image-overlay-container {
+			max-width: 600px;
+		}
+
 		hr {
 			--bs-border-width: 3px;
 			border-color: var(--bc-fountain-blue);
