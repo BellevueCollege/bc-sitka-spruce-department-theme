@@ -468,15 +468,17 @@ add_filter(
 			'bc-sitka-spruce/',
 		);
 
-		// Do not wrap non-root blocks, or blocks that are not named.
-		if ( ! $block['sitka_is_at_root'] || ! isset( $block['blockName'] ) ) {
+		// Do not wrap non-root blocks, or blocks that are empty
+		if ( ! $block['sitka_is_at_root'] || empty( $block_content ) || ctype_space( $block_content ) ) {
 			return $block_content;
 		}
 
 		// Do not wrap blocks that are in the allowlist.
-		foreach ( $allowlisted_blocks as $allowlisted_block ) {
-			if ( str_starts_with( $block['blockName'], $allowlisted_block ) ) {
-				return $block_content;
+		if ( isset( $block['blockName'] ) ) {
+			foreach ( $allowlisted_blocks as $allowlisted_block ) {
+				if ( str_starts_with( $block['blockName'], $allowlisted_block ) ) {
+					return $block_content;
+				}
 			}
 		}
 
