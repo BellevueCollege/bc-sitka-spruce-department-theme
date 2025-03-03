@@ -9,6 +9,10 @@
     }
 }
 
+.contact-item-wrapper {
+    --contact-item-bg: var(--white);
+}
+
 .contact-item-r {
 
     //styling for left-hand side/ column of contact item(s)
@@ -22,7 +26,7 @@
 
     //styling for all of the contact item(s)
     color: var(--bc-brutus-blue);
-    background-color: var(--white);
+    background-color: var(--contact-item-bg);
     margin: 1.5rem;
     margin-right: 1.5rem;
     border-radius: 0.5rem;
@@ -34,7 +38,7 @@
     }
 }
 
-.contact-item:last-child .contact-item-r {
+.contact-item-wrapper:last-child .contact-item-r {
 	margin-bottom: 0;
 }
 

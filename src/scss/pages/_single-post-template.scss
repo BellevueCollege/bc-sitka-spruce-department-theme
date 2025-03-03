@@ -3,20 +3,25 @@
 
 .post-single-page {
 
-	.post-additional {
-		background: var(--gray--xlight);
-		padding: 2rem;
+	.post-additional-contact {
 
-		.contact-item.col-6,
-		.contact-info.col-6 {
-			width: 100%;
+		.contact-item-wrapper {
+			--contact-item-bg: var(--gray--xlight);
+
+			.contact-item-r.row {
+				margin-left: 0;
+				margin-right: 0;
+				padding: 1.5rem 0;
+			}
+			.contact-name.col-6,
+			.contact-info.col-6 {
+				width: 100%;
+			}
 		}
+		
 	}
 
 	.post-additional-title {
-		border-bottom: 1px solid var(--gray--light);
-		padding-bottom: 1rem;
-		margin-bottom: 1rem;
 	}
 
 	.single-post-featured-media {
