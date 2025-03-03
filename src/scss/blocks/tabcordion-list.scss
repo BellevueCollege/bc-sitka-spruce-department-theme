@@ -5,10 +5,13 @@
 	background-color: var(--bc-rainy-night-blue);
 
 	.accordion-body {
-		--bs-link-color-rgb: 255, 255, 255 !important;
 
-		a:hover, a:focus {
-			color: var(--gray--light);
+		@include media-breakpoint-up(md) {
+			--bs-link-color-rgb: 255, 255, 255 !important;
+
+			a:hover, a:focus {
+				color: var(--gray--light);
+			}
 		}
 	}
 }
