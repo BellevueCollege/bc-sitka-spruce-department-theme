@@ -317,6 +317,9 @@ add_filter( 'the_seo_framework_generated_description', function( $description, $
 	// If ACF isn't activated, don't do anything.
 	if ( ! function_exists( 'get_field' ) ) return $description;
 
+	// Check if an ID is available in context
+	if ( ! isset( $context['id'] ) ) return $description;
+
 	// If an Intro Text is available, return it.
 	if ( get_field( 'intro_text', $context['id'] ) && "" !== get_field( 'intro_text', $context['id'] ) ) {
 		return get_field( 'intro_text', $context['id'] );
