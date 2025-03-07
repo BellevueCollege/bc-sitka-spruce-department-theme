@@ -1,0 +1,75 @@
+name: Build 
+
+on:
+  push:
+    branches: [ "trunk" ]
+  pull_request:
+    branches:
+      - trunk
+      - release-v*
+      - hotfix-v*
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Validate composer.json and composer.lock
+      run: composer validate --strict
+
+    - name: Cache Composer packages
+      id: composer-cache
+      uses: actions/cache@v3
+      with:
+        path: vendor
+        key: ${{ runner.os }}-php-${{ hashFiles('**/composer.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-php-
+
+    - name: Install dependencies
+      run: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+
+    - name: Setup Node.js environment
+      uses: actions/setup-node@v4.2.0
+      with:
+        # Set always-auth in npmrc.
+        # Version Spec of the version to use. Examples: 12.x, 10.15.1, >=10.15.0.
+        node-version: 20.x # optional
+        # File containing the version Spec of the version to use.  Examples: package.json, .nvmrc, .node-version, .tool-versions.
+        node-version-file: package.json # optional
+        # Used to specify a package manager for caching in the default directory. Supported values: npm, yarn, pnpm.
+        cache: npm # optional
+        # Used to specify the path to a dependency file: package-lock.json, yarn.lock, etc. Supports wildcards or a list of file names for caching multiple dependencies.
+        cache-dependency-path: package-lock.json # optional
+    - name: Build
+      run: npm run build
+
+    - name: Prune NPM Dev Deps
+      run: npm prune --omit=dev
+
+    - name: Set Version Number
+      uses: cschleiden/replace-tokens@v1.3
+      with:
+        files: style.css
+
+    - name: Delete Files
+      uses: mdmush/remove-files@v1.0.1
+      with: 
+        file-paths: |
+          /vrt
+          /reports
+    - name: Upload a Build Artifact
+      uses: actions/upload-artifact@v4.6.1
+      with:
+        # Artifact name
+        name: bc-sitka-spruce # optional, default is artifact
+        # A file, directory or wildcard pattern that describes what to upload
+        path: /          
+      
+          
