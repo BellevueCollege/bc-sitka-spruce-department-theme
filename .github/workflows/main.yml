@@ -65,12 +65,13 @@ jobs:
       with:
         files: style.css
 
-    - name: Delete Files
-      uses: mdmush/remove-files@v1.0.1
-      with: 
-        file-paths: |
-          /vrt
-          /reports
+    - name: Delete VRT images
+      run: rm -rf vrt/
+
+    - name: Delete VRT reports
+      run: rm -rf reports/
+
+
     - name: Upload a Build Artifact
       uses: actions/upload-artifact@v4.6.1
       with:
