@@ -50,6 +50,9 @@ jobs:
 
     - name: NPM Install
       run: npm ci
+      env:
+        FONTAWESOME_KEY: ${{ secrets.FONTAWESOME_KEY }}
+              
       
     - name: Build
       run: npm run build
