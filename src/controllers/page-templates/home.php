@@ -7,9 +7,6 @@ use Timber\Timber;
 use BcSitkaSpruce\Library\Theme;
 use BcSitkaSpruce\Controllers\PostFilters;
 
-
-
-//Basic page rendering from full-width template. Should be integrated with other code.
 global $post;
 
 $context = Timber::context();
