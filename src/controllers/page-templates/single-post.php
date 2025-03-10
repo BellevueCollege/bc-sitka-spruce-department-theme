@@ -6,6 +6,14 @@ use BcSitkaSpruce\Library\Theme;
 $context         = Timber::context();
 $context['post'] = Timber::get_post();
 
+// Blog Home fields
+$blog_home_id = get_option( 'page_for_posts' );
+if ( '0' !== $blog_home_id ) {
+	$context['blog_home_url'] = get_permalink( $blog_home_id );
+} else {
+	$context['blog_home_url'] = null;
+}
+
 //ACF fields
 $context['summary']           = get_field( 'summary') ?? null;
 $context['media_type']        = get_field( 'featured_media_type') ?? null;
