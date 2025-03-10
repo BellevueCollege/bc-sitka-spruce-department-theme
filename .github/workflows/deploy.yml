@@ -1,0 +1,34 @@
+# Simple workflow for deploying static content to GitHub Pages
+name: Deploy Artifact
+
+on:
+  workflow_run:
+    workflows: [Build]
+    types:
+      - completed
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - run: echo 'The triggering workflow passed'
+      
+      - name: Download a Build Artifact
+        uses: actions/download-artifact@v4.1.9
+        with:
+          name: bc-sitka-spruce
+      
+      
+  on-failure:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'failure' }}
+    steps:
+      - run: echo 'The triggering workflow failed'
