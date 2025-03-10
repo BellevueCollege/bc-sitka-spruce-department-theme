@@ -2,12 +2,7 @@ name: Build
 
 on:
   push:
-    branches: [ "trunk" ]
-  pull_request:
-    branches:
-      - trunk
-      - release-v*
-      - hotfix-v*
+    branches: [ "gh-action-for-build" ]
 
 permissions:
   contents: read
@@ -64,6 +59,8 @@ jobs:
       uses: cschleiden/replace-tokens@v1.3
       with:
         files: style.css
+      env:
+        versionStamp: "Branch: ${{ github.ref_name }}. Commit: ${{ github.sha }}"
 
     - name: Delete VRT images
       run: rm -rf vrt/
