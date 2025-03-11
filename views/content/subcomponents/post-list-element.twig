@@ -1,11 +1,11 @@
 <div class="row post-list-element">
 	<div class="col-sm order-last order-sm-first">
-		<h3 class="card-title-small"><a href="{{ post.link|esc_url }}">{{ post.title|esc_html }}</a></h3>
+		<h3 class="card-title-small"><a href="{{ post.link|esc_url }}">{{ post.title|striptags|esc_html }}</a></h3>
 		<p>
 			{% if post.meta('summary') %}
-				{{ post.meta('summary')|esc_html }}
+				{{ post.meta('summary')|striptags|esc_html }}
 			{% else %}
-				{{ post.excerpt|esc_html }}
+				{{ post.excerpt|striptags|esc_html }}
 			{% endif %}
 		</p>
 		<hr class="accent">

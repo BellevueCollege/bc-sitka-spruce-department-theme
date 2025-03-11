@@ -7,8 +7,8 @@
 {% block content %}
 	<div class="post-single-page">
 		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
-			title: post.title,
-			intro_text: summary,
+			title: post.title|striptags|esc_html,
+			intro_text: summary|striptags|esc_html,
 			breadcrumbs: breadcrumbs
 		} only %}
 		<aside class="nav-sidebar-wrapper">

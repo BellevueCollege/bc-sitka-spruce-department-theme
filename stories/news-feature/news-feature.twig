@@ -22,7 +22,7 @@
 				{% include '/stories/news-feature/news-feature-list-item.twig' with {
 					url: post.link,
 					title: post.title,
-					summary: post.summary,
+					summary: post.summary|striptags,
 				} %}
 			{% endfor %}
 		</div>
