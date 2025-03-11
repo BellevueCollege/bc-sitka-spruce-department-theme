@@ -20,6 +20,7 @@ class TimberHelper implements TimberHelperInterface {
     'views/static-content',
     'views/listings',
     'views/listings/profile',
+		'views/listings/post',
     'stories'
   ];
 

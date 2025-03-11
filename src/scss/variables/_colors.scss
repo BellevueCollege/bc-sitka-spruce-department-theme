@@ -35,6 +35,7 @@ $sitka-colors: (
     'primary-color--dark': darken(get_color($brand-colors, 'bc-brutus-blue'), 20%),
     'primary-color--light': lighten(get_color($brand-colors, 'bc-brutus-blue'), 10%),
     'accent-link-blue': #0055b8,
+	'accent-link-blue-rgb': '0, 85, 184',
     'accent-green-light': #ccdb25,
     'accent-fountain-blue-light': #afe6fa,
     'accent-fountain-blue-extralight': #dcf2fa,

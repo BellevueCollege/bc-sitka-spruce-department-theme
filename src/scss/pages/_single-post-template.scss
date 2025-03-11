@@ -1,0 +1,102 @@
+
+@use "sass:map";
+
+.post-single-page {
+
+	.post-additional-contact {
+
+		.contact-item-wrapper {
+			--contact-item-bg: var(--gray--xlight);
+
+			.contact-item-r.row {
+				margin-left: 0;
+				margin-right: 0;
+				padding: 1.5rem 0;
+			}
+			.contact-name.col-6,
+			.contact-info.col-6 {
+				width: 100%;
+			}
+		}
+		
+	}
+
+	.post-additional-title {
+	}
+
+	.single-post-featured-media {
+		width: 100%;
+		max-width: 700px;
+	}
+
+	.flexible-page-intro-wrapper {
+		margin-bottom: var(--sitka-container-spacing);
+	}
+}
+
+
+#main-content .post-single-page {
+	// Use CSS Grid to display blocks alongside sidebar content, even though there cannot be a good wrapper heirarchy
+	--flexpage-column-gap: 1.25rem;
+	--flexpage-base-width: calc( 100% );
+	--flexpage-columns: 3;
+	--flexpage-sidebar-width: calc( var( --flexpage-unit ) * 1 );
+	--flexpage-narrow-content-width: calc( var( --flexpage-unit ) * 2 );
+
+	@include media-breakpoint-up('md') {
+		display: grid;
+		grid-template-rows: auto;
+		column-gap: var( --flexpage-column-gap );
+		grid-template-columns: 1fr repeat( var( --flexpage-columns ), var( --flexpage-unit ) )  1fr;
+		--flexpage-unit: calc(
+			( var( --flexpage-base-width ) - ( var( --flexpage-column-gap ) * ( var( --flexpage-columns ) - 1 ) ) -
+			( var( --bs-gutter-x, 1.25rem ) * 2 ) ) / var( --flexpage-columns ) );
+	}
+	@include media-breakpoint-up('lg') {
+		--flexpage-column-gap: 2.5rem;
+		--flexpage-unit: calc(
+			( var( --flexpage-base-width ) - ( var( --flexpage-column-gap ) * ( var( --flexpage-columns ) - 1 ) ) -
+			( var( --sitka-container-spacing) * 2 ) ) / var( --flexpage-columns ) );
+
+	}
+
+	@include media-breakpoint-up('xl') {
+		--flexpage-base-width: #{ map.get( $container-max-widths, 'xl' ) };
+	}
+
+	@include media-breakpoint-up('xxl') {
+		--flexpage-base-width: #{ map.get( $container-max-widths, 'xxl' ) };
+	}
+
+	& > * {
+		@include media-breakpoint-up('md') {
+			grid-column: 1 / span calc( var( --flexpage-columns ) + 2 );
+		}
+	}
+
+	.nav-sidebar-wrapper {
+		margin-bottom: var( --sitka-container-spacing );
+
+		@include media-breakpoint-down('md') {
+			margin-top: 1.5rem;
+			margin-bottom: 1.5rem;
+			@include make-container();
+		}
+		@include media-breakpoint-up('md') {
+			grid-column: 4 / 4;
+			grid-row: 2 / 10; // 10 is arbitrary- no matter the content, 10 should be enough to get below the sidebar
+		}
+	}
+
+	.single-post-featured-media,
+	.block-wrapper.alignstandard {
+		padding-right: 0;
+		padding-left: 0;
+		@include media-breakpoint-down('md') {
+			@include make-container();
+		}
+		@include media-breakpoint-up('md') {
+			grid-column: 2 / 4;
+		}
+	}
+}

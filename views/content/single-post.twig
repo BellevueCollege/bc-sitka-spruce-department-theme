@@ -1,0 +1,95 @@
+{#
+  * @file
+  * Bellevue template for a single post page.
+#}
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+	<div class="post-single-page">
+		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+			title: post.title|striptags|esc_html,
+			intro_text: summary|striptags|esc_html,
+			breadcrumbs: breadcrumbs
+		} only %}
+		<aside class="nav-sidebar-wrapper">
+			<a class="visually-hidden-focusable" href="#after-nav-sidebar-landmark">Skip info sidebar</a>
+			<nav class="nav-sidebar rounded shadow accordion" id="nav-sidebar" aria-label="{{ __('Additional Information', 'bc-sitka-spruce') }}">
+				<div class="accordion-item">
+					<h2 class="accordion-header d-md-none">
+						<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nav-sidebar-collapse" aria-expanded="false" aria-controls="nav-sidebar-collapse">
+							{{ __('Additional Details', 'bc-sitka-spruce') }}
+						</button>
+					</h2>
+					<div id="nav-sidebar-collapse" class="accordion-collapse collapse p-3 d-md-block"  data-bs-parent="#nav-sidebar">
+						<a href="{{ blog_home_url|esc_url }}" class="parent-link"><i class="fa-regular fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
+						<hr>
+						<h2 class="post-additional-title card-title-small d-none d-md-block">{{ __('Additional Details', 'bc-sitka-spruce') }}</h2>
+
+						<h3 class="h6">{{ __('Author', 'bc-sitka-spruce') }}</h3>
+						{% if author_override %}
+							<p>{{ author_override }}</p>
+						{% else %}
+							<p>{{ post.author.name }}</p>
+						{% endif %}
+						<h3 class="h6">{{ __('Published', 'bc-sitka-spruce') }}</h3>
+						<p>{{ post.date }}</p>
+
+						{% if contact %}
+							<div class="post-additional-contact">
+								<h3 class="h6">{{ __('Contact', 'bc-sitka-spruce') }}</h3>
+								{% include '/stories/contact-item/contact-item.twig' with {
+									first_name: contact.first_name,
+									last_name: contact.last_name,
+									position: contact.position,
+									phone: contact.phone,
+									email: contact.email,
+									scheduling_link: contact.scheduling_link,
+								} %}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</nav>
+		</aside>
+		<div id="after-nav-sidebar-landmark" name="after-nav-sidebar-landmark" class="visually-hidden"></div>
+		{% if featured_image_h or featured_image_v %}
+			<figure class="single-post-featured-media wp-block-image">
+				{% if 'image_horizontal' == featured_media_type %}
+					{{ featured_image_h }}
+				{% elseif 'image_vertical' == featured_media_type %}
+					{{ featured_image_v }}
+				{% elseif 'video' == featured_media_type and featured_video_url %}
+					<div class="image-overlay-container" style="--aspect-ratio: 40/76;">
+						{{ featured_image_h }}
+						<a class="image-overlay" data-fancybox href="{{ featured_video_url|esc_url }}" target="_blank">
+							<i class="fa-solid fa-circle-play" aria-hidden="true"></i>
+							<span class="visually-hidden">{{ __('Open video', 'bc-sitka-spruce') }}</span>
+						</a>
+					</div>
+				{% endif %}
+				{% if caption %}
+					<figcaption>{{ caption }}</figcaption>
+				{% endif %}
+			</figure>
+		{% endif %}
+
+		{{ post.content }}
+		<hr class="light-rule">
+
+		{% if related_posts is not empty %}
+			<aside class="related-posts">
+
+				{% include '/stories/section-heading/section-heading.twig' with {
+					heading: __('Related Posts', 'bc-sitka-spruce'),
+					link_custom: related_posts_link,
+				} %}
+				<div class="container-xl mt-4">
+
+					{% for post in related_posts %}
+						{% include '/views/content/subcomponents/post-list-element.twig' %}
+					{% endfor %}
+				</div>
+			</aside>
+		{% endif %}
+	</div>
+{% endblock %}
