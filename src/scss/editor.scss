@@ -52,7 +52,10 @@ html :where(.wp-block) {
 		padding-left: 0;
 	}
 
-
+	.text-white a,
+  .text-white a:hover {
+		color: var(--white);
+	}
 }
 
 /* Style Quote Block */
