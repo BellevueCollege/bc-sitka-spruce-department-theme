@@ -11,7 +11,7 @@
         {% if featured_news and featured_news.title and featured_news.summary and featured_news.image %}
             {% include '/stories/news-feature/news-feature-featured.twig' with {
                 image: featured_news.image,
-                url: featured_news.link,
+                url: featured_news.url,
                 title: featured_news.title,
                 summary: featured_news.summary
             } %}
@@ -19,7 +19,7 @@
         <div class="row mt-4 news-feature--list">
             {% for post in news_listing %}
                 {% include '/stories/news-feature/news-feature-list-item.twig' with {
-                    url: post.link,
+                    url: post.url,
                     title: post.title,
                     summary: post.summary,
                 } %}
@@ -28,4 +28,3 @@
     </div>
 	<hr class="section-divider" />
 </section>
-
