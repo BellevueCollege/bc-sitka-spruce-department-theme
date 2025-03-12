@@ -74,6 +74,12 @@ function register_blocks() {
 		'bio-section/bio-section-content',
 	);
 
+	// Only register posts feature block if posts are enabled
+	if ( get_option( 'options_enable_posts') ) {
+		$blocks[] = 'posts-feature';
+	}
+
+	// Register Blocks
 	block_registration_helper( $blocks );
 }
 add_action( 'init', __NAMESPACE__ . '\register_blocks' );
@@ -222,6 +228,16 @@ $image_crops->addImageSize( 'profile-overview-image', 460, 460, true );
 $image_crops->addImageSize( 'profile-list-image', 260, 260, true );
 // Checkerboard Image
 $image_crops->addImageSize( 'checkerboard', 660, 550, true );
+
+// Post Image Sizing
+// Used on Post Single and Feature Block
+$image_crops->addImageSize( 'post-horiz-lg', 760, 400, true );
+// Used on Post Single
+$image_crops->addImageSize( 'post-vert-lg', 460, 700, true );
+
+// Used on listing page
+$image_crops->addImageSize( 'post-horiz-sm', 260, 137, true );
+$image_crops->addImageSize( 'post-vert-sm', 100, 150, true );
 
 
 // Make some image sizes available in the block editor
@@ -674,3 +690,19 @@ add_action('parse_query', function( $query, $error = true ) {
 } );
 
 add_filter( 'get_search_form', '__return_null' );
+
+
+// Handle disabling posts. Note we are getting an ACF-set option using
+// normal WP get_option function here, as this fires before ACF is fully
+// initialized.
+if ( ! get_option( 'options_enable_posts')  ) {
+	include_once( get_template_directory() . '/src/library/BundledPlugins/oho-disable-posts.php' );
+}
+
+// Disable OHO Disable Posts plugin if active. This can be removed in the future.
+add_action( 'admin_init', function () {
+	if ( is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
+		deactivate_plugins( 'oho-disable-posts/oho-disable-posts.php', true, false );
+	}
+});
+

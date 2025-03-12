@@ -6,25 +6,26 @@
 #}
 
 <section class="section section-white news-feature oho-animate-sequence">
-    {% include '/stories/section-heading/section-heading.twig' %}
-    <div class="container-xl">
-        {% if featured_news and featured_news.title and featured_news.summary and featured_news.image %}
-            {% include '/stories/news-feature/news-feature-featured.twig' with {
-                image: featured_news.image,
-                url: featured_news.url,
-                title: featured_news.title,
-                summary: featured_news.summary
-            } %}
-        {% endif %}
-        <div class="row mt-4 news-feature--list">
-            {% for post in news_listing %}
-                {% include '/stories/news-feature/news-feature-list-item.twig' with {
-                    url: post.url,
-                    title: post.title,
-                    summary: post.summary,
-                } %}
-            {% endfor %}
-        </div>
-    </div>
+	{% include '/stories/section-heading/section-heading.twig' %}
+	<div class="container-xl">
+		{% if featured_news and featured_news.title and featured_news.summary and featured_news.image %}
+			{% include '/stories/news-feature/news-feature-featured.twig' with {
+				image: featured_news.image,
+				image_orientation: featured_news.image_orientation,
+				url: featured_news.url,
+				title: featured_news.title,
+				summary: featured_news.summary
+			} %}
+		{% endif %}
+		<div class="row mt-4 news-feature--list">
+			{% for post in news_listing %}
+				{% include '/stories/news-feature/news-feature-list-item.twig' with {
+					url: post.url,
+					title: post.title,
+					summary: post.summary|striptags,
+				} %}
+			{% endfor %}
+		</div>
+	</div>
 	<hr class="section-divider" />
 </section>
