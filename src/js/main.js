@@ -93,7 +93,8 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 			watchSlidesProgress: true,
 			spaceBetween: 40,
 			centeredSlides: false,
-			loop: false,
+			loop: true,
+			loopAddBlankSlides: true,
 			navigation: {
 				nextEl: '.slider-navigation__next',
 				prevEl: '.slider-navigation__prev',
