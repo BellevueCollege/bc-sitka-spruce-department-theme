@@ -218,6 +218,7 @@ body.gutenberg-editor-page .editor-block-list__block {
   }
 }
 
+// Change Title Width - match 'wide style', but ensure there is at least 1rem of margin on each side.
 .editor-post-title {
-	max-width: var(--wp--style--global--wide-size) !important;
+	max-width: min( var(--wp--style--global--wide-size), calc( 100% - 2rem ) ) !important;
 }
