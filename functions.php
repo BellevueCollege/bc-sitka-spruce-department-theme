@@ -74,6 +74,12 @@ function register_blocks() {
 		'bio-section/bio-section-content',
 	);
 
+	// Only register posts feature block if posts are enabled
+	if ( get_option( 'options_enable_posts') ) {
+		$blocks[] = 'posts-feature';
+	}
+
+	// Register Blocks
 	block_registration_helper( $blocks );
 }
 add_action( 'init', __NAMESPACE__ . '\register_blocks' );
@@ -223,6 +229,16 @@ $image_crops->addImageSize( 'profile-list-image', 260, 260, true );
 // Checkerboard Image
 $image_crops->addImageSize( 'checkerboard', 660, 550, true );
 
+// Post Image Sizing
+// Used on Post Single and Feature Block
+$image_crops->addImageSize( 'post-horiz-lg', 760, 400, true );
+// Used on Post Single
+$image_crops->addImageSize( 'post-vert-lg', 460, 700, true );
+
+// Used on listing page
+$image_crops->addImageSize( 'post-horiz-sm', 260, 137, true );
+$image_crops->addImageSize( 'post-vert-sm', 100, 150, true );
+
 
 // Make some image sizes available in the block editor
 add_filter(
@@ -291,9 +307,48 @@ add_filter( 'document_title_parts', function( $title_parts ) {
 
 /** Set Page Title Separator */
 add_filter( 'document_title_separator', function( $sep ) {
-	return is_front_page() ? '@' : '::';
+	return ' - ';
 }, 10, 1 );
 
+// SEO Framework Plugin Overrides to Preserve Title Format by Default
+add_filter(
+	'the_seo_framework_default_site_options',
+	function ( $options ) {
+		$options['author_noindex'] = 1;
+		$options['paged_noindex']  = 1;
+		$options['homepage_title_tagline'] = 'Bellevue College';
+		$options['knowledge_output'] = 0;
+		$options['ld_json_searchbox'] = 0;
+		$options['sitemap_styles'] = 0;
+		$options['sitemap_logo'] = 0;
+		return $options;
+	},
+	10,
+	1
+);
+
+// Use Summary or Intro as description by default
+// Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
+add_filter( 'the_seo_framework_generated_description', function( $description, $context ) {
+	// If ACF isn't activated, don't do anything.
+	if ( ! function_exists( 'get_field' ) ) return $description;
+
+	// Check if an ID is available in context
+	if ( ! isset( $context['id'] ) ) return $description;
+
+	// If an Intro Text is available, return it.
+	if ( get_field( 'intro_text', $context['id'] ) && "" !== get_field( 'intro_text', $context['id'] ) ) {
+		return get_field( 'intro_text', $context['id'] );
+	}
+
+	// If a Summary is available, return it (used on Posts)
+	if ( get_field( 'summary', $context['id'] ) && "" !== get_field( 'summary', $context['id'] ) ) {
+		return get_field( 'summary', $context['id'] );
+	}
+
+	// Fall back to normal
+	return $description;
+}, 10, 2 );
 
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
@@ -429,15 +484,17 @@ add_filter(
 			'bc-sitka-spruce/',
 		);
 
-		// Do not wrap non-root blocks, or blocks that are not named.
-		if ( ! $block['sitka_is_at_root'] || ! isset( $block['blockName'] ) ) {
+		// Do not wrap non-root blocks, or blocks that are empty
+		if ( ! $block['sitka_is_at_root'] || empty( $block_content ) || ctype_space( $block_content ) ) {
 			return $block_content;
 		}
 
 		// Do not wrap blocks that are in the allowlist.
-		foreach ( $allowlisted_blocks as $allowlisted_block ) {
-			if ( str_starts_with( $block['blockName'], $allowlisted_block ) ) {
-				return $block_content;
+		if ( isset( $block['blockName'] ) ) {
+			foreach ( $allowlisted_blocks as $allowlisted_block ) {
+				if ( str_starts_with( $block['blockName'], $allowlisted_block ) ) {
+					return $block_content;
+				}
 			}
 		}
 
@@ -616,3 +673,36 @@ add_filter( 'block_type_metadata', function ( $metadata ) {
 	}
 	return $metadata;
 }, 10, 1 );
+
+/**
+ * Disable Search Functionality on the Front End
+ */
+add_action('parse_query', function( $query, $error = true ) {
+	if ( is_search() && ! is_admin() ) {
+		$query->is_search = false;
+		$query->query_vars['s'] = false;
+		$query->query['s'] = false;
+
+		// to error
+
+		if ( $error == true ) $query->is_404 = true;
+	}
+} );
+
+add_filter( 'get_search_form', '__return_null' );
+
+
+// Handle disabling posts. Note we are getting an ACF-set option using
+// normal WP get_option function here, as this fires before ACF is fully
+// initialized.
+if ( ! get_option( 'options_enable_posts')  ) {
+	include_once( get_template_directory() . '/src/library/BundledPlugins/oho-disable-posts.php' );
+}
+
+// Disable OHO Disable Posts plugin if active. This can be removed in the future.
+add_action( 'admin_init', function () {
+	if ( is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
+		deactivate_plugins( 'oho-disable-posts/oho-disable-posts.php', true, false );
+	}
+});
+

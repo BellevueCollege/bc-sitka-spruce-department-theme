@@ -2,7 +2,7 @@
 	"wysiwygBlocks": [
 		"mayflower-blocks/button",
 		"mayflower-blocks/button-group",
-		"mayflower-blocks/card",
+		"mayflower-blocks/panel",
 		"mayflower-blocks/collapsibles",
 		"mayflower-blocks/row",
 		"core/heading",

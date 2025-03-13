@@ -5,8 +5,10 @@
 		border-radius: var(--bs-border-radius);
 	}
 
-	.testimonial.row {
-		--bs-gutter-x: 4rem;
+	@include media-breakpoint-up(md) {
+		.testimonial.row {
+			--bs-gutter-x: 4rem;
+		}
 	}
 
 	.testimonial-text {

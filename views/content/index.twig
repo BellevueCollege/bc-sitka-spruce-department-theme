@@ -1,0 +1,12 @@
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+	<div class="default-template">
+		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+			title: post.title,
+		} %}
+		<div class="container-xl mb-5">
+			{{ post.content }}
+		</div>
+	</div>
+{% endblock %}

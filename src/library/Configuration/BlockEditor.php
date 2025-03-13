@@ -91,6 +91,7 @@ class BlockEditor implements BlockEditorInterface {
 		'post' => array(
 			'bc-sitka-spruce/bio-section',
 			'bc-sitka-spruce/course-information-section',
+			'bc-sitka-spruce/posts-feature',
 		),
 		'program' => array(
 			'bc-sitka-spruce/bio-section',

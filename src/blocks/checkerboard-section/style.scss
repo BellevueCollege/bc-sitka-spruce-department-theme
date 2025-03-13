@@ -9,18 +9,6 @@
 
 	margin-bottom: 2.5rem !important;
 
-	.card-img--checkerboard {
-		a.video-overlay {
-
-			img {
-
-				filter: brightness(70%);
-
-			}
-		}
-
-	}
-
 	@include media-breakpoint-up(md) {
 
 		// Blue Line -- TODO: Md Breakpoint
@@ -167,21 +155,6 @@
 			margin-top: 1rem;
 		}
 
-	}
-
-	.aspect-ratio-frame svg {
-		margin: 0;
-		position: absolute;
-		top: 50%;
-		left: 50%;
-		-ms-transform: translate(-50%, -50%);
-		transform: translate(-50%, -50%);
-		max-width: 77.5px;
-		max-height: 77.5px;
-		font-size: 5rem;
-		display: flex;
-		justify-content: center;
-		align-items: center;
 	}
 
 }

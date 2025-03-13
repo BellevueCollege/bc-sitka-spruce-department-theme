@@ -52,6 +52,27 @@
             },
             "return_format": "array",
             "allow_in_bindings": 0
+        },
+        {
+            "key": "field_67858a99376c6",
+            "label": "Enable Posts Functionality",
+            "name": "enable_posts",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Have website managers been trained on using posts properly? If so, this can be enabled.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "",
+            "ui_off_text": "",
+            "ui": 1
         }
     ],
     "location": [
@@ -72,5 +93,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1733418680
+    "modified": 1736805200
 }

@@ -1,0 +1,32 @@
+<div class="filter-form-col mb-5">
+	<div class="filter-form-block rounded p-3">
+		<h2 class="card-title-small"><i class="fa-solid fa-bars-filter me-2 filter-icon" aria-hidden="true"></i> {{ __('Filter Posts', 'bc-sitka-spruce') }}</h2>
+		<form id="post-filter-by-date-form" class="mt-3 view__form">
+			<div class="view__wrap">
+				<label for="post-date-filter" class="view__label">{{ __('Date', 'bc-sitka-spruce') }}</label>
+				<select id="post-date-filter" class="view__select">
+					<option value="">{{ __( 'Select Month', 'bc-sitka-spruce' ) }}</option>
+					{{ date_filter_options }}
+				</select>
+				<div class="text-end">
+					<input type="submit" class="btn btn-primary btn-small mt-2" value="{{ __('Filter by Date', 'bc-sitka-spruce') }}">
+				</div>
+			</div>
+		</form>
+		<form id="post-filter-by-category-form" class="mt-3 view__form">
+			<div class="view__wrap">
+				<label for="post-category-filter" class="view__label">{{ __('Category', 'bc-sitka-spruce') }}</label>
+				<select id="post-category-filter" class="view__select">
+					<option value="">{{ __( 'Select Category', 'bc-sitka-spruce' ) }}</option>
+					{{ category_filter_options }}
+				</select>
+				<div class="text-end">
+					<input type="submit" class="btn btn-primary mt-2 btn-small" value="{{ __('Filter by Category', 'bc-sitka-spruce') }}">
+				</div>
+			</div>
+		</form>
+		{% if post_home_url %}
+			<p><a href="{{ post_home_url }}" class="mt-3">{{ __('Clear all filters', 'bc-sitka-spruce') }}</a></p>
+		{% endif %}
+	</div>
+</div>

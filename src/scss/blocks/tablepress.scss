@@ -1,247 +1,189 @@
 @import '/src/scss/block-styles';
 
-// Modified version of TablePress's CSS, fused with styles from Bootstrap
-
-/* Reset image layout in tables */
 .tablepress img {
-	margin: 0;
-	padding: 0;
 	border: none;
+	margin: 0;
 	max-width: none;
+	padding: 0
 }
 
-/* Table wrapper */
-.dataTables_wrapper {
+.tablepress-table-description {
 	clear: both;
-	margin-bottom: 1em;
-    margin-top: 1rem;
+	display: block
 }
 
-.dataTables_wrapper .tablepress {
-	clear: both;
-	margin: 0 !important;
+.dt-scroll {
+	width: 100%
 }
 
-/* Length Change menu */
-.dataTables_length {
-	float: left;
-	white-space: nowrap;
-
-    select, input {
-        width: auto;
-    }
+.dt-scroll .tablepress {
+	width: 100%!important
 }
 
-/* Filter/Search */
-.dataTables_filter {
-	float: right;
-	white-space: nowrap;
+div.dt-scroll-body tfoot tr th,div.dt-scroll-body thead tr th {
+	border-bottom-width: 0!important;
+	border-top-width: 0!important;
+	height: 0!important;
+	padding-bottom: 0!important;
+	padding-top: 0!important
 }
 
-.dataTables_wrapper .dataTables_filter input {
-	margin-left: 0.5em;
-    width: auto;
+div.dt-scroll-body tfoot tr th div.dt-scroll-sizing,div.dt-scroll-body thead tr th div.dt-scroll-sizing {
+	height: 0!important;
+	overflow: hidden!important
 }
 
-/* Table information */
-.dataTables_info {
-	clear: both;
-	float: left;
-	margin: 4px 0 0;
-}
-
-/* Pagination */
-.dataTables_paginate {
-	float: right;
-	margin: 4px 0 0;
-}
-
-.dataTables_paginate a {
-	display: inline-block;
-	padding: 6px 12px;
-	margin-bottom: 0;
-	font-size: 14px;
-	font-weight: 400;
-	line-height: 1.42857143;
-	text-align: center;
-	white-space: nowrap;
-	vertical-align: middle;
-	touch-action: manipulation;
-	cursor: pointer;
-
-	user-select: none;
-	background-image: none;
-	border: 1px solid transparent;
-	border-radius: 4px;
-
-	color: #333;
-	background-color: #fff;
-	border-color: #ccc;
-
-	text-decoration: none;
-
-	margin-right: 1em;
-}
-
-.dataTables_paginate a:first-child {
-	margin-left: 0;
-}
-
-.dataTables_paginate a:last-child {
-	margin-right: 0;
-}
-
-.paginate_button:hover {
-	color: #333;
-	background-color: #e6e6e6;
-	border-color: #adadad;
-}
-
-.paginate_button.disabled {
-	cursor: not-allowed;
-	filter: alpha(opacity=50);
-	box-shadow: none;
-	opacity: 0.5;
-}
-
-.paginate_button.current {
-	font-weight: bold;
-	text-decoration: none;
-	cursor: default;
-}
-
-.paging_simple .paginate_button.previous::before,
-.paging_simple .paginate_button.next::after {
-    display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-}
-
-.paging_simple .paginate_button.previous::before {
-    font: var(--fa-font-regular);
-	content: "\f053";
-	padding-right: 0.5em;
-}
-
-.paging_simple .paginate_button.next::after {
-    font: var(--fa-font-regular);
-	content: "\f054";
-	padding-left: 0.5em;
+div.dt-scroll-body>table.dataTable>thead>tr>th {
+	overflow: hidden
 }
 
 
-/* Processing indicator */
-.dataTables_processing {
-	display: none; /* always hidden, we don't use it */
+.tablepress thead th:active {
+	outline: none
 }
 
-/* Scrolling */
-.dataTables_scroll {
-	clear: both;
-}
-
-.dataTables_scrollBody {
-	-webkit-overflow-scrolling: touch;
-}
-
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody th > div.dataTables_sizing,
-.dataTables_wrapper .dataTables_scroll div.dataTables_scrollBody td > div.dataTables_sizing {
-	height: 0;
-	overflow: hidden;
-	margin: 0 !important;
-	padding: 0 !important;
-}
-
-/* Sorting */
-.tablepress .sorting,
-.tablepress .sorting_asc,
-.tablepress .sorting_desc {
-	position: relative;
-	padding-right: 20px; /* more right padding for sort arrows */
-	cursor: pointer;
-	outline: none;
-}
-
-.tablepress .sorting::after,
-.tablepress .sorting_asc::after,
-.tablepress .sorting_desc::after {
-	display: inline-block;
-    text-rendering: auto;
-    -webkit-font-smoothing: antialiased;
-
-    position: absolute;
-	top: 0;
-	bottom: 0;
-	left: auto;
-	right: 6px;
-	margin: auto;
-	height: 14px;
-	line-height: 1;
-}
-
-.tablepress .sorting::after {
-    font: var(--fa-font-regular);
-	content: "\f0dc";
-}
-
-.tablepress .sorting_asc::after {
-    font: var(--fa-font-regular);
-	content: "\f0dd";
-	padding: 0 0 2px;
-}
-
-.tablepress .sorting_desc::after {
-    font: var(--fa-font-regular);
-	content: "\f0de";
-}
-
-.tablepress .sorting_asc,
-.tablepress .sorting_desc {
-	//background-color: #eee;
-	border-bottom: 2px solid var(--bc-brutus-blue);
-}
-
-.tablepress .sorting:hover,
-.tablepress .sorting_asc:hover,
-.tablepress .sorting_desc:hover {
-	background-color: $info;
-	color: var(--black);
-	border-bottom: 2px solid $primary;
-}
-
-/* Hide the sorting arrows in the extra table that is added for scrolling */
-.dataTables_scrollBody .tablepress thead th::after {
-	content: "";
-}
-
-/* Self clearing */
-.dataTables_wrapper::after {
-	content: "";
+.tablepress thead .dt-orderable-asc .dt-column-order:before,.tablepress thead .dt-ordering-asc .dt-column-order:before {
+	bottom: 50%;
+	content: "▲"/"";
 	display: block;
+	position: absolute
+}
+
+.tablepress thead .dt-orderable-desc .dt-column-order:after,.tablepress thead .dt-ordering-desc .dt-column-order:after {
+	content: "▼"/"";
+	display: block;
+	position: absolute;
+	top: 50%
+}
+
+.tablepress thead .dt-orderable-asc,.tablepress thead .dt-orderable-desc,.tablepress thead .dt-ordering-asc,.tablepress thead .dt-ordering-desc {
+	padding-right: 24px;
+	position: relative
+}
+
+.tablepress thead .dt-orderable-asc .dt-column-order,.tablepress thead .dt-orderable-desc .dt-column-order,.tablepress thead .dt-ordering-asc .dt-column-order,.tablepress thead .dt-ordering-desc .dt-column-order {
+	bottom: 0;
+	color: var(--white);
+	position: absolute;
+	right: 6px;
+	top: 0;
+	width: 12px
+}
+
+.tablepress thead .dt-orderable-asc .dt-column-order:after,.tablepress thead .dt-orderable-asc .dt-column-order:before,.tablepress thead .dt-orderable-desc .dt-column-order:after,.tablepress thead .dt-orderable-desc .dt-column-order:before,.tablepress thead .dt-ordering-asc .dt-column-order:after,.tablepress thead .dt-ordering-asc .dt-column-order:before,.tablepress thead .dt-ordering-desc .dt-column-order:after,.tablepress thead .dt-ordering-desc .dt-column-order:before {
+	font-family: sans-serif!important;
+	font-size: 12px;
+	line-height: 12px;
+	opacity: .5
+}
+
+.tablepress thead .dt-orderable-asc,.tablepress thead .dt-orderable-desc {
+	cursor: pointer;
+	outline-offset: -2px
+}
+
+.tablepress thead .dt-orderable-asc:hover,.tablepress thead .dt-orderable-desc:hover,.tablepress thead .dt-ordering-asc,.tablepress thead .dt-ordering-desc {
+	background-color: var(--bc-rainy-night-blue);
+	color: var(--white)
+}
+
+.tablepress thead .dt-ordering-asc .dt-column-order:before,.tablepress thead .dt-ordering-desc .dt-column-order:after {
+	opacity: 1
+}
+
+.tablepress:where(.auto-type-alignment) .dt-right,.tablepress:where(.auto-type-alignment) .dt-type-date,.tablepress:where(.auto-type-alignment) .dt-type-numeric {
+	text-align: right
+}
+
+.dt-container {
 	clear: both;
-	visibility: hidden;
-	line-height: 0;
-	height: 0;
+	margin-bottom: 1rem;
+	position: relative
 }
 
-.dataTables_wrapper label input,
-.dataTables_wrapper label select {
+.dt-container .tablepress {
+	margin-bottom: 0
+}
+
+.dt-container .dt-layout-row {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	justify-content: space-between
+}
+
+.dt-container .dt-layout-row.dt-layout-table .dt-layout-cell {
+	display: block;
+	width: 100%
+}
+
+.dt-container .dt-layout-cell {
+	display: flex;
+	flex-direction: row;
+	flex-wrap: wrap;
+	gap: 1em;
+	padding: 5px 0
+}
+
+.dt-container .dt-layout-cell.dt-layout-full {
+	align-items: center;
+	justify-content: space-between;
+	width: 100%
+}
+
+.dt-container .dt-layout-cell.dt-layout-full>:only-child {
+	margin: auto
+}
+
+.dt-container .dt-layout-cell.dt-layout-start {
+	align-items: center;
+	justify-content: flex-start;
+	margin-right: auto
+}
+
+.dt-container .dt-layout-cell.dt-layout-end {
+	align-items: center;
+	justify-content: flex-end;
+	margin-left: auto
+}
+
+.dt-container .dt-layout-cell:empty {
+	display: none
+}
+
+.dt-container label {
+	display: inline
+}
+
+.dt-container .dt-input {
+	display: inline;
+	font-size: inherit;
+	padding: 5px;
+	width: auto
+}
+
+.dt-container .dt-search {
+	align-items: center;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 5px;
+	justify-content: center
+}
+
+.dt-container .dt-paging .dt-paging-button {
+	background: #0000;
+	border: 1px solid #0000;
+	border-radius: 2px;
+	box-sizing: border-box;
+	color: inherit!important;
+	cursor: pointer;
 	display: inline-block;
-	padding: 6px 12px;
-	font-size: 14px;
-	line-height: 1.42857143;
-	color: #555;
-	background-color: #fff;
-	background-image: none;
-	border: 1px solid #ccc;
-	border-radius: 4px;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
-	transition: border-color ease-in-out 0.15s, box-shadow ease-in-out 0.15s;
-}
-
-.dataTables_wrapper label input:focus,
-.dataTables_wrapper label select:focus {
-	border-color: #66afe9;
-	outline: 0;
-	box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(102, 175, 233, 0.6);
+	font-size: 1em;
+	height: 32px;
+	margin-left: 2px;
+	min-width: 32px;
+	padding: 0 5px;
+	text-align: center;
+	text-decoration: none!important;
+	vertical-align: middle
 }

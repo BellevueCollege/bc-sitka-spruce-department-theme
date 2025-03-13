@@ -3,7 +3,6 @@
 		"core/paragraph",
 		"core/heading",
 		"core/list",
-		"core/list-item",
 		"core/file",
 		"core/separator",
 		"mayflower-blocks/button",

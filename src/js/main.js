@@ -48,6 +48,24 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
 	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
 
+	// Enable Post Filter Navigation
+	const archiveFilterForm = document.getElementById('post-filter-by-date-form');
+	const categoryFilterForm = document.getElementById('post-filter-by-category-form');
+	if ( archiveFilterForm ) {
+		archiveFilterForm.addEventListener('submit', event => {
+			event.preventDefault();
+			const url = event.target['post-date-filter'].value;
+			window.location.assign(url);
+		});
+	};
+	if ( categoryFilterForm ) {
+		categoryFilterForm.addEventListener('submit', event => {
+			event.preventDefault();
+			const url = event.target['post-category-filter'].value;
+			window.location.assign(url);
+		});
+	};
+
 	// Enable Sliders
 	const mediaGallerySlider = new Slider({
 		sliderOpts: {
@@ -75,14 +93,15 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 			watchSlidesProgress: true,
 			spaceBetween: 40,
 			centeredSlides: false,
-			loop: false,
+			loop: true,
+			loopAddBlankSlides: true,
 			navigation: {
 				nextEl: '.slider-navigation__next',
 				prevEl: '.slider-navigation__prev',
 			},
 			breakpoints: {
 				640: {
-					slidesPerView: 2.25,
+					slidesPerView: 2,
 				},
 				1024: {
 					slidesPerView: 3,

@@ -4,22 +4,31 @@
  * Bellevue template for news feature featured news article.
  */
 #}
+{% if image_orientation == 'vertical' %}
+	{% set aspect_ratio = 70/46 %}
+	{% set col_1_classes = 'col-sm-12 col-md-4'  %}
+	{% set col_2_classes = 'col-sm-12 col-md-8'  %}
+{% else %}
+	{% set aspect_ratio = 40/76 %}
+	{% set col_1_classes = 'col-sm-12 col-md-8'  %}
+	{% set col_2_classes = 'col-sm-12 col-md-4'  %}
+{% endif %}
+
 <div class="row news-feature--featured-item ">
   {% if image %}
-    <div class="col-sm-12 col-md-8">
-      <figure class="aspect-ratio-frame oho-animate fade-in" style="--aspect-ratio: 40/76">
+    <div class="{{ col_1_classes }}">
+      <figure class="aspect-ratio-frame oho-animate fade-in" style="--aspect-ratio: {{ aspect_ratio }}">
         {{ image }}
       </figure>
     </div>
   {% endif %}
-
-  <div class="col-sm-12 col-md-4">
+  <div class="{{ col_2_classes }}">
     <div class="text-margin-reset oho-animate fade-in-right">
       <div class="eyebrow">{{ __('Featured Story', 'bellevue_2022') }}</div>
       <h3>
         <a href="{{ url }}">{{ title }}</a>
       </h3>
-      {{ summary }}
+      {{ summary|striptags }}
     </div>
   </div>
 </div>
