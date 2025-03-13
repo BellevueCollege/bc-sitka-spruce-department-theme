@@ -14,7 +14,7 @@ class Posts extends PostData {
 
 		$image_type       = get_field( 'featured_media_type', $id );
 
-		if ( $image_type === 'horizontal' || $image_type === 'video' ) {
+		if ( $image_type === 'image_horizontal' || $image_type === 'video' ) {
 			$featured_image = get_field( 'featured_image_horizontal', $id );
 			$featured_image_orientation = 'horizontal';
 			$featured_image_size = 'post-horiz-lg';
