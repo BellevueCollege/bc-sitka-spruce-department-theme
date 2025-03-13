@@ -41,7 +41,7 @@ class Posts extends PostData {
 
 		$output = array(
 			'title'   => esc_html( get_the_title( $id ) ),
-			'link'     => esc_url( get_the_permalink( $id ) ),
+			'url'     => esc_url( get_the_permalink( $id ) ),
 			'summary' => $summary,
 			'image'   => $featured_image_output,
 			'image_orientation' => $featured_image_orientation ?? null,
