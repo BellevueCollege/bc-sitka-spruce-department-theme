@@ -40,7 +40,7 @@ registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 
 		const TEMPLATE = [
 			[ "core/paragraph", {
-				placeholder: __("Listing item content...", "bc-sitka-spruce"),
+				placeholder: __("Listing item content (required) ...", "bc-sitka-spruce"),
 			} ],
 			[ "bc-sitka-spruce/listing-section-list-item-links", {
 				lock: {

@@ -28,7 +28,7 @@ registerBlockType("bc-sitka-spruce/accordion-section-content", {
 		return (
 			<div {...blockProps}>
 				<RichText
-					placeholder={__("Section Title", "bc-sitka-spruce")}
+					placeholder={__("Section Title (Required)", "bc-sitka-spruce")}
 					tagName="h2"
 					onChange={(title) => props.setAttributes({ title })}
 					value={props.attributes.title}
