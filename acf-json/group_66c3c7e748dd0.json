@@ -50,7 +50,7 @@
             "name": "image",
             "aria-label": "",
             "type": "image",
-            "instructions": "Image should be at least 560 x 680px",
+            "instructions": "Image should be at least 560px x 680px",
             "required": 1,
             "conditional_logic": 0,
             "wrapper": {
