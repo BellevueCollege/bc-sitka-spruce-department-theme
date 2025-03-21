@@ -1,63 +1,63 @@
 @import "/src/scss/block-styles";
 
-.listing-section {
+.listing-section-wrapper {
+	padding-top: 3.5rem !important;
+
+	.listing-section {
+			.list-item {
+				background-color: var(--white);
+				padding-top: 1.5rem;
+				padding-bottom: 1.5rem;
+				margin-top: 0.25rem;
+				margin-bottom: 0.25rem;
+				margin-left: 0.25rem;
+				margin-right: 0.25rem;
 
 
-	.list-item {
-		background-color: var(--white);
-		padding-top: 1.5rem;
-		padding-bottom: 1.5rem;
-		margin-top: 0.25rem;
-		margin-bottom: 0.25rem;
-		margin-left: 0.25rem;
-		margin-right: 0.25rem;
+				img {
+					width: 360px;
+					height: 240px;
+					border-radius: var(--bs-border-radius) !important;
+					object-fit: fill;
+					height: auto;
+					max-width: 100%;
 
+				}
 
-		img {
-			width: 360px;
-			height: 240px;
-			border-radius: var(--bs-border-radius) !important;
-			object-fit: fill;
-			height: auto;
-			max-width: 100%;
+				@include media-breakpoint-down(sm) {
 
-		}
+					a.link-arrow {
 
-		@include media-breakpoint-down(sm) {
+						display: block;
 
-			a.link-arrow {
+					}
 
-				display: block;
+				}
+
+				a {
+					margin-right: 1rem;
+				}
 
 			}
 
+			h2 {
+				@include secondary-typeface(b22-card-title-big);
+			}
+
+			p {
+				margin-top: 1rem;
+
+			}
+
+			.list-item:first-child {
+				border-top-left-radius: var(--bs-border-radius);
+				border-top-right-radius: var(--bs-border-radius);
+			}
+
+
+			.list-item:last-child {
+				border-bottom-left-radius: var(--bs-border-radius);
+				border-bottom-right-radius: var(--bs-border-radius);
+			}
 		}
-
-		a {
-			margin-right: 1rem;
-		}
-
-	}
-
-	h2 {
-		@include secondary-typeface(b22-card-title-big);
-	}
-
-	p {
-		margin-top: 1rem;
-
-	}
-
-	.list-item:first-child {
-		border-top-left-radius: var(--bs-border-radius);
-		border-top-right-radius: var(--bs-border-radius);
-	}
-
-
-	.list-item:last-child {
-		border-bottom-left-radius: var(--bs-border-radius);
-		border-bottom-right-radius: var(--bs-border-radius);
-	}
-
-
 }
