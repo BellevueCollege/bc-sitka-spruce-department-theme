@@ -37,39 +37,6 @@ Twig.extendFilter("esc_html", (input) => {
 
 
 
-const BLOCK_TEMPLATE = [
-	[ 'mayflower-blocks/button-group', {
-		'_btnDisableBlockInline': true,
-		'_btnTypeDefault': 'primary',
-		'lock': {
-			'move': false,
-			'remove': false
-		},
-	}, [
-		[ 'mayflower-blocks/button', {
-			'buttonText': 'Optional Button',
-			'lock': {
-				'move': false,
-				'remove': false
-			}
-		}],
-		[ 'mayflower-blocks/button', {
-			'buttonText': 'Optional Button',
-			'lock': {
-				'move': false,
-				'remove': false
-			}
-		}]],
-	],
-    ['gravityforms/form', {
-        'lock': {
-            'move': false,
-            'remove': false
-        }
-    }]
-];
-
-
 registerBlockType( 'bc-sitka-spruce/content-and-location', {
 
     edit: function ( props ) {
@@ -140,7 +107,6 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                             allowedFormats={ [] }
                         />
                         <InnerBlocks
-                            template={ BLOCK_TEMPLATE }
                             renderAppender={ InnerBlocks.ButtonBlockAppender }
                             templateLock=""
                         />
