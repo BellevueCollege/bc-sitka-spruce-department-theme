@@ -5,10 +5,10 @@
 
 	.wFormContainer {
 		max-width: 1440px;
-		margin: 0 auto;
 		background-color: var(--gray--xlight);
 		padding: 2rem;
-		border-radius: var(--bs-border-radius);
+		border-radius: var(--bs-border-radius); 
+		margin: var(--sitka-container-spacing);
 	}
 
 	.wFormContainer .wForm {
