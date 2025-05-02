@@ -55,7 +55,9 @@ $header-desktop-breakpoint: lg;
 			max-width: 100%;
 		}
 
-		&.alignstandard>*,
+		&.alignstandard>* {
+			margin: var(--sitka-container-spacing);
+		} //needs tweeaking broke dropdown
 		&.aligncenter {
 			max-width: var(--wp--style--global--content-size);
 		}
