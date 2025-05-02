@@ -57,7 +57,7 @@ $header-desktop-breakpoint: lg;
 
 		&.alignstandard>*,
 		&.aligncenter {
-			max-width: var(--wp--style--global--content-size);
+			max-width: var(--sitka-container-spacing);
 		}
 
 		&.alignwide>* {
