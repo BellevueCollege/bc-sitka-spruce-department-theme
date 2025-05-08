@@ -1,0 +1,7 @@
+#lmc-search-block {
+    margin: var(--sitka-container-spacing) auto;
+    @media (max-width: 767px) {
+        margin: var(--sitka-container-spacing) auto;
+        margin-bottom: 3rem; 
+    }
+}

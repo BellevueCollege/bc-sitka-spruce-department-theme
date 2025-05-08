@@ -181,6 +181,13 @@ $enqueuer->addBlockStyle(
 		'lmc-search-plugin/lmc-search-block',
 	)
 );
+
+$enqueuer->addBlockStyle(
+	handle: 'lmc-search',
+	blocks: array(
+		'lmc-search-plugin/lmc-search-block',
+	)
+);
 /**
  * Image Crops
  */
