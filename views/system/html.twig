@@ -7,6 +7,13 @@
 <!DOCTYPE html>
 <html lang="{{ site.language|replace({'_': '-'}) }}">
   <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-N665V3');</script>
+    <!-- End Google Tag Manager -->
     <meta charset="{{ site.charset }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="apple-touch-icon" sizes="180x180" href="{{ theme.link }}/assets/favicons/apple-touch-icon.png">
@@ -18,5 +25,11 @@
     <meta name="msapplication-TileImage" content="{{ theme.link }}/assets/favicons/mstile-144x144.png">
     {{ function('wp_head') }}
   </head>
-  <body class="{{ body_class }}">{% block wrapper %}{% endblock %}</body>
+  <body class="{{ body_class }}">
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-N665V3"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    {% block wrapper %}{% endblock %}
+  </body>
 </html>
