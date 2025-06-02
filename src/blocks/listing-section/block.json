@@ -9,6 +9,7 @@
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
+        "anchor": true,
         "html": false
     },
 	"allowedBlocks": [
@@ -20,6 +21,10 @@
         },
         "description": {
             "type": "string"
+        },
+        "anchor": {
+            "type": "string",
+            "default": null
         }
     },
     "editorScript": "file:./index.js",
