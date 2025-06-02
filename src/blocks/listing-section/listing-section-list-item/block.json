@@ -9,7 +9,8 @@
     "version": "1.0.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
-        "html": false
+        "html": false,
+        "anchor": true
     },
 	"allowedBlocks": [
 		"core/paragraph",
@@ -36,7 +37,11 @@
 		"imageAlt": {
 			"type": "string",
 			"default": ""
-		}
+		},
+		"anchor": {
+            "type": "string",
+            "default": null
+        }
     },
     "editorScript": "file:./index.js",
     "render": "file:./render.php"

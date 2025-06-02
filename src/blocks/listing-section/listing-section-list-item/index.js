@@ -23,12 +23,13 @@ import { Card, CardBody, CardHeader } from "@wordpress/components";
 registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 	edit: function (props) {
 		const {
-			attributes: { title, placeholder, imageId, imageUrl, imageAlt },
+			attributes: { title, placeholder, imageId, imageUrl, imageAlt, anchor },
 			setAttributes,
 			isSelected,
 		} = props;
 
 		const blockProps = useBlockProps({
+			id: anchor,
 			className: "list-item row",
 		});
 
