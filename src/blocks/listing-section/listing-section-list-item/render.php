@@ -7,6 +7,7 @@ $context = Timber::context();
 $context['title']   = esc_html( $attributes['title'] ?? '' );
 $context['content'] = $content ?? '';
 $context['image']   = $attributes['imageId'] ? wp_get_attachment_image( $attributes['imageId'], 'listing-section', false, array( 'class' => 'img-fluid rounded' ) ) : null;
+$context['anchor']  = $attributes['anchor'] ?? null;
 
 // Render Twig Template
 if ( $context['title'] ) {

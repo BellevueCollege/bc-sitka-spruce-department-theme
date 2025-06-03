@@ -181,6 +181,13 @@ $enqueuer->addBlockStyle(
 		'lmc-search-plugin/lmc-search-block',
 	)
 );
+
+$enqueuer->addBlockStyle(
+	handle: 'lmc-search',
+	blocks: array(
+		'lmc-search-plugin/lmc-search-block',
+	)
+);
 /**
  * Image Crops
  */
@@ -706,3 +713,20 @@ add_action( 'admin_init', function () {
 	}
 });
 
+// Add Custom Google Analytics Tag Per-Site (GA4 Only)
+$sitka_ga_id = get_option( 'options_ga_id' ) ?? null;
+if ( $sitka_ga_id ) {
+	add_action( 'wp_head', function() {
+		global $sitka_ga_id;
+		?><!-- Global site tag (gtag.js) - Google Analytics -->
+		<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $sitka_ga_id ); ?>"></script>
+		<script>
+			window.dataLayer = window.dataLayer || [];
+			function gtag(){dataLayer.push(arguments);}
+			gtag('js', new Date());
+
+			gtag('config', '<?php echo esc_attr( $sitka_ga_id ); ?>');
+		</script>
+		<?php
+	} );
+}

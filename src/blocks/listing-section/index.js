@@ -11,11 +11,12 @@ import { Card, CardBody, CardHeader } from "@wordpress/components";
 registerBlockType("bc-sitka-spruce/listing-section", {
 	edit: function (props) {
 		const {
-			attributes: { title, description },
+			attributes: { title, description, anchor },
 			setAttributes,
 			isSelected,
 		} = props;
 		const blockProps = useBlockProps({
+			id: anchor,
 			className: "section section-xlight listing-section-wrapper alignfull",
 		});
 

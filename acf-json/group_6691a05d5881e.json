@@ -187,10 +187,11 @@
                 "id": ""
             },
             "default_value": "",
+            "allow_in_bindings": 1,
             "tabs": "visual",
             "toolbar": "basic",
             "media_upload": 0,
-            "delay": 0
+            "delay": 1
         },
         {
             "key": "field_6691a6bce8497",
@@ -207,10 +208,11 @@
                 "id": ""
             },
             "default_value": "",
+            "allow_in_bindings": 1,
             "tabs": "visual",
             "toolbar": "basic",
             "media_upload": 0,
-            "delay": 0
+            "delay": 1
         },
         {
             "key": "field_6691a6cde8498",
@@ -400,5 +402,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1735851351
+    "modified": 1747080688
 }

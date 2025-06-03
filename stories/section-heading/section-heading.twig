@@ -35,7 +35,7 @@
           <div class="eyebrow">{{ eyebrow }}</div>
         {% endif %}
       <div class="col-sm-12 col-md-9 small-order-1 medium-order-1">
-         <h2 class="section-heading__heading oho-animate oho-animate-single">
+         <h2 {% if anchor %} id="{{ anchor|esc_attr }}" {% endif %} class="section-heading__heading oho-animate oho-animate-single">
           {{ heading }}
         </h2>
       </div>

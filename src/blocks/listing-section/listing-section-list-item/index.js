@@ -23,12 +23,13 @@ import { Card, CardBody, CardHeader } from "@wordpress/components";
 registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 	edit: function (props) {
 		const {
-			attributes: { title, placeholder, imageId, imageUrl, imageAlt },
+			attributes: { title, placeholder, imageId, imageUrl, imageAlt, anchor },
 			setAttributes,
 			isSelected,
 		} = props;
 
 		const blockProps = useBlockProps({
+			id: anchor,
 			className: "list-item row",
 		});
 
@@ -40,7 +41,7 @@ registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 
 		const TEMPLATE = [
 			[ "core/paragraph", {
-				placeholder: __("Listing item content...", "bc-sitka-spruce"),
+				placeholder: __("Listing item content (required) ...", "bc-sitka-spruce"),
 			} ],
 			[ "bc-sitka-spruce/listing-section-list-item-links", {
 				lock: {
