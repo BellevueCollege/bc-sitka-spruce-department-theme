@@ -22,7 +22,7 @@ class Department extends PostData {
 
 		return array(
 			'dept_title'    => esc_html( get_the_title( $id ) ),
-			'dept_url'      => esc_url( get_the_permalink( $id ) ),
+			'dept_url'      => esc_url( get_field( 'url', $id ) ),
 			'dept_summary'  => wp_kses_post( get_field( 'summary', $id ) ),
 			'dept_image'    => get_field( 'image', $id ) ? wp_get_attachment_image(
 				get_field( 'image', $id )['id'],
