@@ -19,6 +19,7 @@ if ( $context['post']->post_parent > 0 ) {
 	$context['context_menu']         = wp_page_menu(
 		array(
 			'sort_column' => 'menu_order',
+			'sort_order' => 'DESC',
 			'echo'        => false,
 			'child_of'    => $context['post']->post_parent,
 			'depth'       => 2,
@@ -31,6 +32,7 @@ if ( $context['post']->post_parent > 0 ) {
 	$context['context_menu']         = wp_page_menu(
 		array(
 			'sort_column' => 'menu_order',
+			'sort_order' => 'DESC',
 			'echo'        => false,
 			'depth'       => 2,
 			'exclude'     => get_option('page_on_front') ?? array(),
