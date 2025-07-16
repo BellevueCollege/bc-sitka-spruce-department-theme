@@ -17,12 +17,18 @@ add_filter('timber/context', function ($context) {
 
 	return $context;
 });
+
 /**
  * Register Menus
  */
-$menus = Theme::menus();
-$menus->addMenu( 'main-menu', __( 'Main Menu', 'bc-sitka-spruce' ) );
-$menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
+add_action( 'init', function() {
+	register_nav_menus(
+		array(
+			'main-menu' => __( 'Main Menu', 'bc-sitka-spruce' ),
+			'cta-menu'  => __( 'Call-to-Action Menu', 'bc-sitka-spruce' ),
+		)
+	);
+});
 
 
 /**
@@ -616,6 +622,51 @@ add_filter( 'wp_insert_post_data', function( $data , $postarr ) {
 	}
 	return $data;
 } , 'filter_handler', 10, 2 );
+
+/**
+ * Prevent 'auto-draft' Slugs from Being Created on Profile Posts
+ *
+ */
+add_action( 'save_post', function( $post_id, $post, $update ) {
+	// If this is not a Profile post type, exit early.
+	if ( $post->post_type !== 'profile' ) {
+		return;
+	}
+
+	// If this is a revision, get real post ID.
+	$parent_id = wp_is_post_revision( $post_id );
+	if ( false !== $parent_id ) {
+		$post_id = $parent_id;
+	}
+
+	// Load ACF fields from $_POST if available
+	$first_name = $_POST['acf']['field_6691a56ecddf7'] ?? false;
+	$last_name  = $_POST['acf']['field_6691a59bcddf8'] ?? false;
+	$title      = $_POST['acf']['field_6691a5abcddf9'] ?? false;
+
+	// Check if the ACF fields are set
+	// If not, we will skip the slug check and leave the post as is.
+	if ( ! $first_name || ! $last_name || ! $title ) {
+		return;
+	}
+
+	// If the post slug is set and does not contain 'auto-draft', we will skip the slug check.
+	if ( isset( $post->post_name ) && strpos( $post->post_name, 'auto-draft' ) === false ) {
+		return;
+	}
+
+	// Update Post Slug and Title
+	$post_data = array(
+		'ID'         => $post_id,
+		'post_name'  => '', // Clear the slug to prevent 'auto-draft' slug
+		'post_title' => "$last_name, $first_name - $title", // Set the post title
+	);
+	// Update the post with the new slug and title
+	remove_action( 'save_post', __FUNCTION__ );
+	wp_update_post( $post_data );
+	add_action( 'save_post', __FUNCTION__);
+
+}, 10, 3 );
 
 /**
  * Gravity Forms Configuration
