@@ -57,10 +57,6 @@
 		height: fit-content;
 	}
 
-	.link-accent-lg {
-		white-space: nowrap;  // prevents the line from breaking at all  */
-	}
-
 	.eyebrow {
 		@include secondary-typeface(eyebrow);
 
