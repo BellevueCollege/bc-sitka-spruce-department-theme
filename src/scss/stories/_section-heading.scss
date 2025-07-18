@@ -57,6 +57,18 @@
 		height: fit-content;
 	}
 
+	.link-accent-lg {
+		// allow wrapping...
+		white-space: normal;
+		color: green;
+
+		// force no-break between final word and icon
+		i.fa-regular {
+			margin-left: 0.25em;
+			white-space: nowrap;
+		}
+	}
+
 	.eyebrow {
 		@include secondary-typeface(eyebrow);
 
