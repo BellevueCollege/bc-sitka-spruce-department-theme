@@ -301,16 +301,23 @@ add_action( 'init', function () {
  * @global $post
  */
 add_filter( 'document_title_parts', function( $title_parts ) {
-	global $post;
-
 	if ( is_front_page() ) {
 		$title_parts['tagline'] = '';
 		$title_parts['site']    = __( 'Bellevue College', 'bc-sitka-spruce' );
 	}
-	// Output custom title if available.
-	$post_meta_data = get_post_custom( $post->ID ?? null );
+
+	if ( is_singular( 'profile' ) ) {
+		$last_name     = get_field( 'last_name' );
+		$first_name    = get_field( 'first_name' );
+		$position_role = get_field( 'position_role' );
+
+		if ( $last_name && $first_name && $position_role ) {
+			$title_parts['title'] = sprintf( '%s, %s – %s', $last_name, $first_name, $position_role );
+		}
+	}
+
 	return $title_parts;
-}, 10, 1 );
+}, 10 );
 
 /** Set Page Title Separator */
 add_filter( 'document_title_separator', function( $sep ) {
@@ -333,6 +340,28 @@ add_filter(
 	10,
 	1
 );
+/**
+ * 🔧 Disable The SEO Framework on Profile Detail Pages
+ *
+ * For single profile CPT pages, this disables The SEO Framework's automatic title generation.
+ * Without this, SEO replaces the <title> tag with "Untitled - Site Name" when no meta title is set.
+ * This is an issue because admin users are not required to set meta title tags for profile pages.
+ * So, turning off SEO title generation allows our custom `document_title_parts` filter to take full control of the <title> tag instead.
+ */
+// Disable SEO Framework for 'profile' post type pages to allow custom titles
+add_filter(
+	'the_seo_framework_query_supports_seo',
+	function ( $supported ) {
+		$tsf = the_seo_framework();
+
+		if ( $tsf->query()->is_singular() && 'profile' === $tsf->query()->get_post_type_real_id() ) {
+			return false; // Skip TSF for profile pages
+		}
+		return $supported;
+	},
+	20
+);
+
 
 // Use Summary or Intro as description by default
 // Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
@@ -730,3 +759,20 @@ if ( $sitka_ga_id ) {
 		<?php
 	} );
 }
+
+///Generate SEO Title
+add_filter( 'the_seo_framework_generated_title', function( $title, $context ) {
+	if ( ! isset( $context['id'] ) ) return $title;
+
+	if ( get_post_type( $context['id'] ) !== 'profile' ) return $title;
+
+	$first = get_field( 'first_name', $context['id'] );
+	$last  = get_field( 'last_name', $context['id'] );
+	$role  = get_field( 'position_role', $context['id'] );
+
+	if ( $first && $last && $role ) {
+		return "{$last}, {$first} – {$role}";
+	}
+
+	return $title;
+}, 100, 2 );
