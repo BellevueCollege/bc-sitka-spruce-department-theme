@@ -47,6 +47,27 @@
             "rows": "",
             "placeholder": "",
             "new_lines": ""
+        },
+        {
+            "key": "field_687ebbeb3a1d1",
+            "label": "Hide from Sidebar Navigation",
+            "name": "hide_from_side_nav",
+            "aria-label": "",
+            "type": "true_false",
+            "instructions": "Enabling this setting will prevent this page from being listed in the auto-generated navigation sidebar.",
+            "required": 0,
+            "conditional_logic": 0,
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "message": "",
+            "default_value": 0,
+            "allow_in_bindings": 0,
+            "ui_on_text": "Hidden",
+            "ui_off_text": "Shown",
+            "ui": 1
         }
     ],
     "location": [
@@ -72,5 +93,5 @@
     "active": true,
     "description": "Custom Fields displayed on Pages that aren't the homepage",
     "show_in_rest": 0,
-    "modified": 1735851193
+    "modified": 1753136405
 }
