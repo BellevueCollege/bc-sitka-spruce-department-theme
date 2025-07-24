@@ -320,13 +320,6 @@ add_filter(
 	1
 );
 
-/* //????
-add_action( 'wp', function() {
-	if ( is_singular( 'profile' ) ) {
-		error_log('🧾 wp action confirms: viewing singular profile');
-	}
-}); */
-
 // Use Summary or Intro as description by default
 // Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
 add_filter( 'the_seo_framework_generated_description', function( $description, $context ) {
