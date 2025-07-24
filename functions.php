@@ -1,9 +1,5 @@
 <?php
 namespace BcSitkaSpruce;
-
-// Enable debug toggling
-$debug_titles = false;
-
 // Make Timber available.
 use Timber;
 use BcSitkaSpruce\Library\Theme;
@@ -303,6 +299,18 @@ add_action( 'init', function () {
  * @global $post
  */
 
+add_filter( 'document_title_parts', function( $title_parts ) {
+	global $post;
+
+	if ( is_front_page() ) {
+		$title_parts['tagline'] = '';
+		$title_parts['site']    = __( 'Bellevue College', 'bc-sitka-spruce' );
+	}
+	// Output custom title if available.
+	$post_meta_data = get_post_custom( $post->ID ?? null );
+	return $title_parts;
+}, 10, 1 );
+
 // SEO Framework Plugin Overrides to Preserve Title Format by Default
 add_filter(
 	'the_seo_framework_default_site_options',
@@ -319,6 +327,10 @@ add_filter(
 	10,
 	1
 );
+/** Set Page Title Separator */
+add_filter( 'document_title_separator', function( $sep ) {
+	return ' - ';
+}, 10, 1 );
 
 // Use Summary or Intro as description by default
 // Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
@@ -343,6 +355,7 @@ add_filter( 'the_seo_framework_generated_description', function( $description, $
 	return $description;
 }, 10, 2 );
 
+/* SEO Title Handling Fix */
 
  /* Enable SEO Framework support for 'profile' post type */
  add_filter('the_seo_framework_supported_post_types', function ($post_types) {
@@ -350,129 +363,23 @@ add_filter( 'the_seo_framework_generated_description', function( $description, $
     return array_unique($post_types);
 });
 
-/* Customize SEO title for profiles using ACF fields */
-add_filter('the_seo_framework_generated_title', function ($title, $context) use ($debug_titles) {
-    if ($debug_titles) error_log('📣 Running: the_seo_framework_generated_title');
-
-    if ($title && $title !== 'Untitled') {
-        if ($debug_titles) error_log('✅ Title already set: ' . $title);
-        return $title;
-    }
-
-    if (isset($context['id']) && get_post_type($context['id']) === 'profile') {
-        $first = get_field('first_name', $context['id']);
-        $last  = get_field('last_name', $context['id']);
-        $role  = get_field('position_role', $context['id']);
-
-        if ($debug_titles) error_log("📋 ACF: First = $first, Last = $last, Role = $role");
-
-        if ($first && $last && $role) {
-            $fallback = "{$last}, {$first} – {$role}";
-            if ($debug_titles) error_log('🔁 Fallback title: ' . $fallback);
-            return $fallback;
-        } elseif ($debug_titles) {
-            error_log('⚠️ Missing ACF fields');
-        }
-    }
-
-    if ($debug_titles) error_log('⬅️ Returning original: ' . $title);
-    return $title;
-}, 100, 2);
-
 /* Allow SEO title generation for 'profile' post type even if context is incomplete */
-add_filter('the_seo_framework_title_from_generation', function ($bool, $args) use ($debug_titles) {
+add_filter('the_seo_framework_title_from_generation', function ($post_title, $args)  {
     if (empty($args['id']) && is_singular('profile')) {
         global $post;
         if ($post && get_post_type($post) === 'profile') {
             $args['id'] = $post->ID;
+			$first = get_field('first_name', $args['id']);
+			$last  = get_field('last_name', $args['id']);
+			$role  = get_field('position_role', $args['id']);
+
+			if ($first && $last && $role) {
+				return "{$last}, {$first} – {$role}";
+			} 
         }
     }
-
-    if (isset($args['id']) && get_post_type($args['id']) === 'profile') {
-        if ($debug_titles) error_log('🔐 Forcing TSF to generate title for profile.');
-        return $bool ?: true;
-    }
-
-    return $bool;
+    return $post_title;
 }, 10, 2);
-
-/* Force SEO support on singular profile views */
-add_filter('the_seo_framework_query_supports_seo', function ($supports) use ($debug_titles) {
-    if (is_singular('profile')) {
-        if ($debug_titles) error_log('🛠 Forcing SEO support on profile page');
-        return true;
-    }
-    return $supports;
-}, 10, 1);
-
-// Optional: final debug listing of supported post types
-if ($debug_titles) {
-    error_log('✅ Supported TSF post types: ' . implode(', ', apply_filters('the_seo_framework_supported_post_types', [])));
-}
-
-/* Register custom Twig function to provide profile fallback title */
-add_filter('timber/twig', function ($twig) use ($debug_titles) {
-    $twig->addFunction(new \Twig\TwigFunction('custom_profile_title', function () use ($debug_titles) {
-        global $post;
-
-        // Use core WP title if it's already set and not 'Untitled'
-        $core_title = wp_get_document_title();
-        if ($core_title && stripos($core_title, 'Untitled') === false) {
-            return $core_title;
-        }
-
-        // Bail if not a profile post
-        if (!$post || get_post_type($post) !== 'profile') {
-            return $core_title;
-        }
-
-        // Get ACF fields for profile fallback
-        $first = get_field('first_name', $post->ID);
-        $last  = get_field('last_name', $post->ID);
-        $role  = get_field('position_role', $post->ID);
-
-        if ($first && $last && $role) {
-            $fallback = "{$last}, {$first} – {$role}";
-            if ($debug_titles) error_log('🚀 Twig fallback title: ' . $fallback);
-            return $fallback;
-        }
-
-        return $core_title;
-    }));
-
-    return $twig;
-});
-
-/* Optional debug: Inspect title-tag support and post context during redirect */
-add_action('template_redirect', function () use ($debug_titles) {
-    if (! $debug_titles) return;
-
-    error_log('🧪 template_redirect triggered');
-    error_log('🔖 title-tag support: ' . (current_theme_supports('title-tag') ? 'yes' : 'no'));
-
-    global $post;
-
-    if (is_singular()) {
-        error_log('🔎 is_singular() is TRUE');
-    } else {
-        error_log('❌ is_singular() is FALSE');
-    }
-
-    if ($post) {
-        error_log("📌 \$post->ID: {$post->ID} | Type: " . get_post_type($post));
-    } else {
-        error_log('🚫 $post is null');
-    }
-});
-
-
-
-
-
-
-
-
-
 
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins

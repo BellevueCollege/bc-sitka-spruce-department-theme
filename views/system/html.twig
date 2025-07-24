@@ -17,8 +17,7 @@
     <meta charset="{{ site.charset }}">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!--Needed to force TSF to give us a title-->
-    <title>{{ custom_profile_title() }}</title>
+    {{ function('wp_head') }}
 
     <link rel="apple-touch-icon" sizes="180x180" href="{{ theme.link }}/assets/favicons/apple-touch-icon.png">
     <link rel="icon" type="image/png" sizes="32x32" href="{{ theme.link }}/assets/favicons/favicon-32x32.png">
@@ -27,7 +26,6 @@
     <link rel="shortcut icon" href="{{ theme.link }}/assets/favicons/favicon.ico">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="msapplication-TileImage" content="{{ theme.link }}/assets/favicons/mstile-144x144.png">
-    {{ function('wp_head') }}
   </head>
   <body class="{{ body_class }}">
     <!-- Google Tag Manager (noscript) -->
