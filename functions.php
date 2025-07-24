@@ -21,14 +21,9 @@ add_filter('timber/context', function ($context) {
 /**
  * Register Menus
  */
-add_action( 'init', function() {
-	register_nav_menus(
-		array(
-			'main-menu' => __( 'Main Menu', 'bc-sitka-spruce' ),
-			'cta-menu'  => __( 'Call-to-Action Menu', 'bc-sitka-spruce' ),
-		)
-	);
-});
+$menus = Theme::menus();
+$menus->addMenu( 'main-menu', __( 'Main Menu', 'bc-sitka-spruce' ) );
+$menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
 
 
 /**
