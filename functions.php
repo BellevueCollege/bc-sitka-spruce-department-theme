@@ -1,6 +1,5 @@
 <?php
 namespace BcSitkaSpruce;
-
 // Make Timber available.
 use Timber;
 use BcSitkaSpruce\Library\Theme;
@@ -24,7 +23,6 @@ add_filter('timber/context', function ($context) {
 $menus = Theme::menus();
 $menus->addMenu( 'main-menu', __( 'Main Menu', 'bc-sitka-spruce' ) );
 $menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
-
 
 /**
  * Register Blocks
@@ -301,6 +299,7 @@ add_action( 'init', function () {
  * @param array $title_parts Page title parts.
  * @global $post
  */
+
 add_filter( 'document_title_parts', function( $title_parts ) {
 	global $post;
 
@@ -311,11 +310,6 @@ add_filter( 'document_title_parts', function( $title_parts ) {
 	// Output custom title if available.
 	$post_meta_data = get_post_custom( $post->ID ?? null );
 	return $title_parts;
-}, 10, 1 );
-
-/** Set Page Title Separator */
-add_filter( 'document_title_separator', function( $sep ) {
-	return ' - ';
 }, 10, 1 );
 
 // SEO Framework Plugin Overrides to Preserve Title Format by Default
@@ -334,6 +328,10 @@ add_filter(
 	10,
 	1
 );
+/** Set Page Title Separator */
+add_filter( 'document_title_separator', function( $sep ) {
+	return ' - ';
+}, 10, 1 );
 
 // Use Summary or Intro as description by default
 // Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
@@ -357,6 +355,32 @@ add_filter( 'the_seo_framework_generated_description', function( $description, $
 	// Fall back to normal
 	return $description;
 }, 10, 2 );
+
+/* SEO Title Handling Fix */
+
+ /* Enable SEO Framework support for 'profile' post type */
+ add_filter('the_seo_framework_supported_post_types', function ($post_types) {
+    $post_types[] = 'profile';
+    return array_unique($post_types);
+});
+
+/* Allow SEO title generation for 'profile' post type even if context is incomplete */
+add_filter('the_seo_framework_title_from_generation', function ($post_title, $args)  {
+    if (empty($args['id']) && is_singular('profile')) {
+        global $post;
+        if ($post && get_post_type($post) === 'profile') {
+            $args['id'] = $post->ID;
+			$first = get_field('first_name', $args['id']);
+			$last  = get_field('last_name', $args['id']);
+			$role  = get_field('position_role', $args['id']);
+
+			if ($first && $last && $role) {
+				return "{$last}, {$first} – {$role}";
+			} 
+        }
+    }
+    return $post_title;
+}, 10, 2);
 
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
@@ -576,7 +600,7 @@ add_filter( 'register_program_post_type_args', function ( $args ) {
  *
  */
 
- add_filter( 'register_profile_post_type_args', function ( $args ) {
+add_filter( 'register_profile_post_type_args', function ( $args ) {
 	$args['template'] = array(
 		array(
 			'bc-sitka-spruce/bio-section',
