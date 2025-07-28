@@ -45,9 +45,9 @@
 	{% block header %}
 		{% include '/stories/header/header.twig' with {
 			core_homepage_url: 'https://www.bellevuecollege.edu',
-			site_homepage_url: site.siteurl,
+			site_homepage_url: site.url,
 			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
-			site_title: site.blogname,
+			site_title: site.name,
 			search_expanded: false,
 			menu_expanded: false,
 			menu: main_menu
@@ -83,8 +83,8 @@
 			core_homepage_url: 'https://www.bellevuecollege.edu',
 			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
 			mountains_url: theme.uri ~ '/assets/img/footer-mountains.svg',
-			site_homepage_url: site.siteurl,
-			site_title: site.blogname,
+			site_homepage_url: site.url,
+			site_title: site.name,
 			menu: footer_menu,
 			address: acf_options.address,
 			phone: acf_options.phone,
