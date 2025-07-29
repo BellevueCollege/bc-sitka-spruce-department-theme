@@ -1,6 +1,5 @@
 <?php
 namespace BcSitkaSpruce;
-
 // Make Timber available.
 use Timber;
 use BcSitkaSpruce\Library\Theme;
@@ -17,13 +16,13 @@ add_filter('timber/context', function ($context) {
 
 	return $context;
 });
+
 /**
  * Register Menus
  */
 $menus = Theme::menus();
 $menus->addMenu( 'main-menu', __( 'Main Menu', 'bc-sitka-spruce' ) );
 $menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
-
 
 /**
  * Register Blocks
@@ -300,6 +299,7 @@ add_action( 'init', function () {
  * @param array $title_parts Page title parts.
  * @global $post
  */
+
 add_filter( 'document_title_parts', function( $title_parts ) {
 	global $post;
 
@@ -310,11 +310,6 @@ add_filter( 'document_title_parts', function( $title_parts ) {
 	// Output custom title if available.
 	$post_meta_data = get_post_custom( $post->ID ?? null );
 	return $title_parts;
-}, 10, 1 );
-
-/** Set Page Title Separator */
-add_filter( 'document_title_separator', function( $sep ) {
-	return ' - ';
 }, 10, 1 );
 
 // SEO Framework Plugin Overrides to Preserve Title Format by Default
@@ -333,6 +328,10 @@ add_filter(
 	10,
 	1
 );
+/** Set Page Title Separator */
+add_filter( 'document_title_separator', function( $sep ) {
+	return ' - ';
+}, 10, 1 );
 
 // Use Summary or Intro as description by default
 // Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
@@ -356,6 +355,32 @@ add_filter( 'the_seo_framework_generated_description', function( $description, $
 	// Fall back to normal
 	return $description;
 }, 10, 2 );
+
+/* SEO Title Handling Fix */
+
+ /* Enable SEO Framework support for 'profile' post type */
+ add_filter('the_seo_framework_supported_post_types', function ($post_types) {
+    $post_types[] = 'profile';
+    return array_unique($post_types);
+});
+
+/* Allow SEO title generation for 'profile' post type even if context is incomplete */
+add_filter('the_seo_framework_title_from_generation', function ($post_title, $args)  {
+    if (empty($args['id']) && is_singular('profile')) {
+        global $post;
+        if ($post && get_post_type($post) === 'profile') {
+            $args['id'] = $post->ID;
+			$first = get_field('first_name', $args['id']);
+			$last  = get_field('last_name', $args['id']);
+			$role  = get_field('position_role', $args['id']);
+
+			if ($first && $last && $role) {
+				return "{$last}, {$first} – {$role}";
+			} 
+        }
+    }
+    return $post_title;
+}, 10, 2);
 
 /**
  * Prevent Unlocking of Locked Blocks by non-Super Admins
@@ -575,7 +600,7 @@ add_filter( 'register_program_post_type_args', function ( $args ) {
  *
  */
 
- add_filter( 'register_profile_post_type_args', function ( $args ) {
+add_filter( 'register_profile_post_type_args', function ( $args ) {
 	$args['template'] = array(
 		array(
 			'bc-sitka-spruce/bio-section',
@@ -616,6 +641,51 @@ add_filter( 'wp_insert_post_data', function( $data , $postarr ) {
 	}
 	return $data;
 } , 'filter_handler', 10, 2 );
+
+/**
+ * Prevent 'auto-draft' Slugs from Being Created on Profile Posts
+ *
+ */
+add_action( 'save_post', function( $post_id, $post, $update ) {
+	// If this is not a Profile post type, exit early.
+	if ( $post->post_type !== 'profile' ) {
+		return;
+	}
+
+	// If this is a revision, get real post ID.
+	$parent_id = wp_is_post_revision( $post_id );
+	if ( false !== $parent_id ) {
+		$post_id = $parent_id;
+	}
+
+	// Load ACF fields from $_POST if available
+	$first_name = $_POST['acf']['field_6691a56ecddf7'] ?? false;
+	$last_name  = $_POST['acf']['field_6691a59bcddf8'] ?? false;
+	$title      = $_POST['acf']['field_6691a5abcddf9'] ?? false;
+
+	// Check if the ACF fields are set
+	// If not, we will skip the slug check and leave the post as is.
+	if ( ! $first_name || ! $last_name || ! $title ) {
+		return;
+	}
+
+	// If the post slug is set and does not contain 'auto-draft', we will skip the slug check.
+	if ( isset( $post->post_name ) && strpos( $post->post_name, 'auto-draft' ) === false ) {
+		return;
+	}
+
+	// Update Post Slug and Title
+	$post_data = array(
+		'ID'         => $post_id,
+		'post_name'  => '', // Clear the slug to prevent 'auto-draft' slug
+		'post_title' => "$last_name, $first_name - $title", // Set the post title
+	);
+	// Update the post with the new slug and title
+	remove_action( 'save_post', __FUNCTION__ );
+	wp_update_post( $post_data );
+	add_action( 'save_post', __FUNCTION__);
+
+}, 10, 3 );
 
 /**
  * Gravity Forms Configuration
