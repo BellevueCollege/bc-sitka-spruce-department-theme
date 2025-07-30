@@ -82,3 +82,16 @@ $header-desktop-breakpoint: lg;
 	}
 
 }
+
+// A11y Warnings
+.a11y-notice,
+.a11y-warning {
+	outline: 5px dashed;
+}
+
+.a11y-notice {
+	outline-color: orange;
+}
+.a11y-warning {
+	outline-color: red;
+}

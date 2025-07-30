@@ -54,6 +54,7 @@ const customPaths = Object.assign( {}, defaultConfig, {
 		...scssEntryPoint( 'lmc-search', true ),
 		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' ),
 		'js/editor': path.resolve( process.cwd(), 'src/js', 'editor.js' ),
+		'js/a11y-warnings': path.resolve( process.cwd(), 'src/js', 'a11y-warnings.js' ),
 		'blocks/contact-selector/index': path.resolve( process.cwd(), 'src/blocks/contact-selector', 'style.scss' )
 	},
 } );
