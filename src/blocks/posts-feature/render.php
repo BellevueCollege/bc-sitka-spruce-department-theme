@@ -20,7 +20,6 @@ $context['featured_news']     = Posts::get_single( $attributes['largeStoryId'] )
 $context['small_story_types'] = $attributes['smallStoryTypes'];
 
 //Conditional for when to grab small stories
-//$context['news_listing']      = Posts::get_by_category( terms: $attributes['smallStoryTypes'], exclude: array( $attributes['largeStoryId'] ), limit: 3 );
 if ( ! empty( $attributes['smallStoryTypes'] ) ) {
 	$context['news_listing'] = Posts::get_by_category(
 		terms: $attributes['smallStoryTypes'],
@@ -28,8 +27,7 @@ if ( ! empty( $attributes['smallStoryTypes'] ) ) {
 		limit: 3
 	);
 } else {
-	$context['news_listing'] = []; //purposely empty
-	error_log( 'No Small Story Types selected. Skipping small posts' );
+	$context['news_listing'] = array(); // purposely empty
 }
 
 // Check before rendering
