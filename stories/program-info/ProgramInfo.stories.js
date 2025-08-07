@@ -15,7 +15,7 @@ const Template = ( {
 	type,
 	degree,
 	duration,
-	prerequisites,
+	prerequisite,
 	pathway_names,
 	pathways,
 	focus_areas
@@ -26,7 +26,7 @@ const Template = ( {
 		type,
 		degree,
 		duration,
-		prerequisites,
+		prerequisite,
 		pathway_names,
 		pathways,
 		focus_areas
@@ -39,7 +39,7 @@ Default.args = {
 	type: "Associate Degree",
 	degree: "Associate of Arts",
 	duration: "128 Credits",
-	prerequisites: "<p>Review prerequisites in the <a href='#'>Course Catalog</a></p>",
+	prerequisite: "<p>Review prerequisites in the <a href='#'>Course Catalog</a></p>",
 	pathway_names: ["BC Pathway 1", "BC Pathway 2", "BC Pathway 3"],
 	pathways: [
 		{
