@@ -8,16 +8,13 @@ export default {
 };
 
 
-const Template = ( {
-    title,
-	intro_text,
-	header_image,
- }) =>
-    twigPageIntro({
+const Template = ({ title, intro_text, header_image }) =>
+	twigPageIntro({
 		title,
 		intro_text,
-		header_image
-    });
+		header_image,
+		has_header_image: !!header_image, 
+	});
 
 export const Default = Template.bind({});
 Default.args = {
