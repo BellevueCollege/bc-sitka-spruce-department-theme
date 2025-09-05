@@ -13,7 +13,9 @@
 	} %}
 	<div class="profiles-section container-xl ">
 		{% for section in sections %}
-			<h3>{{section.title}}</h3>
+			{% if section.title %}
+				<h3>{{section.title}}</h3>
+			{% endif %}
 			{% if section.profiles is not empty %}
 				<div class="row">
 					{% for profile in section.profiles %}
