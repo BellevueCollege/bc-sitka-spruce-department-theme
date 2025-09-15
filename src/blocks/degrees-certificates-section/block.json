@@ -5,7 +5,7 @@
     "category": "sitka-sections",
     "icon": "menu",
     "description": "Section for displaying programs (degrees and certificates) offered by the department. ",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "textdomain": "bc-sitka-spruce",
     "acf": {
         "mode": "auto",
