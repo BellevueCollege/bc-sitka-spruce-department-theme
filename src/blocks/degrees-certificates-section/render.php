@@ -19,6 +19,9 @@ $context['segments']     = get_field( 'segments' ) ? array_map( function ( $segm
 	return $segment;
 }, get_field( 'segments' ) ) : array();
 
+$context['anchor'] = (isset($block['anchor']) && $block['anchor']) 
+	? sanitize_title($block['anchor']) : '';
+
 if ( $context['title'] ) {
 	Timber::render( '/stories/degrees-certificates-section/degrees-certificates-section.twig', $context );
 } else {
