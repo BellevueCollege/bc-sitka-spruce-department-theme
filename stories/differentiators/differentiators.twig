@@ -4,18 +4,28 @@
 * Bellevue template for the differentiators section component.
 */
 #}
-<div class="arch-shape"></div>
-<section class="section section-rainy-night-blue diffs curved-top">
+<section {{ wrapper_attributes|raw }}
+{% if not wrapper_has_id and anchor %} 
+id="{{ anchor }}"
+{% endif %}
+
+{% if heading_id %} 
+aria-labelledby="{{ heading_id }}"
+{% endif %}>
+
+	<div class="arch-shape alignfull"></div>
+
 	<div class="diffs--container">
-			{% include '/stories/section-heading/section-heading.twig' with {
-				heading: title,
-				subheading: description,
-				linkClass: 'link-accent-lg text-white',
+		{% include '/stories/section-heading/section-heading.twig' with {
+				'heading': title,
+				'subheading': description,
+				'anchor': heading_id,
+				linkClass: 'link-accent-lg text-white',	
 			} %}
 			<div class="container-xl global-spacing--2x oho-animate-sequence">
-					<div class="row justify-content-sm-center gy-3">
-							{{ content }}
-					</div>
+				<div class="row justify-content-sm-center gy-3">
+					{{ content }}
+				</div>
 			</div>
-	</div>
-</section>
+		</div>
+	</section>

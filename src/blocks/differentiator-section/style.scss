@@ -41,7 +41,12 @@
 }
 
 .diff {
+	 /* Make hash-jumps stop below sticky header / arch */
+	scroll-margin-top: var(--anchor-offset, 96px);
+	 // (optional: also cover if the ID ends up on an inner element)
+	[id] { scroll-margin-top: var(--anchor-offset, 96px); }
 	margin-top: 0;
+	padding-top: 0ch;
 	&--item {
 		overflow: hidden;
 		height: 100%;
