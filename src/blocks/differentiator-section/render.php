@@ -29,12 +29,6 @@ $context['wrapper_attributes'] = $wrapper;
 //so Twig can add an `id` only if WP didn’t
 $context['wrapper_has_id'] = (strpos($wrapper, ' id=') !== false);
 
-/* // Building a stable heading id for aria-labelledby (optional)
-$anchor = $attributes['anchor'] ?? '';
-if ( ! $anchor && ! empty( $context['title'] ) ) {
-    $anchor = sanitize_title( (string) $context['title'] );
-} */
-
 //let WP output attributes
 if ( ! empty( $attributes['linkTitle'] ) && ! empty( $attributes['linkUrl'] ) ) {
     $context['link_custom'] = [
