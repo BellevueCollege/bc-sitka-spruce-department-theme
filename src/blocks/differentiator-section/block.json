@@ -30,7 +30,7 @@
 	},
 	"supports": {
 		"anchor": true,
-		"customClassName": true,
+		"customClassName": false,
 		"html": false
 	},
     "editorScript": "file:./index.js",
