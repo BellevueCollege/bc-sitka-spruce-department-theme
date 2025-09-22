@@ -34,7 +34,22 @@
 	}
 
 	.sock-manager {
-		border-left: 2px solid var(--bc-fountain-blue);
+
+		@include media-breakpoint-down(lg) {
+			padding-top: 2rem;
+			border-top: 2px solid var(--bc-fountain-blue);
+		}
+
+		@include media-breakpoint-up(lg) {
+			border-left: 2px solid var(--bc-fountain-blue);
+		}
+
+		// Alternate styles when only the manager section is present
+		&:only-child {
+			border-top: none; // disable the top border that is normally applied on smaller screens, as there will be no element above this one
+			border-left: 2px solid var(--bc-fountain-blue);
+			padding-top: 0;
+		}
 
 		a {
 			font-weight: 600;
