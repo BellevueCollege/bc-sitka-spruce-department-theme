@@ -10,11 +10,10 @@
 			--bs-link-color-rgb: 255, 255, 255 !important;
 
 			/*Only do grey for text links; no touchy buttons*/
-			a:not(.btn,.button,.wp-block-button__link, [class*="btn"], [role="button-"]):hover, 
-			a:not(.btn,.button,.wp-block-button__link, [class*="btn"], [role="button-"]):focus,
-			a:not(.btn,.button,.wp-block-button__link, [class*="btn"], [role="button-"]):focus-visible 
-			{
-				color: var(--gray--light);
+			a:not(.btn,.button,.wp-block-button__link, [class*="btn"], [role="button-"]) {
+				&:hover, &:focus, &:focus-visable {
+					color: var(--gray--light);
+				}
 			}
 		}
 	}
