@@ -9,7 +9,11 @@
 		@include media-breakpoint-up(md) {
 			--bs-link-color-rgb: 255, 255, 255 !important;
 
-			a:hover, a:focus {
+			/*Only do grey for text links; no touchy buttons*/
+			a:not(.btn,.button,.wp-block-button__link, [class*="btn"], [role="button-"]):hover, 
+			a:not(.btn,.button,.wp-block-button__link, [class*="btn"], [role="button-"]):focus,
+			a:not(.btn,.button,.wp-block-button__link, [class*="btn"], [role="button-"]):focus-visible 
+			{
 				color: var(--gray--light);
 			}
 		}
