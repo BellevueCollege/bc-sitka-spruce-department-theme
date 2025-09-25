@@ -33,7 +33,7 @@
             "name": "video",
             "aria-label": "",
             "type": "url",
-            "instructions": "",
+            "instructions": "Video URL from YouTube or Vimeo",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -42,6 +42,7 @@
                 "id": ""
             },
             "default_value": "",
+            "allow_in_bindings": 1,
             "placeholder": ""
         },
         {
@@ -152,7 +153,8 @@
         [
             {
                 "param": "post_type",
-                "operator": "=="
+                "operator": "==",
+                "value": "post"
             }
         ]
     ],
@@ -165,5 +167,5 @@
     "active": false,
     "description": "Component: Checkerboard",
     "show_in_rest": 0,
-    "modified": 1735851112
+    "modified": 1758826774
 }

@@ -2,6 +2,7 @@ import { Modal } from 'bootstrap'
 
 class BCLightboxModal {
 	static modalId = 'bc-lightbox-modal';
+	static loadingHtml = '<p class="text-center">Loading...</p>';
 
 	constructor( modalId = BCLightboxModal.modalId, dataAttribute = '[data-bc-lightbox]' ) {
 		this.modalId = modalId;
@@ -10,8 +11,15 @@ class BCLightboxModal {
 		this.init();
 	}
 
+	/**
+	 * Initialize the lightbox modal by creating the modal HTML and transforming links.
+	 * @return {void}
+	 */
 	init() {
+		// Find all links with the specified data attribute
 		this.lightboxLinks = document.querySelectorAll( this.dataAttribute );
+
+		// Create the modal HTML and transform links
 		this.modal = this.createModalHtml( this.lightboxLinks );
 		if ( this.modal ) {
 			this.transformLinksToLightbox( this.lightboxLinks, this.modal );
@@ -25,6 +33,8 @@ class BCLightboxModal {
 	 * @returns {Modal|boolean} - Returns the Bootstrap Modal instance or false if no links.
 	 */
 	createModalHtml( lightboxLinks ) {
+
+		// Only create the modal if there are links to attach it to
 		if ( lightboxLinks.length > 0 ) {
 
 			// Create container and set attributes
@@ -35,17 +45,21 @@ class BCLightboxModal {
 					</button>
 					<div class="modal-dialog modal-lg modal-dialog-centered">
 						<div class="modal-content">
-							<div class="modal-body p-0" id="${this.modalBodyId}">
-								<div class="ratio ratio-16x9"></div>
+							<div class="modal-body p-0 bg-black" id="${this.modalBodyId}">
+								<div class="ratio ratio-16x9">${BCLightboxModal.loadingHtml}</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			`;
+
+			// Do a fun dance to convert the string to a DOM element and append to body
 			const tempDiv = document.createElement('div');
 			tempDiv.innerHTML = modalHtml;
 			const modalContainer = tempDiv.firstElementChild;
 			document.body.appendChild(modalContainer);
+
+			// Initialize the Bootstrap Modal
 			const modal =  new Modal(modalContainer, {});
 			return modal;
 		}
@@ -61,44 +75,54 @@ class BCLightboxModal {
 	 */
 	transformLinksToLightbox( lightboxLinks, modal ) {
 
-		// Attach modal to each link with data-bc-lightbox
+		// Loop through each link and set up the modal trigger
 		lightboxLinks.forEach( (link) => {
 
-			// Transform Links by Adding Data Attributes
+			// Check if each link is a YouTube or Vimeo link
 			const href = link.getAttribute('href');
-			link.setAttribute('data-bs-toggle', 'modal');
-			link.setAttribute('data-bc-lightbox-url', href);
-			link.setAttribute('href', `#${this.modalId}`);
+			if ( href.includes('youtube.com') || href.includes('youtu.be') || href.includes('vimeo.com') ) {
 
+				// Transform Links to Bootstrap Modal triggers by Adding Data Attributes
+				link.setAttribute('data-bs-toggle', 'modal');
+				link.setAttribute('data-bc-lightbox-url', href);
+				link.setAttribute('href', `#${this.modalId}`);
 
-			const modalContainer = document.getElementById(this.modalId);
-			if ( modalContainer ) {
-				modalContainer.addEventListener('show.bs.modal', (event) => {
-					const trigger = event.relatedTarget;
-					const videoUrl = trigger.getAttribute('data-bc-lightbox-url');
-					const modalBody = document.getElementById(this.modalBodyId);
-					const ratioWrapper = modalBody.querySelector('.ratio');
-					// Clear out existing content
-					ratioWrapper.innerHTML = '';
+				// Get modal container and set up event listeners for show and hide
+				// to load and unload the video embed HTML
+				const modalContainer = document.getElementById(this.modalId);
+				if ( modalContainer ) {
 
-					// Check if href is a YouTube or Vimeo link
-					if ( videoUrl.includes('youtube.com') || videoUrl.includes('youtu.be') || videoUrl.includes('vimeo.com') ) {
-						// Add autoplay to the URL
+					// When the modal is shown, fetch and insert the video embed HTML
+					modalContainer.addEventListener('show.bs.modal', (event) => {
+
+						// Get the URL from the triggering link (what the user clicked)
+						const trigger = event.relatedTarget;
+						const videoUrl = trigger.getAttribute('data-bc-lightbox-url');
+
+						// Get the element to insert the embed HTML into
+						const modalBody = document.getElementById(this.modalBodyId);
+						const ratioWrapper = modalBody.querySelector('.ratio');
+
+						// Fetch the embed HTML and insert it into the modal
 						BCLightboxModal.getOembedHTML(videoUrl).then( (html) => {
 							if ( html ) {
 								ratioWrapper.innerHTML = html;
 							}
+						}).catch( (error) => {
+							// Handle errors gracefully
+							console.error('Unable to fetch video embed html:', error);
+							ratioWrapper.innerHTML = `<p class="text-center alert alert-warning">Sorry, this video cannot be played at this time. <a href="${videoUrl}" target="_blank" rel="noopener">Open in a New Window.</a></p>`;
 						});
-					}
-				});
+					});
 
-				// Clear out content when modal is closed
-				modalContainer.addEventListener('hidden.bs.modal', (event) => {
-					const modalBody = document.getElementById('bc-lightbox-modal-body');
-					const ratioWrapper = modalBody.querySelector('.ratio');
-					// Clear out existing content
-					ratioWrapper.innerHTML = '';
-				});
+					// Clear out content when modal is closed
+					modalContainer.addEventListener('hidden.bs.modal', (event) => {
+						const modalBody = document.getElementById('bc-lightbox-modal-body');
+						const ratioWrapper = modalBody.querySelector('.ratio');
+						// Clear out existing content
+						ratioWrapper.innerHTML = BCLightboxModal.loadingHtml;
+					});
+				}
 			}
 
 		});
@@ -112,6 +136,8 @@ class BCLightboxModal {
 	 */
 	static async getOembedHTML( url ) {
 		try {
+
+			// Determine if the URL is YouTube or Vimeo and fetch the oEmbed data
 			if ( url.includes('youtube.com') || url.includes('youtu.be') ) {
 
 				// Get Video Info from oEmbed API
@@ -120,7 +146,7 @@ class BCLightboxModal {
 				const data = await response.json();
 
 				// Modify embed HTML to include autoplay and nocookie domain
-				let embedHtml = data.html.replace('feature=oembed', 'feature=oembed&autoplay=1&enablejsapi=1');
+				let embedHtml = data.html.replace('feature=oembed', 'feature=oembed&autoplay=1&enablejsapi=1&rel=0');
 				embedHtml = embedHtml.replace('www.youtube.com', 'www.youtube-nocookie.com');
 				return embedHtml || null;
 			} else if ( url.includes('vimeo.com') ) {
@@ -130,9 +156,8 @@ class BCLightboxModal {
 				return data.html || null;
 			}
 		} catch (error) {
-			console.error('Error fetching video info:', error);
+			throw(error);
 		}
-		return null;
 	}
 }
 
