@@ -39,9 +39,9 @@ class BCLightboxModal {
 
 			// Create container and set attributes
 			const modalHtml = `
-				<div class="modal fade" tabindex="-1" aria-hidden="true" id="${this.modalId}" aria-label="Video Overlay">
-					<button type="button" class="btn-close position-absolute top-0 end-0 m-3 zindex-tooltip" data-bs-dismiss="modal" aria-label="Close">
-						<span aria-hidden="true" class="fas fa-times fa-lg text-dark"></span>
+				<div class="lightbox-modal modal fade" tabindex="-1" aria-hidden="true" id="${this.modalId}" aria-label="Video Overlay">
+					<button type="button" class="btn-close position-absolute top-0 end-0 m-3 zindex-tooltip border border-0 bg-transparent fs-2" data-bs-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true" class="fas fa-times fa-lg text-light"></span>
 					</button>
 					<div class="modal-dialog modal-lg modal-dialog-centered">
 						<div class="modal-content">
