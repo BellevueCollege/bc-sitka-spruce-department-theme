@@ -3,7 +3,7 @@ import AccessibleMenu from './modules/accessible-menu';
 import ButtonToggle from './modules/button-toggle';
 import HeaderState from './modules/header-state';
 import Slider from './modules/slider';
-import BCLightboxModal from './modules/bc-lightbox-modal';
+import BCLightboxModal from 'bc-lightbox-modal';
 
 (() => {
 
