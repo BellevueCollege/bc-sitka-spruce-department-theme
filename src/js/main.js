@@ -3,8 +3,7 @@ import AccessibleMenu from './modules/accessible-menu';
 import ButtonToggle from './modules/button-toggle';
 import HeaderState from './modules/header-state';
 import Slider from './modules/slider';
-import { Fancybox } from "@fancyapps/ui";
-import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import BCLightboxModal from 'bc-lightbox-modal';
 
 (() => {
 
@@ -111,13 +110,8 @@ import "@fancyapps/ui/dist/fancybox/fancybox.css";
 	});
 	relatedProgramsSlider.add('.related-program-slides').run();
 
-	// Enable Fancybox
-	Fancybox.bind('[data-fancybox]', {
-		Html: {
-			video: {
-			autoplay: false,
-			},
-		},
-	});
+	const bcLightboxModal = new BCLightboxModal('bc-lightbox-modal','[data-fancybox]');
+
+
 
 })();
