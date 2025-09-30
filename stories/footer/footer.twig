@@ -2,7 +2,7 @@
 	<div class="footer-mountains"></div>
 	<div class="footer-content container-xl">
 		<div class="row">
-			<div class="col-md-6 col-lg">
+			<div class="col-md-6 col-lg-3">
 				<a href="{{ core_homepage_url|esc_url }}" class="footer-logo" title="{{ __('Link to college homepage', 'bc-sitka-spruce') }}">
 					<img src="{{ logo_url|esc_url }}" class="img-fluid" alt="{{ __('Bellevue College (links to college homepage)', 'bc-sitka-spruce') }}">
 				</a>
@@ -27,7 +27,7 @@
 							<i class="fa-solid fa-envelope" aria-hidden="true"></i>
 							<span class="visually-hidden">{{ __('Email', 'bc-sitka-spruce') }}</span>
 						</div>
-						<div class="col-lg-3">
+						<div class="col">
 							<a class="footer-contact-link" href="{{ ('mailto:' ~ email)|esc_url }}">
 								{{ email|esc_html }}
 							</a>
