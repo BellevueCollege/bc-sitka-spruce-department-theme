@@ -744,7 +744,7 @@
             "name": "phone",
             "aria-label": "",
             "type": "text",
-            "instructions": "Department phone number (optional). Use ###-###-#### format.",
+            "instructions": "Department phone number (optional). \r\nJust enter 10 digits (no “+1”) [i.e ###-###-####]. The footer will automatically prepend “+1” for visitors to see when visiting your site.",
             "required": 0,
             "conditional_logic": [
                 [
@@ -1139,5 +1139,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1758842794
+    "modified": 1759275321
 }

@@ -12,13 +12,36 @@
 				{% set method = contact_method|default('phone')|trim|lower%}
 
 				{%  if method == 'phone' and phone %}
+				{# Normalize digits for tel: link #}
+					{% set raw = phone|replace({'(': '', ')': '', ' ': '', '-': '', '.': ''}) %}
+					{% if raw starts with('+') %}
+						{% set phone_e164 = raw %}
+					{% elseif raw starts with('1') and raw|length == 11 %}
+						{% set phone_e164 = '+' ~ raw %}
+					{% elseif raw|length == 10 %}
+						{% set phone_e164 = '+1' ~ raw %}
+					{% else %}
+						{% set phone_e164 = phone %}
+					{% endif %}
+
+					{# Display +1 for plain US 10-digit numbers; otherwise show as-is #}
+					{% if raw starts with('+') %}
+						{% set phone_display = phone %}
+					{% elseif raw starts with('1') and raw|length == 11 %}
+						{% set phone_display = '+' ~ raw %}
+					{% elseif raw|length == 10 %}
+						{% set phone_display = '+1 ' ~ phone %}
+					{% else %}
+						{% set phone_display = phone %}
+					{% endif %}
+					
 					<div class="row gx-2">
 						<div class="col-auto">
 							<i class="fa-solid fa-phone-flip" aria-hidden="true"></i>
 							<span class="visually-hidden">{{ __('Phone Number', 'bc-sitka-spruce') }}</span>
 						</div>
 						<div class="col">
-							<p><a href="tel:{{ phone|esc_html }}">{{ phone|esc_html }}</a></p>
+							<p><a href="tel:{{ phone_e164|e('html_attr') }}">{{ phone_display|esc_html }}</a></p>
 						</div>
 					</div>
 				{% elseif method == 'email' and email %}
