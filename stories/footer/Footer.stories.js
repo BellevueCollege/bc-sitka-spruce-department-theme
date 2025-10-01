@@ -32,7 +32,9 @@ const Template = ( {
 	mountains_url,
     menu,
 	address,
+	contact_method,
 	phone,
+	email,
 	social,
 	current_year
  }) =>
@@ -44,7 +46,9 @@ const Template = ( {
 		mountains_url,
 		menu,
 		address,
+		contact_method,
 		phone,
+		email,
 		social,
 		current_year
     });
@@ -59,6 +63,7 @@ Default.args = {
 	menu: menu,
 	address: "Bellevue College<br>123 Main Street<br>Bellevue, WA 98004",
 	phone: "555-555-5555",
+	email: "", // should be ignored since default method = phone
 	social: [
 		{
 			network: "facebook",
@@ -82,4 +87,12 @@ Default.args = {
 		},
 	],
 	current_year: new Date().getFullYear()
+};
+
+export const EmailOnly = Template.bind({});
+EmailOnly.args = {
+	...Default.args,
+	contact_method: "email",
+	phone: "",
+	email: "webmaster@bellevuecollege.edu"
 };
