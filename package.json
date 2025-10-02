@@ -52,7 +52,7 @@
     "webpack-remove-empty-scripts": "^1.0.4"
   },
   "dependencies": {
-    "@awesome.me/kit-7a7c3bfd75": "^1.0.4",
+    "@awesome.me/kit-8745498039": "^1.0.7",
     "@popperjs/core": "^2.11.8",
     "bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.2",
     "bootstrap": "^5.3.3",
