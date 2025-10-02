@@ -5,8 +5,6 @@
 */
 #}
 <div class="arch-shape"></div>
-{# <section class="section section-rainy-night-blue diffs curved-top"> #}
-
 {# Normalizing locals so SB doesn't flip if WP variables aren't passed #}
 {% set has_wrapper       = wrapper_attributes is defined and wrapper_attributes %}
 {% set _anchor           = anchor|default('') %}
@@ -14,7 +12,7 @@
 {% set _wrapper_has_id   = wrapper_has_id|default(false) %}
 
 {# WP path or fallback path #}
-{% if has_wrapper_attrs %}
+{% if has_wrapper %}
 	<section {{ wrapper_attributes|raw }}
 	{% if not wrapper_has_id and anchor %} 
 	id="{{ anchor }}"
@@ -23,8 +21,9 @@
 	{% if heading_id %} 
 	aria-labelledby="{{ heading_id }}"
 	{% endif %}>
+
 {% else %}
-	<section class="{{ _classes }}"
+	<section class="section section-rainy-night-blue diffs curved-top"
         {% if _anchor %}
 		id="{{ _anchor }}"
 		{% endif %}
@@ -34,11 +33,12 @@
 		{% endif %}>
 {% endif %}
 
+<div class="container-xl">
 	<div class="diffs--container">
 		{% include '/stories/section-heading/section-heading.twig' with {
 				'heading': title|default(''),
 				'subheading': description|default(''),
-				'anchor': heading_id,
+				'anchor': _heading_id,
 				linkClass: 'link-accent-lg text-white',	
 			} %}
 			<div class="container-xl global-spacing--2x oho-animate-sequence">
