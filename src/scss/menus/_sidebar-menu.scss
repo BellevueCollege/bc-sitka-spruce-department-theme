@@ -1,3 +1,5 @@
+@use '@awesome.me/kit-8745498039/icons/scss/_fa.scss' as fa;
+
 ////
 /// @group menus
 /// Sidebar menu styles.
@@ -58,7 +60,7 @@
       line-height: 1.6;
 
       &::before {
-        content: fa-content($fa-var-plus);
+        content: fa.fa-content(fa.$var-plus);
         font-size: 1.5rem;
       }
     }
@@ -91,13 +93,13 @@
         position: absolute;
         top: 50%;
         right: .75em;
-        content: fa-content($fa-var-chevron-down);
+        content: fa.fa-content(fa.$var-chevron-down);
         transform: translateY(-50%);
         font-family: $font-awesome;
         font-size: 1.5em;
 
         .sidebar-menu-open & {
-          content: fa-content($fa-var-chevron-up);
+          content: fa.fa-content(fa.$var-chevron-up);
         }
       }
 
@@ -143,7 +145,7 @@
     }
 
     > .menu-item__button::before {
-      content: fa-content($fa-var-minus);
+      content: fa.fa-content(fa.$var-minus);
     }
   }
 }
