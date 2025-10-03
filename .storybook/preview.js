@@ -2,6 +2,30 @@
 import Twig from "twig";
 import '../assets/dist/css/main.css';
 
+// --- Twig shims for WordPress/Timber filters & functions ---
+
+// Replace whitespace with dashes, drop non-alphanum 
+Twig.extendFilter("sanitize", function (v) {
+  return String(v).replace(/\s/g, "-").replace(/[^a-zA-Z0-9-]/g, "-");
+});
+
+Twig.extendFunction("__", (input,/*, namespace */) => {
+  return input;
+});
+
+// Mock Timber functions. Note that NO SANITIZATION is done for the following. This is purely for a preview.
+Twig.extendFilter("esc_url",  (v) => v);
+Twig.extendFilter("esc_attr", (v) => v);
+Twig.extendFilter("esc_html", (v) => v);
+Twig.extendFilter("wp_kses_post", (v) => v);
+
+// If templates later complain about other filters, add them here similarly.
+// Examples:
+// Twig.extendFilter("esc_textarea", (v) => v);
+// Twig.extendFilter("sanitize_title", (v) => v);
+
+// -----------------------------------------------------------
+
 // import '/node_modules/@awesome.me/kit-7a7c3bfd75/icons/css/all.css'
 const preview = {
   parameters: {
@@ -15,50 +39,3 @@ const preview = {
 };
 
 export default preview;
-
-/**
- * Mock the Sanitize Filter in Timber
- *
- * Replace non-alphanumeric characters with dashes
- */
-Twig.extendFilter("sanitize", function (a, b) {
-  return a.replace(/\s/g, "-").replace(/[^a-zA-Z0-9-]/g, "-");
-});
-
-/**
- * Mock the WordPress __ Function in Timber
- *
- * Return the input, ignore namespace. __() is used to provide localization.
- */
-Twig.extendFunction("__", (input, namespace) => {
-  return input;
-});
-
-/**
- * Mock the Timber esc_url function. Note that NO SANITIZATION is done. This is purely for a preview.
- */
-Twig.extendFilter("esc_url", (input) => {
-	return input;
-});
-
-/**
- * Mock the Timber esc_attr function. Note that NO SANITIZATION is done. This is purely for a preview.
- */
-Twig.extendFilter("esc_attr", (input) => {
-	return input;
-});
-
-/**
- * Mock the Timber esc_html function. Note that NO SANITIZATION is done. This is purely for a preview.
- */
-Twig.extendFilter("esc_html", (input) => {
-	return input;
-});
-
-
-/**
- * Mock the Timber wp_kses_post function. Note that NO SANITIZATION is done. This is purely for a preview.
- */
-Twig.extendFilter("wp_kses_post", (input) => {
-	return input;
-});

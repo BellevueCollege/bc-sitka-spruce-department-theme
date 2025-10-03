@@ -1,0 +1,8 @@
+{# stories/scratch/link-arrow-test.twig #}
+{% include '@stories/atoms/links/link-arrow.twig' with {
+  link: link,
+  linkClass: linkClass|default('link-accent-lg'),
+  samePageIcon: samePageIcon|default('fa-regular fa-arrow-right-long'),
+  newPageIcon: newPageIcon|default('fa-solid fa-square-arrow-up-right'),
+  iconClass: iconClass|default('')
+} %}

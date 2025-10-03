@@ -10,6 +10,18 @@ require_once __DIR__ . '/vendor/autoload.php';
 // Initialize Timber.
 Timber\Timber::init();
 
+// Map Twig namespace(s) so WordPress + Timber can resolve @stories/...
+add_filter('timber/paths', function ($paths) {
+	// @stories → /wp-content/themes/your-theme/stories
+	$paths['stories'] = get_theme_file_path('/stories');
+
+	// (Optional) add more namespaces as needed like:
+	// $paths['components'] = get_theme_file_path('/stories/components');
+	// $paths['atoms']      = get_theme_file_path('/stories/atoms');
+
+	return $paths;
+});
+
 // Register Global Timber Context Variables
 add_filter('timber/context', function ($context) {
 	$context['current_year'] = date('Y');
