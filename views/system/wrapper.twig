@@ -79,6 +79,9 @@
 	{% endblock %}
 
 	{% block footer %}
+		{% set contact_method = acf_options.footer_contact_method|default('phone') %}
+		{% set footer_email = acf_options.footer_email|default('') %}
+
 		{% include '/stories/footer/footer.twig' with {
 			core_homepage_url: 'https://www.bellevuecollege.edu',
 			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
@@ -87,7 +90,9 @@
 			site_title: site.name,
 			menu: footer_menu,
 			address: acf_options.address,
+			contact_method: contact_method,
 			phone: acf_options.phone,
+			email: footer_email,
 			social: acf_options.social
 		} %}
 	{% endblock %}
