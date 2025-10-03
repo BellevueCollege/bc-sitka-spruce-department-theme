@@ -1,51 +1,45 @@
-/** @type { import('@storybook/html-webpack5').StorybookConfig } */const config = {
+import twig from 'vite-plugin-twig-drupal';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+// Define __dirname for ES modules
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+/** @type { import('@storybook/html-vite').StorybookConfig } */
+const config = {
   stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   staticDirs: ["../assets/img"],
-  async webpackFinal(config, { configType }) {
-    if (configType === 'DEVELOPMENT') {
-      // Modify config for development
-    }
-    if (configType === 'PRODUCTION') {
-      // Modify config for production
-    }
-    config.module.rules.push({
-      test: /\.twig$/,
-      use: {
-        loader: "twig-loader",
-        options: {
-          twigOptions: {
-            paths: ["/"],
-          }
-        }
-      },
-    });
+
+  async viteFinal(config, { configType }) {
+    config.plugins = config.plugins || [];
+
+    config.plugins.push(
+      twig({
+        root: join(__dirname, '..'),
+        namespaces: {
+          'components': join(__dirname, '../stories'),
+          'stories': join(__dirname, '../stories'),
+        },
+
+      })
+    );
+
     return config;
   },
+
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "@storybook/addon-styling-webpack",
-    '@storybook/addon-a11y',
-    ({
-      name: "@storybook/addon-styling-webpack",
-
-      options: {
-        rules: [{
-      test: /\.css$/,
-      sideEffects: true,
-      use: ["style-loader", "css-loader"],
-    },],
-      }
-    }),
-    "@storybook/addon-webpack5-compiler-swc",
+    "@storybook/addon-a11y",
+    "@storybook/addon-docs",
   ],
+
   framework: {
-    name: "@storybook/html-webpack5",
-    options: {
-      builder: {},
-    },
+    name: "@storybook/html-vite",
+    options: {}
   },
-  docs: {},
+
+  docs: {}
 };
+
 export default config;
