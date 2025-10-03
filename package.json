@@ -34,8 +34,6 @@
     "@storybook/addon-a11y": "^9.1.10",
     "@storybook/addon-docs": "^9.1.10",
     "@storybook/addon-links": "^9.1.10",
-    "@storybook/addon-webpack5-compiler-babel": "^3.0.6",
-    "@storybook/addon-webpack5-compiler-swc": "^4.0.1",
     "@storybook/html": "^9.1.10",
     "@storybook/html-vite": "^9.1.10",
     "@wordpress/scripts": "^31.1.0",
