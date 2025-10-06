@@ -8,7 +8,7 @@
 
             <div class="col-md-8">
                 {% for profile in profiles %}
-                    {% include '/stories/contact-item/contact-item.twig' with {
+                    {% include '@stories/contact-item/contact-item.twig' with {
                         first_name: profile.first_name,
                         last_name: profile.last_name,
                         position: profile.position,
