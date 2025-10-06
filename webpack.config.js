@@ -2,17 +2,8 @@
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 const { getWebpackEntryPoints } = require( '@wordpress/scripts/utils/config' );
 
-// Plugins.
-const RemoveEmptyScriptsPlugin = require( 'webpack-remove-empty-scripts' );
-
 // Utilities.
 const path = require( 'path' );
-
-// Modify DefaultConfig to add new rules
-defaultConfig.module.rules.push( {
-	test: /\.twig$/,
-	loader: 'twig-loader',
-} );
 
 /**
  * Defines the entry point for compiling SCSS files based on the handle provided.
@@ -33,13 +24,24 @@ const scssEntryPoint = ( handle, block = false ) => {
 	}
 }
 
-
-
-// Thanks to https://wordpress.org/support/topic/wordpress-scripts-not-building-both-blocks-and-index-js-simultaneously/
-// The recommended method from WP didn't let blocks build correctly- this does!
-const customPaths = Object.assign( {}, defaultConfig, {
-	name: 'paths',
+// Override default config
+module.exports = {
+	...defaultConfig,
+	name: 'custom',
+	module: {
+		...defaultConfig.module,
+		rules: [
+			...defaultConfig.module.rules,
+			{
+				test: /\.twig$/,
+				loader: 'twig-loader',
+			}
+		],
+	},
 	entry: {
+		// Call defaultConfig.entry() as a function to get auto-detected block.json entries
+		...( typeof defaultConfig.entry === 'function' ? defaultConfig.entry() : defaultConfig.entry ),
+		// Add your custom SCSS entries
 		...scssEntryPoint( 'main' ),
 		...scssEntryPoint( 'editor' ),
 		...scssEntryPoint( 'alert', true ),
@@ -52,13 +54,10 @@ const customPaths = Object.assign( {}, defaultConfig, {
 		...scssEntryPoint( 'image', true ),
 		...scssEntryPoint( 'bs-forms', true ),
 		...scssEntryPoint( 'lmc-search', true ),
+		// Add your custom JS entries
 		'js/main': path.resolve( process.cwd(), 'src/js', 'main.js' ),
 		'js/editor': path.resolve( process.cwd(), 'src/js', 'editor.js' ),
 		'js/a11y-warnings': path.resolve( process.cwd(), 'src/js', 'a11y-warnings.js' ),
 		'blocks/contact-selector/index': path.resolve( process.cwd(), 'src/blocks/contact-selector', 'style.scss' )
-	},
-} );
-
-
-// Add any new entry points by extending the webpack config.
-module.exports = [defaultConfig, customPaths];
+	}
+};
