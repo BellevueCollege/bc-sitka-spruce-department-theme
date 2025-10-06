@@ -292,6 +292,7 @@
                             "collapsed": "",
                             "button_label": "Add Button",
                             "rows_per_page": 20,
+                            "parent_repeater": "field_66f1a6475b0aa",
                             "sub_fields": [
                                 {
                                     "key": "field_66f1a7945b0ae",
@@ -310,8 +311,7 @@
                                     "return_format": "array",
                                     "parent_repeater": "field_66f1a6b95b0ad"
                                 }
-                            ],
-                            "parent_repeater": "field_66f1a6475b0aa"
+                            ]
                         }
                     ]
                 }
@@ -677,12 +677,12 @@
             "new_lines": "br"
         },
         {
-            "key": "field_66db70180a8a9",
-            "label": "Phone Number",
-            "name": "phone",
+            "key": "field_68d5b5ad39ddc",
+            "label": "Footer Contact Method",
+            "name": "footer_contact_method",
             "aria-label": "",
-            "type": "text",
-            "instructions": "Department phone number (optional). Use ###-###-#### format.",
+            "type": "select",
+            "instructions": "",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -690,10 +690,86 @@
                 "class": "",
                 "id": ""
             },
+            "choices": {
+                "phone": "phone",
+                "email": "email"
+            },
+            "default_value": "phone",
+            "return_format": "value",
+            "multiple": 0,
+            "allow_null": 0,
+            "allow_in_bindings": 0,
+            "ui": 0,
+            "ajax": 0,
+            "placeholder": "",
+            "create_options": 0,
+            "save_options": 0
+        },
+        {
+            "key": "field_68d5b60339ddd",
+            "label": "Footer email",
+            "name": "footer_email",
+            "aria-label": "",
+            "type": "email",
+            "instructions": "Department  email (optional).",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_669850aa28689",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_68d5b5ad39ddc",
+                        "operator": "==",
+                        "value": "email"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
+            "default_value": "",
+            "allow_in_bindings": 0,
+            "placeholder": "department@bellevuecollege.edu",
+            "prepend": "",
+            "append": ""
+        },
+        {
+            "key": "field_66db70180a8a9",
+            "label": "Phone Number",
+            "name": "phone",
+            "aria-label": "",
+            "type": "text",
+            "instructions": "Department phone number (optional). \r\nJust enter 10 digits (no “+1”) [i.e ###-###-####]. The footer will automatically prepend “+1” for visitors to see when visiting your site.",
+            "required": 0,
+            "conditional_logic": [
+                [
+                    {
+                        "field": "field_669850aa28689",
+                        "operator": "==",
+                        "value": "1"
+                    },
+                    {
+                        "field": "field_68d5b5ad39ddc",
+                        "operator": "==",
+                        "value": "phone"
+                    }
+                ]
+            ],
+            "wrapper": {
+                "width": "",
+                "class": "",
+                "id": ""
+            },
             "default_value": "",
             "maxlength": 12,
+            "allow_in_bindings": 1,
             "placeholder": "e.g. 425-564-1000",
-            "prepend": "",
+            "prepend": "+1",
             "append": ""
         },
         {
@@ -733,6 +809,7 @@
                         "id": ""
                     },
                     "choices": {
+                        "bluesky": "Bluesky",
                         "facebook": "Facebook",
                         "instagram": "Instagram",
                         "linkedin": "LinkedIn",
@@ -740,13 +817,14 @@
                         "threads": "Threads",
                         "tiktok": "TikTok",
                         "wechat": "WeChat",
-                        "x": "X (formerly Twitter)",
+                        "whatsapp": "WhatsApp",
                         "youtube": "YouTube"
                     },
                     "default_value": false,
                     "return_format": "value",
                     "multiple": 0,
                     "allow_null": 0,
+                    "allow_in_bindings": 1,
                     "ui": 1,
                     "ajax": 0,
                     "placeholder": "",
@@ -1061,5 +1139,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1748889327
+    "modified": 1759276287
 }

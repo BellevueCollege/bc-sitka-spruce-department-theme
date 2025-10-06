@@ -22,12 +22,12 @@
 		<div class="sock-location-hours-content p-4">
 			<div class="row">
 				{% if display_location_card %}
-					<div class="col sock-location">
+					<div class="col-sm-6 col-lg-4 pb-4 pb-lg-0 sock-location">
 						<h2 class="h4">{{ __('Location', 'bc-sitka-spruce') }}</h2>
 						{{ location }}
 						{{ location_image }}
 					</div>
-					<div class="col sock-hours">
+					<div class="col-sm-6 col-lg-4 pb-4 pb-lg-0 sock-hours">
 						{% if hours %}
 							<h2 class="h4">{{ __('Hours', 'bc-sitka-spruce') }}</h2>
 							{{ hours }}

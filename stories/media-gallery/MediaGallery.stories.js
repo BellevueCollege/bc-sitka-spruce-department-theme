@@ -2,8 +2,7 @@ import twigMediaGallery from "./media-gallery.twig";
 import '/assets/dist/blocks/media-gallery-section/style-index.css';
 
 import Slider from '/src/js/modules/slider';
-import { Fancybox } from "@fancyapps/ui";
-import "@fancyapps/ui/dist/fancybox/fancybox.css";
+import BCLightboxModal from 'bc-lightbox-modal';
 
 
 // Note: the media gallery slider is not loading fully, which is causing formatting issues
@@ -28,13 +27,7 @@ const mediaGallerySlider = new Slider({
 mediaGallerySlider.add('.media-gallery-wrapper').run();
 
 // Enable Fancybox
-Fancybox.bind('[data-fancybox]', {
-	Html: {
-		video: {
-		autoplay: false,
-		},
-	},
-});
+const bcLightboxModal = new BCLightboxModal('bc-lightbox-modal','[data-fancybox]');
 
 export default {
     title: "Stories/Media Gallery",

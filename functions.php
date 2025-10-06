@@ -104,6 +104,10 @@ $enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vl
 
 $enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
 
+if ( current_user_can( 'edit_posts' ) ) {
+	$enqueuer->addScript( handle: 'bc-sitka-spruce-a11y-warnings', src: '/assets/dist/js/a11y-warnings.asset.php', use_asset_file: true );
+}
+
 // Enqueue Script in Block Editor to Handle Automated Block Insertion Etc
 add_action( 'enqueue_block_editor_assets', function () {
 	$asset = include get_parent_theme_file_path( '/assets/dist/js/editor.asset.php' );

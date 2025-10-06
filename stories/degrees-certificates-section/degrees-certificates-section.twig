@@ -1,7 +1,8 @@
 <div class="degrees-certificates-section-wrapper section section-brutus-blue text-white">
 	{% include '/stories/section-heading/section-heading.twig' with {
-		heading: title,
-		subheading: description
+		'heading': title,
+		'subheading': description,
+		'anchor': anchor
 	} %}
 	<div class="container-xl mt-2">
 		{% for segment in segments %}
