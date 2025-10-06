@@ -7,7 +7,7 @@
 	{% if links %}
 		<div class="btn-group">
 			{% for link in links %}
-				{% include '/stories/atoms/links/link-button.twig' with {
+				{% include '@stories/atoms/links/link-button.twig' with {
 					linkClass: 'btn',
 				} %}
 			{% endfor %}

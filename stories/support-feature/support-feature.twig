@@ -11,10 +11,10 @@
 {% endblock %}
 
 {% block structure %}
-	{% include '/stories/support-feature/support-feature-tab-list.twig' with {
+	{% include '@stories/support-feature/support-feature-tab-list.twig' with {
 		format: 'list',
 	} %}
-	{% include '/stories/support-feature/support-feature-content.twig' %}
+	{% include '@stories/support-feature/support-feature-content.twig' %}
 {% endblock %}
 
 {% block wrapperAfter %}

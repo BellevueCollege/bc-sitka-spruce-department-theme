@@ -8,7 +8,7 @@
 				<p class="lead">{{ cta.additional_text|esc_html }}</p>
 				{% if cta.buttons|length > 0 %}
 					{% for b in cta.buttons %}
-						{% include '/stories/atoms/links/link-button.twig' with {
+						{% include '@stories/atoms/links/link-button.twig' with {
 							link: b.button,
 							linkClass: 'btn btn-lg btn-light mb-2',
 							iconClass: 'ms-2 text-dark'
@@ -32,7 +32,7 @@
 							<h2 class="h4">{{ __('Hours', 'bc-sitka-spruce') }}</h2>
 							{{ hours }}
 						{% endif %}
-						{% include '/stories/atoms/links/link-button.twig' with {
+						{% include '@stories/atoms/links/link-button.twig' with {
 							link: {
 								title: __('Contact Information', 'bc-sitka-spruce'),
 								url: contact_page_url
