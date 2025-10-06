@@ -27,6 +27,7 @@ const config = {
     "@storybook/addon-links",
     "@storybook/addon-a11y",
     "@storybook/addon-docs",
+    '@chromatic-com/storybook'
   ],
 
   framework: {
