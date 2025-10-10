@@ -3,7 +3,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { RichText } from '@wordpress/block-editor';
 
-import { wysiwygBlocks }  from "../../shared-elements/block-sets/wysiwyg.json";
+import blockSets  from "../../shared-elements/block-sets/wysiwyg.json";
 
 registerBlockType( 'bc-sitka-spruce/application-step-single-content', {
 	edit: ( props ) => {
@@ -28,7 +28,7 @@ registerBlockType( 'bc-sitka-spruce/application-step-single-content', {
 					placeholder={ __( 'Enter Step Heading (required)...', 'bc-sitka-spruce' ) }
 				/>
 				<InnerBlocks
-					allowedBlocks={ wysiwygBlocks }
+					allowedBlocks={ blockSets.wysiwygBlocks }
 					templateLock={ false }
 					template={ BLOCK_TEMPLATE }
 				/>
