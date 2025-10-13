@@ -1,7 +1,7 @@
 @import '/src/scss/block-styles';
 .tabs-section-component {
 	.container-xl {
-		--bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 ) !important;
+		--bs-gutter-x: calc( var( --sitka-container-spacing-lg ) * 2 ) !important;
 	}
 }
 .application-steps-header {
