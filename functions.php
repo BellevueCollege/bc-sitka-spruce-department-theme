@@ -102,10 +102,10 @@ $enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-mainjsassets', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css' );
 
-$enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
+$enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', footer: array( 'strategy' => 'async' ), use_asset_file: true );
 
 if ( current_user_can( 'edit_posts' ) ) {
-	$enqueuer->addScript( handle: 'bc-sitka-spruce-a11y-warnings', src: '/assets/dist/js/a11y-warnings.asset.php', use_asset_file: true );
+	$enqueuer->addScript( handle: 'bc-sitka-spruce-a11y-warnings', src: '/assets/dist/js/a11y-warnings.asset.php', footer: array( 'strategy' => 'defer' ), use_asset_file: true );
 }
 
 // Enqueue Script in Block Editor to Handle Automated Block Insertion Etc
@@ -380,7 +380,7 @@ add_filter('the_seo_framework_title_from_generation', function ($post_title, $ar
 
 			if ($first && $last && $role) {
 				return "{$last}, {$first} – {$role}";
-			} 
+			}
         }
     }
     return $post_title;

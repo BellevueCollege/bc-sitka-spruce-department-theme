@@ -39,7 +39,7 @@ class Enqueuer implements EnqueuerInterface {
 		array $dependencies = array(),
 		$base_path = '',
 		$version = null,
-		bool $footer = true,
+		bool|array $footer = true,
 		bool $use_asset_file = false
 	): void {
 
