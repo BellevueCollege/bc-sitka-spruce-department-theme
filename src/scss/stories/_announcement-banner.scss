@@ -1,14 +1,10 @@
 .announcement {
-	margin-top: 3rem;
-	margin-bottom: 3rem;
+	margin-top: var( --sitka-container-spacing );
+	margin-bottom: var( --sitka-container-spacing );
 
 	&--item {
 		background-color: var( --accent-fountain-blue-extralight );
-		padding: 1.5rem;
-
-		@include media-breakpoint-up(md) {
-			padding: 3rem;
-		}
+		padding: var( --sitka-container-spacing ) var( --sitka-container-spacing-lg );
 	}
 
 
