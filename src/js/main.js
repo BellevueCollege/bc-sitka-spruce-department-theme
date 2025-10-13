@@ -1,4 +1,4 @@
-import * as bootstrap from 'bootstrap'
+import { Collapse, Modal, Tooltip } from 'bootstrap';
 import AccessibleMenu from './modules/accessible-menu';
 import ButtonToggle from './modules/button-toggle';
 import HeaderState from './modules/header-state';
@@ -45,7 +45,7 @@ import BCLightboxModal from 'bc-lightbox-modal';
 
 	// Enable Tooltips
 	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new Tooltip(tooltipTriggerEl));
 
 	// Enable Post Filter Navigation
 	const archiveFilterForm = document.getElementById('post-filter-by-date-form');

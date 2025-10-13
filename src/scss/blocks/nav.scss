@@ -23,3 +23,9 @@
 	--bs-nav-pills-link-active-bg: var( --white);
 	--bs-nav-pills-link-active-color: var( --black);
 }
+
+// Apply overrides for card tabs in case card styles are loaded earlier
+.card-header-tabs.nav-tabs {
+	border-bottom: 0;
+	margin-bottom: calc(-1 * var(--bs-card-cap-padding-y));
+}
