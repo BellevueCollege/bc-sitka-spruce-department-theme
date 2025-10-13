@@ -2,6 +2,11 @@
 
 .application-steps-component {
 
+	&.section {
+		// tabs already has padding- don't need section to add it again
+		padding-bottom: 0;
+	}
+
 	background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 10rem);
 
 	@include media-breakpoint-up('lg') {
