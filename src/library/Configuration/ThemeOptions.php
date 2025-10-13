@@ -195,6 +195,9 @@ class ThemeOptions implements ThemeOptionsInterface {
     remove_theme_support( 'core-block-patterns' );
     add_theme_support( 'responsive-embeds' );
     add_theme_support( 'block-template-parts' );
+
+		// Only load assets for blocks that are on a particular page
+		add_filter( 'should_load_separate_core_block_assets', '__return_true' );
   }
 
 }
