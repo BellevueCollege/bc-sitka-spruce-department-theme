@@ -43,7 +43,7 @@
 .site-type-suppt {
     .hero {
         @include make-container();
-        --bs-gutter-x: calc( var( --sitka-container-spacing ) * 2 );
+        --bs-gutter-x: calc( var( --sitka-container-spacing-lg )  * 2 );
         max-width: 1280px;
 
         padding-top: var( --sitka-container-spacing );
