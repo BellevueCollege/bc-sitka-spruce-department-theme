@@ -4,10 +4,17 @@
 /// Styles for the checkerboard.
 ////
 ///
+.checkerboards {
+	margin-top: var( --sitka-container-spacing );
+}
 
 .card--checkerboard {
 
-	margin-bottom: 2.5rem !important;
+	margin-bottom: var( --sitka-container-spacing );
+
+	.card-img--checkerboard > figure {
+		margin: 0;
+	}
 
 	@include media-breakpoint-up(md) {
 
