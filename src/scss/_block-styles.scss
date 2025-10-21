@@ -1,9 +1,5 @@
+@use '@awesome.me/kit-8745498039/icons/scss/_fa.scss' as fa;
 @import 'variables';
 @import "lib/gerillass";
 @import 'lib/bootstrap/config';
 @import 'mixins';
-
-// Font Awesome Mixins
-$fa-font-path: '~@awesome.me/kit-7a7c3bfd75/icons/webfonts';
-@import '~@awesome.me/kit-7a7c3bfd75/icons/scss/_mixins.scss';
-

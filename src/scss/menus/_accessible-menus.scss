@@ -1,3 +1,5 @@
+@use '@awesome.me/kit-8745498039/icons/scss/_fa.scss' as fa;
+
 ////
 /// @group menus
 /// Styles for the accessible menu JavaScript.
@@ -30,7 +32,7 @@
         &::before {
           display: inline-block;
           width: 100%;
-          content: fa-content($fa-var-plus);
+          content: fa.fa-content(fa.$var-plus);
           color: css_color('white');
           font-family: $font-awesome;
         }
@@ -49,7 +51,7 @@
 
         &::before {
           width: 100%;
-          content: fa-content($fa-var-chevron-circle-down);
+          content: fa.fa-content(fa.$var-chevron-circle-down);
           color: css_color('white');
           font-family: $font-awesome;
           font-size: 16px;
@@ -71,14 +73,14 @@
       @include media-breakpoint-down(lg) {
 
         > .menu-item__button::before {
-          content: fa-content($fa-var-minus);
+          content: fa.fa-content(fa.$var-minus);
         }
       }
 
       @include media-breakpoint-up(lg) {
 
         > .menu-item__button::before {
-          content: fa-content($fa-var-chevron-circle-up);
+          content: fa.fa-content(fa.$var-chevron-circle-up);
         }
       }
     }
