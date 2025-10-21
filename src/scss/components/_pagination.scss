@@ -1,3 +1,5 @@
+@use '@awesome.me/kit-8745498039/icons/scss/_fa.scss' as fa;
+
 ul.pagination,
 .view__pagination {
 	@include global-spacing(12x, margin-top margin-bottom);
@@ -72,19 +74,19 @@ ul.pagination,
 	}
 
 	&--first a::before {
-		content: fa-content($fa-var-chevron-double-left);
+		content: fa.fa-content(fa.$var-chevrons-left);
 	}
 
 	&--previous a::before {
-		content: fa-content($fa-var-chevron-left);
+		content: fa.fa-content(fa.$var-chevron-left);
 	}
 
 	&--next a::after {
-		content: fa-content($fa-var-chevron-right);
+		content: fa.fa-content(fa.$var-chevron-right);
 	}
 
 	&--last a::after {
-		content: fa-content($fa-var-chevron-double-right);
+		content: fa.fa-content(fa.$var-chevrons-right);
 	}
 }
 
