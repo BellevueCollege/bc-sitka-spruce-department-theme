@@ -1,3 +1,5 @@
+@use '@awesome.me/kit-8745498039/icons/scss/_fa.scss' as fa;
+
 .on-page-nav {
   position: relative;
   z-index: 3;
@@ -52,27 +54,27 @@
         display: flex;
         flex-wrap: wrap;
         gap: rem-calc(32 20);
-    
+
         @include media-breakpoint-down(sm) {
           gap: 0.5rem;
         }
-    
+
         ul {
           list-style: none;
         }
-    
+
         & > li {
           flex: 1 1 auto;
           width: 100%;
           margin-top: 0;
           border-radius: rem-calc(4);
-    
+
           @include media-breakpoint-up(sm) {
             width: calc(50% - 20px);
             min-width: calc(50% - 20px);
             max-width: calc(50% - 20px);
           }
-    
+
           @include media-breakpoint-up(lg) {
             width: calc(33.33% - 13.333px);
             min-width: calc(33.33% - 13.333px);
@@ -86,17 +88,17 @@
           flex-wrap: wrap;
           padding: rem-calc(8 10);
           background-color: css_color('white');
-      
+
           & > a {
             width: fit-content;
             text-decoration: none;
             color: $accent-link-blue;
-      
+
             &:hover {
               text-decoration: underline;
             }
           }
-      
+
           & > .menu-item__button {
             display: flex;
             flex: 1;
@@ -104,7 +106,7 @@
             padding: 0;
             background-color: transparent;
             border: none;
-      
+
             &::after {
               @include font-awesome;
               content: '\f055';
@@ -115,10 +117,10 @@
               line-height: 1.5rem;
               margin-top: .1rem;
             }
-      
+
             &:hover,
             &:focus {
-      
+
               &::after {
                 transform: scale(1.1);
                 transform-origin: center;
@@ -126,52 +128,52 @@
               }
             }
           }
-      
+
           &.current_page_ancestor {
             background-color: css_color('accent-fountain-blue-light');
-      
+
             & > a {
               color: $black;
             }
-      
+
             & > .menu-item__button::after {
               color: $accent-navy;
             }
           }
-      
+
           &.current_page_item {
             background-color: $accent-navy;
-      
+
             & > a {
               color: css_color('white');
             }
-      
+
             & > .menu-item__button::after {
               color: css_color('accent-fountain-blue-light');
             }
           }
-      
+
           &.menu-item--open {
             z-index: 2;
             background-color: css_color('bc-brutus-blue');
-      
+
             & > a {
               color: css_color('white');
             }
-      
+
             & > .menu-item__button::after {
               content: '\f056';
               color: css_color('accent-fountain-blue-light');
             }
           }
-      
+
           &:hover {
             background-color: $accent-green-light;
-      
+
             & > a {
               color: $black;
             }
-      
+
             & > .menu-item__button::after {
               color: $accent-navy;
             }
@@ -272,7 +274,7 @@
       position: absolute;
       top: 5px;
       left: 7px;
-      content: fa-content($fa-var-arrow-right);
+      content: fa.fa-content(fa.$var-arrow-right);
     }
   }
 }
@@ -312,7 +314,7 @@
       &::after {
         position: absolute;
         padding-left: space-calc(1);
-        content: fa-content($fa-var-long-arrow-right);
+        content: fa.fa-content(fa.$var-long-arrow-right);
         transition: transform $primary-transition, opacity $primary-transition;
         color: $accent-link-blue;
         font-family: $font-awesome;
