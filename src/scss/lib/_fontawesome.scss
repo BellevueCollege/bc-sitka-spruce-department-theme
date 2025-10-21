@@ -1,8 +1,10 @@
-$fa-font-path: '~@awesome.me/kit-7a7c3bfd75/icons/webfonts';
+@use '@awesome.me/kit-8745498039/icons/scss/_variables.scss' with (
+  $font-path: '@awesome.me/kit-8745498039/icons/webfonts',
+);
 
-// importing core styling file
-@import '~@awesome.me/kit-7a7c3bfd75/icons/scss/fontawesome.scss';
-@import '~@awesome.me/kit-7a7c3bfd75/icons/scss/solid.scss';
-@import '~@awesome.me/kit-7a7c3bfd75/icons/scss/regular.scss';
-@import '~@awesome.me/kit-7a7c3bfd75/icons/scss/light.scss';
-@import '~@awesome.me/kit-7a7c3bfd75/icons/scss/brands.scss';
+@use '@awesome.me/kit-8745498039/icons/scss/fontawesome.scss';
+@use '@awesome.me/kit-8745498039/icons/scss/solid.scss';
+@use '@awesome.me/kit-8745498039/icons/scss/regular.scss';
+@use '@awesome.me/kit-8745498039/icons/scss/light.scss';
+@use '@awesome.me/kit-8745498039/icons/scss/brands.scss';
+

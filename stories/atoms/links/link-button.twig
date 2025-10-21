@@ -2,7 +2,7 @@
 {% set samePageIcon = samePageIcon|default( '' ) %}
 {% set newPageIcon = newPageIcon|default( 'fa-solid fa-square-arrow-up-right' ) %}
 {% set linkClass = linkClass|default( 'btn btn-primary' ) %}
-{% set iconClass = iconClass|default( 'ms-2 text-white' ) %}
+{% set iconClass = iconClass|default( 'text-white' ) %}
 
 {% if link.title and link.url %}
 	<a href="{{ link.url }}" {% if link.target %} target="{{ link.target|esc_attr }}" {% endif %} class="{{ linkClass }}">
