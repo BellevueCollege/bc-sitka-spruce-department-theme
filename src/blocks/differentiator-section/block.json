@@ -6,7 +6,7 @@
     "category": "sitka-core-content",
     "icon": "performance",
     "description": "Display a list of differentiators from the Core Site.",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "textdomain": "bc-sitka-spruce",
 	"attributes": {
 		"title": {
