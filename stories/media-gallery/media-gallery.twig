@@ -32,7 +32,7 @@
 											<div class="image-overlay-container" style="--aspect-ratio: 55/60;">
 												{{ slide.image|wp_kses_post }}
 												{%  if slide.video_url %}
-													<a class="image-overlay" href="{{ slide.video_url|esc_url }}" data-fancybox target="_blank" rel="noopener noreferrer">
+													<a class="image-overlay" href="{{ slide.video_url|esc_url }}" data-fancybox rel="noopener noreferrer">
 														<i class="fa-solid fa-circle-play" aria-hidden="true"></i>
 														<span class="visually-hidden">{{ __('Open video', 'bc-sitka-spruce') }}</span>
 													</a>
