@@ -1,3 +1,5 @@
+@use '@awesome.me/kit-8745498039/icons/scss/_fa.scss' as fa;
+
 ////
 /// @group menus
 /// Main menu styles.
@@ -186,7 +188,7 @@
       height: 1.125rem;
 
       &::before {
-        content: fa-content($fa-var-chevron-circle-down);
+        content: fa.fa-content(fa.$var-chevron-circle-down);
         color: $menu-link-color;
         background: $menu-background-color;
         border-radius: .5rem;
@@ -202,7 +204,7 @@
     }
 
     &>ul.menu>li.menu-item--open>.menu-item__button::before {
-      content: fa-content($fa-var-chevron-circle-up);
+      content: fa.fa-content(fa.$var-chevron-circle-up);
     }
 
     // Second Level

@@ -61,7 +61,7 @@
 				{% elseif 'video' == featured_media_type and featured_video_url %}
 					<div class="image-overlay-container" style="--aspect-ratio: 40/76;">
 						{{ featured_image_h }}
-						<a class="image-overlay" data-fancybox href="{{ featured_video_url|esc_url }}" target="_blank" aria-label="{{ __('Play featured video', 'bc-sitka-spruce') }}" title="{{ __('Play featured video', 'bc-sitka-spruce') }}">
+						<a class="image-overlay" data-fancybox href="{{ featured_video_url|esc_url }}" aria-label="{{ __('Play featured video', 'bc-sitka-spruce') }}" title="{{ __('Play featured video', 'bc-sitka-spruce') }}">
 							<i class="fa-solid fa-circle-play" aria-hidden="true"></i>
 						</a>
 					</div>
