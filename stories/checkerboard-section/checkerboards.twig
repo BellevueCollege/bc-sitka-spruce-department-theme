@@ -6,18 +6,10 @@
 #}
 {% set heading_id = anchor_id ? anchor_id ~ '-title' : null %}
 
-<section class="checkerboard section section-white 
-{#if statement is not currently in use- putting in as set up for an easy hook-in place for future automated testing #}
-{% if classes %} 
-	{{ classes }}
-{% endif %}"
-{% if anchor_id %}
+<section 
+	class="checkerboard section section-white {{ classes }}"
 	id="{{ anchor_id }}"
-{% endif %}
-{% if heading_id %}
-	aria-labelledby="{{ heading_id }}"
-{% endif %}
->
+> 
 	{% include '/stories/section-heading/section-heading.twig' with {
 		heading: title,
 		subheading: description,
