@@ -29,55 +29,24 @@ $context['checkerboards'] = get_field( 'checkerboards' ) ? array_map(
 $context['is_preview'] = $is_preview;
 
 /**
- * $block is provided by ACF when using render.php.
+ * If the editor sets an HTML Anchor, use it (sanitized). Otherwise, don't set an id at all.
  */
-$raw_anchor   = $block['anchor'] ?? '';
-$title_fallback = $context['title'] ?? '';
-
-$base_slug = $raw_anchor ?: $title_fallback;
-$slug = $base_slug ? sanitize_title( $base_slug ) : '';
+$explicit_anchor = isset( $block['anchor'] ) ? trim( (string) $block['anchor'] ) : '';
+$context['anchor_id'] = $explicit_anchor !== '' ? sanitize_title( $explicit_anchor ) : null;
 
 /**
- * Add a short, unique, suffix from block ID to avoid duplicate IDs
+ * ── Wrapper classes: include core className/align.
  */
-$unique_suffix = isset( $block['id'] ) ? substr( preg_replace( '/[^a-z0-9]/', '', strtolower( $block['id'] ) ), -6 ) : '';
-if ( $slug && $unique_suffix ) {
-  $slug .= '-' . $unique_suffix;
-}
-$context['anchor_id'] = $slug ?: null;
-
-// Merge WP core className/align into wrapper classes
 $classes = [ 'checkerboard-section' ];
 if ( ! empty( $block['className'] ) ) {
-  $classes[] = $block['className'];
+	$classes[] = $block['className'];
 }
 if ( ! empty( $block['align'] ) ) {
-  $classes[] = 'align' . $block['align'];
+	$classes[] = 'align' . $block['align'];
 }
 $classes = array_map( 'sanitize_html_class', $classes );
 $context['classes'] = implode( ' ', $classes );
 
-// AFTER: trust the block's anchor if provided
-$explicit_anchor = isset( $block['anchor'] ) ? trim( (string) $block['anchor'] ) : '';
-
-if ( $explicit_anchor !== '' ) {
-    // Use exactly what the editor typed (sanitized)
-    $context['anchor_id'] = sanitize_title( $explicit_anchor );
-} else {
-    // Fallback: derive from title + short unique suffix to prevent dupes
-    $title_fallback = $context['title'] ?? '';
-    $slug = $title_fallback ? sanitize_title( $title_fallback ) : '';
-
-    $unique_suffix = isset( $block['id'] )
-        ? substr( preg_replace( '/[^a-z0-9]/', '', strtolower( $block['id'] ) ), -6 )
-        : '';
-
-    if ( $slug && $unique_suffix ) {
-        $slug .= '-' . $unique_suffix;
-    }
-
-    $context['anchor_id'] = $slug ?: null;
-}
 if ( $context['title'] && $context['checkerboards'] ) {
 	Timber::render( '/stories/checkerboard-section/checkerboards.twig', $context );
 } else {
