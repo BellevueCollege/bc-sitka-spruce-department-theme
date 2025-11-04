@@ -1,3 +1,4 @@
+import metadata from './block.json';
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
 import { InnerBlocks } from '@wordpress/block-editor';
@@ -16,8 +17,8 @@ const BLOCK_TEMPLATE = [
     [ 'bc-sitka-spruce/differentiator', {} ]
 ];
 
-registerBlockType( 'bc-sitka-spruce/differentiator-section', {
-
+registerBlockType( metadata.name, {
+	...metadata, // pulls in supports/attributes so anchor persists
     edit: function ( props ) {
 		const {
 			attributes: { title, description, linkTitle, linkUrl },
@@ -77,9 +78,5 @@ registerBlockType( 'bc-sitka-spruce/differentiator-section', {
 			</>
         );
     },
-    save: function () {
-        return (
-            <InnerBlocks.Content />
-        );
-    }
+	save: () => <InnerBlocks.Content />,
 } );

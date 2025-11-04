@@ -22,7 +22,7 @@ class Differentiator extends PostData {
 			$icon_style = $icon_data['style'];
 			$icon_id = $icon_data['id'];
 			$icon_label = $icon_data['label'];
-			$icon_html = "<i class='fa-" . esc_attr( $icon_style ) . " fa-" . esc_attr( $icon_id ) . "' aria-hidden='true'></i><span class='sr-only'>Icon: " . esc_html( $icon_label ) . "</span>";
+			$icon_html = "<i class='fa-" . esc_attr( $icon_style ) . " fa-" . esc_attr( $icon_id ) . "' aria-hidden='true'></i><span class='visually-hidden'>Icon: " . esc_html( $icon_label ) . "</span>";
 		}
 
 		return array(
