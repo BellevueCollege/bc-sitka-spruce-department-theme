@@ -32,9 +32,8 @@
 											<div class="image-overlay-container" style="--aspect-ratio: 55/60;">
 												{{ slide.image|wp_kses_post }}
 												{%  if slide.video_url %}
-													<a class="image-overlay" href="{{ slide.video_url|esc_url }}" data-fancybox rel="noopener noreferrer">
+													<a class="image-overlay" href="{{ slide.video_url|esc_url }}" data-fancybox rel="noopener noreferrer" aria-label="{{ __('Play video', 'bc-sitka-spruce') }} {{ slide.slide_title|esc_attr }}" title="{{ __('Play video for', 'bc-sitka-spruce') }} {{ slide.slide_title|esc_attr }}">
 														<i class="fa-solid fa-circle-play" aria-hidden="true"></i>
-														<span class="visually-hidden">{{ __('Open video', 'bc-sitka-spruce') }}</span>
 													</a>
 												{% endif %}
 											</div>

@@ -5,9 +5,8 @@
 				{% if video and image %}
 					<div class="aspect-ratio-frame image-overlay-wrapper" style="--aspect-ratio: .74">
 						{{ image }}
-						<a class="image-overlay" data-fancybox href="{{ video|esc_url }}">
+						<a class="image-overlay" data-fancybox href="{{ video|esc_url }}" aria-label="{{ __('Play video', 'bc-sitka-spruce') }} {{ title|esc_attr }}" title="{{ __('Play video for', 'bc-sitka-spruce') }} {{ title|esc_attr }}">
 							<i class="fa-solid fa-circle-play" aria-hidden="true"></i>
-							<span class="visually-hidden">{{ __('Open video', 'bc-sitka-spruce') }}</span>
 						</a>
 					</div>
 				{% elseif image %}
