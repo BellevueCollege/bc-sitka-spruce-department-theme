@@ -5,17 +5,45 @@
 */
 #}
 <div class="arch-shape"></div>
-<section class="section section-rainy-night-blue diffs curved-top">
+{# Normalizing locals so SB doesn't flip if WP variables aren't passed #}
+{% set has_wrapper       = wrapper_attributes is defined and wrapper_attributes %}
+{% set _anchor           = anchor|default('') %}
+{% set _heading_id       = heading_id|default('') %}
+{% set _wrapper_has_id   = wrapper_has_id|default(false) %}
+
+{# WP path or fallback path #}
+{% if has_wrapper %}
+	<section {{ wrapper_attributes|raw }}
+	{% if not wrapper_has_id and anchor %} 
+	id="{{ anchor }}"
+	{% endif %}
+
+	{% if heading_id %} 
+	aria-labelledby="{{ heading_id }}"
+	{% endif %}>
+
+{% else %}
+	<section class="section section-rainy-night-blue diffs curved-top"
+        {% if _anchor %}
+		id="{{ _anchor }}"
+		{% endif %}
+
+        {% if _heading_id %}
+		aria-labelledby="{{ _heading_id }}"
+		{% endif %}>
+{% endif %}
+
 	<div class="diffs--container">
-			{% include '/stories/section-heading/section-heading.twig' with {
-				heading: title,
-				subheading: description,
-				linkClass: 'link-accent-lg text-white',
+		{% include '/stories/section-heading/section-heading.twig' with {
+				'heading': title|default(''),
+				'subheading': description|default(''),
+				'anchor': _heading_id,
+				linkClass: 'link-accent-lg text-white',	
 			} %}
-			<div class="container-xl global-spacing--2x oho-animate-sequence">
-					<div class="row justify-content-sm-center gy-3">
-							{{ content }}
-					</div>
+		<div class="container-xl global-spacing--2x oho-animate-sequence">
+			<div class="row justify-content-sm-center gy-3">
+				{{ content|default('')|raw }}
 			</div>
+		</div>
 	</div>
-</section>
+	</section>
