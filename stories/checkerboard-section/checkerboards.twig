@@ -4,15 +4,13 @@
  * Bellevue template for the checkerboard component.
  */
 #}
-{% set heading_id = anchor_id ? anchor_id ~ '-title' : null %}
-
 <section 
 	class="checkerboard section section-white {{ classes }}"
 > 
 	{% include '/stories/section-heading/section-heading.twig' with {
 		heading: title,
 		subheading: description,
-		anchor: heading_id
+		anchor: anchor_id
 	} only %}
 
 	<div class="checkerboards container-xl mt-5">
