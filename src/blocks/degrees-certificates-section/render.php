@@ -30,6 +30,6 @@ if ( $context['title'] ) {
 
 if ( $is_preview && ! $context['title'] ) {
 	echo '<div class="card"><p>';
-	_e( 'Add content to this element so that it can display!', 'bc-sitka-spruce' );
+	_e( 'Select this element, then use the Settings sidebar to add content to this element so that it can display!', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }
