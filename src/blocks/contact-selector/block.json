@@ -6,7 +6,7 @@
     "category": "sitka-sections",
     "icon": "groups",
     "description": "Section to display contact information for one or more people. Pulls from Profiles section, but doesn't link to profile pages.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
         "html": false,
@@ -16,7 +16,7 @@
     "editorStyle": "file:./index.css",
     "style": "file:./style-index.css",
     "acf": {
-        "mode": "auto",
+        "blockVersion": 3,
         "renderTemplate": "../../../../src/blocks/contact-selector/render.php"
     }
 
