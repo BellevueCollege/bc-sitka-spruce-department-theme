@@ -716,11 +716,6 @@
             "conditional_logic": [
                 [
                     {
-                        "field": "field_669850aa28689",
-                        "operator": "==",
-                        "value": "1"
-                    },
-                    {
                         "field": "field_68d5b5ad39ddc",
                         "operator": "==",
                         "value": "email"
@@ -748,11 +743,6 @@
             "required": 0,
             "conditional_logic": [
                 [
-                    {
-                        "field": "field_669850aa28689",
-                        "operator": "==",
-                        "value": "1"
-                    },
                     {
                         "field": "field_68d5b5ad39ddc",
                         "operator": "==",
@@ -1139,5 +1129,5 @@
     "active": true,
     "description": "",
     "show_in_rest": 1,
-    "modified": 1759276287
+    "modified": 1759872288
 }

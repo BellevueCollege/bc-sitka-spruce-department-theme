@@ -5,8 +5,13 @@
     "category": "sitka-sections",
     "icon": "align-pull-left",
     "description": "Section for displaying a group of sections with images. ",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "customClassName": false
+    },
     "acf": {
         "mode": "auto",
         "renderTemplate": "../../../../src/blocks/checkerboard-section/render.php"

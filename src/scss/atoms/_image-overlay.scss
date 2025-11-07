@@ -27,4 +27,12 @@
 	&:focus {
 		color: var(--bc-rain-garden-green);
 	}
+
+	i {
+		--sitka-play-button-shadow-color: rgba(0, 0, 0, 0.75);
+		box-shadow: 0 0 48px 12px var(--sitka-play-button-shadow-color);
+		background-color: var(--sitka-play-button-shadow-color);
+		border: 3px solid var(--sitka-play-button-shadow-color);
+		border-radius: 50%;
+	}
 }
