@@ -58,10 +58,11 @@
                 "class": "",
                 "id": ""
             },
-            "collapsed": "field_62ff9d4b85359",
+            "layout": "block",
+            "pagination": 0,
             "min": 0,
             "max": 0,
-            "layout": "row",
+            "collapsed": "field_62ff9d4b85359",
             "button_label": "Add Checkerboard Row",
             "rows_per_page": 20,
             "sub_fields": [
@@ -109,5 +110,6 @@
     "active": true,
     "description": "Component: Checkerboard",
     "show_in_rest": 0,
-    "modified": 1735851128
+    "display_title": "",
+    "modified": 1762547493
 }
