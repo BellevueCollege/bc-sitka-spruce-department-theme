@@ -5,10 +5,10 @@
     "category": "sitka-sections",
     "icon": "megaphone",
     "description": "Display an announcement banner with an image and text.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "textdomain": "bc-sitka-spruce",
     "acf": {
-        "mode": "auto",
+        "blockVersion": 3,
         "renderTemplate": "../../../../src/blocks/announcement-banner/render.php"
     },
 	"editorScript": "file:./index.js",
