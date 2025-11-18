@@ -21,6 +21,6 @@ Timber::render( '/stories/media-gallery/media-gallery.twig', $context );
 
 if ( $is_preview && ! $context['title'] ) {
 	echo '<div class="announcement-wrapper-preview col"><p>';
-	_e( 'The  \'Media Gallery Section\' is not configured. <br />Edit this element to configure it!', 'bc-sitka-spruce' );
+	_e( 'The  \'Media Gallery Section\' is not configured. <br />Select this element, then use the Settings sidebar to configure it!', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }

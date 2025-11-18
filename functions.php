@@ -380,7 +380,7 @@ add_filter('the_seo_framework_title_from_generation', function ($post_title, $ar
 
 			if ($first && $last && $role) {
 				return "{$last}, {$first} – {$role}";
-			} 
+			}
         }
     }
     return $post_title;
@@ -804,3 +804,14 @@ if ( $sitka_ga_id ) {
 		<?php
 	} );
 }
+
+/**
+ * Customize Default Editoria11y Plugin Settings
+ */
+add_filter( 'ed11y_default_options', function ( $options ) {
+
+	// Ignore ACF interfaces that appear in the editor
+	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a';
+
+	return $options;
+} );
