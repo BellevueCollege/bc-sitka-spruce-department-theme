@@ -44,6 +44,7 @@ const Template = ( {
 	content
 }) => {
 	return twigBodySection({
+		wrapper_attrs: 'id="example-anchor" class="section section-white body-section-wrapper"',
 		content
 	});
 };
