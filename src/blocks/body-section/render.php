@@ -21,6 +21,5 @@ $context['wrapper_attrs'] = get_block_wrapper_attributes(
         'class' => 'section section-white body-section-wrapper alignfull',
     )
 );
-error_log( 'Body Section attributes: ' . print_r( $attributes, true ) );
 // Render Twig Template
 Timber::render( '/stories/body-section/body-section.twig', $context );
