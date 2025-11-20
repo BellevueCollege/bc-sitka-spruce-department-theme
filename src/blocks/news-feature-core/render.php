@@ -13,6 +13,9 @@ $context['small_story_types'] = $attributes['smallStoryTypes'];
 $context['featured_news']     = News::get_single_from_core( $attributes['largeStoryId'] );
 $context['news_listing']      = News::get_stories_from_core_by_type( types: $attributes['smallStoryTypes'], exclude: array( $attributes['largeStoryId'] ) );
 
+$context['anchor'] = ! empty( $attributes['anchor'] )
+	? sanitize_title( $attributes['anchor'] )
+	: '';
 if ( $context['large_story_id'] || count( $context['small_story_types'] ) > 0 ) {
 	Timber::render( '/stories/news-feature/news-feature.twig', $context );
 } else {

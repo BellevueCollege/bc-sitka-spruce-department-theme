@@ -5,7 +5,7 @@
  */
 #}
 
-<section class="section section-white news-feature oho-animate-sequence">
+<section class="section section-white news-feature oho-animate-sequence" {% if anchor %} id="{{ anchor }}"{% endif %}>
 	{% include '/stories/section-heading/section-heading.twig' %}
 	<div class="container-xl">
 		{% if featured_news and featured_news.title and featured_news.summary and featured_news.image %}
