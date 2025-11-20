@@ -8,7 +8,10 @@ import "./editor.scss";
 
 
 registerBlockType("bc-sitka-spruce/body-section", {
-
+	//support needed to tell editorJS this block supports anchors too not JUST PHP
+    supports: {
+        anchor: true,
+    },
 	edit: function (props) {
 		const blockProps = useBlockProps({
 			className: "section section-white body-section-wrapper alignfull",

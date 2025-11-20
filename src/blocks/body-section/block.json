@@ -6,11 +6,17 @@
     "category": "sitka-sections",
     "icon": "align-left",
     "description": "Provides the ability to have a callout alongside the editor in order to provide a pathway to a related, important user goal, and the option to use a form.",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "textdomain": "bc-sitka-spruce",
     "supports": {
         "html": false,
         "anchor": true
+    },
+    "attributes": {
+        "anchor": {
+          "type": "string",
+          "default": ""
+        }
     },
 	"allowedBlocks": [
 		"bc-sitka-spruce/body-section-content",

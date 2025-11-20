@@ -44,9 +44,6 @@ Twig.extendFilter("esc_html", (input) => {
  *                             registered; otherwise `undefined`.
  */
 registerBlockType( 'bc-sitka-spruce/news-feature-core', {
-	supports: {
-		anchor: true,
-	},
 	edit: ( props ) => {
 		const { attributes: {
 			title,
