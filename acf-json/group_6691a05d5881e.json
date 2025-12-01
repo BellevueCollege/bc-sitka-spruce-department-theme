@@ -28,7 +28,7 @@
             "name": "profile_image",
             "aria-label": "",
             "type": "image",
-            "instructions": "",
+            "instructions": "Should be at least 460px x 460px. Will be cropped to a square.",
             "required": 0,
             "conditional_logic": 0,
             "wrapper": {
@@ -38,14 +38,15 @@
             },
             "return_format": "array",
             "library": "all",
-            "min_width": "",
-            "min_height": "",
+            "min_width": 460,
+            "min_height": 460,
             "min_size": "",
             "max_width": "",
             "max_height": "",
             "max_size": "",
             "mime_types": "",
-            "preview_size": "medium"
+            "allow_in_bindings": 1,
+            "preview_size": "profile-list-image"
         },
         {
             "key": "field_6691a56ecddf7",
@@ -402,5 +403,6 @@
     "active": true,
     "description": "",
     "show_in_rest": 0,
-    "modified": 1758563436
+    "display_title": "",
+    "modified": 1764617371
 }
