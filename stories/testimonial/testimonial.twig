@@ -5,13 +5,14 @@
  */
 #}
 
-<section class="section section-xlight testimonial-section-wrapper">
+<section class="section section-xlight testimonial-section-wrapper {{ classes }}">
 	{% include '/stories/section-heading/section-heading.twig' with {
-		'heading': title,
-		'subheading': description
-	} %}
-	<div class="testimonial-section container-xl">
+		heading: title,
+		subheading: description,
+		anchor: anchor_id
+	} only %}
 
+	<div class="testimonial-section container-xl">
 		<div class="testimonial row">
 			<div class="col-md-6 testimonial-image">
 				{{ image }}
