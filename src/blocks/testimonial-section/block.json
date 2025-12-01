@@ -11,6 +11,11 @@
         "blockVersion": 3,
         "renderTemplate": "../../../../src/blocks/testimonial-section/render.php"
     },
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "customClassName": false
+    },
 	"editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
     "style": ["file:./style-index.css", "tabcordion-list"]
