@@ -43,6 +43,8 @@ steps:
     inputs:
       versionSource: 'spec'
       versionSpec: '24.x'
+  - script: npm install -g npm@11.6.1
+    displayName: 'Force functinal NPM version'
   - script: |
       node --version
       npm --version
