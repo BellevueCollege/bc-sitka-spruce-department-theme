@@ -48,7 +48,7 @@ const cards = `
 
 export const Default = Template.bind({});
 Default.args = {
-	wrapper_attrs: 'class="section card-section alignfull"',
+	wrapper_attrs:'id="demo-anchor" class="section card-section alignfull"',
     title: 'Section Heading',
     description: '<p>Subheading for this section</p>',
 	cards: cards

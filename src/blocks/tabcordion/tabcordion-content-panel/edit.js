@@ -9,7 +9,7 @@ import {
 	InnerBlocks,
 } from '@wordpress/block-editor';
 
-import { textBlocks } from "../../shared-elements/block-sets/text.json";
+import blockSets from "../../shared-elements/block-sets/text.json";
 import { decode } from 'html-entities';
 
 
@@ -27,7 +27,7 @@ export default function Edit( props ) {
 	}, setAttributes, isSelected, clientId, context } = props;
 
 	let allowedBlocks = context['bc-sitka-spruce/tabcordion/allowedBlocks'];
-	allowedBlocks = allowedBlocks.length > 0 ? allowedBlocks : textBlocks;
+	allowedBlocks = allowedBlocks.length > 0 ? allowedBlocks : blockSets.textBlocks;
 	const HeadingTag = context['bc-sitka-spruce/tabcordion/headingLevel'];
 	const displayHeadingsVisually = context['bc-sitka-spruce/tabcordion/displayHeadingsVisually'];
 

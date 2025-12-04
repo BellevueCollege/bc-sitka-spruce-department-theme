@@ -1,10 +1,10 @@
-<section {{ wrapper_attrs }}>
+<section {{ wrapper_attrs|raw }}>
 	{% include "/stories/section-heading/section-heading.twig" with {
 		heading: title,
 		subheading: description
 	} %}
 	<div class="container-xl cards">
-		{{ cards }}
+		{{ cards|raw }}
 	</div>
 	<hr class="section-divider">
 </section>

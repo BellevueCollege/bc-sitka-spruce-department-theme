@@ -12,13 +12,13 @@
       </div>
     {% endif %}
     {% if top_layout == 'text' %}
-      <div class="diff--hero">
+      <div class="diff--hero mt-4">
         <span class="diff__number oho-animate-count">{{ top_text }}{% if top_superscript %}<sup class="diff__superscript">{{ top_superscript }}</sup>{% endif %} </span>
       </div>
     {% endif %}
     {% if top_layout == 'icon' %}
       <div class="diff--hero">
-        {{ top_icon }}
+        <div class="mt-5 mb-4">{{ top_icon }}</div>
       </div>
     {% endif %}
     <div class="diff--text padding-4x text-margin-reset">

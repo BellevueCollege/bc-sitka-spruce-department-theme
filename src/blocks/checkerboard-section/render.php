@@ -28,6 +28,24 @@ $context['checkerboards'] = get_field( 'checkerboards' ) ? array_map(
 ) : array();
 $context['is_preview'] = $is_preview;
 
+/**
+ * If the editor sets an HTML Anchor, use it (sanitized). Otherwise, don't set an id at all.
+ */
+$explicit_anchor = isset( $block['anchor'] ) ? trim( (string) $block['anchor'] ) : '';
+$context['anchor_id'] = $explicit_anchor !== '' ? sanitize_title( $explicit_anchor ) : null;
+
+/**
+ * ── Wrapper classes: include core className/align.
+ */
+$classes = [ 'checkerboard-section' ];
+if ( ! empty( $block['className'] ) ) {
+	$classes[] = $block['className'];
+}
+if ( ! empty( $block['align'] ) ) {
+	$classes[] = 'align' . $block['align'];
+}
+$classes = array_map( 'sanitize_html_class', $classes );
+$context['classes'] = implode( ' ', $classes );
 
 if ( $context['title'] && $context['checkerboards'] ) {
 	Timber::render( '/stories/checkerboard-section/checkerboards.twig', $context );

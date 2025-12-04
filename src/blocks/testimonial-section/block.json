@@ -5,11 +5,16 @@
     "category": "sitka-sections",
     "icon": "admin-users",
     "description": "Section for displaying a testimonial or featured experience. ",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "textdomain": "bc-sitka-spruce",
     "acf": {
-        "mode": "auto",
+        "blockVersion": 3,
         "renderTemplate": "../../../../src/blocks/testimonial-section/render.php"
+    },
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "customClassName": false
     },
 	"editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",

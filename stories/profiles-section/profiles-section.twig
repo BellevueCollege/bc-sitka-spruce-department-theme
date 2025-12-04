@@ -25,7 +25,7 @@
 									{% if profile.profile_image is not empty %}
 										{{profile.profile_image}}
 									{% else %}
-										<img class="rounded-top img-fluid" src="{{theme.link}}/assets/img/basic-img.svg" alt="Default Profile Image">
+										<img class="rounded-top img-fluid" src="{{theme.link}}/assets/img/basic-img.svg" alt="{{ __('Link to profile for', 'bc-sitka-spruce') }} {{profile.first_name}} {{profile.last_name}}">
 									{% endif %}
 								</a>
 								<div class="p-2">

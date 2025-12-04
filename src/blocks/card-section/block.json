@@ -6,10 +6,11 @@
     "category": "sitka-sections",
     "icon": "align-pull-right",
     "description": "Template that displays a group of card with a heading and introduction.",
-    "version": "1.0.0",
+    "version": "1.1.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
-        "html": false
+        "html": false,
+        "anchor": true
     },
 	"allowedBlocks": [
 		"bc-sitka-spruce/card-section-card"
@@ -20,7 +21,10 @@
         },
         "description": {
             "type": "string"
-        }
+        },
+        "anchor": { 
+            "type": "string" 
+    }
     },
     "editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
