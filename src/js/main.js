@@ -6,7 +6,7 @@ import Slider from './modules/slider';
 import BCLightboxModal from 'bc-lightbox-modal';
 
 (() => {
-
+	window.bootstrap = bootstrap;
 
     /**
      * Add the accessible Main menu.

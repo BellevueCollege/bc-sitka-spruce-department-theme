@@ -1,5 +1,3 @@
-import { Tooltip } from 'bootstrap';
-
 document.addEventListener('DOMContentLoaded', () => {
     // Images without alt attribute
     document.querySelectorAll('#main-content img:not([alt])').forEach(img => {
@@ -34,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize tooltips with error handling
     document.querySelectorAll('[data-bs-toggle="tooltip"]').forEach(element => {
         try {
-            new Tooltip(element, {
+            new window.bootstrap.Tooltip(element, {
                 html: true,
                 boundary: document.body
             });
