@@ -110,7 +110,7 @@ import BCLightboxModal from 'bc-lightbox-modal';
 	});
 	relatedProgramsSlider.add('.related-program-slides').run();
 
-	const bcLightboxModal = new BCLightboxModal('bc-lightbox-modal','[data-fancybox]');
+	const bcLightboxModal = new BCLightboxModal(bootstrap, 'bc-lightbox-modal', '[data-fancybox]');
 
 
 
