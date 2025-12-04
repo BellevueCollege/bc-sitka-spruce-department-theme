@@ -6,7 +6,7 @@ import Slider from './modules/slider';
 import BCLightboxModal from 'bc-lightbox-modal';
 
 (() => {
-
+	window.bootstrap = bootstrap;
 
     /**
      * Add the accessible Main menu.
@@ -110,7 +110,7 @@ import BCLightboxModal from 'bc-lightbox-modal';
 	});
 	relatedProgramsSlider.add('.related-program-slides').run();
 
-	const bcLightboxModal = new BCLightboxModal('bc-lightbox-modal','[data-fancybox]');
+	const bcLightboxModal = new BCLightboxModal(bootstrap, 'bc-lightbox-modal', '[data-fancybox]');
 
 
 
