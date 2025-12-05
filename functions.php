@@ -811,7 +811,8 @@ if ( $sitka_ga_id ) {
 add_filter( 'ed11y_default_options', function ( $options ) {
 
 	// Ignore ACF interfaces that appear in the editor
-	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a';
+	// Ignore false positive on application step single heading
+	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a, .application-step-single-heading';
 
 	return $options;
 } );
