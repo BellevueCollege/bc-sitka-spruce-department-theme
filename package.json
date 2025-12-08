@@ -1,6 +1,6 @@
 {
   "name": "bc-sitka-spruce-department-theme",
-  "version": "1.5.1",
+  "version": "1.5.2",
   "description": "Bellevue College Theme for Level 3 Department Sites",
   "main": "theme.json",
   "scripts": {
