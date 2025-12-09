@@ -4,11 +4,12 @@
 * Bellevue template for the announcement banner component.
 */
 #}
-<section class="media-gallery-wrapper section section-rainy-night-blue text-white swiper container-fluid">
+<section class="media-gallery-wrapper section section-rainy-night-blue text-white swiper container-fluid {{classes}}">
 	{% include '/stories/section-heading/section-heading.twig' with {
 		heading: title,
-		subheading: description
-	} %}
+		subheading: description,
+		anchor: anchor_id
+	} only %}
 	<div class="container-xl">
 		<div class="row">
 			<div class="col-md-12">
