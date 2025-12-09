@@ -5,11 +5,16 @@
     "category": "sitka-sections",
     "icon": "format-gallery",
     "description": "Displays a slider of images and videos.",
-    "version": "1.1.0",
+    "version": "1.2.0",
     "textdomain": "bc-sitka-spruce",
     "acf": {
         "blockVersion": 3,
         "renderTemplate": "../../../../src/blocks/media-gallery-section/render.php"
+    },
+    "supports": {
+        "anchor": true,
+        "html": false,
+        "customClassName": false
     },
 	"editorScript": "file:./index.js",
     "editorStyle": "file:./index.css",
