@@ -2,13 +2,14 @@ import { __ } from "@wordpress/i18n";
 import { registerBlockType } from "@wordpress/blocks";
 import { useBlockProps } from "@wordpress/block-editor";
 import { InnerBlocks } from "@wordpress/block-editor";
+import metadata from "./block.json";
 
 import "./style.scss";
 import "./editor.scss";
 
-
-registerBlockType("bc-sitka-spruce/course-information-section", {
-
+// Updated to use metadata.name instead of the hardcoded string
+// Pass ...metadata to include all settings
+registerBlockType(metadata.name, {
 	edit: function (props) {
 		const blockProps = useBlockProps({
 			className: "section section-xlight course-information-section-wrapper alignfull",
