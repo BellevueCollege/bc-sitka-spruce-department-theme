@@ -4,24 +4,24 @@
  * Bellevue template for a post.
  */
 #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@views/system/wrapper.twig' %}
 
 {% block content %}
-	{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+	{% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
 		title: post.title,
 	} %}
 
 	{{ post.content }}
 
 	{% if related_programs|length > 0 %}
-		{% include '/stories/related-programs/related-programs.twig' with {
+		{% include '@stories/related-programs/related-programs.twig' with {
 			programs: related_programs
 		} %}
 	{% endif %}
 {% endblock %}
 
 {% block sock %}
-	{% include '/stories/sock/degree-sock.twig' with {
+	{% include '@stories/sock/degree-sock.twig' with {
 		enable: acf_options.degree_sock.enable,
 		main_heading: acf_options.degree_sock.main_message.heading,
 		main_text: acf_options.degree_sock.main_message.additional_text,

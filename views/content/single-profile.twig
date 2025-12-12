@@ -4,20 +4,20 @@
  * Bellevue template for a post.
  */
 #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@views/system/wrapper.twig' %}
 
 {#Use {{dump()}} inside top of block content to show all data#}
 {% block content %}
 	{# Pullling in details-content rather than remaking same layout from scratch
 	Only use 'with' if stuff isn't transferring properly#}
-	{% include '/stories/profile-detail-overview-content/details-content.twig' with {
+	{% include '@stories/profile-detail-overview-content/details-content.twig' with {
 
 	} %}
 
 	{%  if title and button %}
 		<div class= "single-profile-appointment">
 			{#Pulling in annoucement banner for profile scheduler rather than remaking from scratch#}
-			{% include '/stories/announcement-banner/announcement-banner.twig' with {
+			{% include '@stories/announcement-banner/announcement-banner.twig' with {
 				title:title,
 				description:description,
 				button:button,

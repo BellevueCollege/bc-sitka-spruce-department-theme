@@ -1,11 +1,11 @@
-{% extends 'system/wrapper.twig' %}
+{% extends '@views/system/wrapper.twig' %}
 
 {% set title = __( '404 Error: Page Not Found', 'bc-sitka-spruce' ) %}
 {% set intro_text = __( 'The page you are looking for does not exist. It may have moved to a new URL or been deleted.', 'bc-sitka-spruce' ) %}
 
 {% block content %}
 	<div class="flexible-page">
-		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+		{% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
 		} %}
 		<div class="container-xl mt-n4 mb-5">
 			<h2>{{ __( 'Find What You Are Looking For:', 'bc-sitka-spruce' ) }}</h2>
