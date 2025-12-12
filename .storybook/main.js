@@ -1,3 +1,4 @@
+// This file has been automatically migrated to valid ESM format by Storybook.
 // .storybook/main.js
 import twig from 'vite-plugin-twigjs-loader';
 import { fileURLToPath } from 'url';
