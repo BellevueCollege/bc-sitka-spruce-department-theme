@@ -6,7 +6,7 @@
     "category": "sitka-sections",
     "icon": "align-pull-right",
     "description": "Course information for a degree or certificate.",
-    "version": "1.2.0",
+    "version": "1.1.0",
     "textdomain": "bc-sitka-spruce",
     "supports": {
         "html": false,
