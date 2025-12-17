@@ -5,10 +5,10 @@
  */
 #}
 
-<section class="course-information-section-wrapper section section-xlight">
+<section class="course-information-section-wrapper section section-xlight"{% if anchor %} id="{{ anchor }}" {% endif %}>
 	<div class="container-xl">
 		<div class="row">
-			{{ content }}
+			{{ content|raw }}
 		</div>
 	</div>
 </section>
