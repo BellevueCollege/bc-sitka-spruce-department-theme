@@ -10,8 +10,11 @@ import "./editor.scss";
 registerBlockType("bc-sitka-spruce/bio-section", {
 
 	edit: function (props) {
+		const { attributes } = props;
 		const blockProps = useBlockProps({
 			className: "section section-white bio-section-wrapper alignfull",
+			// make sure ID applies to wrapper in the editor
+			id: attributes.anchor
 		});
 
 		const TEMPLATE = [
