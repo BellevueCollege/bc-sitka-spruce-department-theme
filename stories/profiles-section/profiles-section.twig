@@ -7,9 +7,10 @@
 
 <section class="section section-xlight profiles-section-wrapper">
 	{% include '/stories/section-heading/section-heading.twig' with {
-		'heading': title,
-		'subheading': description,
-		'link_custom':cta_button,
+		heading: title,
+		subheading: description,
+		link_custom:cta_button,
+		anchor: anchor_id
 	} %}
 	<div class="profiles-section container-xl ">
 		{% for section in sections %}

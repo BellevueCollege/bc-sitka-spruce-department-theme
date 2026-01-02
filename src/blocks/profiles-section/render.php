@@ -77,6 +77,12 @@ $context['sections'] = get_field( 'sections' ) ? array_map(
 	get_field( 'sections' )
 ) : null;
 
+/**
+ * If the editor sets an HTML Anchor, use it (sanitized). Otherwise, don't set an id at all.
+ */
+$explicit_anchor = isset( $block['anchor'] ) ? trim( (string) $block['anchor'] ) : '';
+$context['anchor_id'] = $explicit_anchor !== '' ? sanitize_title( $explicit_anchor ) : null;
+
 if ( $context['title'] ) {
 	Timber::render( '/stories/profiles-section/profiles-section.twig', $context );
 } else {
