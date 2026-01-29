@@ -293,6 +293,18 @@ add_action( 'init', function () {
 });
 
 /**
+ * Disable 'Hide from Navigation' option for non super-admins
+ */
+add_filter( 'acf/prepare_field/name=hide_from_side_nav', function( $field ) {
+
+	// Only allow administrators to edit
+	if ( ! current_user_can( 'manage_network' ) ) {
+		return false;
+	}
+	return $field;
+} );
+
+/**
  * Set Page Title Format
  */
 /**
