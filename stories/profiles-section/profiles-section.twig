@@ -34,6 +34,10 @@
 										<a href="{{profile.profile_url}}">{{profile.first_name}}
 											{{profile.last_name}}</a>
 									</p>
+								{# Check: only render if pronouns exist #}
+                                    {% if profile.pronouns %}
+                                        <p class="mb-0">{{profile.pronouns}}</p>
+                                    {% endif %}
 									<p class="mb-0">{{profile.position}}</p>
 								</div>
 							</div>

@@ -2,6 +2,7 @@
 {% set profile_url = row.link %}
 {% set first_name = acf.first_name %}
 {% set last_name = acf.last_name %}
+{% set pronouns = acf.gender_pronouns %}
 {% set position_title = acf.position_role %}
 {% set departments = [] %}
 {%  if acf.dept_office %}
@@ -22,8 +23,11 @@
 			<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
 		{% endif %}
 	</div>
-	<div class="col-sm-6 col-md">
-		<h3 class="card-title-small"><a href="{{ profile_url|esc_url }}">{{ first_name|esc_html }} {{ last_name|esc_html }}</a></h3>
+	<div class="col">
+		<h3 class="card-title-small mb-0"><a href="{{ profile_url|esc_url }}">{{ first_name|esc_html }} {{ last_name|esc_html }}</a></h3>
+        {% if pronouns %}
+            <p class="small fst-italic mb-1">{{ pronouns|esc_html }}</p>
+        {% endif %}
 		<div class="row">
 			<div class="col-md-6">
 				<ul class="list-unstyled">

@@ -19,6 +19,7 @@ if (is_array(get_field('profiles'))) {
         // fetch each individual field for each profile
         $profile_data['first_name'] = esc_html(get_field('first_name', $profile->ID) ?? '');
         $profile_data['last_name'] = esc_html(get_field('last_name', $profile->ID) ?? '');
+        $profile_data['pronouns'] = esc_html(get_field('gender_pronouns', $profile->ID) ?? '');
         $profile_data['position'] = esc_html(get_field('position_role', $profile->ID) ?? '');
         $profile_data['email'] = esc_html(get_field('email', $profile->ID) ?? '');
         $profile_data['phone'] = esc_html(get_field('phone_number', $profile->ID) ?? '');
@@ -29,7 +30,7 @@ if (is_array(get_field('profiles'))) {
 
         // Get the repeater data from the profile post
         $schedule_data = get_field('scheduling_section', $profile->ID);
-
+        
         // (Hard coded on purpose!) Check the first row of two specific fields
         if (is_array($schedule_data) && !empty($schedule_data)) {
             $section = $schedule_data[0]; // Get the first row
@@ -51,6 +52,7 @@ if (is_array(get_field('profiles'))) {
         $profiles_data[] = $profile_data;
     } // END OF FOR LOOP
 }
+
 // copying data from profiles to context
 $context['profiles'] = $profiles_data;
 

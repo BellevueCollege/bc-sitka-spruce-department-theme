@@ -2,6 +2,10 @@
 	<div class="contact-item-r row">
 		<div class="contact-name col-12 col-lg-5">
 			<h3 class="card-title-small">{{ first_name }} {{ last_name }}</h3>
+			{# Pronouns Display #}
+            {% if pronouns %}
+                <p class="mb-0 small fst-italic">{{ pronouns }}</p>
+            {% endif %}
 			<p class="position-text">{{ position }}</p>
 		</div>
 		<div class="contact-info col-12 col-lg-7 ">
