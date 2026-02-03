@@ -33,7 +33,7 @@
 						{% endif %}
 						<h3 class="h6">{{ __('Published', 'bc-sitka-spruce') }}</h3>
 						<p>{{ post.date }}</p>
-
+					{# This controls how the contact selector block displays individual profiles on default wordpress pages/posts, works in conjunction with single-post.php #}
 						{% if contact %}
 							<div class="post-additional-contact">
 								<h3 class="h6">{{ __('Contact', 'bc-sitka-spruce') }}</h3>
@@ -43,7 +43,7 @@
 									position: contact.position,
 									phone: contact.phone,
 									email: contact.email,
-									scheduling_link: contact.scheduling_link,
+									scheduling_links: contact.scheduling_links,
 								} %}
 							</div>
 						{% endif %}
