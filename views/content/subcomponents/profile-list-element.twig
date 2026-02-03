@@ -17,11 +17,19 @@
 {% set scheduling_link = acf.scheduling_section.0.schedule_appointment_link %}
 {% set scheduling_link_2 = acf.scheduling_section.0.sched_appt_link %}
 
-<div class="row profile-list-element">
-	<div class="col-sm-6 col-md-auto">
-		{% if profile_image_id %}
-			<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
-		{% endif %}
+<div class="row profile-list-element align-items-start">
+	<div class="col-auto">
+		<a href="{{ profile_url|esc_url }}" class="d-block">
+			{% if profile_image_id %}
+				<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
+			{% else %}
+			{# Fallback to Default Image #}
+				<img src="{{ theme.link }}/assets/img/basic-img.svg" 
+					alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" 
+					class="img-fluid rounded"
+					width="150" height="150">
+			{% endif %}
+		</a>
 	</div>
 	<div class="col">
 		<h3 class="card-title-small mb-0"><a href="{{ profile_url|esc_url }}">{{ first_name|esc_html }} {{ last_name|esc_html }}</a></h3>
@@ -74,12 +82,12 @@
                             <a class="btn btn-primary btn-small mt-1" {% if scheduling_link_2.target %} target="{{ scheduling_link_2.target }}" {% endif %} href="{{ scheduling_link_2.url|esc_url }}">
                                 {{ scheduling_link_2.title|default(__('Schedule with %s', 'bc-sitka-spruce')|format(first_name))|esc_html }}
                                 {% if scheduling_link_2.target %}
-									<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
-									<i class="fa fa-external-link-square text-white" aria-hidden="true"></i>
-								{% endif %}
-							</a>
-						</li>
-					{% endif %}
+                                    <span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
+                                    <i class="fa fa-external-link-square text-white" aria-hidden="true"></i>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
 				</ul>
 			</div>
 		</div>
