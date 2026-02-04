@@ -21,7 +21,7 @@
 	<div class="col-auto">
 		<a href="{{ profile_url|esc_url }}" class="d-block">
 			{% if profile_image_id %}
-				<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
+				<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('%s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
 			{% else %}
 			{# Fallback to Default Image #}
 				<img src="{{ theme.link }}/assets/img/basic-img.svg" 
