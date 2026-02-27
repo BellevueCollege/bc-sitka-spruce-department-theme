@@ -114,8 +114,23 @@ add_action( 'enqueue_block_editor_assets', function () {
 	wp_enqueue_script(
 		'sitka-editor-js',
 		get_template_directory_uri() . '/assets/dist/js/editor.js',
-		array_unique( array_merge( array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ) , $asset['dependencies'] ) ),
+		array_unique(
+			array_merge(
+				array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ),
+				$asset['dependencies']
+			)
+		),
 		$asset['version']
+	);
+
+	$front_page_id = (int) get_option( 'page_on_front' );
+
+	$inline = "window.SitkaEditor = Object.assign( window.SitkaEditor || {}, { frontPageId: $front_page_id } );";
+
+	wp_add_inline_script(
+		'sitka-editor-js', // must match the handle above
+		$inline,
+		'before'           // ensure this runs before editor.js [web:64]
 	);
 } );
 
