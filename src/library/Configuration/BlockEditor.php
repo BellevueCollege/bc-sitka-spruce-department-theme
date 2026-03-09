@@ -133,7 +133,7 @@ class BlockEditor implements BlockEditorInterface {
     add_filter('block_categories_all', [$this, 'setupBlockGroups'], 10, 2);
     // add_filter('use_block_editor_for_post', [$this, 'setupBlockEditorForPost'], 10, 2);
     // add_action('acf/init', [$this, 'setupAcfBlocks'], 10, 1);
-    add_action('enqueue_block_editor_assets', [$this, 'setupBlockEditorStylesheet'], 99, 0);
+    add_action('enqueue_block_assets', [$this, 'setupBlockEditorStylesheet'], 99, 0);
     add_action('enqueue_block_editor_assets', [$this, 'setupAllowedBlockVariations'], 10, 0);
   }
 
