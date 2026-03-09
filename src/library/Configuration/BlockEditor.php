@@ -22,8 +22,10 @@ class BlockEditor implements BlockEditorInterface {
   protected array $usedOnTemplates = [];
 
   protected array $coreBlocksBlacklist = [
+    'core/accordion',
     'core/archives',
     'core/avatar',
+    'core/breadcrumbs',
     'core/button',
     'core/buttons',
     'core/calendar',
@@ -31,6 +33,8 @@ class BlockEditor implements BlockEditorInterface {
     'core/column',
     'core/columns',
     'core/comments',
+    'core/post-comments-count',
+    'core/post-comments-link',
     'core/latest-comments',
     'core/latest-posts',
     'core/legacy-widget',
@@ -70,6 +74,10 @@ class BlockEditor implements BlockEditorInterface {
     'core/social-links',
     //'core/table',
     'core/tag-cloud',
+    'core/terms-query',
+    'core/term-template',
+    'core/term-name',
+    'core/term-count',
     'core/template-part',
     'core/term-description',
     'core/verse',
