@@ -815,5 +815,9 @@ add_filter( 'ed11y_default_options', function ( $options ) {
 
 	// Ignore sub-headings inside app-steps-blocks - incorrectly flagged as skipping level
 	$options['ed11y_ignore_elements'] .= ', h4.application-step-single-heading';
+
+	// Disable content auditing within my-calendar plugin, as it's not user-fixable
+	$options['ed11y_ignore_elements'] .= ', #my-calendar';
+
 	return $options;
 } );
