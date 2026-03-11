@@ -24,7 +24,8 @@
 							<div class="profile-card  bg-white rounded">
 								<a href="{{profile.profile_url}}">
 									{% if profile.profile_image is not empty %}
-										{{profile.profile_image}}
+										{# Targets WP's empty alt attribute and replaces it with just the name #}
+										{{ profile.profile_image | replace({'alt=""': 'alt="' ~ profile.first_name ~ ' ' ~ profile.last_name ~ '"'}) | raw }}
 									{% else %}
 										<img class="rounded-top img-fluid" src="{{theme.link}}/assets/img/basic-img.svg" alt="{{ __('Link to profile for', 'bc-sitka-spruce') }} {{profile.first_name}} {{profile.last_name}}">
 									{% endif %}
