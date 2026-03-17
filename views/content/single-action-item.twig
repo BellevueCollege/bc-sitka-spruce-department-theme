@@ -1,0 +1,45 @@
+{#
+/**
+ * @file
+ * Bellevue template for a action item.
+ */
+#}
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+    <article class="action-item-single">
+        <header>
+            <h1>{{ post.title }}</h1>
+            
+            <div class="meta-info">
+                {# The standard date picker field #}
+                <strong>Date:</strong> {{ post.meta('date')|date('F j, Y') }}
+            </div>
+        </header>
+
+        <section class="content">
+            {{ post.content }}
+        </section>
+
+        <section class="relationships" style="margin-top: 30px; padding: 20px; background: #f4f4f4;">
+            <h3>Connections</h3>
+            <ul>
+                {# Associated Agenda (Single Post Object) #}
+                {% set agenda_id = post.meta('associated_agenda') %}
+                {% if agenda_id %}
+                    {# Convert the raw ACF data into a Timber Post object #}
+                    {% set agenda = Post(agenda_id) %}
+                    <li><strong>Agenda:</strong> <a href="{{ agenda.link }}">{{ agenda.title }}</a></li>
+                {% endif %}
+
+                {# Related Resolution (Bi-directional Single Post Object) #}
+                {% set resolution_id = post.meta('related_resolutions') %}
+                {% if resolution_id %}
+                    {% set resolution = Post(resolution_id) %}
+                    <li><strong>Resolution:</strong> <a href="{{ resolution.link }}">{{ resolution.title }}</a></li>
+                {% endif %}
+            </ul>
+        </section>
+
+    </article>
+{% endblock %}

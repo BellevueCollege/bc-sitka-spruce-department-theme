@@ -1,0 +1,43 @@
+{#
+/**
+ * @file
+ * Bellevue template for a resolution.
+ */
+#}
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+    <article class="resolution-single">
+        <header>
+            <h1>{{ post.title }}</h1>
+            
+            <div class="meta-info">
+                <strong>Date:</strong> {{ post.meta('date')|date('F j, Y') }}
+            </div>
+        </header>
+
+        <section class="content">
+            {{ post.content }}
+        </section>
+
+        <section class="relationships" style="margin-top: 30px; padding: 20px; background: #eef5fa;">
+            <h3>Connections</h3>
+            <ul>
+                {# Associated Agenda (Single Post Object) #}
+                {% set agenda_id = post.meta('associated_agenda') %}
+                {% if agenda_id %}
+                    {% set agenda = Post(agenda_id) %}
+                    <li><strong>Agenda:</strong> <a href="{{ agenda.link }}">{{ agenda.title }}</a></li>
+                {% endif %}
+
+                {# Associated Action Item (Bi-directional Single Post Object) #}
+                {% set action_item_id = post.meta('associated_action_item') %}
+                {% if action_item_id %}
+                    {% set action_item = Post(action_item_id) %}
+                    <li><strong>Action Item:</strong> <a href="{{ action_item.link }}">{{ action_item.title }}</a></li>
+                {% endif %}
+            </ul>
+        </section>
+
+    </article>
+{% endblock %}

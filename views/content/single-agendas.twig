@@ -1,0 +1,44 @@
+{#
+/**
+ * @file
+ * Bellevue template for an agenda.
+ */
+#}
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+    <article class="agenda-single">
+        <header>
+            <h1>{{ post.title }}</h1>
+            
+            {# Grabbing the ACF Meeting Date #}
+            <div class="agenda-meta">
+                <strong>Meeting Date:</strong> {{ post.meta('meeting_date')|date('F j, Y') }}
+                
+                {# Checking the ACF Special Meeting toggle #}
+                {% if post.meta('special_meeting') %}
+                    <span class="special-badge" style="color: red;">(Special Meeting)</span>
+                {% endif %}
+            </div>
+        </header>
+
+        <section class="agenda-content">
+            {{ post.content }}
+        </section>
+
+        {# Pulling in Bi-Directional Action Items #}
+        {% set action_items = post.meta('related_action_items') %}
+            {% if action_items %}
+                <section class="related-items">
+                    <h2>Action Items</h2>
+                        <ul>
+                            {% for item in action_items %}
+                                {# Convert the raw ACF data into a Timber Post object #}
+                                {% set action_item = Post(item) %}
+                                <li><a href="{{ action_item.link }}">{{ action_item.title }}</a></li>
+                            {% endfor %}
+                        </ul>
+                </section>
+        {% endif %}
+    </article>
+{% endblock %}
