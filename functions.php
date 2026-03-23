@@ -197,6 +197,7 @@ $enqueuer->addBlockStyle(
 	handle: 'bs-forms',
 	blocks: array(
 		'lmc-search-plugin/lmc-search-block',
+		'lmc-search-plugin/lmc-browzine-search-block',
 	)
 );
 
@@ -204,6 +205,7 @@ $enqueuer->addBlockStyle(
 	handle: 'lmc-search',
 	blocks: array(
 		'lmc-search-plugin/lmc-search-block',
+		'lmc-search-plugin/lmc-browzine-search-block',
 	)
 );
 /**
