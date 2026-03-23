@@ -4,29 +4,26 @@
  * Bellevue template for a post.
  */
 #}
+{# In the Profiles CPT, this is how the individual profile(s) are displayed when selected #}
 {% extends 'system/wrapper.twig' %}
 
-{#Use {{dump()}} inside top of block content to show all data#}
 {% block content %}
-	{# Pullling in details-content rather than remaking same layout from scratch
-	Only use 'with' if stuff isn't transferring properly#}
-	{% include '/stories/profile-detail-overview-content/details-content.twig' with {
+    {# Pulling in details-content (top section with email, phone, etc) #}
+    {% include '/stories/profile-detail-overview-content/details-content.twig' %}
 
-	} %}
+    {# Check for 'buttons' and 'title'#}
+    {% if title and buttons %}
+        <div class="single-profile-appointment mb-4">
+            {#Pass the specific title, description, and the array of buttons to the banner #}
+            {% include '/stories/announcement-banner/announcement-banner.twig' with {
+                title: title,
+                description: description,
+                buttons: buttons, 
+            } only %}
+        </div>
+    {% endif %}
 
-	{%  if title and button %}
-		<div class= "single-profile-appointment">
-			{#Pulling in annoucement banner for profile scheduler rather than remaking from scratch#}
-			{% include '/stories/announcement-banner/announcement-banner.twig' with {
-				title:title,
-				description:description,
-				button:button,
-			} only %}
-		</div>
-	{% endif %}
-	<div class="my-4">
-		{{ post.content }}
-	</div>
+    <div class="my-4">
+        {{ post.content }}
+    </div>
 {% endblock %}
-
-

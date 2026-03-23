@@ -39,6 +39,7 @@ Default.args = {
                     profile_image: '<img class="rounded-top img-fluid" src="https://picsum.photos/id/69/200/200" alt="Placeholder Image"></img>',
                     first_name: "John",
                     last_name: "Doe",
+                    pronouns: "he/him",
                     position: "Manager",
                 },
                 {
@@ -46,6 +47,7 @@ Default.args = {
                     first_name: "Jane",
                     last_name: "Doe",
                     profile_url: "https://google.com",
+                    pronouns: "she/her",
                     position: "Team Lead",
                 },
             ]
@@ -57,6 +59,7 @@ Default.args = {
                     profile_image: '<img class="rounded-top  img-fluid" src="https://picsum.photos/id/69/200/200" alt="Placeholder Image"></img>',
                     first_name: "Boxer",
                     last_name: "Doe",
+                    pronouns: "they/them",
                     position: "Assistant Manager",
                 },
                 {

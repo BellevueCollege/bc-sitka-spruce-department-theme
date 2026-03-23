@@ -2,6 +2,7 @@
 {% set profile_url = row.link %}
 {% set first_name = acf.first_name %}
 {% set last_name = acf.last_name %}
+{% set pronouns = acf.gender_pronouns %}
 {% set position_title = acf.position_role %}
 {% set departments = [] %}
 {%  if acf.dept_office %}
@@ -14,15 +15,27 @@
 {% set email = acf.email %}
 {% set phone_number = acf.phone_number %}
 {% set scheduling_link = acf.scheduling_section.0.schedule_appointment_link %}
+{% set scheduling_link_2 = acf.scheduling_section.0.sched_appt_link %}
 
-<div class="row profile-list-element">
-	<div class="col-sm-6 col-md-auto">
-		{% if profile_image_id %}
-			<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('Picture of %s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
-		{% endif %}
+<div class="row profile-list-element align-items-start">
+	<div class="col-auto">
+		<a href="{{ profile_url|esc_url }}" class="d-block">
+			{% if profile_image_id %}
+				<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('%s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
+			{% else %}
+			{# Fallback to Default Image #}
+				<img src="{{ theme.link }}/assets/img/basic-img.svg" 
+					alt="{{ __('', 'bc-sitka-spruce')}}" 
+					class="img-fluid rounded"
+					width="150" height="150">
+			{% endif %}
+		</a>
 	</div>
-	<div class="col-sm-6 col-md">
-		<h3 class="card-title-small"><a href="{{ profile_url|esc_url }}">{{ first_name|esc_html }} {{ last_name|esc_html }}</a></h3>
+	<div class="col">
+		<h3 class="card-title-small mb-0"><a href="{{ profile_url|esc_url }}">{{ first_name|esc_html }} {{ last_name|esc_html }}</a></h3>
+        {% if pronouns %}
+            <p class="small fst-italic mb-1">{{ pronouns|esc_html }}</p>
+        {% endif %}
 		<div class="row">
 			<div class="col-md-6">
 				<ul class="list-unstyled">
@@ -51,6 +64,7 @@
 							<i class="fa-solid fa-phone-flip me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Phone:', 'bc-sitka-spruce') }}</span> <a href="tel:{{ phone_number|esc_html }}">{{ phone_number|esc_html }}</a>
 						</li>
 					{% endif %}
+					{# Scheduling Button 1 #}
 					{% if scheduling_link %}
 						<li>
 							<a class="btn btn-primary btn-small mt-1" {% if scheduling_link.target %} target="{{ scheduling_link.target }}" {% endif %} href="{{ scheduling_link.url|esc_url }}">
@@ -62,6 +76,18 @@
 							</a>
 						</li>
 					{% endif %}
+					{# Scheduling button 2 #}
+					{% if scheduling_link_2 %}
+                        <li>
+                            <a class="btn btn-primary btn-small mt-1" {% if scheduling_link_2.target %} target="{{ scheduling_link_2.target }}" {% endif %} href="{{ scheduling_link_2.url|esc_url }}">
+                                {{ scheduling_link_2.title|default(__('Schedule with %s', 'bc-sitka-spruce')|format(first_name))|esc_html }}
+                                {% if scheduling_link_2.target %}
+                                    <span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
+                                    <i class="fa fa-external-link-square text-white" aria-hidden="true"></i>
+                                {% endif %}
+                            </a>
+                        </li>
+                    {% endif %}
 				</ul>
 			</div>
 		</div>
