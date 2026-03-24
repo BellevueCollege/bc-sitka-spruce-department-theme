@@ -7,38 +7,55 @@
 {% extends 'system/wrapper.twig' %}
 
 {% block content %}
-    <article class="agenda-single">
-        <header>
-            <h1>{{ post.title }}</h1>
-            
+    <div class="flexible-page">
+        {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+            title: post.title,
+        } %}
+
+        <div class="single-agendas-page container-xl">
             {# Grabbing the ACF Meeting Date #}
             <div class="agenda-meta">
                 <strong>Meeting Date:</strong> {{ post.meta('meeting_date')|date('F j, Y') }}
-                
-                {# Checking the ACF Special Meeting toggle #}
+            <section class="agenda-content">
+                {{ post.content }}
+            </section>                    
+            {# Checking the ACF Special Meeting toggle #}
                 {% if post.meta('special_meeting') %}
                     <span class="special-badge" style="color: red;">(Special Meeting)</span>
                 {% endif %}
             </div>
-        </header>
-
-        <section class="agenda-content">
-            {{ post.content }}
-        </section>
-
-        {# Pulling in Bi-Directional Action Items #}
-        {% set action_items = post.meta('related_action_items') %}
-            {% if action_items %}
-                <section class="related-items">
+            {# Pulling in Bi-Directional Action Items #}
+                {% set action_items = post.meta('related_action_items') %}
+                {% if action_items %}
+                    <section class="related-action-items">
                     <h2>Action Items</h2>
                         <ul>
                             {% for item in action_items %}
                                 {# Convert the raw ACF data into a Timber Post object #}
                                 {% set action_item = Post(item) %}
-                                <li><a href="{{ action_item.link }}">{{ action_item.title }}</a></li>
+                                    <li>
+                                        <a href="{{ action_item.link }}">{{ action_item.title }}</a>
+                                    </li>
                             {% endfor %}
                         </ul>
-                </section>
-        {% endif %}
-    </article>
+                    </section>
+                {% endif %}
+                {# Pulling in Bi-Directional Resolutions #}
+                {% set resolutions = post.meta('related_resolutions') %}
+                {% if resolutions %}
+                    <section class="related-resolutions">
+                        <h2>Resolutions</h2>
+                        <ul>
+                            {% for item in resolutions %}
+                                {# Convert the raw ACF data into a Timber Post object #}
+                                {% set resolution = Post(item) %}
+                                <li>
+                                <a href="{{ resolution.link }}">{{ resolution.title }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </section>
+                {% endif %}
+        </div>
+    </div>
 {% endblock %}
