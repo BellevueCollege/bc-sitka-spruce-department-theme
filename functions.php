@@ -310,6 +310,18 @@ add_action( 'init', function () {
 });
 
 /**
+ * Disable 'Hide from Navigation' option for non super-admins
+ */
+add_filter( 'acf/prepare_field/name=hide_from_side_nav', function( $field ) {
+
+	// Only allow administrators to edit
+	if ( ! current_user_can( 'manage_network' ) ) {
+		return false;
+	}
+	return $field;
+} );
+
+/**
  * Set Page Title Format
  */
 /**
@@ -828,7 +840,8 @@ if ( $sitka_ga_id ) {
 add_filter( 'ed11y_default_options', function ( $options ) {
 
 	// Ignore ACF interfaces that appear in the editor
-	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a';
+	// Ignore false positive on application step single heading
+	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a, .application-step-single-heading';
 
 	// Ignore sub-headings inside app-steps-blocks - incorrectly flagged as skipping level
 	$options['ed11y_ignore_elements'] .= ', h4.application-step-single-heading';
