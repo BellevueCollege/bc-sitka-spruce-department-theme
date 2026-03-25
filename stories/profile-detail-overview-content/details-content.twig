@@ -10,11 +10,11 @@
 					{{ profile_image | replace({'alt=""': 'alt="'~ first_name ~ ' ' ~ last_name ~ '"'}) | raw }}				
 				{% else %}
 					{# Fallback to Default Image using theme.link #}
-					<img class="img-fluid rounded" 
+					<img class="img-fluid rounded a11y-decorative" 
 						width="460" height="460"
 						src="{{ theme.link }}/assets/img/basic-img.svg" 
 						alt="{{ __('', 'bc-sitka-spruce')}}">
-        			{% endif %}
+        		{% endif %}
 				</div>
 			</div>
 			<div class="profile-overview-column1 col-md-6">
