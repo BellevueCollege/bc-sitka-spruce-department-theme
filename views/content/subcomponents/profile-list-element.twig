@@ -21,11 +21,18 @@
 	<div class="col-auto">
 		<a href="{{ profile_url|esc_url }}" class="d-block">
 			{% if profile_image_id %}
-				<img src="{{ get_image(profile_image_id).src('thumbnail') }}" alt="{{ __('%s %s', 'bc-sitka-spruce')|format(first_name|esc_attr, last_name|esc_attr ) }}" class="img-fluid rounded">
+				{% set profile_img_obj = get_image(profile_image_id) %}
+
+				{# if there alt text in media library? if not, use this as default!#}
+				{% set image_alt = profile_img_obj.alt ? profile_img_obj.alt : first_name ~ ' ' ~ last_name ~ '\'s Profile' %}
+				<img src="{{ profile_img_obj.src('thumbnail') }}"
+					alt="{{ image_alt|esc_attr }}" 
+					class="img-fluid rounded"
+					width="150" height="150">
 			{% else %}
 			{# Fallback to Default Image #}
 				<img src="{{ theme.link }}/assets/img/basic-img.svg" 
-					alt="{{ __('', 'bc-sitka-spruce')}}" 
+					alt="{{ first_name|esc_attr }} {{ last_name|esc_attr }}'s Profile"
 					class="img-fluid rounded"
 					width="150" height="150">
 			{% endif %}
