@@ -1,0 +1,34 @@
+{#
+/**
+ * @file
+ * Bellevue template for the Agendas archive list.
+ */
+#}
+{% extends 'system/wrapper.twig' %}
+
+{% block content %}
+    <div class="flexible-page">
+        {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+            title: title|default('Agendas Archive'),
+        } %}
+
+        <div class="archive-resolution-page container-xl">
+            
+            {# Loop through data passed from PHP #}
+            {% for year, posts in posts_by_year %}
+                
+                <div class="year-group">
+                    <h2> {{ year }} </h2>
+                    {# The List of Posts for given Year #}
+                    <ul class="agenda-list">
+                        {% for post in posts %}
+                            <li>
+                                <a href="{{ post.link }}">{{ post.meta('date')|date('F j, Y') }}</a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}
