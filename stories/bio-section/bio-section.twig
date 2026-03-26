@@ -1,7 +1,7 @@
-<section class="bio-section-wrapper section section-white">
+<section {% if anchor %}id="{{ anchor }}"{% endif %} class="bio-section-wrapper section section-white">
 	<div class="container-xl">
 		<div class="row">
-			{{ content }}
+			{{ content|raw }}
 		</div>
 	</div>
 	<hr class="section-divider">

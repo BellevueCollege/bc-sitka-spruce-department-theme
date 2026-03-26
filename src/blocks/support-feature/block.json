@@ -2,7 +2,7 @@
 	"$schema": "https://schemas.wp.org/trunk/block.json",
 	"apiVersion": 3,
 	"name": "bc-sitka-spruce/support-feature",
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"title": "BC Core Site Student Support Feature",
 	"category": "sitka-core-content",
 	"icon": "info",
@@ -27,6 +27,6 @@
 	},
 	"editorScript": "file:./index.js",
 	"editorStyle": "file:./index.css",
-	"style": "file:./style-index.css",
+	"style": ["bc-sitka-spruce-style-nav", "bc-sitka-spruce-style-tabcordion-list", "file:./style-index.css"],
 	"render": "file:./render.php"
 }

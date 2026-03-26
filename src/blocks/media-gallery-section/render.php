@@ -17,7 +17,30 @@ $context['slides']      = get_field( 'slides' ) ? array_map(
 	get_field( 'slides' )
 ) : null;
 
-Timber::render( '/stories/media-gallery/media-gallery.twig', $context );
+/**
+ * If the editor sets an HTML Anchor, use it (sanitized). Otherwise, don't set an id at all.
+ */
+$explicit_anchor = isset( $block['anchor'] ) ? trim( (string) $block['anchor'] ) : '';
+$context['anchor_id'] = $explicit_anchor !== '' ? sanitize_title( $explicit_anchor ) : null;
+
+/**
+ * ── Wrapper classes: include core className/align.
+ */
+$classes = [ 'testimonial-section' ];
+if ( ! empty( $block['className'] ) ) {
+	$classes[] = $block['className'];
+}
+if ( ! empty( $block['align'] ) ) {
+	$classes[] = 'align' . $block['align'];
+}
+$classes = array_map( 'sanitize_html_class', $classes );
+$context['classes'] = implode( ' ', $classes );
+
+if ( $context['title'] ) {
+	Timber::render( '/stories/media-gallery/media-gallery.twig', $context );
+} else {
+	echo '';
+}
 
 if ( $is_preview && ! $context['title'] ) {
 	echo '<div class="announcement-wrapper-preview col"><p>';
