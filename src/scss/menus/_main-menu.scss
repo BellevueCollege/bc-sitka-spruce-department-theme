@@ -15,6 +15,8 @@
   $menu-submenu-background-color-hover: css_color('accent-fountain-blue-extralight');
   $menu-open-link-color: $menu-link-color;
 
+  --main-menu-item-gutter: calc(0.25 * var(--bs-gutter-x, 2.5rem));
+
 	& > ul.menu {
 		padding-left: 0;
 	}
@@ -72,7 +74,7 @@
 
     // first level anchor
     a {
-      padding: calc(var(--bs-gutter-x) * 0.25) 2.75rem calc(var(--bs-gutter-x) * 0.25) calc(var(--bs-gutter-x) * 0.5);
+      padding: var(--main-menu-item-gutter) 2.75rem var(--main-menu-item-gutter) calc(2 * var(--main-menu-item-gutter));
       color: $menu-link-color;
       background-color: $menu-background-color;
       font-family: $menu-font-family;
@@ -116,7 +118,7 @@
     // ------------
     ul ul {
       display: none;
-      padding: 0rem calc(var(--bs-gutter-x) * 0.5);
+      padding: 0 var(--main-menu-item-gutter);
       background-color: $menu-open-background-color;
 
       li+li {

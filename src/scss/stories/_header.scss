@@ -12,9 +12,6 @@
 			padding-right: 0;
 		}
 
-		#site-header--utility-nav,
-		#site-header--main-nav,
-		#site-header--cta,
 		#site-header--search {
 			display: none;
 		}
@@ -28,13 +25,10 @@
 		}
 		&.search-expanded #site-header--search {
 			display: block;
-		}
-	}
-
-	#site-header--search {
-		background-color: css_color("accent-fountain-blue-light");
-		.container-xl {
-			--bs-gutter-x: 1rem;
+			
+			@include media-breakpoint-down($header-desktop-breakpoint) {
+				display: none;
+			}
 		}
 	}
 
@@ -58,37 +52,13 @@
 	}
 }
 
-// Display Header
-body.menu-expanded {
-	overflow: hidden;
-
-	#header-wrapper {
-		.menu-toggle {
-			background-color: css_color("bc-brutus-blue");
-			color: css_color("white");
-		}
-
-		@include media-breakpoint-down($header-desktop-breakpoint) {
-			position: sticky;
-			overflow: auto;
-			height: 100vh;
-			z-index: 1000;
-			transform: translateY(0%);
-
-			#site-header--utility-nav,
-			#site-header--main-nav,
-			#site-header--cta,
-			#site-header--search {
-				display: block;
-			}
-
-			&.site-header--beyond-threshold-animate {
-
-				top: 0;
-			}
+.site-header--search {
+		background-color: css_color("accent-fountain-blue-light");
+		.container-xl {
+			--bs-gutter-x: 1rem;
 		}
 	}
-}
+
 
 // Offset sticky header if WP admin bar is present
 .admin-bar #header-wrapper.site-header--scroll-up {
@@ -160,30 +130,43 @@ body.menu-expanded {
 			color: css_color("black");
 		}
 	}
+}
 
-	// Hide and display Search Box based on screen size and expanded state
-	@include media-breakpoint-up($header-desktop-breakpoint) {
-		&--main-nav {
-			padding-top: 0.5rem;
-		}
-		&--cta {
-			padding-top: 0.75rem;
-			padding-left: 1rem;
+// Style Main and CTA menu interaction
+#site-header--menu-wrapper {
+	display: flex;
+	justify-content: flex-end;
+	@include media-breakpoint-down($header-desktop-breakpoint) {
+		padding-left: 0;
+		padding-right: 0;
+		flex-direction: column;
+
+		.cta-menu {
+			margin: 0 1rem;
 		}
 	}
 
-	// Style Main and CTA menu interaction
-	&--menu-wrapper {
-		display: flex;
-		justify-content: flex-end;
-		@include media-breakpoint-down($header-desktop-breakpoint) {
-			padding-left: 0;
-			padding-right: 0;
-			flex-direction: column;
-		}
+	.menu {
+		flex: 0 1 auto;
+	}
 
-		.menu {
-			flex: 0 1 auto;
+	@include media-breakpoint-up($header-desktop-breakpoint) {
+		#site-header--main-nav {
+			padding-top: 0.5rem;
 		}
+		#site-header--cta {
+			padding-top: 0.75rem;
+			padding-left: 1rem;
+		}
+}
+}
+
+#site-header--offcanvas {
+	--bs-offcanvas-zindex: 100000;
+	--bs-offcanvas-padding-x: 0;
+	--bs-offcanvas-padding-y: 0.5rem;
+
+	.offcanvas-header {
+		--bs-offcanvas-padding-x: 0.5rem;
 	}
 }
