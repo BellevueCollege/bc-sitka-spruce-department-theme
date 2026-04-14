@@ -82,11 +82,20 @@
       &:hover {
         text-decoration: underline;
       }
+
+      &:focus {
+        outline: 2px solid var( --bc-brutus-blue );
+        outline-offset: -3px;
+        text-decoration: underline;
+      }
     }
 
     &>ul.menu>li.menu-item--open>a {
       color: css_color('white');
       background-color: css_color('bc-brutus-blue');
+      &:focus {
+        outline-color: var( --white );
+      }
     }
 
     // first level button
@@ -108,17 +117,27 @@
           transform-origin: center;
         }
       }
+      &:focus {
+        outline: 2px solid var( --bc-brutus-blue );
+        outline-offset: -3px;
+      }
     }
 
-    &>ul.menu>li.menu-item--open>.menu-item__button::before {
-      color: css_color('white'); // not sure what this is? TT 2024-07-15
+    & > ul.menu > li.menu-item--open > .menu-item__button {
+      &::before {
+        color: var( --white );
+      }
+      
+      &:focus {
+        outline-color: var( --white );
+      }
     }
 
     // Second Level
     // ------------
     ul ul {
       display: none;
-      padding: 0 var(--main-menu-item-gutter);
+      padding: 0;
       background-color: $menu-open-background-color;
 
       li+li {
@@ -130,7 +149,7 @@
       }
 
       a {
-        padding: 0.75rem 0;
+        padding: var(--main-menu-item-gutter);
         color: $menu-open-link-color;
         background-color: transparent;
         font-family: $sans-serif;
