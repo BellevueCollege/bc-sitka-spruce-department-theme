@@ -19,11 +19,23 @@
 					<div class="announcement__text col">
 						<h2 class="card-title-big">{{ title }}</h2>
 						{{ description }}
-						{% if button and button.url and button.title %}
-							<div class="announcement__button mt-3">
-								{% include '@stories/atoms/links/link-button.twig' with { link: button } %}
+						{# Handle Multiple Buttons side-by-side #}
+						{% if buttons %}
+							<div class="announcement__button d-flex flex-wrap gap-3 mt-3">
+								{% for link in buttons %}
+									{# Make sure link has data before trying to render #}
+									{% if link.url and link.title %}
+										{% include '@stories/atoms/links/link-button.twig' with { link: link } %}
+									{% endif %}
+								{% endfor %}
 							</div>
-						{% endif %}
+                        {# Backward compatibility for the old single 'button' variable #}
+                        {% elseif button and button.url and button.title %}
+                            <div class="announcement__button mt-3">
+                                {% include '@stories/atoms/links/link-button.twig' with { link: button } %}
+                            </div>
+                        {% endif %}
+						{#Arrow link handling#}
 						{% if links %}
 							<ul class="announcement__links list-unstyled row mt-3">
 								{% for link in links %}

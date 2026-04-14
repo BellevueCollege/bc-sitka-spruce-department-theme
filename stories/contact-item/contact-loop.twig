@@ -11,10 +11,11 @@
                     {% include '@stories/contact-item/contact-item.twig' with {
                         first_name: profile.first_name,
                         last_name: profile.last_name,
+                        pronouns: profile.pronouns,
                         position: profile.position,
                         phone: profile.phone,
                         email: profile.email,
-                        scheduling_link: profile.scheduling_link,
+                        scheduling_links: profile.scheduling_links,
                         scheduling_text: profile.scheduling_text
                     } %}
                 {% endfor %}

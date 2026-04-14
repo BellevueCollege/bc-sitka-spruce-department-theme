@@ -7,9 +7,10 @@
 
 <section class="section section-xlight profiles-section-wrapper">
 	{% include '@stories/section-heading/section-heading.twig' with {
-		'heading': title,
-		'subheading': description,
-		'link_custom':cta_button,
+		heading: title,
+		subheading: description,
+		link_custom:cta_button,
+		anchor: anchor_id
 	} %}
 	<div class="profiles-section container-xl ">
 		{% for section in sections %}
@@ -23,9 +24,10 @@
 							<div class="profile-card  bg-white rounded">
 								<a href="{{profile.profile_url}}">
 									{% if profile.profile_image is not empty %}
-										{{profile.profile_image}}
+										{# Targets WP's empty alt attribute and replaces it with just the name #}
+										{{ profile.profile_image | replace({'alt=""': 'alt="' ~ profile.first_name ~ ' ' ~ profile.last_name ~ '\'\s Profile"'}) | raw }}
 									{% else %}
-										<img class="rounded-top img-fluid" src="{{theme.link}}/assets/img/basic-img.svg" alt="{{ __('Link to profile for', 'bc-sitka-spruce') }} {{profile.first_name}} {{profile.last_name}}">
+										<img class="rounded-top img-fluid a11y-decorative" src="{{theme.link}}/assets/img/basic-img.svg" alt="{{ __(''~ profile.first_name ~' '~ profile.last_name ~'\'\s Profile', 'bc-sitka-spruce') }}">
 									{% endif %}
 								</a>
 								<div class="p-2">
@@ -33,6 +35,10 @@
 										<a href="{{profile.profile_url}}">{{profile.first_name}}
 											{{profile.last_name}}</a>
 									</p>
+								{# Check: only render if pronouns exist #}
+                                    {% if profile.pronouns %}
+                                        <p class="mb-0">{{profile.pronouns}}</p>
+                                    {% endif %}
 									<p class="mb-0">{{profile.position}}</p>
 								</div>
 							</div>
