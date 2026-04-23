@@ -1,51 +1,42 @@
-/** @type { import('@storybook/html-webpack5').StorybookConfig } */const config = {
+// This file has been automatically migrated to valid ESM format by Storybook.
+// .storybook/main.js
+import twig from 'vite-plugin-twigjs-loader';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+/** @type { import('@storybook/html-vite').StorybookConfig } */
+const config = {
   stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
   staticDirs: ["../assets/img"],
-  async webpackFinal(config, { configType }) {
-    if (configType === 'DEVELOPMENT') {
-      // Modify config for development
-    }
-    if (configType === 'PRODUCTION') {
-      // Modify config for production
-    }
-    config.module.rules.push({
-      test: /\.twig$/,
-      use: {
-        loader: "twig-loader",
-        options: {
-          twigOptions: {
-            paths: ["/"],
-          }
-        }
-      },
-    });
-    return config;
+  async viteFinal(viteConfig) {
+    viteConfig.plugins ||= [];
+    viteConfig.plugins.push(
+      twig({
+        namespaces: {
+          '@stories': join(__dirname, '../stories'),
+					'@views': join(__dirname, '../views'),
+        },
+      })
+    );
+    return viteConfig;
   },
+
   addons: [
     "@storybook/addon-links",
-    "@storybook/addon-essentials",
-    "@storybook/addon-interactions",
-    "@storybook/addon-styling-webpack",
-    '@storybook/addon-a11y',
-    ({
-      name: "@storybook/addon-styling-webpack",
-
-      options: {
-        rules: [{
-      test: /\.css$/,
-      sideEffects: true,
-      use: ["style-loader", "css-loader"],
-    },],
-      }
-    }),
-    "@storybook/addon-webpack5-compiler-swc",
+    "@storybook/addon-a11y",
+    "@storybook/addon-docs",
+    '@chromatic-com/storybook'
   ],
+
   framework: {
-    name: "@storybook/html-webpack5",
-    options: {
-      builder: {},
-    },
+    name: "@storybook/html-vite",
+    options: {}
   },
-  docs: {},
+
+  docs: {}
 };
+
 export default config;

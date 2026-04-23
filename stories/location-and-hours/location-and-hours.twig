@@ -12,7 +12,7 @@
 			{{ hours }}
 		{% endif %}
 		{% if contact_url %}
-			{% include '/stories/atoms/links/link-button.twig' with {
+			{% include '@stories/atoms/links/link-button.twig' with {
 				link: {
 					title: __('Contact Information', 'bc-sitka-spruce'),
 					url: contact_url

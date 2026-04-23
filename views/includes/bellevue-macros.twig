@@ -34,7 +34,7 @@
 {% macro render_flexible_content(namespace, fcfield) %}
   {%- if fcfield -%}
     {% for component in fcfield %}
-      {% include 'components/' ~ component.acf_fc_layout ~ '.twig' with {
+      {% include '@views/components/' ~ component.acf_fc_layout ~ '.twig' with {
         acf: component|apply_filters(namespace ~ '/component/' ~ component.acf_fc_layout, component),
       } %}
     {% endfor %}
@@ -309,7 +309,7 @@
     <{{ type }}{% if list_class %} class="{{ list_class }}"{% endif %}>
     {% for item in items %}
       {% set item_output %}
-        {% include 'layouts/' ~ layout ~ '.twig' with {
+        {% include '@views/layouts/' ~ layout ~ '.twig' with {
           acf: item,
         } %}
       {% endset %}

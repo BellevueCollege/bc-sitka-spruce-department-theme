@@ -2,11 +2,11 @@
   * @file
   * Bellevue template for a single post page.
 #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@views/system/wrapper.twig' %}
 
 {% block content %}
 	<div class="post-single-page">
-		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+		{% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
 			title: post.title|striptags|esc_html,
 			intro_text: summary|striptags|esc_html,
 			breadcrumbs: breadcrumbs
@@ -37,7 +37,7 @@
 						{% if contact %}
 							<div class="post-additional-contact">
 								<h3 class="h6">{{ __('Contact', 'bc-sitka-spruce') }}</h3>
-								{% include '/stories/contact-item/contact-item.twig' with {
+								{% include '@stories/contact-item/contact-item.twig' with {
 									first_name: contact.first_name,
 									last_name: contact.last_name,
 									pronouns: contact.pronouns,
@@ -79,14 +79,14 @@
 		{% if related_posts is not empty %}
 			<aside class="related-posts">
 
-				{% include '/stories/section-heading/section-heading.twig' with {
+				{% include '@stories/section-heading/section-heading.twig' with {
 					heading: __('Related Posts', 'bc-sitka-spruce'),
 					link_custom: related_posts_link,
 				} %}
 				<div class="container-xl mt-4">
 
 					{% for post in related_posts %}
-						{% include '/views/content/subcomponents/post-list-element.twig' %}
+						{% include '@views/content/subcomponents/post-list-element.twig' %}
 					{% endfor %}
 				</div>
 			</aside>

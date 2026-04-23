@@ -5,17 +5,17 @@
  */
 #}
 {# In the Profiles CPT, this is how the individual profile(s) are displayed when selected #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@views/system/wrapper.twig' %}
 
 {% block content %}
     {# Pulling in details-content (top section with email, phone, etc) #}
-    {% include '/stories/profile-detail-overview-content/details-content.twig' %}
+    {% include '@stories/profile-detail-overview-content/details-content.twig' %}
 
     {# Check for 'buttons' and 'title'#}
     {% if title and buttons %}
         <div class="single-profile-appointment mb-4">
             {#Pass the specific title, description, and the array of buttons to the banner #}
-            {% include '/stories/announcement-banner/announcement-banner.twig' with {
+            {% include '@stories/announcement-banner/announcement-banner.twig' with {
                 title: title,
                 description: description,
                 buttons: buttons, 
