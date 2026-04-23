@@ -3,11 +3,10 @@ import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps } from '@wordpress/block-editor';
 import { InnerBlocks } from '@wordpress/block-editor';
 import { RawHTML } from '@wordpress/element';
-import Twig from "twig";
+import Twig from '../../js/modules/twig-setup';
 import apiFetch from '@wordpress/api-fetch';
 import { useState } from '@wordpress/element';
 import { Disabled } from '@wordpress/components';
-import locationAndHours from '/stories/location-and-hours/location-and-hours.twig';
 import { RichText } from '@wordpress/block-editor';
 
 import './style.scss';
@@ -65,20 +64,20 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                     <p>Loading...</p>
                 );
             }
+
+            const locationHoursHTML = Twig.twig({
+                ref: '@stories/location-and-hours/location-and-hours.twig',
+            }).render({
+                image_array: {
+                    src: locationSidebarContent.location_image.sizes['homepage-location'] ?? locationSidebarContent.location_image.url,
+                    alt: locationSidebarContent.location_image.alt
+                },
+                location: locationSidebarContent.location,
+                hours: locationSidebarContent.hours,
+                contact_url: locationSidebarContent.contact_page_url
+            });
             return (
-                <RawHTML>{
-                    locationSidebarContent.display_location_card && (
-                        locationAndHours({
-                            image_array: {
-                                src: locationSidebarContent.location_image.sizes['homepage-location'] ?? locationSidebarContent.location_image.url,
-                                alt: locationSidebarContent.location_image.alt
-                            },
-                            location: locationSidebarContent.location,
-                            hours: locationSidebarContent.hours,
-                            contact_url: locationSidebarContent.contact_page_url
-                        })
-                    )
-                }</RawHTML>
+                <RawHTML>{ locationHoursHTML }</RawHTML>
             );
 
         }

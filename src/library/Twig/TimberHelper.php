@@ -39,8 +39,19 @@ class TimberHelper implements TimberHelperInterface {
   public function __construct() {
     Timber::$dirname = $this->defaultFolders;
     Timber::$locations = $this->templateLocations;
+    add_filter('timber/locations', array($this, 'addNamespaces'));
+
     add_action('timber/twig', array($this, 'setupFilters'), 10, 1);
     add_action('timber/twig', array($this, 'setupFunctions'), 10, 1);
+  }
+
+  /**
+   * Add custom Twig namespaces.
+   */
+  public function addNamespaces( $paths ) {
+    $paths['stories'] = array( get_stylesheet_directory() . '/stories' );
+    $paths['views'] = array( get_stylesheet_directory() . '/views' );
+    return $paths;
   }
 
   /**

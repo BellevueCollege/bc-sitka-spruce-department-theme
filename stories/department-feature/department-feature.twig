@@ -6,7 +6,7 @@
 #}
 <section class="section section-white organization-feature">
     {# Heading for the Department Feature #}
-    {% include '/stories/section-heading/section-heading.twig' with {
+    {% include '@stories/section-heading/section-heading.twig' with {
         heading,
         subheading,
         link,
@@ -16,7 +16,7 @@
     {# Content for the Card #}
     {% set card_content %}
         <h3>
-			{% include '/stories/atoms/links/link-arrow.twig' with {
+			{% include '@stories/atoms/links/link-arrow.twig' with {
 				link: {
 					title: dept_title,
 					url: dept_url,
@@ -38,7 +38,7 @@
     {% endset %}
 
     <div class="organization-feature__container container-xl">
-        {% include '/stories/card-horizontal/card-horizontal.twig' with {
+        {% include '@stories/card-horizontal/card-horizontal.twig' with {
             media: dept_image,
             card_content: card_content,
             aspect_ratio: '.72',

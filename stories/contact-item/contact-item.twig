@@ -26,7 +26,7 @@
 					{% for link in scheduling_links %}
 						{% if link.title and link.url %}
 							<div class="contact-button-item">
-								{% include '/stories/atoms/links/link-button.twig' with { link: link } %}
+								{% include '@stories/atoms/links/link-button.twig' with { link: link } %}
 							</div>
 						{% endif %}
 					{% endfor %}

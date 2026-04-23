@@ -1,8 +1,8 @@
-{% extends '/stories/tabcordion/components/content.twig' %}
+{% extends '@stories/tabcordion/components/content.twig' %}
 
 {% block panels %}
 	{% for tab in tabs %}
-		{% include '/stories/support-feature/support-feature-content-panel.twig' with {
+		{% include '@stories/support-feature/support-feature-content-panel.twig' with {
 			active: loop.first ? 'active show' : '',
 			title: tab.title,
 			heading: tab.heading,

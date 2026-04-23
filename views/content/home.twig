@@ -1,10 +1,10 @@
 {# Note: This template is used for the Blog Home, which is the page that lists all blog posts.#}
 {# For the site homepage, see `views/content/front-page.twig` #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@views/system/wrapper.twig' %}
 
 {% block content %}
 	<div class="flexible-page">
-		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+		{% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
 			title: post.title,
 			intro_text: intro_text,
 			breadcrumbs: breadcrumbs
@@ -12,7 +12,7 @@
 		<div class="container-xl post-list-page mt-lg-n4">
 			<div class="row">
 				<div class="col-lg-4">
-					{% include '/stories/post-filter-sidebar/post-filter-sidebar.twig' %}
+					{% include '@stories/post-filter-sidebar/post-filter-sidebar.twig' %}
 				</div>
 				<div class="col-lg-8">
 					{% if page_heading %}
@@ -21,12 +21,12 @@
 					{% endif %}
 					{% if posts is not empty %}
 						{% for post in posts %}
-							{% include '/views/content/subcomponents/post-list-element.twig' %}
+							{% include '@views/content/subcomponents/post-list-element.twig' %}
 						{% endfor %}
 					{% endif %}
 
 					{% if posts.pagination.pages %}
-						{% include '/views/listings/view-pagination.twig' with {
+						{% include '@views/listings/view-pagination.twig' with {
 							pagination_view_id: 'sitka-pagination-post-listing',
 							pagination: posts.pagination
 						} %}

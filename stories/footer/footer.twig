@@ -34,7 +34,7 @@
 					{% else %}
 						{% set phone_display = phone %}
 					{% endif %}
-					
+
 					<div class="row gx-2">
 						<div class="col-auto">
 							<i class="fa-solid fa-phone-flip" aria-hidden="true"></i>
@@ -132,14 +132,14 @@
 			<div class="col-md-6 col-lg">
 				<nav class="footer-menu-utility" aria-label="{{ __('Footer Utility Links', 'bc-sitka-spruce') }}">
 					<ul class="menu">
-						{% include '/views/static-content/menu-utility.twig' %}
+						{% include '@views/static-content/menu-utility.twig' %}
 					</ul>
 				</nav>
 			</div>
 			<div class="col-md-6 col-lg">
 				<nav class="footer-menu-legal" aria-label="{{ __('Global Links', 'bc-sitka-spruce') }}">
 					<ul class="menu">
-						{% include '/views/static-content/menu-legal.twig' %}
+						{% include '@views/static-content/menu-legal.twig' %}
 					</ul>
 				</nav>
 			</div>

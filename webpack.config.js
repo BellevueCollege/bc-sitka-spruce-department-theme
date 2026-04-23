@@ -34,7 +34,7 @@ module.exports = {
 			...defaultConfig.module.rules,
 			{
 				test: /\.twig$/,
-				loader: 'twig-loader',
+				type: 'asset/source',
 			}
 		],
 	},
