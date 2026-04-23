@@ -10,9 +10,7 @@ import Link from '../shared-elements/link';
 import coreSiteApiFetch from '../shared-elements/coreSiteApiFetch';
 import { ComboboxControl } from '@wordpress/components';
 
-import Twig from "twig";
-import twigNewsFeatureFeatured from '/stories/news-feature/news-feature-featured.twig';
-import twigNewsFeatureSmall from '/stories/news-feature/news-feature-list-item.twig';
+import Twig from '../../js/modules/twig-setup';
 import { RawHTML } from '@wordpress/element';
 
 import './style.scss';
@@ -197,16 +195,17 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 				title = largeStoryData.title.rendered;
 				summary = largeStoryData.acf.summary;
 			}
+			const twigNewsFeatureFeaturedHTML = Twig.twig({
+				ref: '@stories/news-feature/news-feature-featured.twig'
+			}).render({
+				title,
+				summary,
+				image: placeholderImage,
+				url: '#',
+			})
 			return (
 				<RawHTML>
-					{ largeStoryId &&
-						twigNewsFeatureFeatured({
-							title,
-							summary,
-							image: placeholderImage,
-							url: '#',
-						})
-					}
+					{ largeStoryId && twigNewsFeatureFeaturedHTML }
 				</RawHTML>
 			);
 		}
@@ -231,37 +230,28 @@ registerBlockType( 'bc-sitka-spruce/news-feature-core', {
 					`;
 
 
-			if ( smallStoryData.length === 0 ) {
-				output.push(
-					twigNewsFeatureSmall({
-						title: title,
-						url: '#',
-						summary: summary,
-					})
-				);
-				output.push(
-					twigNewsFeatureSmall({
-						title: title,
-						url: '#',
-						summary: summary,
-					})
-				);
-				output.push(
-					twigNewsFeatureSmall({
-						title: title,
-						url: '#',
-						summary: summary,
-					})
-				);
+			if (smallStoryData.length === 0) {
+				const placeholderHTML = Twig.twig({
+					ref: '@stories/news-feature/news-feature-list-item.twig',
+				}).render({
+					title: title,
+					url: '#',
+					summary: summary,
+				});
+				
+				output.push(placeholderHTML);
+				output.push(placeholderHTML);
+				output.push(placeholderHTML);
 			} else {
-				smallStoryData.forEach( ( story ) => {
-					output.push(
-						twigNewsFeatureSmall({
-							title: story.title.rendered,
-							url: story.link,
-							summary: story.acf.summary,
-						})
-					)
+				smallStoryData.forEach((story) => {
+					const storyHTML = Twig.twig({
+						ref: '@stories/news-feature/news-feature-list-item.twig',
+					}).render({
+						title: story.title.rendered,
+						url: story.link,
+						summary: story.acf.summary,
+					});
+					output.push(storyHTML);
 				});
 			}
 

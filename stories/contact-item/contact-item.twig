@@ -1,11 +1,14 @@
 <div class="contact-item-wrapper">
 	<div class="contact-item-r row">
-		<div class="contact-name col-6">
-			<h3 class="card-title-small">{{ first_name }}
-				{{ last_name }}</h3>
+		<div class="contact-name col-12 col-lg-5">
+			<h3 class="card-title-small">{{ first_name }} {{ last_name }}</h3>
+			{# Pronouns Display #}
+            {% if pronouns %}
+                <p class="mb-0 small fst-italic">{{ pronouns }}</p>
+            {% endif %}
 			<p class="position-text">{{ position }}</p>
 		</div>
-		<div class="contact-info col-6 ">
+		<div class="contact-info col-12 col-lg-7 ">
 			{% if phone %}
 				<p>
 					<i class="fas fa-phone-flip" aria-hidden="true"></i>&nbsp;<a href="tel:{{ phone }}">{{ phone }}</a>
@@ -16,10 +19,18 @@
 					<i class="fas fa-envelope" aria-hidden="true"></i>&nbsp;<a href="mailto:{{ email }}">{{ email }}</a>
 				</p>
 			{% endif %}
-			{% if scheduling_link and scheduling_link.title and scheduling_link.url %}
-				<p>
-					{% include '/stories/atoms/links/link-button.twig' with { link: scheduling_link } %}
-				</p>
+
+			{# Loop through all scheduling links #}
+			{% if scheduling_links %}
+				<div class="contact-buttons-wrapper d-flex flex-column flex-lg-row flex-wrap gap-2 mt-2">
+					{% for link in scheduling_links %}
+						{% if link.title and link.url %}
+							<div class="contact-button-item">
+								{% include '@stories/atoms/links/link-button.twig' with { link: link } %}
+							</div>
+						{% endif %}
+					{% endfor %}
+				</div>
 			{% endif %}
 		</div>
 	</div>

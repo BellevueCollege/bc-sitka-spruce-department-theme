@@ -6,7 +6,7 @@
 #}
 
 <section class="section section-xlight testimonial-section-wrapper {{ classes }}">
-	{% include '/stories/section-heading/section-heading.twig' with {
+	{% include '@stories/section-heading/section-heading.twig' with {
 		heading: title,
 		subheading: description,
 		anchor: anchor_id
@@ -25,7 +25,7 @@
 				<p class="attribution-desc">{{ attribution_desc }}</p>
 				{%  if cta %}
 					<div class="cta">
-						{% include '/stories/atoms/links/link-button.twig' with { link: cta } %}
+						{% include '@stories/atoms/links/link-button.twig' with { link: cta } %}
 					</div>
 				{% endif %}
 			</div>

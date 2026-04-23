@@ -47,7 +47,7 @@ registerBlockType('bc-sitka-spruce/template-program-info', {
 					<div className="col-md-8">
 						<Card className="mb-3">
 							<CardHeader>
-								<h3>{__('Instructions:', 'bc-sitka-spruce')}</h3>
+								<h2>{__('Instructions:', 'bc-sitka-spruce')}</h2>
 							</CardHeader>
 							<CardBody>
 								<p>

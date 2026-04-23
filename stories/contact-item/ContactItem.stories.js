@@ -36,7 +36,11 @@ Default.args = {
     phone: "555-555-5555",
     email: "XKZfH@example.com",
     scheduling_link: {
-		title: "Schedule Appointment",
+		title: "Schedule Online Appointment",
+		url: "https://example.com"
+	},
+    scheduling_link: {
+		title: "Schedule On-Campus Appt",
 		url: "https://example.com"
 	}
 

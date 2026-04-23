@@ -18,7 +18,7 @@
 						{% for link in links %}
 							{% if link.title and link.url %}
 								<li>
-									{% include '/stories/atoms/links/link-arrow.twig' %}
+									{% include '@stories/atoms/links/link-arrow.twig' %}
 								</li>
 							{% endif %}
 						{% endfor %}
@@ -30,7 +30,7 @@
 		{% endif %}
 		{% if button and button.title and button.url %}
 			<p class="callout__button">
-				{% include '/stories/atoms/links/link-button.twig' with { link: button } %}
+				{% include '@stories/atoms/links/link-button.twig' with { link: button } %}
 			</p>
 		{% endif %}
 	</aside>

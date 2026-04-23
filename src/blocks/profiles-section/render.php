@@ -20,6 +20,7 @@ $context['sections'] = get_field( 'sections' ) ? array_map(
 								//these are in CPT line 15 is in block- DELTE LATER
 								'first_name'    => esc_html( get_field( 'first_name', $profile->ID ) ?? '' ),
 								'last_name'     => esc_html( get_field( 'last_name', $profile->ID ) ?? '' ),
+								'pronouns'       => esc_html( get_field( 'gender_pronouns', $profile->ID ) ?? '' ),
 								'position'      => esc_html( get_field( 'position_role', $profile->ID ) ?? '' ),
 								'profile_image' => is_array( get_field( 'profile_image', $profile->ID ) ) ?
 									wp_get_attachment_image( get_field( 'profile_image', $profile->ID )['ID'], 'profile-list-image', false, array( 'class' => 'img-fluid rounded-top' ) )
@@ -62,6 +63,7 @@ $context['sections'] = get_field( 'sections' ) ? array_map(
 						return array(
 							'first_name'    => esc_html( get_field( 'first_name', $profile ) ?? '' ),
 							'last_name'     => esc_html( get_field( 'last_name', $profile ) ?? '' ),
+							'pronouns'       => esc_html( get_field( 'gender_pronouns', $profile ) ?? '' ),
 							'position'      => esc_html( get_field( 'position_role', $profile ) ?? '' ),
 							'profile_image' => get_field( 'profile_image', $profile ) ?
 								wp_get_attachment_image( get_field( 'profile_image', $profile )['ID'], 'profile-list-image', false, array( 'class' => 'img-fluid rounded-top' ) )
@@ -76,6 +78,12 @@ $context['sections'] = get_field( 'sections' ) ? array_map(
 	},
 	get_field( 'sections' )
 ) : null;
+
+/**
+ * If the editor sets an HTML Anchor, use it (sanitized). Otherwise, don't set an id at all.
+ */
+$explicit_anchor = isset( $block['anchor'] ) ? trim( (string) $block['anchor'] ) : '';
+$context['anchor_id'] = $explicit_anchor !== '' ? sanitize_title( $explicit_anchor ) : null;
 
 if ( $context['title'] ) {
 	Timber::render( '/stories/profiles-section/profiles-section.twig', $context );
