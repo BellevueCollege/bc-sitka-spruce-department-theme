@@ -49,7 +49,7 @@
 			data-menu-has-items-selector=".menu-item-has-children > a"
 		>
 			<ul class="menu justify-content-end">
-				{% include '/views/static-content/menu-utility.twig' with { li_class: 'menu-item' } %}
+				{% include '@views/static-content/menu-utility.twig' with { li_class: 'menu-item' } %}
 				<li class="menu-item d-none d-lg-block search-toggle">
 					<a
 						id="site-header--search-toggle-btn"
@@ -69,7 +69,7 @@
 	<div id="site-header--search" class="">
 		<div class="container-xl">
 
-			{% include '/stories/site-search-form/site-search-form.twig' %}
+			{% include '@stories/site-search-form/site-search-form.twig' %}
 
 		</div>
 	</div>

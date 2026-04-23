@@ -7,10 +7,10 @@
  * - menus: All menus registered on the site, keyed by menu slug.
  */
 #}
-{% extends 'system/html.twig' %}
+{% extends '@views/system/html.twig' %}
 
 {% set main_menu %}
-	{% include 'system/menu.twig' with {
+	{% include '@views/system/menu.twig' with {
 		items: menu_main_menu.items,
 		depth: 2,
 		ul_class: 'menu',
@@ -20,7 +20,7 @@
 {% endset %}
 
 {% set menu_cta %}
-	{% include 'system/menu.twig' with {
+	{% include '@views/system/menu.twig' with {
 		items: menu_cta_menu.items|slice(0, 2),
 		depth: 1,
 		ul_class: 'menu',
@@ -31,7 +31,7 @@
 {% endset %}
 
 {% set footer_menu %}
-	{% include 'system/menu.twig' with {
+	{% include '@views/system/menu.twig' with {
 		items: menu_main_menu.items,
 		depth: 1,
 		ul_class: 'menu',
@@ -43,7 +43,7 @@
 {% block wrapper %}
 
 	{% block header %}
-		{% include '/stories/header/header.twig' with {
+		{% include '@stories/header/header.twig' with {
 			core_homepage_url: 'https://www.bellevuecollege.edu',
 			site_homepage_url: site.url,
 			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
@@ -69,7 +69,7 @@
 			<img src = "{{ acf_options.location_image.sizes['sock-location'] }}" alt = "{{ acf_options.location_image.alt }}" class = "img-fluid rounded">
 		{% endset %}
 
-		{% include '/stories/sock/standard-sock.twig' with {
+		{% include '@stories/sock/standard-sock.twig' with {
 			standard_sock: acf_options.standard_sock,
 			display_location_card: acf_options.display_location_card,
 			location: acf_options.location,
@@ -84,7 +84,7 @@
 		{% set contact_method = acf_options.footer_contact_method|default('phone') %}
 		{% set footer_email = acf_options.footer_email|default('') %}
 
-		{% include '/stories/footer/footer.twig' with {
+		{% include '@stories/footer/footer.twig' with {
 			core_homepage_url: 'https://www.bellevuecollege.edu',
 			logo_url: theme.uri ~ '/assets/img/logo-header.svg',
 			mountains_url: theme.uri ~ '/assets/img/footer-mountains.svg',

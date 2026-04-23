@@ -9,9 +9,7 @@ import transforms from './transforms';
 import Link from '../shared-elements/link';
 import coreSiteApiFetch from '../shared-elements/coreSiteApiFetch';
 import { ComboboxControl } from '@wordpress/components';
-
-import Twig from "twig";
-import twigCard from '/stories/card-horizontal/card-horizontal.twig';
+import Twig from '../../js/modules/twig-setup';
 import { RawHTML } from '@wordpress/element';
 
 import './style.scss';
@@ -136,14 +134,17 @@ registerBlockType( 'bc-sitka-spruce/department-feature', {
 				<h3>${ title }</h3>
 				<div class="global-spacing--3x">${ summary }</div>
 			`;
+			const twigCardHTML = Twig.twig({
+				ref: '@stories/card-horizontal/card-horizontal.twig',
+			}).render({
+				media: placeholderImage,
+				card_content,
+				aspect_ratio: '.72'
+			});
 			return (
 				<RawHTML>
 					{ departmentId &&
-						twigCard({
-							media: placeholderImage,
-							card_content,
-							aspect_ratio: '.72'
-						})
+						twigCardHTML
 					}
 				</RawHTML>
 			);

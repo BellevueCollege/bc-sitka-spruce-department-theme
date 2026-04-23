@@ -21,7 +21,7 @@
 {% if link_custom or link_field %}
   {% set link %}
   {% if link_custom %}
-		{% include '/stories/atoms/links/link-arrow.twig' with {
+		{% include '@stories/atoms/links/link-arrow.twig' with {
 			link: link_custom,
 		} %}
   {% endif %}
