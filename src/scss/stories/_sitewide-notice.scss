@@ -1,0 +1,17 @@
+.sitewide-notice {
+    --sitewide-notice-bg: var(--bc-rainy-night-blue);
+    --sitewide-notice-color: var(--white);
+    --bs-link-color-rgb: rgb(255, 255, 255);
+    --bs-link-hover-color-rgb: rgb(255, 255, 255);
+
+    background-color: var(--sitewide-notice-bg);
+    color: var(--sitewide-notice-color);
+    
+    .sitewide-notice-text {
+        font-size: 1.125rem;
+
+        p:last-child {
+            margin-bottom: 0;
+        }
+    }
+}
