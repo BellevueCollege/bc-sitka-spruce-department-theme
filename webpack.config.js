@@ -4,6 +4,7 @@ const { getWebpackEntryPoints } = require( '@wordpress/scripts/utils/config' );
 
 // Utilities.
 const path = require( 'path' );
+const sass = require( 'sass-embedded' );
 
 /**
  * Sass deprecation warnings to silence.
@@ -75,6 +76,7 @@ module.exports = {
 							return {
 								loader,
 								options: {
+									implementation: sass,
 									sassOptions: {
 										silenceDeprecations: SASS_DEPRECATION_SILENCE_LIST,
 									},
@@ -86,6 +88,7 @@ module.exports = {
 							...loader,
 							options: {
 								...loader.options,
+								implementation: sass,
 								sassOptions: {
 									...( loader.options?.sassOptions || {} ),
 									silenceDeprecations: SASS_DEPRECATION_SILENCE_LIST,
