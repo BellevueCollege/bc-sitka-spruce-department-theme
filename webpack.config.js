@@ -6,6 +6,19 @@ const { getWebpackEntryPoints } = require( '@wordpress/scripts/utils/config' );
 const path = require( 'path' );
 
 /**
+ * Sass deprecation warnings to silence.
+ * Bootstrap 5 uses deprecated @import syntax and global functions that cannot be fixed.
+ * Custom code has been updated to use modern Sass module syntax.
+ */
+const SASS_DEPRECATION_SILENCE_LIST = [
+	'legacy-js-api',
+	'import',
+	'color-functions',
+	'if-function',
+	'global-builtin',
+];
+
+/**
  * Defines the entry point for compiling SCSS files based on the handle provided.
  *
  * @param {string} handle - The handle of the SCSS file.
@@ -31,7 +44,57 @@ module.exports = {
 	module: {
 		...defaultConfig.module,
 		rules: [
-			...defaultConfig.module.rules,
+			...defaultConfig.module.rules.map( rule => {
+				// Only modify SCSS rules that use sass-loader
+				if ( ! ( rule.test && rule.test.test( '.scss' ) && rule.use ) ) {
+					return rule;
+				}
+
+				// Check if this rule contains sass-loader
+				const hasSassLoader = rule.use.some( loader =>
+					( typeof loader === 'string' && loader.includes( 'sass-loader' ) ) ||
+					( typeof loader === 'object' && loader.loader && loader.loader.includes( 'sass-loader' ) )
+				);
+
+				if ( ! hasSassLoader ) {
+					return rule;
+				}
+
+				// Add silenceDeprecations to sass-loader options
+				return {
+					...rule,
+					use: rule.use.map( loader => {
+						const isSassLoader = ( typeof loader === 'string' && loader.includes( 'sass-loader' ) ) ||
+							( typeof loader === 'object' && loader.loader && loader.loader.includes( 'sass-loader' ) );
+
+						if ( ! isSassLoader ) {
+							return loader;
+						}
+
+						if ( typeof loader === 'string' ) {
+							return {
+								loader,
+								options: {
+									sassOptions: {
+										silenceDeprecations: SASS_DEPRECATION_SILENCE_LIST,
+									},
+								},
+							};
+						}
+
+						return {
+							...loader,
+							options: {
+								...loader.options,
+								sassOptions: {
+									...( loader.options?.sassOptions || {} ),
+									silenceDeprecations: SASS_DEPRECATION_SILENCE_LIST,
+								},
+							},
+						};
+					} ),
+				};
+			} ),
 			{
 				test: /\.twig$/,
 				type: 'asset/source',
