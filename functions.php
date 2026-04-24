@@ -98,7 +98,8 @@ function block_registration_helper( array $blocks ) {
 
 
 $enqueuer = Theme::enqueuer();
-$enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-bootstrap', src: '/assets/dist/css/bootstrap.asset.php', use_asset_file: true );
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true, dependencies: array( 'bc-sitka-spruce-bootstrap' ) );
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-mainjsassets', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css' );
 
@@ -286,7 +287,8 @@ add_filter(
  * Load Block Editor Styles
  */
 $block_editor = Theme::blockEditor();
-$block_editor->addStylesheet( 'editor', 'assets/dist/css/editor.css' );
+$block_editor->addStylesheet( 'bootstrap-editor', 'assets/dist/css/bootstrap-editor.css' );
+$block_editor->addStylesheet( 'editor', 'assets/dist/css/editor.css', array( 'bootstrap-editor' ) );
 $block_editor->useGlobally( true );
 
 

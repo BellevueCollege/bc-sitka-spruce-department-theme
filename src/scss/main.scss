@@ -1,7 +1,12 @@
 @import 'variables';
 @import 'variables/css';
 
-@import "lib";
+// Import Bootstrap configuration for access to mixins, variables, and functions
+// but NOT the actual Bootstrap CSS (that's in bootstrap.scss)
+@import 'lib/bootstrap/config';
+
+// Import Gerillass for breakpoint mixins and other utilities
+@import 'lib/gerillass';
 
 @import "mixins";
 

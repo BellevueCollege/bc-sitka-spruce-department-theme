@@ -8,6 +8,8 @@
 @import "mixins";
 
 
+// Import Bootstrap configuration for access to mixins, variables, and functions
+// but NOT the actual Bootstrap CSS (that's in bootstrap.scss)
 @import "lib/bootstrap/config";
 
 // CSS Variables
@@ -16,13 +18,10 @@
 
 .editor-styles-wrapper {
 	@import "blocks/block-spacing";
-  @import "lib/bootstrap/components";
 	@import "atoms";
 	@import "components";
 	@import "pages";
 }
-
-@import "lib/bootstrap/helpers";
 
 
 /**

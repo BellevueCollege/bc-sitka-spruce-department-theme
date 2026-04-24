@@ -124,6 +124,8 @@ module.exports = {
 		// Call defaultConfig.entry() as a function to get auto-detected block.json entries
 		...( typeof defaultConfig.entry === 'function' ? defaultConfig.entry() : defaultConfig.entry ),
 		// Add your custom SCSS entries
+		...scssEntryPoint( 'bootstrap' ),
+		...scssEntryPoint( 'bootstrap-editor' ),
 		...scssEntryPoint( 'main' ),
 		...scssEntryPoint( 'editor' ),
 		...scssEntryPoint( 'alert', true ),
