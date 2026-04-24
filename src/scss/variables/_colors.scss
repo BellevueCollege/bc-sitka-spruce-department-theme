@@ -3,8 +3,11 @@
 /// Site-wide colors.
 ////
 
+@use "sass:map";
+@use "sass:color";
+
 @function get_color($pallette, $key) {
-    @return map-get($pallette, $key);
+    @return map.get($pallette, $key);
 }
 
 @function css_color($name) {
@@ -27,13 +30,13 @@ $brand-colors: (
 $sitka-colors: (
     'white': #ffffff,
     'black': #000000,
-    'gray--dark': mix(#000000, #ffffff, 85%),
-    'gray--medium': mix(#000000, #ffffff, 65%),
+    'gray--dark': color.mix(#000000, #ffffff, 85%),
+    'gray--medium': color.mix(#000000, #ffffff, 65%),
     'gray--light': #d7dade,
     'gray--xlight': #ebeef2,
 	'gray--xxlight': #F7F8FA,
-    'primary-color--dark': darken(get_color($brand-colors, 'bc-brutus-blue'), 20%),
-    'primary-color--light': lighten(get_color($brand-colors, 'bc-brutus-blue'), 10%),
+    'primary-color--dark': color.adjust(get_color($brand-colors, 'bc-brutus-blue'), $lightness: -20%),
+    'primary-color--light': color.adjust(get_color($brand-colors, 'bc-brutus-blue'), $lightness: 10%),
     'accent-link-blue': #0055b8,
 	'accent-link-blue-rgb': '0, 85, 184',
     'accent-green-light': #ccdb25,
