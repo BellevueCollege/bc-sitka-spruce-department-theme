@@ -42,6 +42,22 @@ const scssEntryPoint = ( handle, block = false ) => {
 module.exports = {
 	...defaultConfig,
 	name: 'custom',
+	cache: {
+		type: 'filesystem',
+		buildDependencies: {
+			config: [__filename],
+		},
+	},
+	watchOptions: {
+		ignored: [
+			'**/node_modules',
+			'**/logs',
+			'**/reports',
+			'**/.git',
+			'**/vrt',
+		],
+		aggregateTimeout: 100, // Delay before rebuilding to batch changes (lowered for single file changes)
+	},
 	module: {
 		...defaultConfig.module,
 		rules: [
