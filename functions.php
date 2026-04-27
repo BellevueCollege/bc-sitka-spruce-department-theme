@@ -288,7 +288,7 @@ add_filter(
  */
 $block_editor = Theme::blockEditor();
 $block_editor->addStylesheet( 'bootstrap-editor', 'assets/dist/css/bootstrap-editor.css' );
-$block_editor->addStylesheet( 'editor', 'assets/dist/css/editor.css', array( 'bootstrap-editor' ) );
+$block_editor->addStylesheet( 'editor', 'assets/dist/css/editor.css' );
 $block_editor->useGlobally( true );
 
 
