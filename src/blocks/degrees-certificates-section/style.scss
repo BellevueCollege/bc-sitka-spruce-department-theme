@@ -32,7 +32,7 @@
 				}
 
 				a {
-					color: get_color( $sitka-colors, 'accent-link-blue' );
+					color: get_color( $utility-colors, 'accent-link-blue' );
 
 					&:hover,
 					&:focus {
@@ -50,7 +50,7 @@
 				}
 
 				a {
-					@include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
+					@include link-accent-underline( get_color( $utility-colors, 'accent-link-blue' ) );
 				}
 			}
 		}
