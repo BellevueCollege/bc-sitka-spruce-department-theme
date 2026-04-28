@@ -9,7 +9,8 @@
     "storybook": "concurrently \"npm run start\" \"storybook dev -p 6006\"",
     "storybook:only": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=${SITKA_CHROMATIC_PROJECT_TOKEN=}"
+    "chromatic": "npx chromatic --project-token=${SITKA_CHROMATIC_PROJECT_TOKEN=}",
+    "lint:bootstrap-imports": "grep -rE 'bootstrap/scss' src/scss --exclude-dir=node_modules && exit 1 || exit 0"
   },
   "repository": {
     "type": "git",
@@ -38,7 +39,8 @@
     "@storybook/addon-links": "^10.1.8",
     "@storybook/html-vite": "^10.1.8",
     "@wordpress/scripts": "^33.0.0",
-    "bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.3.1",
+		"bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.3.1",
+    "bc-theme-layer-bs5": "github:BellevueCollege/bc-theme-layer-bs5#v1.0.0",
     "bootstrap": "^5.3.3",
     "chromatic": "^17.0.0",
     "concurrently": "^9.0.0",
