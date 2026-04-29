@@ -14,7 +14,7 @@
 							{% if segment.description %}<p>{{ segment.description|esc_html }}</p>{% endif %}
 							{% if segment.button %}
 								<p>
-									{% include '/stories/atoms/links/link-button.twig' with {
+									{% include '@stories/atoms/links/link-button.twig' with {
 										link: segment.button,
 										linkClass: 'btn btn-light',
 										iconClass: 'ms-2 text-dark',
@@ -23,7 +23,7 @@
 							{% endif %}
 							{% if segment.link %}
 								<p>
-									{% include '/stories/atoms/links/link-arrow.twig' with {
+									{% include '@stories/atoms/links/link-arrow.twig' with {
 										link: {
 											title: segment.link.title,
 											url: segment.link.url,
@@ -42,7 +42,7 @@
 							<p>{{ admissions_contact_description|wp_kses_post }}</p>
 						{% endif %}
 						{% if admissions_contact_button %}
-							{% include '/stories/atoms/links/link-button.twig' with {
+							{% include '@stories/atoms/links/link-button.twig' with {
 								link: admissions_contact_button,
 								linkClass: 'btn btn-light',
 								iconClass: 'ms-2 text-dark',
@@ -51,7 +51,7 @@
 					{% endset %}
 
 
-					{% include '/stories/card-bootstrap/card-bootstrap.twig' with {
+					{% include '@stories/card-bootstrap/card-bootstrap.twig' with {
 						card_classes: ['card-sitka'],
 						media: admissions_contact_image,
 						card_title_tag: 'h3',

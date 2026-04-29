@@ -3,25 +3,23 @@ import { createBlock } from '@wordpress/blocks';
 
 export const isFrontPage = async () => {
 	return new Promise( ( resolve ) => {
+		const frontPageId = window.SitkaEditor?.frontPageId;
+
+		if ( ! frontPageId ) {
+			resolve( false );
+			return;
+		}
+
 		const unsubscribe = subscribe( () => {
-
-			// Front Page ID
-			const siteStore = select('core');
-			const frontPageId = siteStore.getEntityRecord('root', 'site')?.page_on_front;
-
-			// Get current page ID
 			const currentPostId = select( 'core/editor' ).getCurrentPostId();
-			if ( frontPageId && currentPostId ) {
+
+			if ( currentPostId !== null ) {
 				unsubscribe();
-				if ( frontPageId === currentPostId ) {
-					resolve( true );
-				} else {
-					resolve( false );
-				}
+				resolve( frontPageId === currentPostId );
 			}
-		});
+		} );
 	} );
-}
+};
 
 
 export const pageTemplate = async () => {

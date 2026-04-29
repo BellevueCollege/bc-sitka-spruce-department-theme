@@ -27,8 +27,15 @@
 .nav-sidebar-menu {
 	.menu ul {
 		padding-left: 0;
-		line-height: 3em;
 		list-style: none;
+
+		li {
+			margin-top: 1rem;
+
+			&:first-child {
+				margin-top: 0;
+			}
+		}
 
 		.current_page_item > a {
 			--bs-link-color-rgb: 0, 0, 0;
@@ -39,6 +46,10 @@
 			display: flex;
 			flex-wrap: wrap;
 			align-items: center;
+
+			& > a:first-child {
+				max-width: calc(100% - 1.5rem); /* prevent 'open' button from moving to the next line */
+			}
 
 			& > .menu-item__button {
 				display: flex;
