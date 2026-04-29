@@ -7,19 +7,22 @@
 {% extends 'system/wrapper.twig' %}
 
 {% block content %}
+    {# formatting date in banner #}
+    {% set meeting_date = post.meta('meeting_date')|date('F j, Y') %}
+    {% set is_special = post.meta('special_meeting') ? '(Special Meeting)' : '' %}
+
     <div class="flexible-page">
+        {# Pass date into banner through subtitle #}
         {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
             title: post.title,
+            subtitle: meeting_date ~ ' ' ~ is_special
         } %}
 
         <div class="action-item-single-page container-xl">
-            {# Meeting Date #}
-            <div class="meta-info">
-                <strong>Date:</strong> {{ post.meta('date')|date('F j, Y') }}
-            </div>
             <section class="content">
                 {{ post.content }}
             </section>
+
         {# Pulling in Associated Agenda #}
             {% set agenda_id = post.meta('associated-agenda') %}
             {% if agenda_id %}
@@ -39,7 +42,7 @@
             {% set resolution_id = post.meta('related_resolutions') %}
             {% if resolution_id %}
                 <section class="related-resolutions">
-                    <h2>Resolutions</h2>
+                    <h2>Resolution</h2>
                     <ul>
                         {#Covert raw to timber Post Obj.#}
                         {% set resolution = Post(resolution_id) %}

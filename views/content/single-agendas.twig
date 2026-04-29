@@ -7,23 +7,20 @@
 {% extends 'system/wrapper.twig' %}
 
 {% block content %}
+    {# formatting date in banner #}
+    {% set meeting_date = post.meta('meeting_date')|date('F j, Y') %}
+    {% set is_special = post.meta('special_meeting') ? '(Special Meeting)' : '' %}
+
     <div class="flexible-page">
+        {# Pass date into banner through subtitle #}
         {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
             title: post.title,
+            subtitle: meeting_date ~ ' ' ~ is_special
         } %}
 
-        <div class="single-agendas-page container-xl">
-            {# Grabbing the ACF Meeting Date #}
-            <div class="agenda-meta">
-                <strong>Meeting Date:</strong> {{ post.meta('meeting_date')|date('F j, Y') }}
-            <section class="agenda-content">
+        <div class="single-agendas-page container-xl py-4">
                 {{ post.content }}
-            </section>                    
-            {# Checking the ACF Special Meeting toggle #}
-                {% if post.meta('special_meeting') %}
-                    <span class="special-badge" style="color: red;">(Special Meeting)</span>
-                {% endif %}
-            </div>
+            
             {# Pulling in Bi-Directional Action Items #}
                 {% set action_items = post.meta('related_action_items') %}
                 {% if action_items %}
