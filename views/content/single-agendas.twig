@@ -18,41 +18,59 @@
             subtitle: meeting_date ~ ' ' ~ is_special
         } %}
 
-        <div class="single-agendas-page container-xl py-4">
-                {{ post.content }}
-            
-            {# Pulling in Bi-Directional Action Items #}
+        <div class="single-agendas-page container-xl pt-4 pb-4">
+            <div class="row">
+                <div class= "col-lg-8">
+                    {{ post.content }}
+                </div>
+
                 {% set action_items = post.meta('related_action_items') %}
-                {% if action_items %}
-                    <section class="related-action-items">
-                    <h2>Action Items</h2>
-                        <ul>
-                            {% for item in action_items %}
-                                {# Convert the raw ACF data into a Timber Post object #}
-                                {% set action_item = Post(item) %}
-                                    <li>
-                                        <a href="{{ action_item.link }}">{{ action_item.title }}</a>
-                                    </li>
-                            {% endfor %}
-                        </ul>
-                    </section>
-                {% endif %}
-                {# Pulling in Bi-Directional Resolutions #}
                 {% set resolutions = post.meta('related_resolutions') %}
-                {% if resolutions %}
-                    <section class="related-resolutions">
-                        <h2>Resolutions</h2>
-                        <ul>
-                            {% for item in resolutions %}
-                                {# Convert the raw ACF data into a Timber Post object #}
-                                {% set resolution = Post(item) %}
-                                <li>
-                                <a href="{{ resolution.link }}">{{ resolution.title }}</a>
-                                </li>
-                            {% endfor %}
-                        </ul>
-                    </section>
+
+                {# Only show call out if one or more options exist #}
+                {% if action_items or resolutions %}
+                    <div class="col-lg-4">
+                        {% set related_html %}
+                            <ul class="list-unstyled mb-0">
+                                {% if action_items %}
+                                    <li><strong> Action Items: </strong></li>
+                                        <ul class='ms-3'>
+                                        {# Pulling in Bi-Directional Action Items #}
+                                        {% for item in action_items %}
+                                            {# Convert the raw ACF data into a Timber Post object #}
+                                            {% set action_item = Post(item) %}
+                                            <li> 
+                                                <a href="{{ action_item.link }}">{{ action_item.title }}</a>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                                {% if resolutions %}
+                                    <li class="{{ action_items ? 'mt-2' : '' }}"><strong>Resolutions:</strong>
+                                        <ul class='ms-3'>
+                                        {# Pulling in Bi-Directional Resolutions #}
+                                        {% for item in resolutions %}
+                                            {# Convert the raw ACF data into a Timber Post object #}
+                                            {% set resolution = Post(item) %}
+                                            <li>
+                                                <a href="{{ resolution.link }}">{{ resolution.title }}</a>
+                                            </li>
+                                        {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        {% endset %}
+                            
+                        {% include '/stories/callout/callout.twig' with {
+                            title: 'Related Content',
+                            links: related_html,
+                            wrapper_classes: 'callout-wrapper'
+                        } %}
+                    </div>
                 {% endif %}
+            </div>
         </div>
     </div>
 {% endblock %}

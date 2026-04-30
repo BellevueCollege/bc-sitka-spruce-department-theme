@@ -18,39 +18,44 @@
             subtitle: meeting_date ~ ' ' ~ is_special
         } %}
 
-        <div class="action-item-single-page container-xl">
-            <section class="content">
-                {{ post.content }}
-            </section>
+        <div class="action-item-single-page container-xl pt-4 pb-4">
+            <div class="row">
+                <div class="col-lg-8">
+                    {{ post.content }}
+                </div>
 
-        {# Pulling in Associated Agenda #}
+            {# Only show call out if one or more options exist #}
             {% set agenda_id = post.meta('associated-agenda') %}
-            {% if agenda_id %}
-                <section class="related-agenda">
-                    <h2>Associated Agenda</h2>
-                    <ul>
-                        {# Convert the raw ACF data into a Timber Post object #}
-                        {% set agenda = Post(agenda_id) %}
-                        <li>
-                            <a href="{{ agenda.link }}">{{ agenda.title }}</a>
-                        </li>
-                    </ul>
-                </section>
-            {% endif %}
-
-            {# Pulling in Related Resolution #}
             {% set resolution_id = post.meta('related_resolutions') %}
-            {% if resolution_id %}
-                <section class="related-resolutions">
-                    <h2>Resolution</h2>
-                    <ul>
-                        {#Covert raw to timber Post Obj.#}
-                        {% set resolution = Post(resolution_id) %}
-                        <li>
-                            <a href="{{ resolution.link }}">{{ resolution.title }}</a>
-                        </li>
-                    </ul>
-                </section>
+
+            {% if agenda_id or resolution_id %}
+                <div class="col-lg-4">
+                    {% set related_html %}
+                        <ul class="list-unstyled mb-0">
+                            {% if agenda_id %}
+                                {# Convert the raw ACF data into a Timber Post object #}
+                                {% set agenda = Post(agenda_id) %}
+                                <li><strong>Associated Agenda:</strong>
+                                    <a href="{{ agenda.link }}">{{ agenda.title }}</a>
+                                </li>
+                            {% endif %}
+                            {% if resolution_id %}
+                                {#Covert raw to timber Post Obj.#}
+                                {% set resolution = Post(resolution_id) %}
+                                <li class="{{ agenda_id ? 'mt-2' : '' }}">
+                                <strong>Resolution:</strong> 
+                                <a href="{{ resolution.link }}">{{ resolution.title }}</a></li>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% endset %}
+
+                    {% include '/stories/callout/callout.twig' with {
+                            title: 'Related Content',
+                            links: related_html,
+                            wrapper_classes: 'callout-wrapper'
+                    } %}
+                </div>
             {% endif %}
         </div>
     </div>
