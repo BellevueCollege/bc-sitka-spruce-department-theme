@@ -35,7 +35,10 @@
 }
 
 
-#main-content .post-single-page {
+#main-content .post-single-page,
+#main-content .single-agendas-page,
+#main-content .action-item-single-page,
+#main-content .resolution-single-page {
 	// Use CSS Grid to display blocks alongside sidebar content, even though there cannot be a good wrapper heirarchy
 	--flexpage-column-gap: 1.25rem;
 	--flexpage-base-width: calc( 100% );

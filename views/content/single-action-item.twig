@@ -35,7 +35,7 @@
                             {% if agenda_id %}
                                 {# Convert the raw ACF data into a Timber Post object #}
                                 {% set agenda = Post(agenda_id) %}
-                                <li><strong>Associated Agenda:</strong>
+                                <li><strong>Agenda:</strong>
                                     <a href="{{ agenda.link }}">{{ agenda.title }}</a>
                                 </li>
                             {% endif %}

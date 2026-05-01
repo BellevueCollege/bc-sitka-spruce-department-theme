@@ -28,6 +28,7 @@
                 {% set agenda_id = post.meta('associated_agenda') %}
                 {% set action_item_id = post.meta('associated_action_item') %}
             
+                {{ dump(post.meta('related_resolutions')) }}
                 {% if agenda_id or action_item_id %}
                     {# Pull in Associated Agenda #}
                     <div class="col-lg-4">
