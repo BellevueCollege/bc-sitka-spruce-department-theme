@@ -34,7 +34,7 @@
 #}
 {% macro links(items, depth = 2, ul_class = 'menu', li_class = '', li_active_class = '', a_class = '') %}
   {% import _self as menus %}
-  {% import '/views/includes/bellevue-macros.twig' as bellevue_macros %}
+  {% import '@views/includes/bellevue-macros.twig' as bellevue_macros %}
   {% if items and depth > 0 %}
     <ul{% if ul_class %} class="{{ ul_class }}"{% endif %}>
       {% for item in items %}

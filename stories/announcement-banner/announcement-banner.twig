@@ -25,14 +25,14 @@
 								{% for link in buttons %}
 									{# Make sure link has data before trying to render #}
 									{% if link.url and link.title %}
-										{% include '/stories/atoms/links/link-button.twig' with { link: link } %}
+										{% include '@stories/atoms/links/link-button.twig' with { link: link } %}
 									{% endif %}
 								{% endfor %}
 							</div>
                         {# Backward compatibility for the old single 'button' variable #}
                         {% elseif button and button.url and button.title %}
                             <div class="announcement__button mt-3">
-                                {% include '/stories/atoms/links/link-button.twig' with { link: button } %}
+                                {% include '@stories/atoms/links/link-button.twig' with { link: button } %}
                             </div>
                         {% endif %}
 						{#Arrow link handling#}
@@ -41,7 +41,7 @@
 								{% for link in links %}
 									{% if link.title and link.url %}
 										<li class="col-auto">
-											{% include '/stories/atoms/links/link-arrow.twig' %}
+											{% include '@stories/atoms/links/link-arrow.twig' %}
 										</li>
 									{% endif %}
 								{% endfor %}
