@@ -9,7 +9,7 @@
 {% block content %}
     <div class="flexible-page">
         {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
-            title: title|default('Agendas Archive'),
+            title: title|default('Resolutions Archive'),
         } %}
 
         <div class="archive-resolution-page container-xl">
@@ -23,7 +23,16 @@
                     <ul class="agenda-list">
                         {% for post in posts %}
                             <li>
-                                <a href="{{ post.link }}">{{ post.meta('date')|date('F j, Y') }}</a>
+                            {# Linking the title #}
+                                <a href="{{ post.link }}"><strong>{{ post.title }}</strong></a>
+                            {# fetching date field#}    
+                                {% set raw_date = post.meta('meeting_date') ?: post.get_field('meeting_date') %}
+                            {# Only show if date exists#}
+                                {% if raw_date %}
+                                    - <span class="text-muted">{{ raw_date|date('F j, Y') }}</span>
+                                {% else %}
+                                    - <span class="text-muted">{{ post.date('F j, Y') }}</span>
+                                {% endif %}
                             </li>
                         {% endfor %}
                     </ul>

@@ -7,18 +7,21 @@
 {% extends 'system/wrapper.twig' %}
 
 {% block content %}
-    {# formatting date in banner #}
-    {% set meeting_date = post.meta('meeting_date')|date('F j, Y') %}
-    {% set is_special = post.meta('special_meeting') ? '(Special Meeting)' : '' %}
+    {# formatting date in banner #}  
+    {% set raw_date = post.meta('meeting_date') %}
+    {% set meeting_date = raw_date ? raw_date|date('F j, Y') : '' %}
+    {% set is_special = agenda_obj.meta('special_meeting') ? '(Special Meeting)' : '' %}
 
-    <div class="flexible-page">
+    <div class="flexible-page agendas-reduced-spacing">
         {# Pass date into banner through subtitle #}
+        {% set banner_subtitle = meeting_date ? (meeting_date|date('F j, Y') ~ ' ' ~ is_special) : is_special %}
+
         {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
             title: post.title,
-            subtitle: meeting_date ~ ' ' ~ is_special
+            subtitle: banner_subtitle
         } %}
 
-        <div class="action-item-single-page container-xl pt-4 pb-4">
+        <div class="action-item-single-page container-xl pb-4">
             <div class="row">
                 <div class="col-lg-8">
                     {{ post.content }}
@@ -43,8 +46,8 @@
                                 {#Covert raw to timber Post Obj.#}
                                 {% set resolution = Post(resolution_id) %}
                                 <li class="{{ agenda_id ? 'mt-2' : '' }}">
-                                <strong>Resolution:</strong> 
-                                <a href="{{ resolution.link }}">{{ resolution.title }}</a></li>
+                                    <strong>Resolution:</strong> 
+                                    <a href="{{ resolution.link }}">{{ resolution.title }}</a>
                                 </li>
                             {% endif %}
                         </ul>

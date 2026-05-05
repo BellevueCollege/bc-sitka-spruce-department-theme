@@ -5,7 +5,7 @@
  */
 
 $context = Timber::context();
-$context['title'] = 'Board of Trustees Agendas'; // Fallback title
+$context['title'] = 'Board of Trustees Action Items'; // Fallback title
 
 //All Action Item(s)- ordered by the meeting date
 $args = array(
@@ -34,4 +34,4 @@ krsort( $posts_by_year );
 $context['posts_by_year'] = $posts_by_year;
 
 //Render
-Timber::render( 'archive-agendas.twig', $context );
+Timber::render( 'archive-action-items.twig', $context );

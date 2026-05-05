@@ -30,15 +30,15 @@
 	}
 
 	.flexible-page-intro-wrapper {
+		.lead {
+			color: #6c757d;
+		}
 		margin-bottom: var(--sitka-container-spacing);
 	}
 }
 
 
-#main-content .post-single-page,
-#main-content .single-agendas-page,
-#main-content .action-item-single-page,
-#main-content .resolution-single-page {
+#main-content .post-single-page {
 	// Use CSS Grid to display blocks alongside sidebar content, even though there cannot be a good wrapper heirarchy
 	--flexpage-column-gap: 1.25rem;
 	--flexpage-base-width: calc( 100% );
@@ -102,4 +102,24 @@
 			grid-column: 2 / 4;
 		}
 	}
+}
+
+.single-agendas, 
+.single-action-item, 
+.single-resolution {
+    #main-content .flexible-page-intro-wrapper {
+        // Change the big margin to the 'little bit';)
+        margin-bottom: 1.5rem !important; 
+    }
+
+    // Clean up the top of the content area
+    .agendas-reduced-spacing {
+        .single-agendas-page,
+        .action-item-single-page,
+        .resolution-single-page {
+			grid-column: 1/-1 !important; // span full width
+			padding-left: 0 !important; //removes left gap to align with header text
+            padding-top: 0 !important;
+        }
+    }
 }
