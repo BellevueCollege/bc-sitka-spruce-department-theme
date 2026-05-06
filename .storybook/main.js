@@ -1,8 +1,8 @@
-// This file has been automatically migrated to valid ESM format by Storybook.
 // .storybook/main.js
 import twig from 'vite-plugin-twigjs-loader';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
+import { mergeConfig } from 'vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,11 +17,16 @@ const config = {
       twig({
         namespaces: {
           '@stories': join(__dirname, '../stories'),
-					'@views': join(__dirname, '../views'),
+          '@views': join(__dirname, '../views'),
         },
       })
     );
-    return viteConfig;
+
+    return mergeConfig(viteConfig, {
+      build: {
+        cssMinify: 'esbuild',
+      },
+    });
   },
 
   addons: [

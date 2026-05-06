@@ -1,0 +1,14 @@
+{% if display_sitewide_notice %}
+	<div class="sitewide-notice py-2">
+		<div class="container-xxl">
+			<div class="row">
+				<div class="col-auto d-flex align-items-center">
+					<i class="fa-regular fa-bullhorn fa-lg"></i>
+				</div>
+				<div class="col sitewide-notice-text">
+					{{ sitewide_notice_text }}
+				</div>
+			</div>
+		</div>
+	</div>
+{% endif %}
