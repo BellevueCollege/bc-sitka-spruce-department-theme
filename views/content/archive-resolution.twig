@@ -4,11 +4,11 @@
  * Bellevue template for the Agendas archive list.
  */
 #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@system/wrapper.twig' %}
 
 {% block content %}
     <div class="flexible-page">
-        {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+        {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
             title: title|default('Resolutions Archive'),
         } %}
 

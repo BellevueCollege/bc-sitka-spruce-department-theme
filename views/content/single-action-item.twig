@@ -4,7 +4,7 @@
  * Bellevue template for a action item.
  */
 #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@system/wrapper.twig' %}
 
 {% block content %}
     {# formatting date in banner #}  
@@ -16,7 +16,7 @@
         {# Pass date into banner through subtitle #}
         {% set banner_subtitle = meeting_date ? (meeting_date|date('F j, Y') ~ ' ' ~ is_special) : is_special %}
 
-        {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+        {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
             title: post.title,
             subtitle: banner_subtitle
         } %}
@@ -53,7 +53,7 @@
                         </ul>
                     {% endset %}
 
-                    {% include '/stories/callout/callout.twig' with {
+                    {% include '@stories/callout/callout.twig' with {
                             title: 'Related Content',
                             links: related_html,
                             wrapper_classes: 'callout-wrapper'

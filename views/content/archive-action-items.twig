@@ -4,19 +4,17 @@
  * Bellevue template for the Agendas archive list.
  */
 #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@system/wrapper.twig' %}
 
 {% block content %}
     <div class="flexible-page">
-        {% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+        {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
             title: title|default('Action Items Archive'),
         } %}
 
         <div class="archive-action-item-page container-xl">
-            
             {# Loop through data passed from PHP #}
             {% for year, posts in posts_by_year %}
-                
                 <div class="year-group">
                     <h2> {{ year }} </h2>
                     {# The List of Posts for given Year #}
