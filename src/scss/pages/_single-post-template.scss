@@ -6,16 +6,20 @@
 	.post-additional-contact {
 
 		.contact-item-wrapper {
-			--contact-item-bg: var(--gray--xlight);
+			background-color: var(--gray--xlight);
+			border-radius: var(--bs-border-radius);
 
 			.contact-item-r.row {
 				margin-left: 0;
 				margin-right: 0;
 				padding: 1.5rem 0;
 			}
-			.contact-name.col-6,
-			.contact-info.col-6 {
+			.contact-name,
+			.contact-info {
 				width: 100%;
+			}
+			.contact-info > p:last-child {
+				margin-bottom: 0;
 			}
 		}
 		

@@ -14,6 +14,9 @@ if ( '0' !== $blog_home_id ) {
 	$context['blog_home_url'] = null;
 }
 
+// Author override
+$context['author_override'] = get_field('author_override') ?? null;
+
 // Get ACF fields for contact
 $raw_contact = get_field('contact') ?? false;
 if ( $raw_contact ) {

@@ -9,7 +9,7 @@
 			{% endif %}
 		</p>
 		<hr class="accent">
-		<p><strong>{{ __('Posted', 'bc-sitka-spruce') }} {{ post.date|date('F j, Y') }}</strong></p>
+		<p class="a11y-hide-warning"><strong>{{ __('Posted', 'bc-sitka-spruce') }} {{ post.date|date('F j, Y') }}</strong></p>
 	</div>
 	<div class="col-sm-auto order-first order-sm-last">
 		{% if post.meta('featured_media_type') == 'image_horizontal' or post.meta('featured_media_type') == 'video' %}
