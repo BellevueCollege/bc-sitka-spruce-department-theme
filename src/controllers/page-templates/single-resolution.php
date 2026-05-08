@@ -1,6 +1,6 @@
 <?php
 /**
- * Single Template for Action Items
+ * Single Template for Resolutions
  */
 
 $context = Timber::context();

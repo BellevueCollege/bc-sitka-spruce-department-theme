@@ -28,8 +28,8 @@
                 </div>
 
                 {# call out display logic#}
-                {% set action_item_id = post.meta('associated-action-item') %}
-                {% set agenda_id = post.meta('associated-agenda') %}
+                {% set action_item_id = post.meta('associated_action_item') %}
+                {% set agenda_id = post.meta('associated_agenda') %}
             
                 {% if agenda_id or action_item_id %}
                     {# Pull in Associated Agenda #}

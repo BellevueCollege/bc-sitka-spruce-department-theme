@@ -28,7 +28,7 @@
                 </div>
 
             {# Only show call out if one or more options exist #}
-            {% set agenda_id = post.meta('associated-agenda') %}
+            {% set agenda_id = post.meta('associated_agenda') %}
             {% set resolution_id = post.meta('related_resolutions') %}
 
             {% if agenda_id or resolution_id %}

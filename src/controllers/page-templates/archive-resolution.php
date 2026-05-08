@@ -11,19 +11,41 @@ $context['title'] = 'Board of Trustees Resolutions'; // Fallback title
 $args = array(
     'post_type'      => 'resolution',
     'posts_per_page' => -1, // Get all of them
-    'meta_key'       => 'date',
-    'orderby'        => 'meta_value',
-    'order'          => 'DESC',
+    // allows posts w/o meta_key in results
+    'meta_query'     => array(
+        'relation' => 'OR',
+        array(
+            'key'     => 'meeting_date',
+            'compare' => 'EXISTS',
+        ),
+        array(
+            'key'     => 'meeting_date',
+            'compare' => 'NOT EXISTS',
+        ),
+    ),
+    'orderby' => array(
+        'meta_value' => 'DESC',
+        'date'       => 'DESC', // Secondary sort by publish date
+    ),
 );
 $agendas = Timber::get_posts( $args );
 
 //Group them by Year (this is how they were grouped in douglas theme)
 $posts_by_year = array();
 foreach ( $agendas as $agenda ) {
-    $date = $agenda->meta('date');
-    if ( ! empty( $date ) ) {
+    $year = null; // always reset
+    // try to get ACF details date first
+    $meeting_date = $agenda->meta('meeting_date');
+    if ( ! empty( $meeting_date ) ) {
         // Extract just the year from the ACF date field
-        $year = gmdate( 'Y', strtotime( $date ) );
+        $year = gmdate( 'Y', strtotime( $meeting_date ) );
+    } else {
+        //fallback to WP publish year if no meeting date
+        // $agenda->post_date = timber version of publish date
+        $year = gmdate( 'Y', strtotime( $agenda->post_date ) );
+    }
+    // AFTER finding the year, add it to the array
+    if ( $year ) {
         $posts_by_year[ $year ][] = $agenda;
     }
 }
