@@ -37,7 +37,7 @@ foreach ( $agendas as $agenda ) {
     $meeting_date = $agenda->meta('meeting_date');
     if ( ! empty( $meeting_date ) ) {
         // Extract just the year from the ACF date field
-        $year = gmdate( 'Y', strtotime( $date ) );
+        $year = gmdate( 'Y', strtotime( $meeting_date ) );
     } else {
         //fallback to publish year if no meeting date
         // $agenda->post_date = timber version of publish date
