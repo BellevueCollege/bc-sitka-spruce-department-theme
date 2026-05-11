@@ -14,6 +14,13 @@ if ( '0' !== $blog_home_id ) {
 	$context['blog_home_url'] = null;
 }
 
+// ACF Fields
+$context['summary']           = get_field( 'summary') ?? null;
+$context['media_type']        = get_field( 'featured_media_type') ?? null;
+$context['video_url']         = get_field( 'featured_video_url') ?? null;
+$context['caption']           = get_field( 'caption') ?? null;
+$context['author_override']   = get_field( 'author_override') ?? null;
+
 // Get ACF fields for contact
 $raw_contact = get_field('contact') ?? false;
 if ( $raw_contact ) {
