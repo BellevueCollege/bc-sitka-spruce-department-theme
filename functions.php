@@ -187,14 +187,6 @@ $enqueuer->addBlockStyle(
 );
 
 $enqueuer->addBlockStyle(
-	handle: 'image',
-	blocks: array(
-		'core/image',
-		'core/media-text',
-	)
-);
-
-$enqueuer->addBlockStyle(
 	handle: 'bs-forms',
 	blocks: array(
 		'lmc-search-plugin/lmc-search-block',
@@ -852,7 +844,7 @@ add_filter( 'ed11y_default_options', function ( $options ) {
 	$options['ed11y_ignore_elements'] .= ', #my-calendar, #my-calendar *, .mc-main, .mc-main *';
 
 	// Ignore editoria11y decorative images
-	$options['ed11y_ignore_elements'] .= ', .a11y-decorative';
+	$options['ed11y_ignore_elements'] .= ', .a11y-decorative, .a11y-hide-warning';
 
 	return $options;
 } );

@@ -20,9 +20,7 @@ import { ComboboxControl } from '@wordpress/components';
 import { addQueryArgs } from '@wordpress/url';
 
 
-import Twig from 'twig';
-import twigNewsFeatureFeatured from '/stories/news-feature/news-feature-featured.twig';
-import twigNewsFeatureSmall from '/stories/news-feature/news-feature-list-item.twig';
+import Twig from '../../js/modules/twig-setup';
 import { RawHTML } from '@wordpress/element';
 
 import './style.scss';
@@ -207,15 +205,17 @@ registerBlockType('bc-sitka-spruce/posts-feature', {
 				title = largeStoryData.title.rendered;
 				summary = largeStoryData.acf.summary;
 			}
+			const twigNewsFeatureFeaturedHTML = Twig.twig({
+				ref: '@stories/news-feature/news-feature-featured.twig'
+			}).render({
+				title,
+				summary,
+				image: placeholderImage,
+				url: '#',
+			});
 			return (
 				<RawHTML>
-					{largeStoryId &&
-						twigNewsFeatureFeatured({
-							title,
-							summary,
-							image: placeholderImage,
-							url: '#',
-						})}
+					{largeStoryId && twigNewsFeatureFeaturedHTML}
 				</RawHTML>
 			);
 		};
@@ -238,23 +238,27 @@ registerBlockType('bc-sitka-spruce/posts-feature', {
 					<span class="placeholder-glow placeholder col-4"></span>
 					`;
 
+			const twigNewsFeatureSmall = Twig.twig({
+				ref: '@stories/news-feature/news-feature-list-item.twig'
+			});
+
 			if (smallStoryData.length === 0) {
 				output.push(
-					twigNewsFeatureSmall({
+					twigNewsFeatureSmall.render({
 						title: title,
 						url: '#',
 						summary: summary,
 					})
 				);
 				output.push(
-					twigNewsFeatureSmall({
+					twigNewsFeatureSmall.render({
 						title: title,
 						url: '#',
 						summary: summary,
 					})
 				);
 				output.push(
-					twigNewsFeatureSmall({
+					twigNewsFeatureSmall.render({
 						title: title,
 						url: '#',
 						summary: summary,
@@ -263,7 +267,7 @@ registerBlockType('bc-sitka-spruce/posts-feature', {
 			} else {
 				smallStoryData.forEach((story) => {
 					output.push(
-						twigNewsFeatureSmall({
+						twigNewsFeatureSmall.render({
 							title: story.title.rendered,
 							url: story.link,
 							summary: story.acf.summary,
