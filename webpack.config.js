@@ -51,7 +51,6 @@ module.exports = {
 		...scssEntryPoint( 'table', true ),
 		...scssEntryPoint( 'tablepress', true ),
 		...scssEntryPoint( 'quote', true ),
-		...scssEntryPoint( 'image', true ),
 		...scssEntryPoint( 'bs-forms', true ),
 		...scssEntryPoint( 'lmc-search', true ),
 		// Add your custom JS entries
