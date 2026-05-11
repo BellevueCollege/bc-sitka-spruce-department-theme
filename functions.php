@@ -186,14 +186,6 @@ $enqueuer->addBlockStyle(
 );
 
 $enqueuer->addBlockStyle(
-	handle: 'image',
-	blocks: array(
-		'core/image',
-		'core/media-text',
-	)
-);
-
-$enqueuer->addBlockStyle(
 	handle: 'bs-forms',
 	blocks: array(
 		'lmc-search-plugin/lmc-search-block',
