@@ -340,11 +340,13 @@ class BlockEditor implements BlockEditorInterface {
    * Callback for the 'enqueue_block_editor_assets' action.
    */
   public function setupBlockEditorStylesheet(): void {
-    foreach ($this->stylesheets as $handle => $stylesheet) {
-      $stylesheet = strpos($stylesheet, '//') === false
-        ? get_theme_file_uri($stylesheet)
-        : $stylesheet;
-      wp_enqueue_style("bellevue-block-editor-theme-$handle", $stylesheet);
+    if ( is_admin() ) {
+      foreach ($this->stylesheets as $handle => $stylesheet) {
+        $stylesheet = strpos($stylesheet, '//') === false
+          ? get_theme_file_uri($stylesheet)
+          : $stylesheet;
+        wp_enqueue_style("bellevue-block-editor-theme-$handle", $stylesheet);
+      }
     }
   }
 
