@@ -62,4 +62,28 @@
     .fa-external-link-square {
         padding-inline: 0.5rem;
     }
+.contact-buttons-wrapper {
+    // MOBILE FIRST
+    .contact-button-item {
+        width: 100%; // Buttons are full-width for easy tapping on mobile
+
+        .btn {
+            width: 100%;
+            display: block;
+            text-align: center;
+        }
+    }
+
+    // DESKTOP: Switch to side-by-side at the Large breakpoint
+    @include media-breakpoint-up(lg) {
+        .contact-button-item {
+            width: auto; // Let buttons shrink to the size of their text
+
+            .btn {
+                width: auto;
+                display: inline-block;
+            }
+        }
+    }
+}
 }

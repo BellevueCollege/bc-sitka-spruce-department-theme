@@ -19,12 +19,13 @@ const Content = ( {
 	});
 }
 
-
 const Template = ( {
-	content
+	content,
+	anchor
 }) => {
 	return twigBioSection({
-		content
+		content,
+		anchor
 	});
 };
 const Callout = ( {
@@ -49,6 +50,7 @@ const Callout = ( {
 
 export const Default = Template.bind({});
 Default.args = {
+	anchor: 'about-me',
 	content:
 		Content({
 			content:`<h2 class="wp-block-heading">About Me</h2><p>HI this is an about me blurb</p><h3 class="wp-block-heading">Education</h3><ul class="wp-block-list"><li>Shorecrest HS</li><li>Cascadia CC</li>

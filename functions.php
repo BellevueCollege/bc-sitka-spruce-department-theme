@@ -114,8 +114,23 @@ add_action( 'enqueue_block_editor_assets', function () {
 	wp_enqueue_script(
 		'sitka-editor-js',
 		get_template_directory_uri() . '/assets/dist/js/editor.js',
-		array_unique( array_merge( array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ) , $asset['dependencies'] ) ),
+		array_unique(
+			array_merge(
+				array( 'wp-blocks', 'wp-dom-ready', 'wp-edit-post' ),
+				$asset['dependencies']
+			)
+		),
 		$asset['version']
+	);
+
+	$front_page_id = (int) get_option( 'page_on_front' );
+
+	$inline = "window.SitkaEditor = Object.assign( window.SitkaEditor || {}, { frontPageId: $front_page_id } );";
+
+	wp_add_inline_script(
+		'sitka-editor-js', // must match the handle above
+		$inline,
+		'before'           // ensure this runs before editor.js [web:64]
 	);
 } );
 
@@ -171,17 +186,10 @@ $enqueuer->addBlockStyle(
 );
 
 $enqueuer->addBlockStyle(
-	handle: 'image',
-	blocks: array(
-		'core/image',
-		'core/media-text',
-	)
-);
-
-$enqueuer->addBlockStyle(
 	handle: 'bs-forms',
 	blocks: array(
 		'lmc-search-plugin/lmc-search-block',
+		'lmc-search-plugin/lmc-browzine-search-block',
 	)
 );
 
@@ -189,6 +197,7 @@ $enqueuer->addBlockStyle(
 	handle: 'lmc-search',
 	blocks: array(
 		'lmc-search-plugin/lmc-search-block',
+		'lmc-search-plugin/lmc-browzine-search-block',
 	)
 );
 /**
@@ -291,6 +300,18 @@ add_action( 'init', function () {
 		)
 	);
 });
+
+/**
+ * Disable 'Hide from Navigation' option for non super-admins
+ */
+add_filter( 'acf/prepare_field/name=hide_from_side_nav', function( $field ) {
+
+	// Only allow administrators to edit
+	if ( ! current_user_can( 'manage_network' ) ) {
+		return false;
+	}
+	return $field;
+} );
 
 /**
  * Set Page Title Format
@@ -811,7 +832,17 @@ if ( $sitka_ga_id ) {
 add_filter( 'ed11y_default_options', function ( $options ) {
 
 	// Ignore ACF interfaces that appear in the editor
-	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a';
+	// Ignore false positive on application step single heading
+	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a, .application-step-single-heading';
+
+	// Ignore sub-headings inside app-steps-blocks - incorrectly flagged as skipping level
+	$options['ed11y_ignore_elements'] .= ', h4.application-step-single-heading';
+
+	// Disable content auditing within my-calendar plugin, as it's not user-fixable
+	$options['ed11y_ignore_elements'] .= ', #my-calendar, #my-calendar *, .mc-main, .mc-main *';
+
+	// Ignore editoria11y decorative images
+	$options['ed11y_ignore_elements'] .= ', .a11y-decorative, .a11y-hide-warning';
 
 	return $options;
 } );

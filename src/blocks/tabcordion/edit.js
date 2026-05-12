@@ -50,7 +50,7 @@ export default function Edit( props ) {
 					title={ __( 'Heading Visibility', 'bc-sitka-spruce' ) }
 				>
 					<ToggleControl
-						style="float: right; width: 30%"
+						style={{ float: 'right', width: '30%' }}
 						label={ __( 'Display Tab Headings Visually', 'bc-sitka-spruce' ) }
 						checked={ displayHeadingsVisually }
 						disabled={ _hideFormats }

@@ -34,7 +34,7 @@ module.exports = {
 			...defaultConfig.module.rules,
 			{
 				test: /\.twig$/,
-				loader: 'twig-loader',
+				type: 'asset/source',
 			}
 		],
 	},
@@ -51,7 +51,6 @@ module.exports = {
 		...scssEntryPoint( 'table', true ),
 		...scssEntryPoint( 'tablepress', true ),
 		...scssEntryPoint( 'quote', true ),
-		...scssEntryPoint( 'image', true ),
 		...scssEntryPoint( 'bs-forms', true ),
 		...scssEntryPoint( 'lmc-search', true ),
 		// Add your custom JS entries

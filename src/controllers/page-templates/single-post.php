@@ -14,25 +14,39 @@ if ( '0' !== $blog_home_id ) {
 	$context['blog_home_url'] = null;
 }
 
-//ACF fields
+// ACF Fields
 $context['summary']           = get_field( 'summary') ?? null;
 $context['media_type']        = get_field( 'featured_media_type') ?? null;
 $context['video_url']         = get_field( 'featured_video_url') ?? null;
 $context['caption']           = get_field( 'caption') ?? null;
 $context['author_override']   = get_field( 'author_override') ?? null;
 
-
 // Get ACF fields for contact
 $raw_contact = get_field('contact') ?? false;
 if ( $raw_contact ) {
-	$context['contact'] = array(
-		'first_name' => get_field('first_name', $raw_contact->ID),
-		'last_name'  => get_field('last_name', $raw_contact->ID),
-		'position'   => get_field('position_role', $raw_contact->ID),
-		'phone'      => get_field('phone_number', $raw_contact->ID),
-		'email'      => get_field('email', $raw_contact->ID),
-		'url'        => get_permalink( $raw_contact->ID ),
-	);
+    //Fetch the repeater from the profile post ID
+    $schedule_repeater = get_field('scheduling_section', $raw_contact->ID);
+    $links = array();
+
+	if ( is_array($schedule_repeater) && !empty($schedule_repeater) ) {
+		$row = $schedule_repeater[0];
+		if (!empty($row['sched_appointment_link'])) {
+			$links[] = $row['sched_appointment_link'];
+		}
+		if (!empty($row['sched_appt_link'])) {
+			$links[] = $row['sched_appt_link'];
+		}
+    }
+	$context['contact']['scheduling_links'] = $links;
+    $context['contact'] = array(
+        'first_name'       => get_field('first_name', $raw_contact->ID),
+        'last_name'        => get_field('last_name', $raw_contact->ID),
+        'position'         => get_field('position_role', $raw_contact->ID),
+        'phone'            => get_field('phone_number', $raw_contact->ID),
+        'email'            => get_field('email', $raw_contact->ID),
+        'url'              => get_permalink( $raw_contact->ID ),
+        'scheduling_links' => $links, 
+    );
 }
 
 //breadcrumb stuff

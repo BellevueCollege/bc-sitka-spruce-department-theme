@@ -1,4 +1,4 @@
-/** @type { import('@storybook/html').Preview } */
+/** @type { import('@storybook/html-vite').Preview } */
 import Twig from "twig";
 import '../assets/dist/css/main.css';
 

@@ -4,14 +4,14 @@
  * Bellevue template for a post.
  */
 #}
-{% extends 'system/wrapper.twig' %}
+{% extends '@views/system/wrapper.twig' %}
 
 {% block content %}
 	<div class="flexible-page">
-		{% include '/stories/flexible-page-intro/flexible-page-intro.twig' with {
+		{% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
 			title: post.title,
 		} %}
-		{% include '/stories/nav-sidebar/nav-sidebar.twig' with {
+		{% include '@stories/nav-sidebar/nav-sidebar.twig' with {
 
 		} %}
 		{{ post.content }}

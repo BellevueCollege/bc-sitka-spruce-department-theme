@@ -38,7 +38,7 @@ const Template = ( {
 
 export const Default = Template.bind({});
 Default.args = {
-    profile_image: '<img class="rounded img-fluid" src="https://picsum.photos/id/237/460/460" alt="Placeholder Image"></img>',
+    profile_image: '<img class="rounded img-fluid a11y-decorative" src="https://picsum.photos/id/237/460/460" alt="Placeholder Image"></img>',
     first_name: "John",
     last_name: "Doe",
     position: "Manager",

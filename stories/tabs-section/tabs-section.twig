@@ -1,6 +1,6 @@
 <section class="section section-rainy-night-blue tabs-section-component dark-bg" {% if anchor is defined and anchor %}id="{{ anchor|e('html_attr') }}"{% endif %}
 >
-	{% include '/stories/section-heading/section-heading.twig' with {
+	{% include '@stories/section-heading/section-heading.twig' with {
 		'heading': title,
 		'subheading': description,
 		'linkClass': 'link-accent-lg text-white',

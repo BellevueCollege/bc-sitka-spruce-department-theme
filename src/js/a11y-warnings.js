@@ -11,6 +11,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Images with empty alt attribute
     document.querySelectorAll('#main-content img[alt=""]').forEach(img => {
+        if (img.classList.contains('a11y-decorative')) {
+            return;
+        }
         img.setAttribute('data-bs-toggle', 'tooltip');
         img.setAttribute('data-bs-placement', 'top');
         img.setAttribute('data-bs-html', 'true');
