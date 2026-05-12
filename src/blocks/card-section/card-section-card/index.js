@@ -40,11 +40,14 @@ registerBlockType("bc-sitka-spruce/card-section-card", {
 			className: "card card-section-card",
 		});
 
-		const { media } = useSelect((select) => {
-			return {
-				media: select("core").getMedia(cardImageId),
-			};
-		});
+		const { media } = useSelect(
+			(select) => ({
+				media: cardImageId
+					? select("core").getEntityRecord("postType", "attachment", cardImageId)
+					: undefined,
+			}),
+			[cardImageId]
+		);
 
 		const BLOCK_TEMPLATE = [
 			[ 'core/paragraph', {
@@ -66,7 +69,6 @@ registerBlockType("bc-sitka-spruce/card-section-card", {
 										cardImageUrl: value.sizes["card-header"] ? value.sizes["card-header"].url : value.url,
 										cardImageAlt: value.alt,
 									});
-									onClose();
 								}}
 								render={({ open }) => (
 									<ToolbarDropdownMenu
