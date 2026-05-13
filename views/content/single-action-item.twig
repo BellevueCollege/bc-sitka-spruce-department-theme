@@ -12,7 +12,7 @@
     {% set meeting_date = raw_date ? raw_date|date('F j, Y') : '' %}
     {% set is_special = agenda_obj.meta('special_meeting') ? '(Special Meeting)' : '' %}
 
-    <div class="flexible-page agendas-reduced-spacing">
+    <div class="flexible-page">
         {# Pass date into banner through subtitle #}
         {% set banner_subtitle = meeting_date ? (meeting_date|date('F j, Y') ~ ' ' ~ is_special) : is_special %}
 

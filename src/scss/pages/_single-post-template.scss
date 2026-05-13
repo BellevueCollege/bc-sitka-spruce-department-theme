@@ -103,23 +103,3 @@
 		}
 	}
 }
-
-.single-agendas, 
-.single-action-item, 
-.single-resolution {
-    #main-content .flexible-page-intro-wrapper {
-        // Change the big margin to the 'little bit';)
-        margin-bottom: 1.5rem !important; 
-    }
-
-    // Clean up the top of the content area
-    .agendas-reduced-spacing {
-        .single-agendas-page,
-        .action-item-single-page,
-        .resolution-single-page {
-			grid-column: 1/-1 !important; // span full width
-			padding-left: 0 !important; //removes left gap to align with header text
-            padding-top: 0 !important;
-        }
-    }
-}
