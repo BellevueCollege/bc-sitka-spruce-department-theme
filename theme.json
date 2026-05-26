@@ -83,6 +83,21 @@
                 "typography": {
                     "fitText": false
                 }
+            },
+            "core/verse": {
+                "typography": {
+                    "fitText": false
+                }
+            },
+            "core/quote": {
+                "typography": {
+                    "fitText": false
+                }
+            },
+            "core/pullquote": {
+                "typography": {
+                    "fitText": false
+                }
             }
         }
     }

@@ -98,6 +98,25 @@ function block_registration_helper( array $blocks ) {
 	}
 }
 
+/**
+ * Disable FitText in Editor
+ * 
+ * This shouldn't be needed (it is included in theme.json), but that is not working consistantly. 
+ */
+add_filter( 'register_block_type_args', function( $args, $block_type ) {
+	$blocks = [
+		'core/heading',
+		'core/paragraph',
+		'core/verse',
+		'core/quote',
+		'core/pullquote',
+	];
+	if ( in_array( $block_type, $blocks, true ) ) {
+		$args['supports']['typography']['fitText'] = false;
+	}
+	return $args;
+}, 10, 2 );
+
 
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
