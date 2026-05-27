@@ -70,6 +70,16 @@
                     "slug": "rainy-night-blue",
                     "name": "Rainy Night Blue",
                     "color": "var(--bc-rainy-night-blue)"
+                },
+                {
+                    "slug": "white",
+                    "name": "White",
+                    "color": "var(--white)"
+                },
+                {
+                    "slug": "black",
+                    "name": "Black",
+                    "color": "var(--black)"
                 }
             ]
         },
