@@ -1,5 +1,5 @@
 // .storybook/main.js
-import twig from 'vite-plugin-twigjs-loader';
+import twig from 'vite-plugin-twig-drupal';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { mergeConfig } from 'vite';
@@ -16,15 +16,19 @@ const config = {
     viteConfig.plugins.push(
       twig({
         namespaces: {
-          '@stories': join(__dirname, '../stories'),
-          '@views': join(__dirname, '../views'),
+          stories: join(__dirname, '../stories'),
+          views: join(__dirname, '../views'),
         },
+        framework: 'html',
       })
     );
 
     return mergeConfig(viteConfig, {
       build: {
         cssMinify: 'esbuild',
+      },
+      optimizeDeps: {
+        include: ['twig'],
       },
     });
   },
