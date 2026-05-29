@@ -1,11 +1,14 @@
 // .storybook/main.js
-import twig from 'vite-plugin-twigjs-loader';
+import twig from 'vite-plugin-twig-drupal';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { mergeConfig } from 'vite';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
+
+// Normalize backslashes to forward slashes for Vite on Windows
+const normalize = (p) => p.replace(/\\/g, '/');
 
 /** @type { import('@storybook/html-vite').StorybookConfig } */
 const config = {
@@ -16,15 +19,19 @@ const config = {
     viteConfig.plugins.push(
       twig({
         namespaces: {
-          '@stories': join(__dirname, '../stories'),
-          '@views': join(__dirname, '../views'),
+          stories: normalize(join(__dirname, '../stories')),
+          views: normalize(join(__dirname, '../views')),
         },
+        framework: 'html',
       })
     );
 
     return mergeConfig(viteConfig, {
       build: {
         cssMinify: 'esbuild',
+      },
+      optimizeDeps: {
+        include: ['twig'],
       },
     });
   },
