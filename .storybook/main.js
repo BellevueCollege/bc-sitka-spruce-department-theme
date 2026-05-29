@@ -7,6 +7,9 @@ import { mergeConfig } from 'vite';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
+// Normalize backslashes to forward slashes for Vite on Windows
+const normalize = (p) => p.replace(/\\/g, '/');
+
 /** @type { import('@storybook/html-vite').StorybookConfig } */
 const config = {
   stories: ["../stories/**/*.mdx", "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)"],
@@ -16,8 +19,8 @@ const config = {
     viteConfig.plugins.push(
       twig({
         namespaces: {
-          stories: join(__dirname, '../stories'),
-          views: join(__dirname, '../views'),
+          stories: normalize(join(__dirname, '../stories')),
+          views: normalize(join(__dirname, '../views')),
         },
         framework: 'html',
       })
