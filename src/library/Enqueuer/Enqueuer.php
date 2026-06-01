@@ -4,6 +4,20 @@ namespace BcSitkaSpruce\Library\Enqueuer;
 
 /**
  * An API for loading theme scripts and stylesheets.
+ *
+ * Supports resource preloading via the optional $preload parameter in addScript()
+ * and addStyle(). To preload a resource, pass a resource hint type such as 'preload'
+ * or 'prefetch' as the last parameter:
+ *
+ * @code
+ * $enqueuer->addStyle('theme-style', '/assets/css/main.css', [], '', '1.0.0', 'all', 'preload');
+ * $enqueuer->addScript('app-js', '/assets/js/app.js', [], '', '1.0.0', true, 'preload');
+ * @endcode
+ *
+ * Preloaded resources will automatically include:
+ * - Version numbers from registered assets
+ * - crossorigin='anonymous' for external resources (protocol-relative URLs)
+ * - Appropriate 'as' and 'type' attributes
  */
 class Enqueuer implements EnqueuerInterface {
 
@@ -20,6 +34,10 @@ class Enqueuer implements EnqueuerInterface {
 	protected bool $appendVersion = false;
 
 	protected string $currentTime = '';
+	
+	protected array $preloadScripts = array();
+	
+	protected array $preloadStyles = array();
 
 	public function __construct() {
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueScripts' ), 10, 0 );
@@ -28,6 +46,7 @@ class Enqueuer implements EnqueuerInterface {
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueStyles' ), 10, 0 ); // Enqueue registered styles on front end only
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterStyles' ), 99, 0 );
 		add_action( 'init', array( $this, 'setupEnqueueBlockStyles' ), 10, 0 );
+		add_filter('wp_preload_resources', [$this, 'setupPreloadResources'], 10, 1);
 	}
 
 	/**
@@ -36,18 +55,19 @@ class Enqueuer implements EnqueuerInterface {
 	public function addScript(
 		string $handle,
 		string $src,
-		array $dependencies = array(),
+		array|null $dependencies = array(),
 		$base_path = '',
 		$version = null,
 		bool $footer = true,
-		bool $use_asset_file = false
+		bool $use_asset_file = false,
+		string $preload = ''
 	): void {
 
 		if ( $use_asset_file ) {
 			$asset        = include get_parent_theme_file_path( ltrim( $src, '/' ) );
 			$src          = str_replace( '.asset.php', '.js', $src );
 			$version      = $asset['version'];
-			$dependencies = array_merge( $dependencies, $asset['dependencies'] );
+			$dependencies = array_merge( $dependencies, $asset['dependencies'] ?? array() );
 		}
 
 		$this->scripts = array_merge(
@@ -61,6 +81,10 @@ class Enqueuer implements EnqueuerInterface {
 				),
 			)
 		);
+
+		if ( $preload ) {
+			$this->preloadScripts[$handle] = $preload;
+		}
 	}
 
 	/**
@@ -80,18 +104,19 @@ class Enqueuer implements EnqueuerInterface {
 	public function addStyle(
 		string $handle,
 		string $src,
-		array $dependencies = array(),
+		array|null $dependencies = array(),
 		$base_path = '',
 		$version = null,
 		string $media = 'all',
 		bool $use_asset_file = false,
-		bool $enqueue = true
+		bool $enqueue = true,
+		string $preload = ''
 	): void {
 		if ( $use_asset_file ) {
 			$asset        = include get_parent_theme_file_path( ltrim( $src, '/' ) );
 			$src          = str_replace( '.asset.php', '.css', $src );
 			$version      = $asset['version'];
-			$dependencies = array_merge( $dependencies, $asset['dependencies'] );
+			$dependencies = array_merge( $dependencies, $asset['dependencies'] ?? array() );
 		}
 		$this->styles = array_merge(
 			$this->styles,
@@ -105,6 +130,10 @@ class Enqueuer implements EnqueuerInterface {
 				),
 			)
 		);
+
+		if ( $preload ) {
+			$this->preloadStyles[$handle] = $preload;
+		}
 	}
 
 	/**
@@ -267,5 +296,83 @@ class Enqueuer implements EnqueuerInterface {
 			$this->currentTime = date( 'U' );
 		}
 		return $this->currentTime;
+	}
+
+
+	/**
+	 * Callback for the 'wp_preload_resources' filter.
+	 *
+	 * Adds preload hints for scripts and styles that have been marked for preloading.
+	 *
+	 * @param array $preload_resources
+	 *   Existing preload resources.
+	 *
+	 * @return array
+	 *   Updated preload resources.
+	 */
+	public function setupPreloadResources(array $preload_resources): array {
+		// Process scripts marked for preloading
+		foreach ($this->preloadScripts as $handle => $preload_type) {
+		if (wp_script_is($handle, 'enqueued')) {
+			$asset = wp_scripts()->registered[$handle] ?? null;
+			if ($asset) {
+			$preload_resources[] = $this->buildPreloadArray($asset->src, $asset->ver, 'script', 'text/javascript');
+			}
+		}
+		}
+
+		// Process styles marked for preloading
+		foreach ($this->preloadStyles as $handle => $preload_type) {
+		if (wp_style_is($handle, 'enqueued')) {
+			$asset = wp_styles()->registered[$handle] ?? null;
+			if ($asset) {
+			$media = $asset->args ?? 'all';
+			$preload_resources[] = $this->buildPreloadArray($asset->src, $asset->ver, 'style', 'text/css', $media);
+			}
+		}
+		}
+
+		return $preload_resources;
+	}
+
+	/**
+	 * Build a preload array for a resource.
+	 *
+	 * @param string $src
+	 *   The resource source URL.
+	 * @param string|null $version
+	 *   The resource version.
+	 * @param string $as
+	 *   The resource type (script, style, etc.).
+	 * @param string $type
+	 *   The MIME type of the resource.
+	 * @param string $media
+	 *   The media query for the resource (for styles).
+	 *
+	 * @return array
+	 *   The preload array.
+	 */
+	protected function buildPreloadArray(string $src, ?string $version, string $as, string $type, string $media = 'all'): array {
+		$href = $src;
+		if ($version !== null) {
+			$href .= '?ver=' . $version;
+		}
+		$preload = [
+		'href' => $href,
+		'as' => $as,
+		'type' => $type,
+		];
+
+		// Add media for styles
+		if ($as === 'style') {
+		$preload['media'] = $media;
+		}
+
+		// Add crossorigin for external resources
+		if (strpos($src, '//') === 0) {
+		$preload['crossorigin'] = 'anonymous';
+		}
+
+		return $preload;
 	}
 }
