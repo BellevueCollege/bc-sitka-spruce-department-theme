@@ -1,6 +1,7 @@
 // WordPress webpack config.
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 const { getWebpackEntryPoints } = require( '@wordpress/scripts/utils/config' );
+const webpack = require( 'webpack' );
 
 // Utilities.
 const path = require( 'path' );
@@ -28,6 +29,12 @@ const scssEntryPoint = ( handle, block = false ) => {
 module.exports = {
 	...defaultConfig,
 	name: 'custom',
+	plugins: [
+        ...defaultConfig.plugins,
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
+    ],
 	module: {
 		...defaultConfig.module,
 		rules: [
