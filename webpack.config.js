@@ -1,6 +1,7 @@
 // WordPress webpack config.
 const defaultConfig = require( '@wordpress/scripts/config/webpack.config' );
 const { getWebpackEntryPoints } = require( '@wordpress/scripts/utils/config' );
+const webpack = require( 'webpack' );
 
 // Utilities.
 const path = require( 'path' );
@@ -58,6 +59,12 @@ module.exports = {
 		],
 		aggregateTimeout: 100, // Delay before rebuilding to batch changes (lowered for single file changes)
 	},
+	plugins: [
+        ...defaultConfig.plugins,
+        new webpack.ProvidePlugin({
+            process: 'process/browser',
+        }),
+    ],
 	module: {
 		...defaultConfig.module,
 		rules: [

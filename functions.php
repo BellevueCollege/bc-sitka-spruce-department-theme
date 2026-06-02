@@ -20,9 +20,11 @@ add_filter('timber/context', function ($context) {
 /**
  * Register Menus
  */
-$menus = Theme::menus();
-$menus->addMenu( 'main-menu', __( 'Main Menu', 'bc-sitka-spruce' ) );
-$menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
+add_action( 'after_setup_theme', function() {
+	$menus = Theme::menus();
+	$menus->addMenu( 'main-menu', __( 'Main Menu', 'bc-sitka-spruce' ) );
+	$menus->addMenu( 'cta-menu', __( 'Call-to-Action Menu', 'bc-sitka-spruce' ) );
+}, 5 );
 
 /**
  * Register Blocks
@@ -95,6 +97,25 @@ function block_registration_helper( array $blocks ) {
 		register_block_type( $block );
 	}
 }
+
+/**
+ * Disable FitText in Editor
+ * 
+ * This shouldn't be needed (it is included in theme.json), but that is not working consistantly. 
+ */
+add_filter( 'register_block_type_args', function( $args, $block_type ) {
+	$blocks = [
+		'core/heading',
+		'core/paragraph',
+		'core/verse',
+		'core/quote',
+		'core/pullquote',
+	];
+	if ( in_array( $block_type, $blocks, true ) ) {
+		$args['supports']['typography']['fitText'] = false;
+	}
+	return $args;
+}, 10, 2 );
 
 
 $enqueuer = Theme::enqueuer();

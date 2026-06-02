@@ -22,8 +22,10 @@ class BlockEditor implements BlockEditorInterface {
   protected array $usedOnTemplates = [];
 
   protected array $coreBlocksBlacklist = [
+    'core/accordion',
     'core/archives',
     'core/avatar',
+    'core/breadcrumbs',
     'core/button',
     'core/buttons',
     'core/calendar',
@@ -31,6 +33,8 @@ class BlockEditor implements BlockEditorInterface {
     'core/column',
     'core/columns',
     'core/comments',
+    'core/post-comments-count',
+    'core/post-comments-link',
     'core/latest-comments',
     'core/latest-posts',
     'core/legacy-widget',
@@ -70,6 +74,10 @@ class BlockEditor implements BlockEditorInterface {
     'core/social-links',
     //'core/table',
     'core/tag-cloud',
+    'core/terms-query',
+    'core/term-template',
+    'core/term-name',
+    'core/term-count',
     'core/template-part',
     'core/term-description',
     'core/verse',
@@ -133,7 +141,7 @@ class BlockEditor implements BlockEditorInterface {
     add_filter('block_categories_all', [$this, 'setupBlockGroups'], 10, 2);
     // add_filter('use_block_editor_for_post', [$this, 'setupBlockEditorForPost'], 10, 2);
     // add_action('acf/init', [$this, 'setupAcfBlocks'], 10, 1);
-    add_action('enqueue_block_editor_assets', [$this, 'setupBlockEditorStylesheet'], 99, 0);
+    add_action('enqueue_block_assets', [$this, 'setupBlockEditorStylesheet'], 99, 0);
     add_action('enqueue_block_editor_assets', [$this, 'setupAllowedBlockVariations'], 10, 0);
   }
 
@@ -332,11 +340,13 @@ class BlockEditor implements BlockEditorInterface {
    * Callback for the 'enqueue_block_editor_assets' action.
    */
   public function setupBlockEditorStylesheet(): void {
-    foreach ($this->stylesheets as $handle => $stylesheet) {
-      $stylesheet = strpos($stylesheet, '//') === false
-        ? get_theme_file_uri($stylesheet)
-        : $stylesheet;
-      wp_enqueue_style("bellevue-block-editor-theme-$handle", $stylesheet);
+    if ( is_admin() ) {
+      foreach ($this->stylesheets as $handle => $stylesheet) {
+        $stylesheet = strpos($stylesheet, '//') === false
+          ? get_theme_file_uri($stylesheet)
+          : $stylesheet;
+        wp_enqueue_style("bellevue-block-editor-theme-$handle", $stylesheet);
+      }
     }
   }
 

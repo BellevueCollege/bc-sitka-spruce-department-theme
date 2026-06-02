@@ -1,6 +1,6 @@
 {
     "$schema": "https://schemas.wp.org/trunk/theme.json",
-    "version": 2,
+    "version": 3,
     "customTemplates": [
         
     ],
@@ -19,7 +19,20 @@
         },
         "typography": {
             "fontSizes": [],
-            "customFontSize": false
+            "fontFamilies": [],
+            "customFontSize": false,
+            "defaultFontSizes": false,
+            "dropCap": false,
+            "fluid": false,
+            "fontStyle": false,
+            "fontWeight": false,
+            "letterSpacing": false,
+            "lineHeight": false,
+            "textColumns": false,
+            "textDecoration": false,
+            "textTransform": true,
+            "writingMode": false,
+            "textIndent": false
         },
         "color": {
             "defaultPalette": false,
@@ -57,8 +70,45 @@
                     "slug": "rainy-night-blue",
                     "name": "Rainy Night Blue",
                     "color": "var(--bc-rainy-night-blue)"
+                },
+                {
+                    "slug": "white",
+                    "name": "White",
+                    "color": "var(--white)"
+                },
+                {
+                    "slug": "black",
+                    "name": "Black",
+                    "color": "var(--black)"
                 }
             ]
+        },
+        "blocks": {
+            "core/heading": {
+                "typography": {
+                    "fitText": false
+                }
+            },
+            "core/paragraph": {
+                "typography": {
+                    "fitText": false
+                }
+            },
+            "core/verse": {
+                "typography": {
+                    "fitText": false
+                }
+            },
+            "core/quote": {
+                "typography": {
+                    "fitText": false
+                }
+            },
+            "core/pullquote": {
+                "typography": {
+                    "fitText": false
+                }
+            }
         }
     }
 }
