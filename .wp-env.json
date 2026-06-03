@@ -1,0 +1,21 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/wp-env.json",
+    "testsEnvironment": true,
+    "core": null,
+    "phpVersion": "8.2",
+    "plugins": [
+        "../third-party-plugins/advanced-custom-fields-pro",
+        "../bellevue-2022-theme-plugins/oho-views",
+        "https://downloads.wordpress.org/plugin/breadcrumb-trail.1.1.0.zip",
+        "../mayflower-blocks"
+    ],
+    "themes": ["."],
+    "config": {
+        "WP_DEBUG": true,
+        "WP_DEBUG_LOG": true,
+        "SCRIPT_DEBUG": true
+    },
+    "lifecycleScripts": {
+        "afterStart": "THEME_SLUG=$(basename \"$PWD\"); for SERVICE in cli tests-cli; do wp-env run \"$SERVICE\" wp theme activate \"$THEME_SLUG\"; wp-env run \"$SERVICE\" wp rewrite structure '/%postname%/' --hard; wp-env run \"$SERVICE\" wp rewrite flush; done"
+    }
+}

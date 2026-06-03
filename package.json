@@ -9,7 +9,14 @@
     "storybook": "concurrently \"npm run start\" \"storybook dev -p 6006\"",
     "storybook:only": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=${SITKA_CHROMATIC_PROJECT_TOKEN=}"
+    "chromatic": "npx chromatic --project-token=${SITKA_CHROMATIC_PROJECT_TOKEN=}",
+    "wp-env": "wp-env",
+    "env:start": "wp-env start",
+    "env:stop": "wp-env stop",
+    "test:e2e": "wp-scripts test-playwright",
+    "test:e2e:ui": "wp-scripts test-playwright --ui",
+    "test:e2e:debug": "wp-scripts test-playwright --debug",
+    "test:e2e:update": "wp-scripts test-playwright --update-snapshots"
   },
   "repository": {
     "type": "git",
@@ -30,12 +37,14 @@
   },
   "homepage": "https://github.com/BellevueCollege/bc-sitka-spruce-department-theme#readme",
   "devDependencies": {
+    "@axe-core/playwright": "^4.11.3",
     "@chromatic-com/storybook": "^5.1.2",
     "@nightwatch/vrt": "^3.5.2",
     "@storybook/addon-a11y": "^10.1.8",
     "@storybook/addon-docs": "^10.1.8",
     "@storybook/addon-links": "^10.1.8",
     "@storybook/html-vite": "^10.1.8",
+    "@wordpress/env": "^11.7.0",
     "@wordpress/scripts": "^32.1.0",
     "chromatic": "^17.0.0",
     "concurrently": "^9.0.0",
