@@ -127,7 +127,7 @@ class BlockEditor implements BlockEditorInterface {
         'bc-sitka-spruce/tabs-section',
         'bc-sitka-spruce/testimonial-section',
     ),
-    'action-items' => array(
+    'action-item' => array(
       'bc-sitka-spruce/accordion-section',
       'bc-sitka-spruce/announcement-banner',
       'bc-sitka-spruce/application-steps-tabs',
@@ -149,7 +149,7 @@ class BlockEditor implements BlockEditorInterface {
       'bc-sitka-spruce/tabs-section',
       'bc-sitka-spruce/testimonial-section',
     ),
-    'resolutions' => array(
+    'resolution' => array(
       'bc-sitka-spruce/accordion-section',
       'bc-sitka-spruce/announcement-banner',
       'bc-sitka-spruce/application-steps-tabs',
