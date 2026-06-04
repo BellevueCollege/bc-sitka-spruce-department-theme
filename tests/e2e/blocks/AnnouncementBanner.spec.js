@@ -68,7 +68,7 @@ test.describe('Announcement Banner Block', () => {
       ).toBeVisible();
     });
 
-    test('editor snapshot — with button and image', async ({ editor }) => {
+    test('editor snapshot — with button and image @visual', async ({ editor }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -83,7 +83,7 @@ test.describe('Announcement Banner Block', () => {
       });
     });
 
-    test('editor snapshot — with links and image', async ({ editor }) => {
+    test('editor snapshot — with links and image @visual', async ({ editor }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -98,7 +98,7 @@ test.describe('Announcement Banner Block', () => {
       });
     });
 
-    test('editor snapshot — no image', async ({ editor }) => {
+    test('editor snapshot — no image @visual', async ({ editor }) => {
       await editor.insertBlock({
         name: BLOCK_NAME,
         attributes: { data: FIXTURE.noImage() },
@@ -118,7 +118,7 @@ test.describe('Announcement Banner Block', () => {
 
   test.describe('Frontend', () => {
 
-    test('frontend snapshot — with button and image', async ({ editor, page }) => {
+    test('frontend snapshot — with button and image @visual', async ({ editor, page }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -135,7 +135,7 @@ test.describe('Announcement Banner Block', () => {
       });
     });
 
-    test('frontend snapshot — with links and image', async ({ editor, page }) => {
+    test('frontend snapshot — with links and image @visual', async ({ editor, page }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -152,7 +152,7 @@ test.describe('Announcement Banner Block', () => {
       });
     });
 
-    test('frontend snapshot — no image', async ({ editor, page }) => {
+    test('frontend snapshot — no image @visual', async ({ editor, page }) => {
       await editor.insertBlock({
         name: BLOCK_NAME,
         attributes: { data: FIXTURE.noImage() },
@@ -168,7 +168,7 @@ test.describe('Announcement Banner Block', () => {
       });
     });
 
-    test('renders button with correct href and target', async ({ editor, page }) => {
+    test('renders button with correct href and target @visual', async ({ editor, page }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -186,7 +186,7 @@ test.describe('Announcement Banner Block', () => {
       await expect(button).toHaveAttribute('target', '_blank');
     });
 
-    test('renders all links in repeater', async ({ editor, page }) => {
+    test('renders all links in repeater @visual', async ({ editor, page }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -205,7 +205,7 @@ test.describe('Announcement Banner Block', () => {
       ).toHaveAttribute('target', '_blank');
     });
 
-    test('renders image when provided', async ({ editor, page }) => {
+    test('renders image when provided @visual', async ({ editor, page }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -219,7 +219,7 @@ test.describe('Announcement Banner Block', () => {
       await expect(banner.locator('img')).toBeVisible();
     });
 
-    test('renders without image when not provided', async ({ editor, page }) => {
+    test('renders without image when not provided @visual', async ({ editor, page }) => {
       await editor.insertBlock({
         name: BLOCK_NAME,
         attributes: { data: FIXTURE.noImage() },
@@ -239,7 +239,7 @@ test.describe('Announcement Banner Block', () => {
 
   test.describe('Accessibility', () => {
 
-    test('passes axe audit — with button and image', async ({ editor, page }) => {
+    test('passes axe audit — with button and image @visual', async ({ editor, page }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -259,7 +259,7 @@ test.describe('Announcement Banner Block', () => {
       expect(results.violations).toEqual([]);
     });
 
-    test('passes axe audit — with links and image', async ({ editor, page }) => {
+    test('passes axe audit — with links and image @visual', async ({ editor, page }) => {
       const imageId = await uploadTestImage();
       await editor.insertBlock({
         name: BLOCK_NAME,
@@ -279,7 +279,7 @@ test.describe('Announcement Banner Block', () => {
       expect(results.violations).toEqual([]);
     });
 
-    test('passes axe audit — no image', async ({ editor, page }) => {
+    test('passes axe audit — no image @visual', async ({ editor, page }) => {
       await editor.insertBlock({
         name: BLOCK_NAME,
         attributes: { data: FIXTURE.noImage() },
