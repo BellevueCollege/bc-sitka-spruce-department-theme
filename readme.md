@@ -45,6 +45,23 @@ Once these requirements are installed, you can install project dependencies via 
 - `npm start` - Build SCSS and JS using dev settings, and watch for changes
 - `npm run storybook` - Builds specified files in storybook (great for testing!)
 
+## End-to-end tests
+
+Block editor and frontend tests use [wp-env](https://github.com/WordPress/gutenberg/tree/trunk/packages/env) and Playwright via `@wordpress/scripts`.
+
+Prerequisites: sibling directories referenced in `.wp-env.json` (`third-party-plugins`, `bellevue-2022-theme-plugins`, `mayflower-blocks`) must exist on your machine.
+
+```bash
+npm run env:start
+npm run build
+npm run test:e2e -- --project=desktop tests/e2e/blocks/PostsFeature.spec.js
+```
+
+Other useful commands:
+
+- `npm run test:e2e:ui` — Playwright UI mode
+- `npm run test:e2e:update` — refresh visual regression snapshots
+
 
 ## Documentation
 
