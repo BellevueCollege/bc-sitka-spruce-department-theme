@@ -25,12 +25,8 @@
                             {# Linking the title #}
                                 <a href="{{ post.link }}"><strong>{{ post.title }}</strong></a>
                             {# fetching date field#}    
-                                {% set raw_date = post.meta('meeting_date') ?: post.get_field('meeting_date') %}
-                            {# Only show if date exists#}
-                                {% if raw_date %}
-                                    - <span class="text-muted">{{ raw_date|date('F j, Y') }}</span>
-                                {% else %}
-                                    - <span class="text-muted">{{ post.date('F j, Y') }}</span>
+                                {% if post.localized_meeting_date %}
+                                    - <span class="text-muted">{{ post.localized_meeting_date }}</span>
                                 {% endif %}
                             </li>
                         {% endfor %}

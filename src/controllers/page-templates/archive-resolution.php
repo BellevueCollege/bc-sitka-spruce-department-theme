@@ -36,13 +36,18 @@ foreach ( $agendas as $agenda ) {
     $year = null; // always reset
     // try to get ACF details date first
     $meeting_date = $agenda->meta('meeting_date');
+
     if ( ! empty( $meeting_date ) ) {
         // Extract just the year from the ACF date field
         $year = gmdate( 'Y', strtotime( $meeting_date ) );
+        // use local WP timezone, strtotime for txt input & wp_date for local settings
+        $agenda->localized_meeting_date = wp_date( 'F j, Y', strtotime( $meeting_date ) );
     } else {
         //fallback to WP publish year if no meeting date
         // $agenda->post_date = timber version of publish date
-        $year = gmdate( 'Y', strtotime( $agenda->post_date ) );
+        $post_timestamp = strtotime( $agenda->post_date );
+        $year = gmdate( 'Y', strtotime( $post_timestamp ) );
+        $agenda->localized_meeting_date = wp_date( 'F j, Y', $post_timestamp );
     }
     // AFTER finding the year, add it to the array
     if ( $year ) {

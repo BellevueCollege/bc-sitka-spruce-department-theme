@@ -23,7 +23,7 @@
                     <ul class="agenda-list">
                         {% for post in posts %}
                             <li>
-                                <a href="{{ post.link }}">{{ post.meta('meeting_date')|date('F j, Y') }}</a>
+                                <a href="{{ post.link }}">{{ post.localized_meeting_date }}</a>
                                 {# Check for the Special Meeting Toggle #}
                                 {% if post.meta('special_meeting') %}
                                     <span class="special-badge" style="color: var(--bc-rainy-night-blue); font-weight: bold; margin-left: 10px;">
