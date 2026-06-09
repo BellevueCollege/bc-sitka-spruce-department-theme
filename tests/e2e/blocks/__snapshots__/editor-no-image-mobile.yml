@@ -1,0 +1,6 @@
+- 'document "Block: Announcement Banner"':
+  - article:
+    - heading "Test Announcement No Image" [level=2]
+    - paragraph: This announcement has no image set.
+    - link "Learn More Opens in a new tab":
+      - /url: https://example.com

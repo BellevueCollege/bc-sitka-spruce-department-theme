@@ -1,12 +1,7 @@
 // tests/e2e/blocks/PostsFeature.spec.js
-import { test, expect } from '@wordpress/e2e-test-utils-playwright';
+import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
-import {
-	getVisualSnapshotSkipReason,
-	publishAndGetUrl,
-	prepareEditorPage,
-	shouldSkipVisualSnapshot,
-} from '../helpers/editor.js';
+import { publishAndGetUrl, prepareEditorPage } from '../helpers/editor.js';
 import { seedPostsFeatureData } from '../helpers/wp-cli.js';
 
 const BLOCK_NAME = 'bc-sitka-spruce/posts-feature';
@@ -120,11 +115,7 @@ test.describe( 'Posts Feature Block', () => {
 
 		test( 'editor snapshot — full configuration @visual', async ( {
 			editor,
-		}, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		} ) => {
 
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -225,11 +216,7 @@ test.describe( 'Posts Feature Block', () => {
 		test( 'frontend snapshot — full configuration @visual', async ( {
 			editor,
 			page,
-		}, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		} ) => {
 
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -245,6 +232,44 @@ test.describe( 'Posts Feature Block', () => {
 				'posts-feature-frontend-full.png',
 				{ maxDiffPixelRatio: 0.02 }
 			);
+		} );
+	} );
+
+	test.describe( 'ARIA snapshots', () => {
+		test( 'editor — full configuration @aria', async ( { editor } ) => {
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: FIXTURE.full( seed ),
+			} );
+
+			const block = editor.canvas.locator(
+				`[data-type="${ BLOCK_NAME }"]`
+			);
+			await waitForFeaturedPostInEditor( editor, seed.featuredPostTitle );
+			await waitForListPostsInEditor( editor, seed.listPostTitles );
+			await expect( block ).toBeVisible();
+			await expect( block ).toMatchAriaSnapshot( {
+				name: 'posts-feature-editor-full.yml',
+			} );
+		} );
+
+		test( 'frontend — full configuration @aria', async ( {
+			editor,
+			page,
+		} ) => {
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: FIXTURE.full( seed ),
+			} );
+
+			const url = await publishAndGetUrl( editor, page );
+			await page.goto( url );
+
+			const section = getPostsFeatureLocator( page );
+			await expect( section ).toBeVisible();
+			await expect( section ).toMatchAriaSnapshot( {
+				name: 'posts-feature-frontend-full.yml',
+			} );
 		} );
 	} );
 

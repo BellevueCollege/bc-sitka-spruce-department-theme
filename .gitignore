@@ -66,6 +66,11 @@ yarn-error.log
 /storybook-static/
 *storybook.log
 
+# Playwright / E2E generated artifacts (do not commit)
+/artifacts/storage-states/
+/artifacts/test-results/
+/artifacts/e2e-seeds/
+
 #Nightwatch - don't commit 
 /vrt/diff
 /vrt/latest

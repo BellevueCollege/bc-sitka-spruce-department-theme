@@ -1,0 +1,25 @@
+- heading "Department News" [level=2]
+- text: Latest stories from our department.
+- link "View all news":
+  - /url: https://example.com/news
+- figure
+- text: Featured Story
+- heading "E2E Featured Post" [level=3]:
+  - link "E2E Featured Post":
+    - /url: http://localhost:8889/e2e-featured-post/
+- text: Summary for E2E Featured Post.
+- article:
+  - heading "E2E List Post 4" [level=3]:
+    - link "E2E List Post 4":
+      - /url: http://localhost:8889/e2e-list-post-4/
+  - text: Summary for E2E List Post 4.
+- article:
+  - heading "E2E List Post 1" [level=3]:
+    - link "E2E List Post 1":
+      - /url: http://localhost:8889/e2e-list-post-1/
+  - text: Summary for E2E List Post 1.
+- article:
+  - heading "E2E List Post 2" [level=3]:
+    - link "E2E List Post 2":
+      - /url: http://localhost:8889/e2e-list-post-2/
+  - text: Summary for E2E List Post 2.

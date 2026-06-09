@@ -52,81 +52,49 @@ Block editor and frontend tests use [wp-env](https://github.com/WordPress/gutenb
 Prerequisites: sibling directories referenced in `.wp-env.json` (`third-party-plugins`, `bellevue-2022-theme-plugins`, `mayflower-blocks`) must exist on your machine.
 
 ```bash
-npm run env:start
-npm run build
+npm run test:e2e
 npm run test:e2e -- --project=desktop tests/e2e/blocks/PostsFeature.spec.js
 ```
+
+`npm run test:e2e` runs the full suite across **desktop, tablet, and mobile**: functional tests natively on the host, then `@visual` snapshot tests in the pinned Playwright Docker image. It starts wp-env and builds assets once before both phases.
 
 Header and footer layout tests seed WordPress menus (`main-menu`, `cta-menu`) and ACF Site Options before running:
 
 ```bash
-npm run test:e2e -- --project=desktop tests/e2e/layout/HeaderFooter.spec.js
+npm run test:e2e -- tests/e2e/layout/HeaderFooter.spec.js
 ```
 
 Other useful commands:
 
-- `npm run test:e2e:ui` — Playwright UI mode
-- `npm run test:e2e:update` — refresh visual regression snapshots (desktop baselines)
-- `npm run test:e2e:update:full` — refresh snapshots for all viewport projects
+- `npm run test:e2e:functional` — functional tests only (host; includes `@aria` snapshots)
+- `npm run test:e2e:aria` — ARIA accessibility-tree snapshots only (host)
+- `npm run test:e2e:aria:update` — refresh `*.yml` ARIA baselines on the host
+- `npm run test:e2e:visual` — visual snapshot tests only (Docker)
+- `npm run test:e2e:visual:update` — refresh `*-container-{desktop,tablet,mobile}.png` baselines in Docker
+- `npm run test:e2e:ui` — Playwright UI mode (functional tests only)
+- `npm run test:e2e:debug` — Playwright debug mode (functional tests only)
 
-#### Visual snapshot scope
-
-`@visual` snapshot tests respect `E2E_VISUAL_SCOPE` at runtime:
-
-| Value | Behavior |
-| --- | --- |
-| `desktop` (default) | Snapshots run on `desktop` and `lambdatest-desktop` only; tablet and mobile are skipped |
-| `full` | Snapshots run on every Playwright project (desktop, tablet, mobile) |
+Visual tests always run in Docker so font rendering stays consistent across macOS, Linux, and Windows. The Docker phase uses `--network host` so the container reaches `http://localhost:8889`.
 
 ```bash
-# Default: desktop-only snapshots when running all projects
-npm run test:e2e
+# Verify @visual tests against existing baselines
+npm run test:e2e:visual
 
-# Full viewport coverage
-E2E_VISUAL_SCOPE=full npm run test:e2e
+# Refresh baselines after intentional UI changes
+npm run test:e2e:visual:update
 
-# Update tablet/mobile baselines after enabling full scope
-npm run test:e2e:update:full
+# Single spec
+npm run test:e2e:visual -- tests/e2e/layout/HeaderFooter.spec.js
 ```
 
-### LambdaTest Playwright visual tests (wp-env via tunnel)
-
-Playwright layout tests can run on LambdaTest cloud browsers against local wp-env using a LambdaTest tunnel. This keeps the seeded `E2E Site Chrome` fixture while comparing screenshots on Windows Chrome (`lambdatest-desktop` project). Baselines are stored separately from local `desktop` snapshots (e.g. `header-default-lambdatest-desktop.png`).
-
-Prerequisites:
-
-1. Export LambdaTest credentials:
-   ```bash
-   export LT_USERNAME="your-email"
-   export LT_ACCESS_KEY="your-access-key"
-   ```
-2. Download the LambdaTest tunnel binary (`LT`) from the LambdaTest dashboard. Place it in the project root or set `LT_BINARY` to its path.
-3. Optional: override the tunnel name (default `sitka-e2e`):
-   ```bash
-   export LT_TUNNEL_NAME="sitka-e2e"
-   ```
-
-Run the full workflow (wp-env, build, seed, tunnel, tests):
+Optional environment variables:
 
 ```bash
-./tests/e2e/scripts/run-lambdatest-visual.sh
+export WP_BASE_URL=http://localhost:8889
+export PLAYWRIGHT_DOCKER_IMAGE=mcr.microsoft.com/playwright:v1.60.0-noble
 ```
 
-Refresh LambdaTest snapshot baselines:
-
-```bash
-./tests/e2e/scripts/run-lambdatest-visual.sh --update-snapshots
-```
-
-Manual steps (if you already have wp-env and the tunnel running):
-
-```bash
-npm run env:start
-npm run build
-./node_modules/.bin/wp-env run tests-cli wp eval-file /var/www/html/wp-content/themes/bc-sitka-spruce-department-theme/tests/fixtures/seed-site-chrome.php
-./LT --user "$LT_USERNAME" --key "$LT_ACCESS_KEY" --tunnelName sitka-e2e
-npm run test:e2e:lambdatest -- --project=lambdatest-desktop tests/e2e/layout/HeaderFooter.spec.js
-```
+Commit updated `*-container-*.png` files when shared visual baselines change. Commit updated `__snapshots__/*.yml` files when ARIA tree baselines change.
 
 
 ## Documentation
@@ -163,18 +131,10 @@ Once the block has been created, ensure that it is registered in `functions.php`
 
 ### Running Visual Regression Tests
 
-This repo supports two LambdaTest visual regression paths:
-
 | Stack | Target | Command |
 |-------|--------|---------|
-| **Playwright + tunnel** | Local wp-env with seeded fixtures | `./tests/e2e/scripts/run-lambdatest-visual.sh` |
+| **Playwright (full suite)** | Functional on host + visual in Docker | `npm run test:e2e` |
+| **Playwright Docker** | Visual baselines only | `npm run test:e2e:visual` |
 | **Nightwatch VRT** | Public QA site (`bcqabackstopjs.kinsta.cloud`) | `npx nightwatch --env chrome,firefox` |
 
-Both require LambdaTest credentials:
-
-```bash
-export LT_USERNAME="USERNAME_GOES_HERE"
-export LT_ACCESS_KEY="TOKEN_GOES_HERE"
-```
-
-Nightwatch tests screenshot header, footer, and sock against the QA environment. Playwright tunnel tests use the seeded `E2E Site Chrome` page and store baselines under `tests/e2e/**/__snapshots__/` with a `lambdatest-desktop` suffix.
+Nightwatch tests screenshot header, footer, and sock against the QA environment and require LambdaTest credentials (`LT_USERNAME`, `LT_ACCESS_KEY`).

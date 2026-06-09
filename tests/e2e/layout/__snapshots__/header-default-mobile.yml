@@ -1,0 +1,8 @@
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://localhost:8889
+  - button "Menu"
+  - navigation "Main Menu"

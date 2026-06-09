@@ -1,0 +1,39 @@
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://localhost:8889
+  - navigation "Main Menu":
+    - list:
+      - listitem:
+        - link "Programs":
+          - /url: https://example.com/programs
+        - button "Toggle the Programs menu": 
+      - listitem:
+        - link "About":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact":
+          - /url: https://example.com/contact
+    - list:
+      - listitem:
+        - link "Apply Now":
+          - /url: https://example.com/apply
+      - listitem:
+        - link "Request Info":
+          - /url: https://example.com/request-info
+  - navigation:
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+      - listitem:
+        - link "Search":
+          - /url: "#"

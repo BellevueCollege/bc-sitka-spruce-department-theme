@@ -1,0 +1,28 @@
+- 'document "Block: News/Posts Feature"':
+  - textbox "Enter section title (required)..."
+  - textbox "Enter description (optional)..."
+  - link "View all news ":
+    - /url: https://example.com/news
+  - button "Edit Link"
+  - figure:
+    - img: Placeholder Image
+  - text: Featured Story
+  - heading "E2E Featured Post" [level=3]:
+    - link "E2E Featured Post":
+      - /url: "#"
+  - text: Summary for E2E Featured Post.
+  - article:
+    - heading "E2E List Post 4" [level=3]:
+      - link "E2E List Post 4":
+        - /url: http://localhost:8889/e2e-list-post-4/
+    - text: Summary for E2E List Post 4.
+  - article:
+    - heading "E2E List Post 1" [level=3]:
+      - link "E2E List Post 1":
+        - /url: http://localhost:8889/e2e-list-post-1/
+    - text: Summary for E2E List Post 1.
+  - article:
+    - heading "E2E List Post 2" [level=3]:
+      - link "E2E List Post 2":
+        - /url: http://localhost:8889/e2e-list-post-2/
+    - text: Summary for E2E List Post 2.

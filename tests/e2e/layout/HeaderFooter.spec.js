@@ -3,15 +3,15 @@
  *
  * Depends on seed-site-chrome.php to configure WordPress menus (main-menu,
  * cta-menu) and ACF Site Options before tests run. Visual snapshots are stored
- * per Playwright project under __snapshots__/. Scope is controlled at runtime
- * via E2E_VISUAL_SCOPE (desktop default, or full for all viewports).
+ * per Playwright project under __snapshots__/ (container-desktop, container-tablet,
+ * container-mobile when run via test:e2e:visual).
  */
-import { test, expect } from '@wordpress/e2e-test-utils-playwright';
+import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
 import {
-	getVisualSnapshotSkipReason,
-	shouldSkipVisualSnapshot,
-} from '../helpers/editor.js';
+	expandMainNavSubmenu,
+	openHeaderMenuIfCollapsed,
+} from '../helpers/header.js';
 import { seedSiteChromeData } from '../helpers/wp-cli.js';
 
 /** WCAG 2.x tags passed to axe-core scoped audits. */
@@ -35,6 +35,7 @@ test.describe( 'Header and Footer', () => {
 
 	test.describe( 'Header', () => {
 		test( 'renders top-level main navigation links', async ( { page } ) => {
+			await openHeaderMenuIfCollapsed( page );
 			const mainNav = page.locator( '#site-header--main-nav' );
 
 			for ( const label of seed.mainMenuTopLevelLabels ) {
@@ -46,16 +47,17 @@ test.describe( 'Header and Footer', () => {
 
 		// Child items live in a collapsed submenu; hover reveals them on desktop.
 		test( 'renders child link when submenu is expanded', async ( { page } ) => {
-			const mainNav = page.locator( '#site-header--main-nav' );
-			const programsLink = mainNav.getByRole( 'link', { name: 'Programs' } );
+			await openHeaderMenuIfCollapsed( page );
+			await expandMainNavSubmenu( page, 'Programs' );
 
-			await programsLink.hover();
+			const mainNav = page.locator( '#site-header--main-nav' );
 			await expect(
 				mainNav.getByRole( 'link', { name: seed.mainMenuChildLabel } )
 			).toBeVisible();
 		} );
 
 		test( 'renders CTA menu buttons', async ( { page } ) => {
+			await openHeaderMenuIfCollapsed( page );
 			const ctaNav = page.locator( '#site-header--cta' );
 
 			for ( const label of seed.ctaMenuLabels ) {
@@ -73,11 +75,7 @@ test.describe( 'Header and Footer', () => {
 			).toBeVisible();
 		} );
 
-		test( 'header snapshot — default state @visual', async ( { page }, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		test( 'header snapshot — default state @visual', async ( { page } ) => {
 
 			const header = page.locator( '#header-wrapper' );
 			await expect( header ).toBeVisible();
@@ -121,11 +119,7 @@ test.describe( 'Header and Footer', () => {
 			await expect( socialLinks ).toHaveCount( 3 );
 		} );
 
-		test( 'footer snapshot — default state @visual', async ( { page }, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		test( 'footer snapshot — default state @visual', async ( { page } ) => {
 
 			const footer = page.locator( 'footer.footer' );
 			await expect( footer ).toBeVisible();
@@ -133,6 +127,24 @@ test.describe( 'Header and Footer', () => {
 				'footer-default.png',
 				SCREENSHOT_OPTIONS
 			);
+		} );
+	} );
+
+	test.describe( 'ARIA snapshots', () => {
+		test( 'header — default state @aria', async ( { page } ) => {
+			const header = page.locator( '#header-wrapper' );
+			await expect( header ).toBeVisible();
+			await expect( header ).toMatchAriaSnapshot( {
+				name: 'header-default.yml',
+			} );
+		} );
+
+		test( 'footer — default state @aria', async ( { page } ) => {
+			const footer = page.locator( 'footer.footer' );
+			await expect( footer ).toBeVisible();
+			await expect( footer ).toMatchAriaSnapshot( {
+				name: 'footer-default.yml',
+			} );
 		} );
 	} );
 

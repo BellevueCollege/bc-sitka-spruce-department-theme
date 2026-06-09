@@ -13,13 +13,15 @@
     "wp-env": "wp-env",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
-    "test:e2e": "wp-scripts test-playwright",
-    "test:e2e:ui": "wp-scripts test-playwright --ui",
-    "test:e2e:debug": "wp-scripts test-playwright --debug",
-    "test:e2e:update": "wp-scripts test-playwright --update-snapshots",
-    "test:e2e:update:full": "E2E_VISUAL_SCOPE=full wp-scripts test-playwright --update-snapshots",
-    "test:e2e:lambdatest": "WP_BASE_URL=http://localhost:8889 wp-scripts test-playwright --config=playwright.lambdatest.config.js",
-    "test:e2e:lambdatest:update": "WP_BASE_URL=http://localhost:8889 wp-scripts test-playwright --config=playwright.lambdatest.config.js --update-snapshots"
+    "test:e2e": "./tests/e2e/scripts/run-e2e.sh",
+    "test:e2e:functional": "wp-scripts test-playwright --grep-invert @visual",
+    "test:e2e:aria": "wp-scripts test-playwright --grep @aria",
+    "test:e2e:aria:update": "wp-scripts test-playwright --grep @aria --update-snapshots=changed",
+    "test:e2e:ui": "wp-scripts test-playwright --ui --grep-invert @visual",
+    "test:e2e:debug": "wp-scripts test-playwright --debug --grep-invert @visual",
+    "test:e2e:visual": "./tests/e2e/scripts/run-visual-docker.sh",
+    "test:e2e:visual:update": "./tests/e2e/scripts/run-visual-docker.sh --update-snapshots=changed",
+    "test:e2e:visual:playwright": "E2E_VISUAL_DOCKER=1 PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1 wp-scripts test-playwright --grep @visual"
   },
   "repository": {
     "type": "git",

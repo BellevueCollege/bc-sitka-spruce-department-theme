@@ -1,12 +1,7 @@
 // tests/e2e/blocks/announcement-banner.spec.js
-import { test, expect } from '@wordpress/e2e-test-utils-playwright';
+import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
-import {
-	getVisualSnapshotSkipReason,
-	publishAndGetUrl,
-	prepareEditorPage,
-	shouldSkipVisualSnapshot,
-} from '../helpers/editor.js';
+import { publishAndGetUrl, prepareEditorPage } from '../helpers/editor.js';
 import { uploadTestImage } from '../helpers/wp-cli.js';
 
 const BLOCK_NAME = 'bc-sitka-spruce/announcement-banner';
@@ -91,11 +86,7 @@ test.describe( 'Announcement Banner Block', () => {
 
 		test( 'editor snapshot — with button and image @visual', async ( {
 			editor,
-		}, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		} ) => {
 
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
@@ -115,11 +106,7 @@ test.describe( 'Announcement Banner Block', () => {
 
 		test( 'editor snapshot — with links and image @visual', async ( {
 			editor,
-		}, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		} ) => {
 
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
@@ -137,11 +124,7 @@ test.describe( 'Announcement Banner Block', () => {
 			} );
 		} );
 
-		test( 'editor snapshot — no image @visual', async ( { editor }, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		test( 'editor snapshot — no image @visual', async ( { editor } ) => {
 
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -163,11 +146,7 @@ test.describe( 'Announcement Banner Block', () => {
 		test( 'frontend snapshot — with button and image @visual', async ( {
 			editor,
 			page,
-		}, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		} ) => {
 
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
@@ -188,11 +167,7 @@ test.describe( 'Announcement Banner Block', () => {
 		test( 'frontend snapshot — with links and image @visual', async ( {
 			editor,
 			page,
-		}, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		} ) => {
 
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
@@ -213,11 +188,7 @@ test.describe( 'Announcement Banner Block', () => {
 		test( 'frontend snapshot — no image @visual', async ( {
 			editor,
 			page,
-		}, testInfo ) => {
-			test.skip(
-				shouldSkipVisualSnapshot( testInfo.project ),
-				getVisualSnapshotSkipReason( testInfo.project )
-			);
+		} ) => {
 
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -314,8 +285,116 @@ test.describe( 'Announcement Banner Block', () => {
 		} );
 	} );
 
+	test.describe( 'ARIA snapshots', () => {
+		test( 'editor — with button and image @aria', async ( { editor } ) => {
+			const imageId = uploadTestImage();
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: { data: FIXTURE.withButton( imageId ) },
+			} );
+
+			const block = editor.canvas.locator(
+				`[data-type="${ BLOCK_NAME }"]`
+			);
+			await waitForBlockToRender( editor, BLOCK_NAME );
+			await expect( block ).toBeVisible();
+			await expect( block ).toMatchAriaSnapshot( {
+				name: 'editor-with-button.yml',
+			} );
+		} );
+
+		test( 'editor — with links and image @aria', async ( { editor } ) => {
+			const imageId = uploadTestImage();
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: { data: FIXTURE.withLinks( imageId ) },
+			} );
+
+			const block = editor.canvas.locator(
+				`[data-type="${ BLOCK_NAME }"]`
+			);
+			await waitForBlockToRender( editor, BLOCK_NAME );
+			await expect( block ).toBeVisible();
+			await expect( block ).toMatchAriaSnapshot( {
+				name: 'editor-with-links.yml',
+			} );
+		} );
+
+		test( 'editor — no image @aria', async ( { editor } ) => {
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: { data: FIXTURE.noImage() },
+			} );
+
+			const block = editor.canvas.locator(
+				`[data-type="${ BLOCK_NAME }"]`
+			);
+			await waitForBlockToRender( editor, BLOCK_NAME );
+			await expect( block ).toBeVisible();
+			await expect( block ).toMatchAriaSnapshot( {
+				name: 'editor-no-image.yml',
+			} );
+		} );
+
+		test( 'frontend — with button and image @aria', async ( {
+			editor,
+			page,
+		} ) => {
+			const imageId = uploadTestImage();
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: { data: FIXTURE.withButton( imageId ) },
+			} );
+
+			const url = await publishAndGetUrl( editor, page );
+			await page.goto( url );
+
+			const banner = getBannerLocator( page, 'Test Announcement' );
+			await expect( banner ).toBeVisible();
+			await expect( banner ).toMatchAriaSnapshot( {
+				name: 'frontend-with-button.yml',
+			} );
+		} );
+
+		test( 'frontend — with links and image @aria', async ( {
+			editor,
+			page,
+		} ) => {
+			const imageId = uploadTestImage();
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: { data: FIXTURE.withLinks( imageId ) },
+			} );
+
+			const url = await publishAndGetUrl( editor, page );
+			await page.goto( url );
+
+			const banner = getBannerLocator( page, 'Test Announcement' );
+			await expect( banner ).toBeVisible();
+			await expect( banner ).toMatchAriaSnapshot( {
+				name: 'frontend-with-links.yml',
+			} );
+		} );
+
+		test( 'frontend — no image @aria', async ( { editor, page } ) => {
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: { data: FIXTURE.noImage() },
+			} );
+
+			const url = await publishAndGetUrl( editor, page );
+			await page.goto( url );
+
+			const banner = getBannerLocator( page, 'Test Announcement No Image' );
+			await expect( banner ).toBeVisible();
+			await expect( banner ).toMatchAriaSnapshot( {
+				name: 'frontend-no-image.yml',
+			} );
+		} );
+	} );
+
 	test.describe( 'Accessibility', () => {
-		test( 'passes axe audit — with button and image @visual', async ( {
+		test( 'passes axe audit — with button and image', async ( {
 			editor,
 			page,
 		} ) => {
@@ -340,7 +419,7 @@ test.describe( 'Announcement Banner Block', () => {
 			expect( results.violations ).toEqual( [] );
 		} );
 
-		test( 'passes axe audit — with links and image @visual', async ( {
+		test( 'passes axe audit — with links and image', async ( {
 			editor,
 			page,
 		} ) => {
@@ -365,7 +444,7 @@ test.describe( 'Announcement Banner Block', () => {
 			expect( results.violations ).toEqual( [] );
 		} );
 
-		test( 'passes axe audit — no image @visual', async ( { editor, page } ) => {
+		test( 'passes axe audit — no image', async ( { editor, page } ) => {
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
 				attributes: { data: FIXTURE.noImage() },
