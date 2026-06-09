@@ -52,6 +52,7 @@ export function uploadTestImage() {
 }
 
 let cachedPostsFeatureSeed = null;
+let cachedSiteChromeSeed = null;
 
 /**
  * Seed categories and posts for Posts Feature e2e tests.
@@ -66,4 +67,24 @@ export function seedPostsFeatureData() {
 	);
 	cachedPostsFeatureSeed = JSON.parse( result );
 	return cachedPostsFeatureSeed;
+}
+
+/**
+ * Seed menus, ACF Site Options, and a test page for header/footer e2e tests.
+ *
+ * Runs seed-site-chrome.php in the wp-env tests-cli container. Result is
+ * cached for the Playwright worker process.
+ *
+ * @return {{ pageUrl: string, mainMenuTopLevelLabels: string[], mainMenuChildLabel: string, ctaMenuLabels: string[], phoneDisplay: string, siteTitle: string, addressLine: string }}
+ */
+export function seedSiteChromeData() {
+	if ( cachedSiteChromeSeed ) {
+		return cachedSiteChromeSeed;
+	}
+
+	const result = runTestsCli(
+		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-site-chrome.php`
+	);
+	cachedSiteChromeSeed = JSON.parse( result );
+	return cachedSiteChromeSeed;
 }

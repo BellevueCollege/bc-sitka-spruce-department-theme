@@ -1,7 +1,12 @@
 // tests/e2e/blocks/announcement-banner.spec.js
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 import AxeBuilder from '@axe-core/playwright';
-import { publishAndGetUrl, prepareEditorPage } from '../helpers/editor.js';
+import {
+	getVisualSnapshotSkipReason,
+	publishAndGetUrl,
+	prepareEditorPage,
+	shouldSkipVisualSnapshot,
+} from '../helpers/editor.js';
 import { uploadTestImage } from '../helpers/wp-cli.js';
 
 const BLOCK_NAME = 'bc-sitka-spruce/announcement-banner';
@@ -86,7 +91,12 @@ test.describe( 'Announcement Banner Block', () => {
 
 		test( 'editor snapshot — with button and image @visual', async ( {
 			editor,
-		} ) => {
+		}, testInfo ) => {
+			test.skip(
+				shouldSkipVisualSnapshot( testInfo.project ),
+				getVisualSnapshotSkipReason( testInfo.project )
+			);
+
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -105,7 +115,12 @@ test.describe( 'Announcement Banner Block', () => {
 
 		test( 'editor snapshot — with links and image @visual', async ( {
 			editor,
-		} ) => {
+		}, testInfo ) => {
+			test.skip(
+				shouldSkipVisualSnapshot( testInfo.project ),
+				getVisualSnapshotSkipReason( testInfo.project )
+			);
+
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -122,7 +137,12 @@ test.describe( 'Announcement Banner Block', () => {
 			} );
 		} );
 
-		test( 'editor snapshot — no image @visual', async ( { editor } ) => {
+		test( 'editor snapshot — no image @visual', async ( { editor }, testInfo ) => {
+			test.skip(
+				shouldSkipVisualSnapshot( testInfo.project ),
+				getVisualSnapshotSkipReason( testInfo.project )
+			);
+
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
 				attributes: { data: FIXTURE.noImage() },
@@ -143,7 +163,12 @@ test.describe( 'Announcement Banner Block', () => {
 		test( 'frontend snapshot — with button and image @visual', async ( {
 			editor,
 			page,
-		} ) => {
+		}, testInfo ) => {
+			test.skip(
+				shouldSkipVisualSnapshot( testInfo.project ),
+				getVisualSnapshotSkipReason( testInfo.project )
+			);
+
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -163,7 +188,12 @@ test.describe( 'Announcement Banner Block', () => {
 		test( 'frontend snapshot — with links and image @visual', async ( {
 			editor,
 			page,
-		} ) => {
+		}, testInfo ) => {
+			test.skip(
+				shouldSkipVisualSnapshot( testInfo.project ),
+				getVisualSnapshotSkipReason( testInfo.project )
+			);
+
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -183,7 +213,12 @@ test.describe( 'Announcement Banner Block', () => {
 		test( 'frontend snapshot — no image @visual', async ( {
 			editor,
 			page,
-		} ) => {
+		}, testInfo ) => {
+			test.skip(
+				shouldSkipVisualSnapshot( testInfo.project ),
+				getVisualSnapshotSkipReason( testInfo.project )
+			);
+
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
 				attributes: { data: FIXTURE.noImage() },

@@ -2,9 +2,10 @@
 import { test, expect } from '@wordpress/e2e-test-utils-playwright';
 import AxeBuilder from '@axe-core/playwright';
 import {
+	getVisualSnapshotSkipReason,
 	publishAndGetUrl,
 	prepareEditorPage,
-	skipUnlessDesktop,
+	shouldSkipVisualSnapshot,
 } from '../helpers/editor.js';
 import { seedPostsFeatureData } from '../helpers/wp-cli.js';
 
@@ -121,8 +122,8 @@ test.describe( 'Posts Feature Block', () => {
 			editor,
 		}, testInfo ) => {
 			test.skip(
-				skipUnlessDesktop( testInfo.project ),
-				'Visual tests run on desktop only.'
+				shouldSkipVisualSnapshot( testInfo.project ),
+				getVisualSnapshotSkipReason( testInfo.project )
 			);
 
 			await editor.insertBlock( {
@@ -226,8 +227,8 @@ test.describe( 'Posts Feature Block', () => {
 			page,
 		}, testInfo ) => {
 			test.skip(
-				skipUnlessDesktop( testInfo.project ),
-				'Visual tests run on desktop only.'
+				shouldSkipVisualSnapshot( testInfo.project ),
+				getVisualSnapshotSkipReason( testInfo.project )
 			);
 
 			await editor.insertBlock( {

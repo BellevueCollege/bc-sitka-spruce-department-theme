@@ -57,10 +57,76 @@ npm run build
 npm run test:e2e -- --project=desktop tests/e2e/blocks/PostsFeature.spec.js
 ```
 
+Header and footer layout tests seed WordPress menus (`main-menu`, `cta-menu`) and ACF Site Options before running:
+
+```bash
+npm run test:e2e -- --project=desktop tests/e2e/layout/HeaderFooter.spec.js
+```
+
 Other useful commands:
 
 - `npm run test:e2e:ui` — Playwright UI mode
-- `npm run test:e2e:update` — refresh visual regression snapshots
+- `npm run test:e2e:update` — refresh visual regression snapshots (desktop baselines)
+- `npm run test:e2e:update:full` — refresh snapshots for all viewport projects
+
+#### Visual snapshot scope
+
+`@visual` snapshot tests respect `E2E_VISUAL_SCOPE` at runtime:
+
+| Value | Behavior |
+| --- | --- |
+| `desktop` (default) | Snapshots run on `desktop` and `lambdatest-desktop` only; tablet and mobile are skipped |
+| `full` | Snapshots run on every Playwright project (desktop, tablet, mobile) |
+
+```bash
+# Default: desktop-only snapshots when running all projects
+npm run test:e2e
+
+# Full viewport coverage
+E2E_VISUAL_SCOPE=full npm run test:e2e
+
+# Update tablet/mobile baselines after enabling full scope
+npm run test:e2e:update:full
+```
+
+### LambdaTest Playwright visual tests (wp-env via tunnel)
+
+Playwright layout tests can run on LambdaTest cloud browsers against local wp-env using a LambdaTest tunnel. This keeps the seeded `E2E Site Chrome` fixture while comparing screenshots on Windows Chrome (`lambdatest-desktop` project). Baselines are stored separately from local `desktop` snapshots (e.g. `header-default-lambdatest-desktop.png`).
+
+Prerequisites:
+
+1. Export LambdaTest credentials:
+   ```bash
+   export LT_USERNAME="your-email"
+   export LT_ACCESS_KEY="your-access-key"
+   ```
+2. Download the LambdaTest tunnel binary (`LT`) from the LambdaTest dashboard. Place it in the project root or set `LT_BINARY` to its path.
+3. Optional: override the tunnel name (default `sitka-e2e`):
+   ```bash
+   export LT_TUNNEL_NAME="sitka-e2e"
+   ```
+
+Run the full workflow (wp-env, build, seed, tunnel, tests):
+
+```bash
+./tests/e2e/scripts/run-lambdatest-visual.sh
+```
+
+Refresh LambdaTest snapshot baselines:
+
+```bash
+./tests/e2e/scripts/run-lambdatest-visual.sh --update-snapshots
+```
+
+Manual steps (if you already have wp-env and the tunnel running):
+
+```bash
+npm run env:start
+npm run build
+./node_modules/.bin/wp-env run tests-cli wp eval-file /var/www/html/wp-content/themes/bc-sitka-spruce-department-theme/tests/fixtures/seed-site-chrome.php
+./LT --user "$LT_USERNAME" --key "$LT_ACCESS_KEY" --tunnelName sitka-e2e
+npm run test:e2e:lambdatest -- --project=lambdatest-desktop tests/e2e/layout/HeaderFooter.spec.js
+```
 
 
 ## Documentation
@@ -97,18 +163,18 @@ Once the block has been created, ensure that it is registered in `functions.php`
 
 ### Running Visual Regression Tests
 
-This repo is set up to support Visual Regression Testing (VRT) using NightwatchJS and LambdaTest.
+This repo supports two LambdaTest visual regression paths:
 
-In order to use LambdaTest, a username and token must be available. These can be set using environmental variables, or as an export in your terminal session.
+| Stack | Target | Command |
+|-------|--------|---------|
+| **Playwright + tunnel** | Local wp-env with seeded fixtures | `./tests/e2e/scripts/run-lambdatest-visual.sh` |
+| **Nightwatch VRT** | Public QA site (`bcqabackstopjs.kinsta.cloud`) | `npx nightwatch --env chrome,firefox` |
 
-To set within your session, use the following command (after filling in your credentials from LambdaTest):
-
-```bash
-export LT_USERNAME="USERNAME_GOES_HERE" export LT_ACCESS_KEY="TOKEN_GOES_HERE"
-```
-
-Once this is set, you can run the tests via:
+Both require LambdaTest credentials:
 
 ```bash
-npx nightwatch --env chrome,firefox
+export LT_USERNAME="USERNAME_GOES_HERE"
+export LT_ACCESS_KEY="TOKEN_GOES_HERE"
 ```
+
+Nightwatch tests screenshot header, footer, and sock against the QA environment. Playwright tunnel tests use the seeded `E2E Site Chrome` page and store baselines under `tests/e2e/**/__snapshots__/` with a `lambdatest-desktop` suffix.
