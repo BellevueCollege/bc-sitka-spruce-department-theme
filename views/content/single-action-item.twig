@@ -1,0 +1,65 @@
+{#
+/**
+ * @file
+ * Bellevue template for a action item.
+ */
+#}
+{% extends '@views/system/wrapper.twig' %}
+
+{% block content %}
+    {# formatting date in banner #}  
+    {% set raw_date = post.meta('meeting_date') %}
+    {% set meeting_date = raw_date ? raw_date|date('F j, Y') : '' %}
+    {% set is_special = agenda_obj.meta('special_meeting') ? '(Special Meeting)' : '' %}
+
+    <div class="flexible-page">
+        {# Pass date into banner through subtitle #}
+        {% set banner_subtitle = meeting_date ? (meeting_date|date('F j, Y') ~ ' ' ~ is_special) : is_special %}
+
+        {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
+            title: post.title,
+            subtitle: banner_subtitle
+        } %}
+
+        <div class="action-item-single-page container-xl pb-4">
+            <div class="row">
+                <div class="col-lg-8">
+                    {{ post.content }}
+                </div>
+
+            {# Only show call out if one or more options exist #}
+            {% set agenda_id = post.meta('associated_agenda') %}
+            {% set resolution_id = post.meta('related_resolutions') %}
+
+            {% if agenda_id or resolution_id %}
+                <div class="col-lg-4">
+                    {% set related_html %}
+                        <ul class="list-unstyled mb-0">
+                            {% if agenda_id %}
+                                {# Convert the raw ACF data into a Timber Post object #}
+                                {% set agenda = Post(agenda_id) %}
+                                <li><strong>Agenda:</strong>
+                                    <a href="{{ agenda.link }}">{{ agenda.title }}</a>
+                                </li>
+                            {% endif %}
+                            {% if resolution_id %}
+                                {#Covert raw to timber Post Obj.#}
+                                {% set resolution = Post(resolution_id) %}
+                                <li class="{{ agenda_id ? 'mt-2' : '' }}">
+                                    <strong>Resolution:</strong> 
+                                    <a href="{{ resolution.link }}">{{ resolution.title }}</a>
+                                </li>
+                            {% endif %}
+                        </ul>
+                    {% endset %}
+
+                    {% include '@stories/callout/callout.twig' with {
+                            title: 'Related Content',
+                            links: related_html,
+                            wrapper_classes: 'callout-wrapper'
+                    } %}
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}
