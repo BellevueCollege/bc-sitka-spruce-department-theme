@@ -38,10 +38,17 @@ foreach ( $agendas as $agenda ) {
     $meeting_date = $agenda->meta('meeting_date');
 
     if ( ! empty( $meeting_date ) ) {
-        // Extract just the year from the ACF date field
-        $year = gmdate( 'Y', strtotime( $meeting_date ) );
-        // use local WP timezone, strtotime for txt input & wp_date for local settings
-        $agenda->localized_meeting_date = wp_date( 'F j, Y', strtotime( $meeting_date ) );
+        // ACF date picker values are calendar dates; parse in the site timezone to avoid day offset.
+        $date_time = DateTimeImmutable::createFromFormat( '!Ymd', $meeting_date, wp_timezone() );
+
+        if ( ! $date_time ) {
+            $date_time = date_create_immutable( $meeting_date, wp_timezone() );
+        }
+
+        if ( $date_time ) {
+            $year = $date_time->format( 'Y' );
+            $agenda->localized_meeting_date = wp_date( 'F j, Y', $date_time->getTimestamp(), wp_timezone() );
+        }
     } else {
         //fallback to WP publish year if no meeting date
         // $agenda->post_date = timber version of publish date
