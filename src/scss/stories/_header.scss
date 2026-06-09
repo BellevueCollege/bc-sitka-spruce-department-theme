@@ -109,6 +109,25 @@
 	}
 	&--site-navbar {
 		grid-area: navbar;
+
+		// Let the menu column wrap below the site title when items no longer fit
+		// beside it. min(100%, max-content) sizes the column to the full menu width
+		// so flex-wrap moves the whole block to the next row instead of shrinking it.
+		@include media-breakpoint-up($header-desktop-breakpoint) {
+			align-items: center;
+
+			> #site-header--menu-column {
+				flex: 1 1 0;
+				min-width: min(100%, max-content);
+				max-width: 100%;
+
+				.offcanvas-lg,
+				.offcanvas-body {
+					width: 100%;
+					max-width: 100%;
+				}
+			}
+		}
 	}
 
 	// Hamburger Menu
@@ -151,14 +170,20 @@
 	}
 
 	@include media-breakpoint-up($header-desktop-breakpoint) {
+		width: 100%;
+		max-width: 100%;
+		min-width: 0;
+
 		#site-header--main-nav {
 			padding-top: 0.5rem;
+			max-width: 100%;
+			min-width: 0;
 		}
 		#site-header--cta {
 			padding-top: 0.75rem;
 			padding-left: 1rem;
 		}
-}
+	}
 }
 
 #site-header--offcanvas {

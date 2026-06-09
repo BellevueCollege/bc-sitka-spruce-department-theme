@@ -127,7 +127,7 @@
       &::before {
         color: var( --white );
       }
-      
+
       &:focus {
         outline-color: var( --white );
       }
@@ -169,8 +169,10 @@
     &>ul {
       display: flex;
       justify-content: flex-end;
-			flex-wrap: wrap;
-      width: 100%;
+      flex-wrap: wrap;
+      width: max-content;
+      max-width: 100%;
+      margin-left: auto;
     }
 
     &>ul.menu>li>a {
