@@ -1,0 +1,68 @@
+{#
+/**
+ * @file
+ * Bellevue template for a resolution.
+ */
+#}
+{% extends '@views/system/wrapper.twig' %}
+
+{% block content %}
+    {# formatting date in banner #}
+    {% set raw_date = post.meta('meeting_date') %}
+    {% set meeting_date = raw_date ? raw_date|date('F j, Y') : '' %}
+    {% set is_special = post.meta('special_meeting') ? '(Special Meeting)' : '' %}
+
+    <div class="flexible-page">
+        {# Pass date into banner through subtitle #}
+        {% set banner_subtitle = meeting_date ? (meeting_date|date('F j, Y') ~ ' ' ~ is_special) : is_special %}
+
+        {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
+            title: post.title,
+            subtitle: banner_subtitle
+        } %}
+
+        <div class="resolution-single-page container-xl pb-4">
+            <div class="row">
+                <div class="col-lg-8">
+                    {{ post.content }}
+                </div>
+
+                {# call out display logic#}
+                {% set action_item_id = post.meta('associated_action_item') %}
+                {% set agenda_id = post.meta('associated_agenda') %}
+            
+                {% if agenda_id or action_item_id %}
+                    {# Pull in Associated Agenda #}
+                    <div class="col-lg-4">
+                        {% set related_html %}
+                            <ul class="list-unstyled mb-0">
+                                {% if agenda_id %}
+                                    {# Convert raw into Timber P. Obj.#}
+                                    {% set agenda = Post(agenda_id) %}
+                                    <li><strong>Agenda:</strong>
+                                        <a href="{{ agenda.link }}">{{ agenda.title }}</a>
+                                    </li>
+                                {% endif %}
+
+                                {% if action_item_id %}
+                                    {# Convert raw ACF into Timber P. Obj. #}
+                                    {% set action_item = Post(action_item_id) %}
+                                    <li class="{{ agenda_id ? 'mt-2' : '' }}">
+                                    <strong>Action Item:</strong>
+                                        <a href="{{ action_item.link }}">{{ action_item.title }}</a>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        {% endset %}
+
+                        {% include '@stories/callout/callout.twig' with {
+                            title: 'Related Content',
+                            links: related_html,
+                            wrapper_classes: 'callout-wrapper'
+                        } %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}
