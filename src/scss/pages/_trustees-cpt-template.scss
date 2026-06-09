@@ -1,0 +1,25 @@
+.single-agendas, 
+.single-action-item, 
+.single-resolution,
+.post-type-archive-agendas,
+.post-type-archive-action-item,
+.post-type-archive-resolution {
+    #main-content .flexible-page-intro-wrapper {
+        margin-bottom: 1.5rem !important; 
+    }
+	.tab-wrapper.container-xl,
+	.block-wrapper.alignstandard {
+	        // Change the big margin to the 'little bit';)
+			grid-column: 1/-1 !important; // span full width
+			padding-left: 0 !important; //removes left gap to align with header text
+			padding-top: 0 !important;
+	}
+}
+
+.post-type-archive-agendas {
+	.special-badge {
+		color: var(--bc-rainy-night-blue);
+		font-weight: bold;
+		margin-left: 10px;
+	}
+}
