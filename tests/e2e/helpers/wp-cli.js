@@ -109,6 +109,7 @@ function importTestImageAttachment() {
 let cachedTestImageAttachmentId = null;
 let cachedPostsFeatureSeed = null;
 let cachedSiteChromeSeed = null;
+let editorPreferencesSeeded = false;
 
 /**
  * Upload the standard announcement-banner test image and return its attachment ID.
@@ -128,6 +129,27 @@ export function uploadTestImage() {
 
 	cachedTestImageAttachmentId = importTestImageAttachment();
 	return cachedTestImageAttachmentId;
+}
+
+/**
+ * Disable the starter pattern modal for the admin user (idempotent).
+ */
+export function seedEditorPreferences() {
+	if ( editorPreferencesSeeded ) {
+		return;
+	}
+
+	if ( isVisualDockerRun() ) {
+		throw new Error(
+			'Editor preferences must be seeded on the host before Docker visual runs. ' +
+				'Run npm run test:e2e:visual so prepare-visual-docker-host.mjs seeds first.'
+		);
+	}
+
+	runTestsCli(
+		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-editor-preferences.php`
+	);
+	editorPreferencesSeeded = true;
 }
 
 /**

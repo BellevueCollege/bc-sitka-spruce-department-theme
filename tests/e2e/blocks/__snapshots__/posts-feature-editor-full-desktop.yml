@@ -3,7 +3,6 @@
   - textbox "Enter description (optional)..."
   - link "View all news ":
     - /url: https://example.com/news
-  - button "Edit Link"
   - figure:
     - img: Placeholder Image
   - text: Featured Story

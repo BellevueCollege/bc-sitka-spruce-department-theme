@@ -26,6 +26,7 @@ const projects = isVisualDockerProjectEnabled()
 
 export default defineConfig( {
 	...baseConfig,
+	globalSetup: './tests/e2e/global-setup.js',
 	testDir: './tests/e2e',
 	// wp-env runs on the host when Playwright is inside Docker (--network host).
 	webServer: isVisualDockerRun() ? undefined : baseConfig.webServer,

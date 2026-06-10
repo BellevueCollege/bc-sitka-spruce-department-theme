@@ -16,6 +16,6 @@
         "SCRIPT_DEBUG": true
     },
     "lifecycleScripts": {
-        "afterStart": "THEME_SLUG=$(basename \"$PWD\"); for SERVICE in cli tests-cli; do wp-env run \"$SERVICE\" wp theme activate \"$THEME_SLUG\"; wp-env run \"$SERVICE\" wp rewrite structure '/%postname%/' --hard; wp-env run \"$SERVICE\" wp rewrite flush; done"
+        "afterStart": "THEME_SLUG=$(basename \"$PWD\"); for SERVICE in cli tests-cli; do wp-env run \"$SERVICE\" wp theme activate \"$THEME_SLUG\"; wp-env run \"$SERVICE\" wp rewrite structure '/%postname%/' --hard; wp-env run \"$SERVICE\" wp rewrite flush; wp-env run \"$SERVICE\" wp eval-file \"/var/www/html/wp-content/themes/$THEME_SLUG/tests/fixtures/seed-editor-preferences.php\"; done"
     }
 }
