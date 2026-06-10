@@ -15,7 +15,7 @@ import {
 import { seedSiteChromeData } from '../helpers/wp-cli.js';
 
 /** WCAG 2.x tags passed to axe-core scoped audits. */
-const WCAG_TAGS = [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ];
+const WCAG_TAGS = [ 'wcag2a', 'wcag2aa', 'wcag22a', 'wcag22aa', 'best-practice' ];
 
 /** Allow minor cross-environment rendering variance in visual snapshots. */
 const SCREENSHOT_OPTIONS = { maxDiffPixelRatio: 0.02 };
