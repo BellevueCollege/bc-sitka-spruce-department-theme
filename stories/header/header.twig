@@ -16,7 +16,7 @@
 			<div id="site-header--site-title" class="col col-lg-auto d-flex">
 				<div class="site-title h4 flex-grow-1 mt-2"><a href="{{ site_homepage_url }}">{{ site_title }}</a></div>
 				<button
-					class="btn btn-link menu-toggle d-lg-none"	
+					class="btn btn-link menu-toggle d-lg-none"
 					data-bs-toggle="offcanvas"
 					data-bs-target="#site-header--offcanvas"
 					aria-controls="site-header--offcanvas"
@@ -60,11 +60,11 @@
 							data-menu-has-items-selector=".menu-item-has-children > a"
 						>
 							<ul class="menu justify-content-end">
-								{% include '/views/static-content/menu-utility.twig' with { li_class: 'menu-item' } %}
+								{% include '@views/static-content/menu-utility.twig' with { li_class: 'menu-item' } %}
 							</ul>
 						</nav>
 						<div class="site-header--search d-lg-none">
-							{% include '/stories/site-search-form/site-search-form.twig' with {
+							{% include '@stories/site-search-form/site-search-form.twig' with {
 								search_field_id: 'college-search-field-mobile',
 								search_submit_id: 'college-search-submit-mobile'
 							} %}
@@ -98,7 +98,7 @@
 	</div>
 	<div id="site-header--search" class="site-header--search">
 		<div class="container-xl">
-			{% include '/stories/site-search-form/site-search.twig' %}
+			{% include '@stories/site-search-form/site-search.twig' %}
 		</div>
 	</div>
 </header>
