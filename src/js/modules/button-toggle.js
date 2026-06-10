@@ -141,11 +141,13 @@ export default class ButtonToggle extends ComponentBase {
               ? button.closest(button.openClassElement)
               : document.body;
           }
-          // Toggle the class.
-          if (button.isToggled) {
-            classElement.classList.add(button.openClass);
-          } else {
-            classElement.classList.remove(button.openClass);
+          // Toggle the class when an open class is configured.
+          if (button.openClass) {
+            if (button.isToggled) {
+              classElement.classList.add(button.openClass);
+            } else {
+              classElement.classList.remove(button.openClass);
+            }
           }
 
 					// If a focus trap is set, activate or deactivate
