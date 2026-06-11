@@ -22,8 +22,10 @@ class BlockEditor implements BlockEditorInterface {
   protected array $usedOnTemplates = [];
 
   protected array $coreBlocksBlacklist = [
+    'core/accordion',
     'core/archives',
     'core/avatar',
+    'core/breadcrumbs',
     'core/button',
     'core/buttons',
     'core/calendar',
@@ -31,6 +33,8 @@ class BlockEditor implements BlockEditorInterface {
     'core/column',
     'core/columns',
     'core/comments',
+    'core/post-comments-count',
+    'core/post-comments-link',
     'core/latest-comments',
     'core/latest-posts',
     'core/legacy-widget',
@@ -70,6 +74,10 @@ class BlockEditor implements BlockEditorInterface {
     'core/social-links',
     //'core/table',
     'core/tag-cloud',
+    'core/terms-query',
+    'core/term-template',
+    'core/term-name',
+    'core/term-count',
     'core/template-part',
     'core/term-description',
     'core/verse',
@@ -96,6 +104,73 @@ class BlockEditor implements BlockEditorInterface {
 		'program' => array(
 			'bc-sitka-spruce/bio-section',
 		),
+  // Custom post type block denylist
+    'agendas' => array(
+        'bc-sitka-spruce/accordion-section',
+        'bc-sitka-spruce/announcement-banner',
+        'bc-sitka-spruce/application-steps-tabs',
+        'bc-sitka-spruce/bio-section',
+        'bc-sitka-spruce/body-section',
+        'bc-sitka-spruce/card-section',
+        'bc-sitka-spruce/checkerboard-section',
+        'bc-sitka-spruce/contact-selector',
+        'bc-sitka-spruce/course-information-section',
+        'bc-sitka-spruce/degrees-certificates-section',
+        'bc-sitka-spruce/department-feature',
+        'bc-sitka-spruce/differentiator-section',
+        'bc-sitka-spruce/listing-section',
+        'bc-sitka-spruce/media-gallery-section',
+        'bc-sitka-spruce/news-feature-core',
+        'bc-sitka-spruce/posts-feature',
+        'bc-sitka-spruce/profiles-section',
+        'bc-sitka-spruce/support-feature',
+        'bc-sitka-spruce/tabs-section',
+        'bc-sitka-spruce/testimonial-section',
+    ),
+    'action-item' => array(
+      'bc-sitka-spruce/accordion-section',
+      'bc-sitka-spruce/announcement-banner',
+      'bc-sitka-spruce/application-steps-tabs',
+      'bc-sitka-spruce/bio-section',
+      'bc-sitka-spruce/body-section',
+      'bc-sitka-spruce/card-section',
+      'bc-sitka-spruce/checkerboard-section',
+      'bc-sitka-spruce/contact-selector',
+      'bc-sitka-spruce/course-information-section',
+      'bc-sitka-spruce/degrees-certificates-section',
+      'bc-sitka-spruce/department-feature',
+      'bc-sitka-spruce/differentiator-section',
+      'bc-sitka-spruce/listing-section',
+      'bc-sitka-spruce/media-gallery-section',
+      'bc-sitka-spruce/news-feature-core',
+      'bc-sitka-spruce/posts-feature',
+      'bc-sitka-spruce/profiles-section',
+      'bc-sitka-spruce/support-feature',
+      'bc-sitka-spruce/tabs-section',
+      'bc-sitka-spruce/testimonial-section',
+    ),
+    'resolution' => array(
+      'bc-sitka-spruce/accordion-section',
+      'bc-sitka-spruce/announcement-banner',
+      'bc-sitka-spruce/application-steps-tabs',
+      'bc-sitka-spruce/bio-section',
+      'bc-sitka-spruce/body-section',
+      'bc-sitka-spruce/card-section',
+      'bc-sitka-spruce/checkerboard-section',
+      'bc-sitka-spruce/contact-selector',
+      'bc-sitka-spruce/course-information-section',
+      'bc-sitka-spruce/degrees-certificates-section',
+      'bc-sitka-spruce/department-feature',
+      'bc-sitka-spruce/differentiator-section',
+      'bc-sitka-spruce/listing-section',
+      'bc-sitka-spruce/media-gallery-section',
+      'bc-sitka-spruce/news-feature-core',
+      'bc-sitka-spruce/posts-feature',
+      'bc-sitka-spruce/profiles-section',
+      'bc-sitka-spruce/support-feature',
+      'bc-sitka-spruce/tabs-section',
+      'bc-sitka-spruce/testimonial-section',
+    ),
 	);
 
 	protected array $postTypeBlockAllowlist = array(
@@ -133,7 +208,7 @@ class BlockEditor implements BlockEditorInterface {
     add_filter('block_categories_all', [$this, 'setupBlockGroups'], 10, 2);
     // add_filter('use_block_editor_for_post', [$this, 'setupBlockEditorForPost'], 10, 2);
     // add_action('acf/init', [$this, 'setupAcfBlocks'], 10, 1);
-    add_action('enqueue_block_editor_assets', [$this, 'setupBlockEditorStylesheet'], 99, 0);
+    add_action('enqueue_block_assets', [$this, 'setupBlockEditorStylesheet'], 99, 0);
     add_action('enqueue_block_editor_assets', [$this, 'setupAllowedBlockVariations'], 10, 0);
   }
 
@@ -332,11 +407,13 @@ class BlockEditor implements BlockEditorInterface {
    * Callback for the 'enqueue_block_editor_assets' action.
    */
   public function setupBlockEditorStylesheet(): void {
-    foreach ($this->stylesheets as $handle => $stylesheet) {
-      $stylesheet = strpos($stylesheet, '//') === false
-        ? get_theme_file_uri($stylesheet)
-        : $stylesheet;
-      wp_enqueue_style("bellevue-block-editor-theme-$handle", $stylesheet);
+    if ( is_admin() ) {
+      foreach ($this->stylesheets as $handle => $stylesheet) {
+        $stylesheet = strpos($stylesheet, '//') === false
+          ? get_theme_file_uri($stylesheet)
+          : $stylesheet;
+        wp_enqueue_style("bellevue-block-editor-theme-$handle", $stylesheet);
+      }
     }
   }
 
