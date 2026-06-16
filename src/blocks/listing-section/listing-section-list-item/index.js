@@ -33,11 +33,14 @@ registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 			className: "list-item row",
 		});
 
-		const { media } = useSelect((select) => {
-			return {
-				media: select("core").getMedia(imageId),
-			};
-		});
+		const { media } = useSelect(
+			(select) => ({
+				media: imageId
+					? select("core").getEntityRecord("postType", "attachment", imageId)
+					: undefined,
+			}),
+			[imageId]
+		);
 
 		const TEMPLATE = [
 			[ "core/paragraph", {
@@ -65,7 +68,6 @@ registerBlockType("bc-sitka-spruce/listing-section-list-item", {
 										imageUrl: value.sizes["listing-section"] ? value.sizes["listing-section"].url : value.url,
 										imageAlt: value.alt,
 									});
-									onClose();
 								}}
 								render={({ open }) => (
 									<ToolbarDropdownMenu
