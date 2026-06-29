@@ -1,5 +1,5 @@
 @import '/src/scss/block-styles';
 	.listing-section-wrapper {
-		padding-top: 3.5rem !important;
+		padding-top: var(--sitka-container-spacing-lg) !important;
 		padding-bottom: var(--sitka-container-spacing);
 	}
