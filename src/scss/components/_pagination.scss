@@ -2,7 +2,8 @@
 
 ul.pagination,
 .view__pagination {
-	@include global-spacing(12x, margin-top margin-bottom);
+	margin-top: var(--sitka-container-spacing);
+	margin-bottom: var(--sitka-container-spacing);
 }
 
 ul.pagination,
