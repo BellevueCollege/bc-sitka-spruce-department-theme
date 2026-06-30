@@ -98,6 +98,24 @@ add_action( 'enqueue_block_editor_assets', function () {
 		'before'           // ensure this runs before editor.js [web:64]
 	);
 } );
+/**
+ * Disable FitText in Editor
+* 
+* This shouldn't be needed (it is included in theme.json), but that is not working consistantly. 
+*/
+add_filter( 'register_block_type_args', function( $args, $block_type ) {
+   $blocks = [
+	   'core/heading',
+	   'core/paragraph',
+	   'core/verse',
+	   'core/quote',
+	   'core/pullquote',
+   ];
+   if ( in_array( $block_type, $blocks, true ) ) {
+	   $args['supports']['typography']['fitText'] = false;
+   }
+   return $args;
+}, 10, 2 );
 
 // Enqueue Block Styles
 $enqueuer->addBlockStyle(
