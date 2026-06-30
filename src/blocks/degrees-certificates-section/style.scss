@@ -8,8 +8,8 @@
 	}
 
 	hr.accent {
-		margin-top: 2rem;
-		margin-bottom: 3.5rem;
+		margin-top: var(--sitka-container-spacing-lg);
+		margin-bottom: var(--sitka-container-spacing-lg);
 
 		// this can likely be removed; another pull request has global styling
 		--bs-border-width: 2px;
@@ -17,9 +17,19 @@
 		opacity: 1;
 	}
 
+	// mb-3 on cards + hr margin-top was doubling space above segment dividers
+	.segment:not(:last-child) .program-card:last-child {
+		margin-bottom: 0;
+	}
+
 	.program-card {
 		--bs-heading-color: var(--black);
 		color: var(--black);
+
+		margin-bottom: var(--sitka-container-spacing);
+		&:last-child {
+			margin-bottom: 0;
+		}
 
 		// Handle background color and border radius
 		& .row > div {

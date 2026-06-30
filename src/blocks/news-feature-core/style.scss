@@ -5,7 +5,7 @@
 
 	&--featured-item,
 	.justify-content-md-center {
-		@include global-spacing(6x, margin-top);
+		margin-top: var(--sitka-container-spacing);
 	}
 
 	.news-feature--featured-item .eyebrow {
@@ -46,7 +46,8 @@
 		}
 
 		.text-margin-reset {
-			@include global-spacing(6x, padding-top padding-bottom);
+			padding-top: var(--sitka-container-spacing);
+			padding-bottom: var(--sitka-container-spacing);
 			padding-right: 1.25rem;
 			padding-left: 1.25rem;
 
