@@ -205,6 +205,11 @@
 	& > .block-editor-inner-blocks > .block-editor-block-list__layout {
 		display: grid;
 		grid-template-columns: 1fr 2fr;
+
+		> .wp-block {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
 	}
 
 	.wp-block-bc-sitka-spruce-tabcordion-list {
