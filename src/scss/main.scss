@@ -2,7 +2,7 @@
 
 // Import shared Bootstrap configuration for access to mixins, variables, and functions
 // but NOT the actual Bootstrap CSS (that's in bootstrap.scss)
-@import 'bc-theme-layer-bs5/scss/config/_bootstrap-config';
+@import 'bc-theme-layer-bs5/scss/bootstrap/_vars';
 
 // Import Gerillass for breakpoint mixins and other utilities
 @import 'lib/gerillass';
