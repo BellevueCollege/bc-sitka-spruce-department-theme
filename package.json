@@ -5,7 +5,7 @@
   "main": "theme.json",
   "scripts": {
     "start": "wp-scripts start --webpack-src-dir=src --output-path=assets/dist",
-    "build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist",
+    "build": "npm run lint:bootstrap-imports && wp-scripts build --webpack-src-dir=src --output-path=assets/dist",
     "storybook": "concurrently \"npm run start\" \"storybook dev -p 6006\"",
     "storybook:only": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -49,8 +49,8 @@
     "html-entities": "^2.5.2",
     "nightwatch": "^3.11.1",
     "path": "^0.12.7",
-    "sass-embedded": "^1.99.0",
     "process": "^0.11.10",
+    "sass-embedded": "^1.99.0",
     "storybook": "^10.1.8",
     "swiper": "^12.1.0",
     "twig": "^3.0.0",

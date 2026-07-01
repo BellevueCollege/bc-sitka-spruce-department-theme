@@ -5,7 +5,7 @@
 @import 'variables';
 
 // Import shared Bootstrap configuration (includes root, helpers, utilities/api)
-@import 'bc-theme-layer-bs5/scss/config/_bootstrap-config';
+@import 'bc-theme-layer-bs5/scss/bootstrap/_config';
 
 // Import Bootstrap minimal preset
 @import 'bc-theme-layer-bs5/scss/presets/_minimal';

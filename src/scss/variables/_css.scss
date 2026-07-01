@@ -1,13 +1,13 @@
 // CSS Variable Generation using shared package
-@use 'bc-theme-layer-bs5/scss/css-variables/_generate' with (
+@use 'bc-theme-layer-bs5/scss/css-variables/_css-variables' with (
   $css-var-prefix: 'sitka-',
-  $prefix-theme-colors: false,
-  $prefix-spacing: true,
-  $prefix-headings: true,
-  $generate-heading-vars: true,
+  $prefixed-utility-colors: false,
+  $prefixed-container-spacing: true,
+  $prefixed-heading-sizes: true,
+  $generate-heading-size-vars: true,
   $generate-container-spacing: true,
   $heading-sizes: $heading-sizes,
   $brand-colors: $brand-colors,
-  $theme-colors: $utility-colors,
+  $utility-colors: $utility-colors,
   $grid-breakpoints: $grid-breakpoints
 );

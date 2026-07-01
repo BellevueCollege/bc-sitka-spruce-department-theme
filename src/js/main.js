@@ -1,4 +1,4 @@
-import * as bootstrap from 'bootstrap'
+import { bootstrap, initTooltips, setWindowBootstrap } from 'bc-theme-layer-bs5/js';
 import AccessibleMenu from './modules/accessible-menu';
 import ButtonToggle from './modules/button-toggle';
 import HeaderState from './modules/header-state';
@@ -6,7 +6,7 @@ import Slider from './modules/slider';
 import BCLightboxModal from 'bc-lightbox-modal';
 
 (() => {
-	window.bootstrap = bootstrap;
+	setWindowBootstrap();
 
 	  /**
 	 * Teleport the nav offcanvas to <body> on open to escape ancestor stacking
@@ -67,9 +67,7 @@ import BCLightboxModal from 'bc-lightbox-modal';
 
     });
 
-	// Enable Tooltips
-	const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-	const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl));
+	initTooltips();
 
 	// Enable Post Filter Navigation
 	const archiveFilterForm = document.getElementById('post-filter-by-date-form');
