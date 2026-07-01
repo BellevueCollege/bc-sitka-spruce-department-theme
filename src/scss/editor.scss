@@ -17,8 +17,35 @@
 	@import "atoms";
 	@import "components";
 	@import "pages";
-}
 
+	// Bootstrap Reboot (above) overrides WordPress core editor block spacing in the iframe.
+	// Re-apply core's default inter-block margin (packages/block-editor default-editor-styles).
+	.wp-block {
+		margin-top: 1.75rem;
+		margin-bottom: 1.75rem;
+	}
+
+	.wp-block:first-child {
+		margin-top: 0;
+	}
+
+	// Custom blocks render frontend wrappers inside .wp-block; zero inner margins
+	// so block wrapper margins are not collapsed away.
+	.wp-block > .section,
+	.wp-block > .announcement {
+		margin-top: 0;
+		margin-bottom: 0;
+	}
+
+	// Accordion collapse items stack flush; Bootstrap accordion styles handle separation.
+	.wp-block-mayflower-blocks-collapsibles.accordion {
+		> .wp-block-mayflower-blocks-collapse,
+		> .block-editor-inner-blocks > .block-editor-block-list__layout > .wp-block {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
+	}
+}
 
 /**
  * Vertical spacing between root-level editor blocks only.
