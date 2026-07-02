@@ -18,6 +18,10 @@ namespace BcSitkaSpruce\Library\Enqueuer;
  * - Version numbers from registered assets
  * - crossorigin='anonymous' for external resources (protocol-relative URLs)
  * - Appropriate 'as' and 'type' attributes
+ *
+ * External scripts and styles receive crossorigin='anonymous' on their output
+ * tags via the wp_script_attributes and style_loader_tag filters so preload
+ * hints match the credentials mode of the final resource request.
  */
 class Enqueuer implements EnqueuerInterface {
 
@@ -34,9 +38,9 @@ class Enqueuer implements EnqueuerInterface {
 	protected bool $appendVersion = false;
 
 	protected string $currentTime = '';
-	
+
 	protected array $preloadScripts = array();
-	
+
 	protected array $preloadStyles = array();
 
 	public function __construct() {
@@ -47,6 +51,8 @@ class Enqueuer implements EnqueuerInterface {
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterStyles' ), 99, 0 );
 		add_action( 'init', array( $this, 'setupEnqueueBlockStyles' ), 10, 0 );
 		add_filter('wp_preload_resources', [$this, 'setupPreloadResources'], 10, 1);
+		add_filter('style_loader_tag', [$this, 'addCrossoriginToExternalStyles'], 10, 2);
+		add_filter('wp_script_attributes', [$this, 'addCrossoriginToExternalScripts'], 10, 1);
 	}
 
 	/**
@@ -190,7 +196,17 @@ class Enqueuer implements EnqueuerInterface {
 	 */
 	protected function convertLocalSrc( string $src, string $base_path = '' ): string {
 		$path = $base_path ?: get_stylesheet_directory_uri();
-		return strpos( $src, '//' ) === 0 ? $src : $path . $src;
+		return $this->isExternalResource($src) ? $src : $path . $src;
+	}
+
+	/**
+	 * Determine whether a resource URL is loaded from an external origin.
+	 *
+	 * Protocol-relative URLs (//example.com/...) are treated as external so
+	 * preload hints and enqueue tags share the same crossorigin credentials mode.
+	 */
+	protected function isExternalResource(string $src): bool {
+		return strpos($src, '//') === 0;
 	}
 
 	/**
@@ -235,6 +251,62 @@ class Enqueuer implements EnqueuerInterface {
 		}
 	}
 
+	/**
+	 * Add crossorigin to external stylesheet link tags.
+	 *
+	 * WordPress does not output crossorigin from wp_style_add_data(); the
+	 * style_loader_tag filter is the supported way to modify enqueued link tags.
+	 *
+	 * @param string $tag
+	 *   The HTML link tag for the enqueued style.
+	 * @param string $handle
+	 *   The style's registered handle.
+	 *
+	 * @return string
+	 *   The modified link tag.
+	 */
+	public function addCrossoriginToExternalStyles(string $tag, string $handle): string {
+		$style = wp_styles()->registered[$handle] ?? null;
+
+		if (!$style || !$this->isExternalResource($style->src)) {
+		return $tag;
+		}
+
+		$processor = new \WP_HTML_Tag_Processor($tag);
+
+		if ($processor->next_tag('link')) {
+		$processor->set_attribute('crossorigin', 'anonymous');
+		}
+
+		return $processor->get_updated_html();
+	}
+
+	/**
+	 * Add crossorigin to external script tags.
+	 *
+	 * WordPress does not output crossorigin from wp_script_add_data(); the
+	 * wp_script_attributes filter is the supported way to modify script tags.
+	 *
+	 * @param array<string, string|bool> $attributes
+	 *   Key-value pairs representing script tag attributes.
+	 *
+	 * @return array<string, string|bool>
+	 *   The modified script attributes.
+	 */
+	public function addCrossoriginToExternalScripts(array $attributes): array {
+		if (empty($attributes['id']) || !str_ends_with((string) $attributes['id'], '-js')) {
+		return $attributes;
+		}
+
+		$handle = substr((string) $attributes['id'], 0, -3);
+		$script = wp_scripts()->registered[$handle] ?? null;
+
+		if ($script && $this->isExternalResource($script->src)) {
+		$attributes['crossorigin'] = 'anonymous';
+		}
+
+		return $attributes;
+	}
 
 	/**
 	 * Callback for the 'wp_enqueue_scripts' action.
@@ -368,9 +440,8 @@ class Enqueuer implements EnqueuerInterface {
 		$preload['media'] = $media;
 		}
 
-		// Add crossorigin for external resources
-		if (strpos($src, '//') === 0) {
-		$preload['crossorigin'] = 'anonymous';
+		if ($this->isExternalResource($src)) {
+			$preload['crossorigin'] = 'anonymous';
 		}
 
 		return $preload;
