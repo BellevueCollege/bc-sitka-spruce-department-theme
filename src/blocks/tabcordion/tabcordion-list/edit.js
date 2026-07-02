@@ -10,10 +10,7 @@ import { createBlock } from '@wordpress/blocks';
 
 import { RichText } from '@wordpress/block-editor';
 
-import {
-	Button,
-	Dashicon
-} from '@wordpress/components';
+import { Button } from '@wordpress/components';
 
 import {
 	useBlockProps,
@@ -87,8 +84,6 @@ export default function Edit( props ) {
 		}
 	};
 
-
-
 	return (
 		<ul {...blockProps } >
 			<InnerBlocks
@@ -99,8 +94,8 @@ export default function Edit( props ) {
 			/>
 			<li role="presentation">
 				<Button onClick={ addTab } className="add-tab">
-					<Dashicon icon="insert" />
-					{ currentBlockData.innerBlocks.length === 0 ? <span>Add Tab</span> : '' }
+					<i className="fa-solid fa-plus add-tab-icon" aria-hidden="true" />
+					{ currentBlockData.innerBlocks.length === 0 ? <span>Add Tab</span> : <span className="screen-reader-text">Add Tab</span> }
 				</Button>
 			</li>
 		</ul>
