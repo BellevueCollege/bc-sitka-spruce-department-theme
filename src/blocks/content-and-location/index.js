@@ -34,7 +34,34 @@ Twig.extendFilter("esc_html", (input) => {
 	return input;
 });
 
+/**
+ * Build Twig context for the location-and-hours sidebar preview.
+ *
+ * @param {Object|null} sidebarContent Options API response.
+ * @return {Object} Twig render context.
+ */
+const buildLocationHoursContext = ( sidebarContent ) => {
+    const context = {
+        location: sidebarContent?.location ?? '',
+        hours: sidebarContent?.hours ?? '',
+        contact_url: sidebarContent?.contact_page_url ?? '',
+    };
 
+    const locationImage = sidebarContent?.location_image;
+
+    if ( locationImage ) {
+        const imageSrc = locationImage.sizes?.['homepage-location'] ?? locationImage.url;
+
+        if ( imageSrc ) {
+            context.image_array = {
+                src: imageSrc,
+                alt: locationImage.alt ?? '',
+            };
+        }
+    }
+
+    return context;
+};
 
 registerBlockType( 'bc-sitka-spruce/content-and-location', {
 
@@ -51,7 +78,6 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
             } )
                 .then( ( response ) => {
                     setLocationSidebarContent( response );
-                    // console.log( response );
                 }
             );
         }
@@ -65,17 +91,19 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                 );
             }
 
-            const locationHoursHTML = Twig.twig({
-                ref: '@stories/location-and-hours/location-and-hours.twig',
-            }).render({
-                image_array: {
-                    src: locationSidebarContent.location_image.sizes['homepage-location'] ?? locationSidebarContent.location_image.url,
-                    alt: locationSidebarContent.location_image.alt
-                },
-                location: locationSidebarContent.location,
-                hours: locationSidebarContent.hours,
-                contact_url: locationSidebarContent.contact_page_url
-            });
+            let locationHoursHTML = '';
+            const twigContext = buildLocationHoursContext( locationSidebarContent );
+
+            try {
+                locationHoursHTML = Twig.twig({
+                    ref: '@stories/location-and-hours/location-and-hours.twig',
+                }).render( twigContext );
+            } catch ( error ) {
+                return (
+                    <p>{ __( 'Unable to preview Location and Hours sidebar.', 'bc-sitka-spruce' ) }</p>
+                );
+            }
+
             return (
                 <RawHTML>{ locationHoursHTML }</RawHTML>
             );
