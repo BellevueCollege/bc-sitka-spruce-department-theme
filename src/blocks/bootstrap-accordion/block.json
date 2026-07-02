@@ -1,0 +1,28 @@
+{
+    "$schema": "https://schemas.wp.org/trunk/block.json",
+    "apiVersion": 3,
+    "name": "bc-sitka-spruce/bootstrap-accordion",
+    "title": "Bootstrap Accordion Section",
+    "category": "sitka-sections",
+    "icon": "list-view",
+    "description": "A collapsible accordion layout for managing high volumes of sequential entries like Trustees yearly Action Items.",
+    "version": "1.0.0",
+    "textdomain": "bc-sitka-spruce",
+    "supports": {
+        "html": false,
+        "anchor": true
+    },
+    "attributes": {
+        "anchor": {
+            "type": "string",
+            "default": "actionItemsYearAccordion"
+        }
+    },
+    "editorScript": "file:./index.js",
+    "editorStyle": "file:./editor.css",
+    "style": "file:./style-index.css",
+    "acf": {
+        "blockVersion": 3,
+        "renderTemplate": "render.php"
+    }
+}

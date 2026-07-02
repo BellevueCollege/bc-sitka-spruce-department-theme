@@ -1,0 +1,17 @@
+<ul class="agenda-list {{ extra_classes|default('') }}">
+    {% if posts is defined %}
+        {% for post in posts %}
+            {% include '@stories/agenda-list/agenda-list-item.twig' with {
+                variant: variant,
+                post: post,
+            } only %}
+        {% endfor %}
+    {% else %}
+        {% for item in items %}
+            {% include '@stories/agenda-list/agenda-list-item.twig' with {
+                variant: variant,
+                item: item,
+            } only %}
+        {% endfor %}
+    {% endif %}
+</ul>
