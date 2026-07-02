@@ -40,7 +40,7 @@
     "@storybook/html-vite": "^10.1.8",
     "@wordpress/scripts": "^33.0.0",
 		"bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.3.1",
-    "bc-theme-layer-bs5": "github:BellevueCollege/bc-theme-layer-bs5#v1.0.1",
+    "bc-theme-layer-bs5": "github:BellevueCollege/bc-theme-layer-bs5#v1.2.0",
     "bootstrap": "^5.3.3",
     "chromatic": "^17.0.0",
     "concurrently": "^9.0.0",
