@@ -57,7 +57,8 @@
   },
   "sideEffects": [
     "**/*.scss",
-    "**/*.css"
+    "**/*.css",
+    "src/js/**/*.js"
   ],
   "dependencies": {
     "@awesome.me/kit-8745498039": "^1.0.7"
