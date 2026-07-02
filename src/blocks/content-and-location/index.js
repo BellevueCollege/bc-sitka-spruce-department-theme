@@ -1,22 +1,20 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps } from '@wordpress/block-editor';
-import { InnerBlocks } from '@wordpress/block-editor';
+import { useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
 import { RawHTML } from '@wordpress/element';
 import Twig from '../../js/modules/twig-setup';
 import apiFetch from '@wordpress/api-fetch';
 import { useState } from '@wordpress/element';
-import { Disabled } from '@wordpress/components';
-import { RichText } from '@wordpress/block-editor';
-
-import './style.scss';
-import './editor.scss';
-
 import {
     Card,
     CardBody,
-    CardHeader
+    CardHeader,
+    Disabled,
+    Spinner,
 } from '@wordpress/components';
+
+import './style.scss';
+import './editor.scss';
 
 /**
  * Mock the WordPress __ Function in Timber
@@ -84,13 +82,6 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
 
 
         const LocationAndHours = () => {
-
-            if ( ! locationSidebarContent ) {
-                return (
-                    <p>Loading...</p>
-                );
-            }
-
             let locationHoursHTML = '';
             const twigContext = buildLocationHoursContext( locationSidebarContent );
 
@@ -107,8 +98,10 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
             return (
                 <RawHTML>{ locationHoursHTML }</RawHTML>
             );
+        };
 
-        }
+		// is the location sidebar enabled in the site options?
+        const isLocationSidebarEnabled = Boolean( locationSidebarContent?.display_location_card );
 
         return (
             <div { ...blockProps }>
@@ -139,15 +132,30 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                         />
                     </div>
                     <div className = "col-md-4">
-                        <Disabled>
-                            <LocationAndHours />
-                        </Disabled>
-                        <hr />
-                        <Card>
-                            <CardBody>
-                                {__( 'Visit the "Site Options" area to edit or disable the Location and Hours Sidebar', 'bc-sitka-spruce' )}
-                            </CardBody>
-                        </Card>
+                        { locationSidebarContent && ! isLocationSidebarEnabled ? (
+                            <Card>
+                                <CardBody>
+                                    { __( 'The Location and Hours sidebar is currently disabled. Visit the "Site Options" area to enable it.', 'bc-sitka-spruce' ) }
+                                </CardBody>
+                            </Card>
+                        ) : locationSidebarContent && isLocationSidebarEnabled ? (
+                            <>
+                                <Disabled>
+                                    <LocationAndHours />
+                                </Disabled>
+                                <hr />
+                                <Card>
+                                    <CardBody>
+                                        { __( 'Visit the "Site Options" area to edit or disable the Location and Hours Sidebar', 'bc-sitka-spruce' ) }
+                                    </CardBody>
+                                </Card>
+                            </>
+                        ) : (
+                            <p className="content-and-location-sidebar-loading">
+                                <Spinner />
+                                { __( 'Loading...', 'bc-sitka-spruce' ) }
+                            </p>
+                        ) }
                     </div>
                 </div>
             </div>
