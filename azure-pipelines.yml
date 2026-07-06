@@ -68,7 +68,7 @@ steps:
   - task: Npm@1
     inputs:
       command: 'custom'
-      customCommand: 'prune --omit=dev'
+      customCommand: 'ci --omit=dev'
     displayName: NPM Prune Dev Deps
   - task: replacetokens@6
     inputs:
