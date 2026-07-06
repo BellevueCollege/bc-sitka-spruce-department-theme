@@ -32,30 +32,36 @@
   "devDependencies": {
     "@chromatic-com/storybook": "^5.1.2",
     "@nightwatch/vrt": "^3.5.2",
+    "@popperjs/core": "^2.11.8",
     "@storybook/addon-a11y": "^10.1.8",
     "@storybook/addon-docs": "^10.1.8",
     "@storybook/addon-links": "^10.1.8",
     "@storybook/html-vite": "^10.1.8",
     "@wordpress/scripts": "^32.1.0",
+    "bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.3.1",
+    "bootstrap": "^5.3.3",
     "chromatic": "^17.0.0",
     "concurrently": "^9.0.0",
+    "focus-trap": "^7.6.2",
     "gerillass": "^1.3.1",
+    "html-entities": "^2.5.2",
     "nightwatch": "^3.11.1",
     "path": "^0.12.7",
+    "sass-embedded": "^1.99.0",
     "process": "^0.11.10",
     "storybook": "^10.1.8",
+    "swiper": "^12.1.0",
+    "twig": "^3.0.0",
     "vite-plugin-twig-drupal": "^1.7.0",
     "webpack-remove-empty-scripts": "^1.0.4"
   },
+  "sideEffects": [
+    "**/*.scss",
+    "**/*.css",
+    "src/js/**/*.js"
+  ],
   "dependencies": {
-    "@awesome.me/kit-8745498039": "^1.0.7",
-    "@popperjs/core": "^2.11.8",
-    "bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.3.1",
-    "bootstrap": "^5.3.3",
-    "focus-trap": "^7.6.2",
-    "html-entities": "^2.5.2",
-    "swiper": "^12.1.0",
-    "twig": "^3.0.0"
+    "@awesome.me/kit-8745498039": "^1.0.7"
   },
   "overrides": {
     "twig": "^3.0.0"
