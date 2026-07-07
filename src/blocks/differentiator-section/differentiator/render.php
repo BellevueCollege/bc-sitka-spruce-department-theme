@@ -9,9 +9,8 @@ if ( ! isset( $attributes['differentiatorPostId'] ) ) {
 $context                = Timber::context();
 $context['assetPath']   = get_template_directory_uri() . '/assets';
 $context['wrapperAtts'] = get_block_wrapper_attributes();
-
 $content = Differentiator::get_single_from_core(
-	$attributes['differentiatorPostId'] ?? 0
+	$attributes['differentiatorPostId']
 ) ?? array();
 
 if ( ! is_array( $content ) || ! isset( $content ) ) {

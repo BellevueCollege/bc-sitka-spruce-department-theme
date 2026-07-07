@@ -75,11 +75,17 @@ class PostData {
 	/**
 	 * Get a single post from the core site.
 	 *
-	 * @param int $id The post ID to retrieve.
+	 * @param mixed $id The post ID to retrieve.
 	 * @param int $site_id The site ID to retrieve from. Defaults to the current site ID.
 	 * @return array The post data.
 	 */
-	public static function get_single_from_core( int $id, int|null $site_id = null ) {
+	public static function get_single_from_core( mixed $id, int|null $site_id = null ) {
+
+		// If the ID is not numeric, return 0
+		if ( ! is_numeric( $id ) ) {
+			return 0;
+		}
+
 		$post;
 		$site_id = $site_id ?? get_main_site_id();
 
