@@ -1,7 +1,7 @@
 {#
 /**
  * @file
- * Bellevue template for the Agendas archive list.
+ * Bellevue template for the Action Items archive list.
  */
 #}
 {% extends '@views/system/wrapper.twig' %}
@@ -13,29 +13,28 @@
         } %}
 
         <div class="archive-action-item-page container-xl">
-            {# Loop through data passed from PHP #}
+            {% set accordion_items = [] %}
             {% for year, posts in posts_by_year %}
-                <div class="year-group">
-                    <h2> {{ year }} </h2>
-                    {# The List of Posts for given Year #}
-                    <ul class="agenda-list">
-                        {% for post in posts %}
-                            <li>
-                            {# Linking the title #}
-                                <a href="{{ post.link }}"><strong>{{ post.title }}</strong></a>
-                            {# fetching date field#}    
-                                {% set raw_date = post.meta('meeting_date') %}
-                            {# Only show if date exists#}
-                                {% if raw_date %}
-                                    - <span class="text-muted">{{ raw_date|date('F j, Y') }}</span>
-                                {% else %}
-                                    - <span class="text-muted">{{ post.date('F j, Y') }}</span>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
-                </div>
+                {% set list_content %}
+                    {% include '@stories/agenda-list/agenda-list.twig' with {
+                        variant: 'action-item',
+                        posts: posts,
+                        extra_classes: 'mb-0',
+                    } only %}
+                {% endset %}
+                {% set accordion_items = accordion_items|merge([{
+                    id: 'year-' ~ year,
+                    title: year ~ ' Meetings',
+                    is_open: loop.first,
+                    content: list_content,
+                }]) %}
             {% endfor %}
+
+            {% include '@stories/bootstrap-accordion/bootstrap-accordion.twig' with {
+                accordion_id: 'actionItemsYearAccordion',
+                keep_one_open_only: true,
+                items: accordion_items,
+            } %}
         </div>
     </div>
 {% endblock %}

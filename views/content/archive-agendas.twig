@@ -13,26 +13,16 @@
         } %}
 
         <div class="archive-agendas-page container-xl">
-            
+
             {# Loop through data passed from PHP #}
             {% for year, posts in posts_by_year %}
-                
+
                 <div class="year-group">
                     <h2> {{ year }} </h2>
-                    {# The List of Posts for given Year #}
-                    <ul class="agenda-list">
-                        {% for post in posts %}
-                            <li>
-                                <a href="{{ post.link }}">{{ post.localized_meeting_date }}</a>
-                                {# Check for the Special Meeting Toggle #}
-                                {% if post.meta('special_meeting') %}
-                                    <span class="special-badge">
-                                        (Special Meeting)
-                                    </span>
-                                {% endif %}
-                            </li>
-                        {% endfor %}
-                    </ul>
+                    {% include '@stories/agenda-list/agenda-list.twig' with {
+                        variant: 'agenda',
+                        posts: posts,
+                    } only %}
                 </div>
             {% endfor %}
         </div>
