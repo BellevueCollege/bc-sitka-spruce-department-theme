@@ -1,10 +1,9 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
 import { useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
-import { RawHTML } from '@wordpress/element';
+import { RawHTML, useState, useEffect } from '@wordpress/element';
 import Twig from '../../js/modules/twig-setup';
 import apiFetch from '@wordpress/api-fetch';
-import { useState } from '@wordpress/element';
 import {
     Card,
     CardBody,
@@ -70,15 +69,13 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
 
         const [ locationSidebarContent, setLocationSidebarContent ] = useState(null);
 
-        if ( ! locationSidebarContent ) {
+        useEffect( () => {
             apiFetch( {
-                path: '/bc-sitka-spruce/v1/options'
-            } )
-                .then( ( response ) => {
-                    setLocationSidebarContent( response );
-                }
-            );
-        }
+                path: '/bc-sitka-spruce/v1/options',
+            } ).then( ( response ) => {
+                setLocationSidebarContent( response );
+            } );
+        }, [] );
 
 
         const LocationAndHours = () => {
