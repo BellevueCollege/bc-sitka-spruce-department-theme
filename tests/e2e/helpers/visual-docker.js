@@ -9,7 +9,7 @@
 export const PLAYWRIGHT_DOCKER_IMAGE =
 	'mcr.microsoft.com/playwright:v1.60.0-noble';
 
-/** wp-env tests site URL when testsEnvironment is enabled in .wp-env.json. */
+/** wp-env tests site URL (.wp-env-tests.json on port 8889). */
 export const WP_TESTS_BASE_URL = 'http://localhost:8889';
 
 /** Host Playwright projects for functional tests (all breakpoints). */

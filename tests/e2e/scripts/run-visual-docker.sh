@@ -37,8 +37,8 @@ for arg in "$@"; do
 done
 
 if [[ "${SKIP_E2E_HOST_PREP:-}" != "1" ]]; then
-	echo "Starting wp-env (tests site on port ${WP_TESTS_PORT})..."
-	npm run env:start
+	echo "Starting wp-env tests environment (port ${WP_TESTS_PORT})..."
+	npm run env:tests:start
 fi
 
 echo "Preparing host-side seeds and admin auth cache..."

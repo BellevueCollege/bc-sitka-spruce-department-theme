@@ -1,6 +1,7 @@
 {
     "$schema": "https://schemas.wp.org/trunk/wp-env.json",
     "testsEnvironment": false,
+    "port": 8889,
     "core": null,
     "phpVersion": "8.2",
     "plugins": [
@@ -16,6 +17,6 @@
         "SCRIPT_DEBUG": true
     },
     "lifecycleScripts": {
-        "afterStart": "THEME_SLUG=$(basename \"$PWD\"); wp-env run cli wp theme activate \"$THEME_SLUG\"; wp-env run cli wp rewrite structure '/%postname%/' --hard; wp-env run cli wp rewrite flush"
+        "afterStart": "THEME_SLUG=$(basename \"$PWD\"); wp-env run --config=.wp-env-tests.json cli wp theme activate \"$THEME_SLUG\"; wp-env run --config=.wp-env-tests.json cli wp rewrite structure '/%postname%/' --hard; wp-env run --config=.wp-env-tests.json cli wp rewrite flush; wp-env run --config=.wp-env-tests.json cli wp eval-file \"/var/www/html/wp-content/themes/$THEME_SLUG/tests/fixtures/seed-editor-preferences.php\""
     }
 }

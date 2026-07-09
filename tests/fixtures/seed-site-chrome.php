@@ -4,7 +4,7 @@
  *
  * Idempotent: deletes and recreates fixture data on each run so Playwright
  * tests start from a known state. Invoked via:
- *   wp-env run tests-cli wp eval-file .../seed-site-chrome.php
+ *   wp-env run --config=.wp-env-tests.json cli wp eval-file .../seed-site-chrome.php
  *
  * @package BcSitkaSpruce
  */

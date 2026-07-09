@@ -4,7 +4,7 @@
  *
  * Idempotent: safe to run before every Playwright session.
  * Invoked via:
- *   wp-env run tests-cli wp eval-file .../seed-editor-preferences.php
+ *   wp-env run --config=.wp-env-tests.json cli wp eval-file .../seed-editor-preferences.php
  *
  * @package BcSitkaSpruce
  */

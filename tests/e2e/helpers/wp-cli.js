@@ -8,6 +8,7 @@ export const THEME_PATH = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
 
 const projectRoot = process.cwd();
 const wpEnvBin = path.join( projectRoot, 'node_modules', '.bin', 'wp-env' );
+const wpEnvTestsConfig = '.wp-env-tests.json';
 
 /**
  * Resolve the Playwright artifacts directory (absolute path).
@@ -42,10 +43,13 @@ export function runTestsCli( command ) {
 		);
 	}
 
-	const output = execSync( `"${ wpEnvBin }" run tests-cli ${ command }`, {
-		encoding: 'utf8',
-		cwd: projectRoot,
-	} );
+	const output = execSync(
+		`"${ wpEnvBin }" run --config=${ wpEnvTestsConfig } cli ${ command }`,
+		{
+			encoding: 'utf8',
+			cwd: projectRoot,
+		}
+	);
 
 	return extractCommandOutput( output );
 }
@@ -95,7 +99,7 @@ function readVisualDockerSeedCache( filename ) {
 }
 
 /**
- * Import the announcement-banner test image via wp-env tests-cli.
+ * Import the announcement-banner test image via wp-env tests cli.
  *
  * @return {number}
  */

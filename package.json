@@ -13,6 +13,8 @@
     "wp-env": "wp-env",
     "env:start": "wp-env start",
     "env:stop": "wp-env stop",
+    "env:tests:start": "wp-env start --config=.wp-env-tests.json",
+    "env:tests:stop": "wp-env stop --config=.wp-env-tests.json",
     "test:e2e": "./tests/e2e/scripts/run-e2e.sh",
     "test:e2e:functional": "wp-scripts test-playwright --grep-invert @visual",
     "test:e2e:aria": "wp-scripts test-playwright --grep @aria",

@@ -49,7 +49,9 @@ Once these requirements are installed, you can install project dependencies via 
 
 Block editor and frontend tests use [wp-env](https://github.com/WordPress/gutenberg/tree/trunk/packages/env) and Playwright via `@wordpress/scripts`.
 
-Prerequisites: sibling directories referenced in `.wp-env.json` (`third-party-plugins`, `bellevue-2022-theme-plugins`, `mayflower-blocks`) must exist on your machine.
+Prerequisites: sibling directories referenced in `.wp-env.json` and `.wp-env-tests.json` (`third-party-plugins`, `bellevue-2022-theme-plugins`, `mayflower-blocks`) must exist on your machine.
+
+E2E tests use a separate wp-env config (`.wp-env-tests.json` on port 8889). Local @wordpress/scripts theme development uses `.wp-env.json` on port 8888, but is currently not fully configured.
 
 ```bash
 npm run test:e2e

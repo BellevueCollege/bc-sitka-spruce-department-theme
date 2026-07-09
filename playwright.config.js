@@ -2,7 +2,7 @@
  * Playwright config extending @wordpress/scripts defaults.
  *
  * wp-scripts test-playwright resolves WP_BASE_URL (default http://localhost:8889
- * for wp-env tests sites), starts wp-env via webServer, and runs globalSetup.
+ * for the .wp-env-tests.json environment), starts the tests wp-env via webServer,
  *
  * Host runs functional tests across desktop, tablet, and mobile.
  * Docker runs @visual snapshot tests across container-desktop, container-tablet,
@@ -28,8 +28,13 @@ export default defineConfig( {
 	...baseConfig,
 	globalSetup: './tests/e2e/global-setup.js',
 	testDir: './tests/e2e',
-	// wp-env runs on the host when Playwright is inside Docker (--network host).
-	webServer: isVisualDockerRun() ? undefined : baseConfig.webServer,
+	// E2E tests use the isolated tests env (.wp-env-tests.json on port 8889).
+	webServer: isVisualDockerRun()
+		? undefined
+		: {
+				...baseConfig.webServer,
+				command: 'npm run env:tests:start',
+		  },
 	use: {
 		...baseConfig.use,
 	},

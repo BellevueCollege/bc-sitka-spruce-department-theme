@@ -17,8 +17,8 @@ if [[ $# -gt 0 ]]; then
 	EXTRA_PLAYWRIGHT_ARGS=( "$@" )
 fi
 
-echo "Starting wp-env..."
-npm run env:start
+echo "Starting wp-env tests environment..."
+npm run env:tests:start
 
 echo "Running functional tests on host..."
 if [[ ${#EXTRA_PLAYWRIGHT_ARGS[@]} -gt 0 ]]; then
