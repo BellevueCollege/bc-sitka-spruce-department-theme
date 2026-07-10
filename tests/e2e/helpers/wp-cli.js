@@ -137,6 +137,9 @@ export function uploadTestImage() {
 
 /**
  * Disable the starter pattern modal for the admin user (idempotent).
+ *
+ * In Docker visual runs, prepare-visual-docker-host.mjs already seeded this on
+ * the host (wp-env CLI is unavailable inside the Playwright container).
  */
 export function seedEditorPreferences() {
 	if ( editorPreferencesSeeded ) {
@@ -144,10 +147,8 @@ export function seedEditorPreferences() {
 	}
 
 	if ( isVisualDockerRun() ) {
-		throw new Error(
-			'Editor preferences must be seeded on the host before Docker visual runs. ' +
-				'Run npm run test:e2e:visual so prepare-visual-docker-host.mjs seeds first.'
-		);
+		editorPreferencesSeeded = true;
+		return;
 	}
 
 	runTestsCli(
