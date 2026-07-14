@@ -16,7 +16,8 @@ $block-spacing: 1.5rem;
 	margin-bottom: $block-spacing;
 }
 
-// Hide empty paragraph blocks on the front-end
-.block-wrapper:has(p:only-child:empty) {
+// Hide empty paragraph blocks on the front-end (direct child only;
+// nested empty <p> inside forms/compound blocks must not hide the wrapper)
+.block-wrapper:has(> p:only-child:empty) {
 	display: none;
 }
