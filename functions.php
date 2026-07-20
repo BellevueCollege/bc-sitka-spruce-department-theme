@@ -119,11 +119,12 @@ add_filter( 'register_block_type_args', function( $args, $block_type ) {
 
 
 $enqueuer = Theme::enqueuer();
-$enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true );
-$enqueuer->addStyle( handle: 'bc-sitka-spruce-mainjsassets', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
-$enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css' );
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-bootstrap', src: '/assets/dist/css/bootstrap.asset.php', use_asset_file: true, preload: 'preload' );
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-main', src: '/assets/dist/css/main.asset.php', use_asset_file: true, dependencies: array( 'bc-sitka-spruce-bootstrap' ), preload: 'preload' );
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-mainjsassets', src: '/assets/dist/js/main.asset.php', use_asset_file: true, preload: 'preload' );
+$enqueuer->addStyle( handle: 'bc-sitka-spruce-fonts', src: '//use.typekit.net/vln2gpg.css', preload: 'preload' );
 
-$enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true );
+$enqueuer->addScript( handle: 'bc-sitka-spruce-main-js', src: '/assets/dist/js/main.asset.php', use_asset_file: true, preload: 'preload' );
 
 if ( current_user_can( 'edit_posts' ) ) {
 	$enqueuer->addScript( handle: 'bc-sitka-spruce-a11y-warnings', src: '/assets/dist/js/a11y-warnings.asset.php', use_asset_file: true );
@@ -299,6 +300,7 @@ add_filter(
  * Load Block Editor Styles
  */
 $block_editor = Theme::blockEditor();
+$block_editor->addStylesheet( 'bootstrap-editor', 'assets/dist/css/bootstrap-editor.css' );
 $block_editor->addStylesheet( 'editor', 'assets/dist/css/editor.css' );
 $block_editor->useGlobally( true );
 

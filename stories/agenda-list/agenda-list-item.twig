@@ -1,0 +1,44 @@
+<li>
+    {% if variant == 'action-item' %}
+        {% if post is defined %}
+            <a href="{{ post.link }}"><strong>{{ post.title }}</strong></a>
+            {% set raw_date = post.meta('meeting_date') %}
+            {% if raw_date %}
+                - <span class="text-muted">{{ raw_date|date('F j, Y') }}</span>
+            {% else %}
+                - <span class="text-muted">{{ post.date('F j, Y') }}</span>
+            {% endif %}
+        {% else %}
+            <a href="{{ item.link }}"><strong>{{ item.title }}</strong></a>
+            - <span class="text-muted">{{ item.date }}</span>
+        {% endif %}
+    {% elseif variant == 'agenda' %}
+        {% if post is defined %}
+            <a href="{{ post.link }}">{{ post.localized_meeting_date }}</a>
+            {% if post.meta('special_meeting') %}
+                <span class="special-badge">
+                    (Special Meeting)
+                </span>
+            {% endif %}
+        {% else %}
+            <a href="{{ item.link }}">{{ item.date }}</a>
+            {% if item.is_special %}
+                <span class="special-badge">
+                    (Special Meeting)
+                </span>
+            {% endif %}
+        {% endif %}
+    {% elseif variant == 'resolution' %}
+        {% if post is defined %}
+            <a href="{{ post.link }}"><strong>{{ post.title }}</strong></a>
+            {% if post.localized_meeting_date %}
+                - <span class="text-muted">{{ post.localized_meeting_date }}</span>
+            {% endif %}
+        {% else %}
+            <a href="{{ item.link }}"><strong>{{ item.title }}</strong></a>
+            {% if item.date %}
+                - <span class="text-muted">{{ item.date }}</span>
+            {% endif %}
+        {% endif %}
+    {% endif %}
+</li>
