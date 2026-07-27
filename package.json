@@ -31,6 +31,7 @@
   },
   "homepage": "https://github.com/BellevueCollege/bc-sitka-spruce-department-theme#readme",
   "devDependencies": {
+    "@awesome.me/kit-8745498039": "^1.0.7",
     "@chromatic-com/storybook": "^5.1.2",
     "@nightwatch/vrt": "^3.5.2",
     "@popperjs/core": "^2.11.8",
@@ -39,9 +40,8 @@
     "@storybook/addon-links": "^10.1.8",
     "@storybook/html-vite": "^10.1.8",
     "@wordpress/scripts": "^33.0.0",
-		"bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.3.1",
+    "bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.3.1",
     "bc-theme-layer-bs5": "github:BellevueCollege/bc-theme-layer-bs5#v1.2.0",
-    "bootstrap": "^5.3.3",
     "chromatic": "^17.0.0",
     "concurrently": "^9.0.0",
     "focus-trap": "^7.6.2",
@@ -62,20 +62,17 @@
     "**/*.css",
     "src/js/**/*.js"
   ],
-  "dependencies": {
-    "@awesome.me/kit-8745498039": "^1.0.7"
-  },
   "overrides": {
     "twig": "^3.0.0"
   },
   "allowScripts": {
     "esbuild@0.27.7": true,
-    "@parcel/watcher@2.6.0": true,
     "@nightwatch/nightwatch-inspector": false,
     "core-js": false,
     "core-js-pure": false,
     "unrs-resolver": false,
     "fsevents@2.3.3": true,
-    "fsevents@2.3.2": true
+    "fsevents@2.3.2": true,
+    "@parcel/watcher@2.6.0": true
   }
 }
