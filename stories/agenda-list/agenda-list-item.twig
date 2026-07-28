@@ -2,9 +2,8 @@
     {% if variant == 'action-item' %}
         {% if post is defined %}
             <a href="{{ post.link }}"><strong>{{ post.title }}</strong></a>
-            {% set raw_date = post.meta('meeting_date') %}
-            {% if raw_date %}
-                - <span class="text-muted">{{ raw_date|date('F j, Y') }}</span>
+            {% if post.localized_meeting_date %}
+                - <span class="text-muted">{{ post.localized_meeting_date }}</span>
             {% else %}
                 - <span class="text-muted">{{ post.date('F j, Y') }}</span>
             {% endif %}
