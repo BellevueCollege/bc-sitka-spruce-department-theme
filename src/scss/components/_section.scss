@@ -83,19 +83,38 @@
 	border-top: 2px solid var(--white);
 }
 
+.section.section-accent-blue-extralight + .section.section-accent-blue-extralight {
+	border-top: 2px solid var(--white);
+}
+
+.section.section-brutus-blue + .section.section-brutus-blue {
+	border-top: 2px solid var(--bc-fountain-blue);
+}
+
+.section.section-rainy-night-blue.diffs:has(+ .arch-shape),
+.section.section-rainy-night-blue.diffs:has(+ .section.section-rainy-night-blue) {
+	padding-bottom: 0;
+}
+
 .section.section-rainy-night-blue + .section.section-rainy-night-blue,
 .section.section-rainy-night-blue + .arch-shape + .section.section-rainy-night-blue {
 	border-top: 2px solid var(--bc-fountain-blue);
 }
 
+// Avoid extra spacing between last section and sock
+.section:last-child {
+	margin-bottom: 0;
+}
 
-.section.section-rainy-night-blue.diffs:has(+ .section.section-rainy-night-blue),
-.section.section-rainy-night-blue.diffs:has(+ .arch-shape) {
+// Announcement uses margins outside the .section system. Colored sections followed
+// by announcement keep announcement margin-top (white gap); section padding-bottom
+// is redundant and reads as more colored background, not separation.
+.section:not(.section-white):has(+ .announcement) {
 	padding-bottom: 0;
 }
 
-// Avoid extra spacing between last section and sock
-.section:last-child {
+.announcement:has(+ .section),
+.announcement:has(+ .arch-shape) {
 	margin-bottom: 0;
 }
 

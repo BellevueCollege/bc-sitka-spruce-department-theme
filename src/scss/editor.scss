@@ -25,12 +25,13 @@
 
 
 /**
- * Editor Styles from Bellevue 2022
+ * Vertical spacing between root-level editor blocks only.
+ *
+ * Bellevue uses `html :where(.wp-block)`, which also hits nested blocks (list items,
+ * inner blocks). Scope to `.is-root-container > .wp-block` so Gallery Section →
+ * paragraph gets a gap without spacing list items inside a list.
  */
-
-/* Only Apply to non-iframed editors */
-body.gutenberg-editor-page html :where(.wp-block),
-body.gutenberg-editor-page .editor-styles-wrapper :where(.wp-block) {
+.block-editor-block-list__layout.is-root-container > :where(.wp-block) {
   margin-top: 28px;
   margin-bottom: 28px;
 }
