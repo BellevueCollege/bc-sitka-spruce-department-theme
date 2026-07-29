@@ -35,15 +35,26 @@ $posts_by_year = array();
 foreach ( $agendas as $agenda ) {
     $year = null; // always reset (to prevent hiccup date associated with last item)
     $meeting_date = $agenda->meta('meeting_date');
+
     if ( ! empty( $meeting_date ) ) {
-        // Extract just the year from the ACF date field
-        $year = gmdate( 'Y', strtotime( $meeting_date ) );
+        // ACF date picker values are calendar dates; parse in the site timezone to avoid day offset.
+        $date_time = DateTimeImmutable::createFromFormat( '!Ymd', $meeting_date, wp_timezone() );
+
+        if ( ! $date_time ) {
+            $date_time = date_create_immutable( $meeting_date, wp_timezone() );
+        }
+
+        if ( $date_time ) {
+            $year = $date_time->format( 'Y' );
+            $agenda->localized_meeting_date = wp_date( 'F j, Y', $date_time->getTimestamp(), wp_timezone() );
+        }
     } else {
-        //fallback to publish year if no meeting date
-        // $agenda->post_date = timber version of publish date
-        $year = gmdate( 'Y', strtotime( $agenda->post_date ) );
+        // Fallback to WP publish date for the year group
+        $post_timestamp = strtotime( $agenda->post_date );
+        $year = gmdate( 'Y', $post_timestamp );
+        $agenda->localized_meeting_date = wp_date( 'F j, Y', $post_timestamp );
     }
-    // AFTER finding the year, add it to the array
+
     if ( $year ) {
         $posts_by_year[ $year ][] = $agenda;
     }
