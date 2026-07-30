@@ -237,7 +237,7 @@ class Enqueuer implements EnqueuerInterface {
 	public function setupRegisterStyles(): void {
 		foreach ( $this->styles as $handle => $style ) {
 			$dependencies = $style['dependencies'] ?? array();
-			$media        = $script['media'] ?? 'all';
+			$media        = $style['media'] ?? 'all';
 			wp_register_style( $handle, $style['src'], $dependencies, $this->generateVersion( $style['version'] ), $media );
 		}
 	}
@@ -573,9 +573,30 @@ class Enqueuer implements EnqueuerInterface {
 			if ($attribute === 'media' && $resource[$attribute] === 'all') {
 				continue;
 			}
-			$parts[] = $attribute . '=' . $resource[$attribute];
+			$parts[] = $attribute . '=' . $this->quoteLinkParameter($resource[$attribute]);
 		}
 
 		return implode('; ', $parts);
+	}
+
+	/**
+	 * Quote a Link parameter value unless it is already a bare token.
+	 *
+	 * Media queries and MIME types contain characters outside the RFC 7230
+	 * token set. Left unquoted they produce invalid headers, and an unquoted
+	 * comma would split the value into a separate malformed link entry.
+	 *
+	 * @param string $value
+	 *   The parameter value to output.
+	 *
+	 * @return string
+	 *   The value as a token, or as a quoted string.
+	 */
+	protected function quoteLinkParameter(string $value): string {
+		if (preg_match('/^[A-Za-z0-9!#$%&\'*+.^_`|~-]+$/', $value)) {
+			return $value;
+		}
+
+		return '"' . str_replace(['\\', '"'], ['\\\\', '\\"'], $value) . '"';
 	}
 }
