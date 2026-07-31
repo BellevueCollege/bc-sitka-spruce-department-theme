@@ -4,8 +4,8 @@
   "description": "Bellevue College Theme for Level 3 Department Sites",
   "main": "theme.json",
   "scripts": {
-    "start": "wp-scripts start --webpack-src-dir=src --output-path=assets/dist",
-    "build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist",
+    "start": "wp-scripts start --webpack-src-dir=src --output-path=assets/dist --blocks-manifest",
+    "build": "wp-scripts build --webpack-src-dir=src --output-path=assets/dist --blocks-manifest",
     "storybook": "concurrently \"npm run start\" \"storybook dev -p 6006\"",
     "storybook:only": "storybook dev -p 6006",
     "build-storybook": "storybook build",

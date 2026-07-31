@@ -30,93 +30,37 @@ add_action( 'after_setup_theme', function() {
  * Register Blocks
  *
  * Any blocks that are part of the theme should be registered here.
- */
-function register_blocks() {
-	$blocks = array(
-		'differentiator-section',
-		'differentiator-section/differentiator',
-		'contact-selector',
-		'content-and-location',
-		'template-homepage',
-		'hero-image',
-		'card-section',
-		'card-section/card-section-card',
-		'tabcordion',
-		'tabcordion/tabcordion-list',
-		'tabcordion/tabcordion-list-tab',
-		'tabcordion/tabcordion-content',
-		'tabcordion/tabcordion-content-panel',
-		'application-steps-tabs',
-		'application-steps-tabs/application-step-single',
-		'application-steps-tabs/application-step-single-content',
-		'callout',
-		'tabs-section',
-		'news-feature-core',
-		'testimonial-section',
-		'announcement-banner',
-		'support-feature',
-		'department-feature',
-		'accordion-section',
-		'accordion-section/accordion-section-content',
-		'media-gallery-section',
-		'listing-section',
-		'listing-section/listing-section-list-item',
-		'listing-section/listing-section-list-item-links',
-		'course-information-section',
-		'course-information-section/course-information-section-content',
-		'narrow-content',
-		'body-section',
-		'body-section/body-section-content',
-		'profiles-section',
-		'template-program-info',
-		'degrees-certificates-section',
-		'checkerboard-section',
-		'bio-section',
-		'bio-section/bio-section-content',
-	);
-
-	// Only register posts feature block if posts are enabled
-	if ( get_option( 'options_enable_posts') ) {
-		$blocks[] = 'posts-feature';
-	}
-
-	// Register Blocks
-	block_registration_helper( $blocks );
-}
-add_action( 'init', __NAMESPACE__ . '\register_blocks' );
-
-/**
- * Helper Function for Registering Blocks
- *
- * TODO: Move this to a helper function file
- */
-function block_registration_helper( array $blocks ) {
-	$block_path = get_template_directory() . '/assets/dist/blocks/';
-	foreach ( $blocks as $block ) {
-		$block = $block_path . $block;
-		register_block_type( $block );
-	}
-}
-
-/**
- * Disable FitText in Editor
  * 
- * This shouldn't be needed (it is included in theme.json), but that is not working consistantly. 
+ * This requires that the theme be built via `npm run build` or `npm run build:manifest`
+ * to generate the blocks-manifest.php file.
  */
-add_filter( 'register_block_type_args', function( $args, $block_type ) {
-	$blocks = [
-		'core/heading',
-		'core/paragraph',
-		'core/verse',
-		'core/quote',
-		'core/pullquote',
-	];
-	if ( in_array( $block_type, $blocks, true ) ) {
-		$args['supports']['typography']['fitText'] = false;
-	}
-	return $args;
-}, 10, 2 );
+add_action('init', function() {
+    $dist_dir = get_template_directory() . '/assets/dist';
+    $blocks_build_dir = $dist_dir . '/blocks';
+    $manifest = $dist_dir . '/blocks-manifest.php';
 
+
+    if ( file_exists( $manifest ) ) {
+        // High-performance registration for WP 6.8
+        wp_register_block_types_from_metadata_collection( $blocks_build_dir, $manifest );
+    }
+});
+/**
+ * Intercept block registration from the manifest.
+ * Only allows the posts-feature block if the theme option is enabled.
+ */
+add_filter( 'block_type_metadata', function( $metadata ) {
+    // Check if this is the posts-feature block
+    if ( isset( $metadata['name'] ) && 'bc-sitka-spruce/posts-feature' === $metadata['name'] ) {
+        // Check your theme option
+        $posts_enabled = get_option( 'options_enable_posts' );
+        // If posts are disabled, return false to prevent registration
+        if ( ! $posts_enabled ) {
+            return false;
+        }
+    }
+    return $metadata;
+}, 10, 1 );
 
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-bootstrap', src: '/assets/dist/css/bootstrap.asset.php', use_asset_file: true, preload: 'preload' );
@@ -155,6 +99,24 @@ add_action( 'enqueue_block_editor_assets', function () {
 		'before'           // ensure this runs before editor.js [web:64]
 	);
 } );
+/**
+ * Disable FitText in Editor
+* 
+* This shouldn't be needed (it is included in theme.json), but that is not working consistantly. 
+*/
+add_filter( 'register_block_type_args', function( $args, $block_type ) {
+   $blocks = [
+	   'core/heading',
+	   'core/paragraph',
+	   'core/verse',
+	   'core/quote',
+	   'core/pullquote',
+   ];
+   if ( in_array( $block_type, $blocks, true ) ) {
+	   $args['supports']['typography']['fitText'] = false;
+   }
+   return $args;
+}, 10, 2 );
 
 // Enqueue Block Styles
 $enqueuer->addBlockStyle(
