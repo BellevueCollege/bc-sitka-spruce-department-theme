@@ -8,11 +8,9 @@
 
 {% block content %}
     {# Date is preformatted in PHP via wp_date / wp_timezone to avoid day offset. #}
-    {% set is_special = agenda_obj.meta('special_meeting') ? '(Special Meeting)' : '' %}
-
     <div class="flexible-page">
         {# Pass date into banner through subtitle #}
-        {% set banner_subtitle = post.localized_meeting_date ? (post.localized_meeting_date ~ ' ' ~ is_special) : is_special %}
+        {% set banner_subtitle = post.localized_meeting_date %}
 
         {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
             title: post.title,
