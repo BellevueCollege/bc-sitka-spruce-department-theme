@@ -24,7 +24,7 @@
                 {% endset %}
                 {% set accordion_items = accordion_items|merge([{
                     id: 'year-' ~ year,
-                    title: year ~ ' Meetings',
+                    title: year ~ ' Action Items',
                     is_open: loop.first,
                     content: list_content,
                 }]) %}
