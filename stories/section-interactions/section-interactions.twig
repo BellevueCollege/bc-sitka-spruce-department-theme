@@ -1,0 +1,11 @@
+{#
+/**
+ * @file
+ * Composite page of isolated section adjacency test cases. Only used in Storybook (not WordPress)
+ */
+#}
+<main class="section-interactions">
+  {% for case in cases %}
+    {% include '@stories/section-interactions/section-case.twig' with case only %}
+  {% endfor %}
+</main>
