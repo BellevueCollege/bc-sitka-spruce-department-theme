@@ -1,6 +1,6 @@
 .link-accent,
 .link-accent-lg {
-	@include link-accent-underline( get_color( $sitka-colors, 'accent-link-blue' ) );
+	@include link-accent-underline( get_color( $utility-colors, 'accent-link-blue' ) );
 
 	&.text-white {
 		--sitka-link-accent-icon-color: var( --white );

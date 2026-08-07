@@ -6,22 +6,23 @@ namespace BcSitkaSpruce\Library\Enqueuer;
  * An API for loading theme scripts and stylesheets.
  *
  * Supports resource preloading via the optional $preload parameter in addScript()
- * and addStyle(). To preload a resource, pass a resource hint type such as 'preload'
- * or 'prefetch' as the last parameter:
+ * and addStyle(). Pass 'preload' as the last argument:
  *
  * @code
  * $enqueuer->addStyle('theme-style', '/assets/css/main.css', [], '', '1.0.0', 'all', 'preload');
  * $enqueuer->addScript('app-js', '/assets/js/app.js', [], '', '1.0.0', true, 'preload');
  * @endcode
  *
- * Preloaded resources will automatically include:
- * - Version numbers from registered assets
- * - crossorigin='anonymous' for external resources (protocol-relative URLs)
+ * Preloaded resources receive:
+ * - Versioned URLs from registered assets
+ * - crossorigin='anonymous' for external (protocol-relative) resources
  * - Appropriate 'as' and 'type' attributes
+ * - HTML <link rel="preload"> tags via wp_preload_resources
+ * - HTTP Link headers via wp_headers for Cloudflare Early Hints
  *
- * External scripts and styles receive crossorigin='anonymous' on their output
- * tags via the wp_script_attributes and style_loader_tag filters so preload
- * hints match the credentials mode of the final resource request.
+ * External scripts and styles also receive crossorigin='anonymous' on their
+ * output tags so preload hints and the final resource request use the same
+ * credentials mode.
  */
 class Enqueuer implements EnqueuerInterface {
 
@@ -51,6 +52,7 @@ class Enqueuer implements EnqueuerInterface {
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterStyles' ), 99, 0 );
 		add_action( 'init', array( $this, 'setupEnqueueBlockStyles' ), 10, 0 );
 		add_filter('wp_preload_resources', [$this, 'setupPreloadResources'], 10, 1);
+		add_filter('wp_headers', [$this, 'addEarlyHintsLinkHeaders'], 10, 1);
 		add_filter('style_loader_tag', [$this, 'addCrossoriginToExternalStyles'], 10, 2);
 		add_filter('wp_script_attributes', [$this, 'addCrossoriginToExternalScripts'], 10, 1);
 	}
@@ -235,7 +237,7 @@ class Enqueuer implements EnqueuerInterface {
 	public function setupRegisterStyles(): void {
 		foreach ( $this->styles as $handle => $style ) {
 			$dependencies = $style['dependencies'] ?? array();
-			$media        = $script['media'] ?? 'all';
+			$media        = $style['media'] ?? 'all';
 			wp_register_style( $handle, $style['src'], $dependencies, $this->generateVersion( $style['version'] ), $media );
 		}
 	}
@@ -374,7 +376,7 @@ class Enqueuer implements EnqueuerInterface {
 	/**
 	 * Callback for the 'wp_preload_resources' filter.
 	 *
-	 * Adds preload hints for scripts and styles that have been marked for preloading.
+	 * Merges theme preload resources into WordPress HTML resource hints.
 	 *
 	 * @param array $preload_resources
 	 *   Existing preload resources.
@@ -383,46 +385,148 @@ class Enqueuer implements EnqueuerInterface {
 	 *   Updated preload resources.
 	 */
 	public function setupPreloadResources(array $preload_resources): array {
-		// Process scripts marked for preloading
-		foreach ($this->preloadScripts as $handle => $preload_type) {
-		if (wp_script_is($handle, 'enqueued')) {
-			$asset = wp_scripts()->registered[$handle] ?? null;
-			if ($asset) {
-			$preload_resources[] = $this->buildPreloadArray($asset->src, $asset->ver, 'script', 'text/javascript');
-			}
-		}
-		}
-
-		// Process styles marked for preloading
-		foreach ($this->preloadStyles as $handle => $preload_type) {
-		if (wp_style_is($handle, 'enqueued')) {
-			$asset = wp_styles()->registered[$handle] ?? null;
-			if ($asset) {
-			$media = $asset->args ?? 'all';
-			$preload_resources[] = $this->buildPreloadArray($asset->src, $asset->ver, 'style', 'text/css', $media);
-			}
-		}
+		foreach ($this->getResourceHints() as $hint) {
+			$preload_resources[] = $hint['resource'];
 		}
 
 		return $preload_resources;
 	}
 
 	/**
-	 * Build a preload array for a resource.
+	 * Callback for the 'wp_headers' filter.
+	 *
+	 * Emits a Link header so Cloudflare can cache preload hints and serve them
+	 * as 103 Early Hints. Footer scripts are omitted: they are not
+	 * render-blocking, so a preemptive hint does not help page load.
+	 *
+	 * @param array<string, string> $headers
+	 *   Headers WordPress is about to send.
+	 *
+	 * @return array<string, string>
+	 *   Headers with an appended Link value when applicable.
+	 */
+	public function addEarlyHintsLinkHeaders(array $headers): array {
+		if (
+			is_admin()
+			|| wp_doing_ajax()
+			|| wp_doing_cron()
+			|| is_feed()
+			|| (defined('REST_REQUEST') && REST_REQUEST)
+		) {
+			return $headers;
+		}
+
+		$link_values = [];
+		foreach ($this->getResourceHints() as $hint) {
+			// Styles have no footer flag; only script handles are stored on hints.
+			if (
+				isset($hint['handle'])
+				&& ($this->scripts[$hint['handle']]['footer'] ?? true)
+			) {
+				continue;
+			}
+
+			$link_values[] = $this->formatResourceHintAsLinkHeader($hint['resource']);
+		}
+
+		if (!$link_values) {
+			return $headers;
+		}
+
+		$link_header = implode(', ', $link_values);
+		if (!empty($headers['Link'])) {
+			$headers['Link'] .= ', ' . $link_header;
+		} else {
+			$headers['Link'] = $link_header;
+		}
+
+		return $headers;
+	}
+
+	/**
+	 * Build the theme preload hints for the current request.
+	 *
+	 * Uses the enqueuer registration and removal lists rather than WordPress
+	 * enqueue state, because wp_headers runs before wp_enqueue_scripts. Script
+	 * hints include a handle so callers can inspect footer placement.
+	 *
+	 * @return array<int, array{resource: array<string, string>, handle?: string}>
+	 *   Preload hint entries with attributes and optional script handle.
+	 */
+	protected function getResourceHints(): array {
+		$hints = [];
+
+		foreach ($this->preloadScripts as $handle => $rel) {
+			$script = $this->scripts[$handle] ?? null;
+			if (!$script || !$this->isHintEnabled($rel, $handle, $this->deregisteredScripts)) {
+				continue;
+			}
+
+			$hints[] = [
+				'handle' => $handle,
+				'resource' => $this->buildPreloadArray(
+					$script['src'],
+					$this->generateVersion($script['version']),
+					'script',
+					'text/javascript'
+				),
+			];
+		}
+
+		foreach ($this->preloadStyles as $handle => $rel) {
+			$style = $this->styles[$handle] ?? null;
+			if (!$style || !$style['enqueue'] || !$this->isHintEnabled($rel, $handle, $this->deregisteredStyles)) {
+				continue;
+			}
+
+			$hints[] = [
+				'resource' => $this->buildPreloadArray(
+					$style['src'],
+					$this->generateVersion($style['version']),
+					'style',
+					'text/css',
+					$style['media'] ?? 'all'
+				),
+			];
+		}
+
+		return $hints;
+	}
+
+	/**
+	 * Whether a handle should emit a preload hint on this request.
+	 *
+	 * @param string $rel
+	 *   Requested hint type from addScript()/addStyle().
+	 * @param string $handle
+	 *   Asset handle.
+	 * @param string[] $deregistered_handles
+	 *   Handles removed from this request.
+	 *
+	 * @return bool
+	 *   True when the asset is marked for preload and is still active.
+	 */
+	protected function isHintEnabled(string $rel, string $handle, array $deregistered_handles): bool {
+		return $rel === 'preload'
+			&& !in_array($handle, $deregistered_handles, true);
+	}
+
+	/**
+	 * Build attribute array for a preload resource hint.
 	 *
 	 * @param string $src
-	 *   The resource source URL.
+	 *   Resource URL.
 	 * @param string|null $version
-	 *   The resource version.
+	 *   Optional version query value.
 	 * @param string $as
-	 *   The resource type (script, style, etc.).
+	 *   Resource destination (script, style, etc.).
 	 * @param string $type
-	 *   The MIME type of the resource.
+	 *   MIME type.
 	 * @param string $media
-	 *   The media query for the resource (for styles).
+	 *   Media query for stylesheets.
 	 *
-	 * @return array
-	 *   The preload array.
+	 * @return array<string, string>
+	 *   Attributes suitable for wp_preload_resources or Link headers.
 	 */
 	protected function buildPreloadArray(string $src, ?string $version, string $as, string $type, string $media = 'all'): array {
 		$href = $src;
@@ -435,9 +539,8 @@ class Enqueuer implements EnqueuerInterface {
 		'type' => $type,
 		];
 
-		// Add media for styles
 		if ($as === 'style') {
-		$preload['media'] = $media;
+			$preload['media'] = $media;
 		}
 
 		if ($this->isExternalResource($src)) {
@@ -445,5 +548,55 @@ class Enqueuer implements EnqueuerInterface {
 		}
 
 		return $preload;
+	}
+
+	/**
+	 * Convert a preload resource into an RFC 8288 Link header value.
+	 *
+	 * @param array<string, string> $resource
+	 *   Preload attributes from buildPreloadArray().
+	 *
+	 * @return string
+	 *   Example: <https://example.com/style.css>; rel=preload; as=style.
+	 */
+	protected function formatResourceHintAsLinkHeader(array $resource): string {
+		$href = set_url_scheme($resource['href']);
+		$parts = [
+			'<' . esc_url_raw($href) . '>',
+			'rel=preload',
+		];
+
+		foreach (['as', 'type', 'media', 'crossorigin'] as $attribute) {
+			if (empty($resource[$attribute])) {
+				continue;
+			}
+			if ($attribute === 'media' && $resource[$attribute] === 'all') {
+				continue;
+			}
+			$parts[] = $attribute . '=' . $this->quoteLinkParameter($resource[$attribute]);
+		}
+
+		return implode('; ', $parts);
+	}
+
+	/**
+	 * Quote a Link parameter value unless it is already a bare token.
+	 *
+	 * Media queries and MIME types contain characters outside the RFC 7230
+	 * token set. Left unquoted they produce invalid headers, and an unquoted
+	 * comma would split the value into a separate malformed link entry.
+	 *
+	 * @param string $value
+	 *   The parameter value to output.
+	 *
+	 * @return string
+	 *   The value as a token, or as a quoted string.
+	 */
+	protected function quoteLinkParameter(string $value): string {
+		if (preg_match('/^[A-Za-z0-9!#$%&\'*+.^_`|~-]+$/', $value)) {
+			return $value;
+		}
+
+		return '"' . str_replace(['\\', '"'], ['\\\\', '\\"'], $value) . '"';
 	}
 }

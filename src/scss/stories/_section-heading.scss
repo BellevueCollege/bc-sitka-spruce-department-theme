@@ -107,7 +107,7 @@
 	}
 
 	@supports not (--css: variables) {
-		color: get_color( $sitka-colors, 'black' );
+		color: get_color( $utility-colors, 'black' );
 	}
 
 	.col-md-3 {
