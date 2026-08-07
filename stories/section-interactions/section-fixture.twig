@@ -1,0 +1,46 @@
+{#
+/**
+ * @file
+ * Minimal segment fixture for section adjacency testing (only used in Storybook, not WordPress)
+ */
+#}
+{% if type == 'arch' %}
+  <div class="{{ classes }}"></div>
+{% elseif type == 'blockWrapper' %}
+  <div class="block-wrapper">
+    <p class="fw-semibold py-3 mb-0 container-xl">{{ label }}</p>
+  </div>
+{% else %}
+  <section class="{{ classes }}">
+    {% if withSectionHeading|default(false) %}
+      {% if wrapInnerClass|default('') %}
+        <div class="{{ wrapInnerClass }}">
+      {% endif %}
+      {% set heading_classes = ['mb-4'] %}
+      {% if labelClasses == 'text-white' %}
+        {% set heading_classes = heading_classes|merge(['text-white', 'dark-bg']) %}
+      {% endif %}
+      {% include '@stories/section-heading/section-heading.twig' with {
+        heading: heading|default(label),
+        subheading: subheading|default('<p>Subheading</p>'),
+        eyebrow: eyebrow|default(''),
+        classes: heading_classes,
+      } %}
+      {% if showContentStub|default(false) %}
+        <div class="container-xl mt-4 mb-0">
+          <p class="fw-semibold mb-0{{ labelClasses ? ' ' ~ labelClasses : '' }}">{{ contentLabel|default('Content below heading') }}</p>
+        </div>
+      {% endif %}
+      {% if wrapInnerClass|default('') %}
+        </div>
+      {% endif %}
+    {% else %}
+      <div class="{{ innerClass|default('container-xl') }}">
+        <p class="fw-semibold py-3 mb-0{{ labelClasses ? ' ' ~ labelClasses : '' }}">{{ label }}</p>
+      </div>
+    {% endif %}
+    {% if showDivider %}
+      <hr class="section-divider" />
+    {% endif %}
+  </section>
+{% endif %}
