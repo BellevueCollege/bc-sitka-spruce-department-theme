@@ -213,8 +213,8 @@
 	}
 
 	.wp-block-bc-sitka-spruce-tabcordion-list {
-		margin-top: var(--sitka-container-spacing-lg);
-		margin-bottom: var(--sitka-container-spacing-lg);
+		margin-top: var(--sitka-container-spacing);
+		margin-bottom: var(--sitka-container-spacing);
 		flex-direction: column;
 		border: none;
 		border-right: 2px solid var(--bc-fountain-blue);
@@ -250,7 +250,7 @@
 		a:hover, a:focus {
 			color: var(--gray--light);
 		}
-		margin: var(--sitka-container-spacing-lg) 2rem;
+		margin: var(--sitka-container-spacing) 2rem;
 
 		div.tabcordion-pane {
 			display: none;
