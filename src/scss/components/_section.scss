@@ -53,17 +53,16 @@
 	margin-top: var( --sitka-container-spacing );
 }
 
-// Hide arch shape if next section is dark
+// Hide arch shape if next section is dark.
+// When the arch is hidden before a curved-top rainy section, restore section
+// padding-top so headings are not flush against the predecessor (child-only
+// padding missed .section-heading and double-padded content stubs).
 .section.section-rainy-night-blue {
 	& + .arch-shape {
 		display: none;
 	}
 	& + .arch-shape + .section.section-rainy-night-blue.curved-top {
-
-		.diffs--container,
-		& > .container-xl {
-			padding-top: var( --sitka-container-spacing );
-		}
+		padding-top: var( --sitka-container-spacing );
 	}
 }
 
@@ -91,14 +90,14 @@
 	border-top: 2px solid var(--bc-fountain-blue);
 }
 
-.section.section-rainy-night-blue.diffs:has(+ .arch-shape),
-.section.section-rainy-night-blue.diffs:has(+ .section.section-rainy-night-blue) {
-	padding-bottom: 0;
-}
-
 .section.section-rainy-night-blue + .section.section-rainy-night-blue,
 .section.section-rainy-night-blue + .arch-shape + .section.section-rainy-night-blue {
 	border-top: 2px solid var(--bc-fountain-blue);
+}
+
+.section.section-rainy-night-blue.diffs:has(+ .section.section-rainy-night-blue),
+.section.section-rainy-night-blue.diffs:has(+ .arch-shape) {
+	padding-bottom: 0;
 }
 
 // Avoid extra spacing between last section and sock
@@ -106,9 +105,8 @@
 	margin-bottom: 0;
 }
 
-// Announcement uses margins outside the .section system. Colored sections followed
-// by announcement keep announcement margin-top (white gap); section padding-bottom
-// is redundant and reads as more colored background, not separation.
+// Colored sections before announcement: drop redundant section padding;
+// announcement margin-top provides the white gap.
 .section:not(.section-white):has(+ .announcement) {
 	padding-bottom: 0;
 }
@@ -118,7 +116,8 @@
 	margin-bottom: 0;
 }
 
-// Hide divider if next section has a colored background, arch shape, or is the last section
+// Hide divider if next section has a colored background, arch shape, or is the last section.
+// Also drop container margin so a hidden divider does not leave a white strip.
 .section.section-white:has(+ .section.section-rainy-night-blue),
 .section.section-white:has(+ .section.section-brutus-blue),
 .section.section-white:has(+ .section.section-xlight),
@@ -127,5 +126,9 @@
 .section.section-white:last-child {
 	.section-divider {
 		display: none;
+	}
+
+	.container-xl:has(+ hr) {
+		margin-bottom: 0;
 	}
 }
