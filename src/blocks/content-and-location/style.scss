@@ -10,7 +10,7 @@
 }
 
 .content-and-location.container-xl {
-    padding-top: var( --sitka-container-spacing-lg );
+    padding-top: var( --sitka-container-spacing );
 	margin-bottom: var( --sitka-container-spacing);
 
     @include media-breakpoint-up('lg') {

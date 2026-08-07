@@ -8,8 +8,8 @@
 	}
 
 	hr.accent {
-		margin-top: var(--sitka-container-spacing-lg);
-		margin-bottom: var(--sitka-container-spacing-lg);
+		margin-top: var(--sitka-container-spacing);
+		margin-bottom: var(--sitka-container-spacing);
 
 		// this can likely be removed; another pull request has global styling
 		--bs-border-width: 2px;
