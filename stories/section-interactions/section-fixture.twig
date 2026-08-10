@@ -8,7 +8,7 @@
   <div class="{{ classes }}"></div>
 {% elseif type == 'blockWrapper' %}
   <div class="block-wrapper">
-    <p class="fw-semibold py-3 mb-0 container-xl">{{ label }}</p>
+    <p class="fw-semibold mb-0 container-xl">{{ label }}</p>
   </div>
 {% else %}
   <section class="{{ classes }}">
@@ -36,7 +36,7 @@
       {% endif %}
     {% else %}
       <div class="{{ innerClass|default('container-xl') }}">
-        <p class="fw-semibold py-3 mb-0{{ labelClasses ? ' ' ~ labelClasses : '' }}">{{ label }}</p>
+        <p class="fw-semibold mb-0{{ labelClasses ? ' ' ~ labelClasses : '' }}">{{ label }}</p>
       </div>
     {% endif %}
     {% if showDivider %}

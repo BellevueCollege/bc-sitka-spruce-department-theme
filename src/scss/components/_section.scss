@@ -102,10 +102,10 @@
 	margin-bottom: 0;
 }
 
-// Colored sections before announcement: drop redundant section padding;
-// announcement margin-top provides the white gap.
-.section:not(.section-white):has(+ .announcement) {
-	padding-bottom: 0;
+// Colored sections already supply bottom padding; zero announcement margin-top
+// so the gap after a colored band is not doubled.
+.section:not(.section-white) + .announcement {
+	margin-top: 0;
 }
 
 .announcement:has(+ .section),
@@ -130,7 +130,7 @@
 }
 
 // Hide divider if next section has a colored background, arch shape, or is the last section.
-// Also drop container margin so a hidden divider does not leave a white strip.
+// Keep the container margin because it owns the white section's bottom spacing.
 .section.section-white:has(+ .section.section-rainy-night-blue),
 .section.section-white:has(+ .section.section-brutus-blue),
 .section.section-white:has(+ .section.section-xlight),
@@ -139,9 +139,5 @@
 .section.section-white:last-child {
 	.section-divider {
 		display: none;
-	}
-
-	.container-xl:has(+ hr) {
-		margin-bottom: 0;
 	}
 }
