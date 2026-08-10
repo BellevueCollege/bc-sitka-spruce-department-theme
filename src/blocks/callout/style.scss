@@ -3,9 +3,8 @@
 .callout {
 	border-radius: 0.5rem;
 	background-color: var( --sitka-callout-bg, var( --white ) );
-	padding-block: var(--sitka-container-spacing);
-	padding-inline: 2rem;
-	margin-bottom: var(--sitka-container-spacing);
+	padding: 2rem;
+	margin-bottom: 2rem;
 
 	&.callout-info {
 		--sitka-callout-bg: var( --accent-fountain-blue-extralight );
