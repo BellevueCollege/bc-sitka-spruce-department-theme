@@ -17,8 +17,8 @@
             {#Pass the specific title, description, and the array of buttons to the banner #}
             {% include '@stories/announcement-banner/announcement-banner.twig' with {
                 title: title,
-                description: description,
-                buttons: buttons, 
+                description: '<p>' ~ description ~ '</p>',
+                buttons: buttons,
             } only %}
         </div>
     {% endif %}

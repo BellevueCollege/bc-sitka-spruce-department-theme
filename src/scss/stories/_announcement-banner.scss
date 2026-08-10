@@ -4,7 +4,8 @@
 
 	&--item {
 		background-color: var( --accent-fountain-blue-extralight );
-		padding: var( --sitka-container-spacing ) var( --sitka-container-spacing-lg );
+		// Use gutter instead of container spacing for internal consistency
+		padding: var( --bs-gutter-x );
 	}
 
 
@@ -17,27 +18,12 @@
 		}
 	}
 
-	p {
+	&__links {
+		// Remove the bottom margin from the links list to avoid double spacing
+		margin-bottom: 0;
+	}
+
+	h2 + p {
 		margin-top: 1rem;
 	}
-}
-
-//// Same styling needs to be available for profile overview but seperated to add an icon
-.single-profile-appointment{
-	.announcement {
-		margin-top: var(--sitka-container-spacing);
-		margin-bottom: var(--sitka-container-spacing);
-
-		&--item {
-			background-color: var( --accent-fountain-blue-extralight );
-			padding-block: var(--sitka-container-spacing);
-			padding-inline: 1.5rem;
-
-			@include media-breakpoint-up(md) {
-				padding-block: var(--sitka-container-spacing);
-				padding-inline: 3rem;
-			}
-		}
-	}
-
 }
