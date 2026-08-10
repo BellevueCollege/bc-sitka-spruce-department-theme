@@ -4,10 +4,6 @@
 /// Styles for the checkerboard.
 ////
 ///
-.checkerboards {
-	margin-top: var( --sitka-container-spacing );
-}
-
 .card--checkerboard {
 
 	margin-bottom: var( --sitka-container-spacing );
@@ -133,13 +129,13 @@
 
 		@include media-breakpoint-up(lg) {
 			h3 {
-				margin-top: 4rem;
+				margin-top: var(--sitka-container-spacing);
 			}
 		}
 
 		@include media-breakpoint-up(md) {
 			h3 {
-				margin-top: 4rem;
+				margin-top: var(--sitka-container-spacing);
 			}
 		}
 

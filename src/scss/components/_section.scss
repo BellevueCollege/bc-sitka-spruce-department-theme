@@ -38,10 +38,6 @@
 		background-color: var(--bc-rainy-night-blue);
 	}
 
-	.section-heading > .container-xl {
-		padding-bottom: calc( var( --sitka-container-spacing ) * 0.5);
-	}
-
 	&:has(+ .section) {
 		margin-bottom: 0;
 	}
@@ -114,6 +110,22 @@
 .announcement:has(+ .section),
 .announcement:has(+ .arch-shape) {
 	margin-bottom: 0;
+}
+
+// Homepage intro: content-and-location margin-bottom stacks with follower
+// top spacing at lg. Zero the intro margin when the follower self-spaces.
+.homepage-intro:has(+ .section) .content-and-location,
+.homepage-intro:has(+ .arch-shape) .content-and-location,
+.homepage-intro:has(+ .announcement) .content-and-location {
+	margin-bottom: 0;
+}
+
+// White sections after the intro: drop padding-top too. The intro card has
+// square bottom corners meant to connect into the next white surface; leaving
+// section padding-top re-creates the large empty gap after margin is zeroed.
+// Colored sections keep padding-top so headings stay inset from the band edge.
+.homepage-intro + .section.section-white {
+	padding-top: 0;
 }
 
 // Hide divider if next section has a colored background, arch shape, or is the last section.

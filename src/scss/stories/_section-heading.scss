@@ -40,16 +40,24 @@
 
 	&__heading {
 		font-size: 2.75rem;
+		// Reboot gives headings a bottom margin; the gap below belongs to the
+		// subheading or the section body, so neutralise it here.
 		margin-bottom: 0;
 	}
 
 	&__subheading {
-		@include global-spacing(3x, margin-top);
+		margin-top: calc( var( --sitka-container-spacing ) / 2 ); // Half the container spacing
 
 		p {
 			font-size: 1.125rem;
 			// @include secondary-typeface(intro-text);
 		}
+	}
+
+	// Section bodies are container-xl wrappers rendered directly after the heading.
+	// Owning the gap here keeps every section at exactly one unit.
+	& + .container-xl {
+		margin-top: var( --sitka-container-spacing );
 	}
 
 	.link-arrow {
