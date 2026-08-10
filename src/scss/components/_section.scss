@@ -58,6 +58,7 @@
 		display: none;
 	}
 	& + .arch-shape + .section.section-rainy-night-blue.curved-top {
+		--arch-shape-offset: 0;
 		padding-top: var( --sitka-container-spacing );
 	}
 }

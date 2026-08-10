@@ -132,7 +132,7 @@ registerBlockType('bc-sitka-spruce/support-feature', {
 				<div className="arch-shape alignfull"></div>
 				<div {...blockProps}>
 					<div className="tab-wrapper-dark tabcordion tabcordion-list curved-top">
-						<div className="container-xl">
+						<div className="container-xl curved-top-offset-section">
 							<div className="row">
 								<div className="col-md-12">
 									<RichText
