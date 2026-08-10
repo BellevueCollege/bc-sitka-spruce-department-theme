@@ -26,7 +26,7 @@ Default.args = {
 	wrapper_classes: '',
 	heading_tag: 'h2',
     title: 'Spring Quarter Starts Monday!',
-    text: '<p>Get ready to celebrate the new year with our new program. </p>',
+    text: 'Get ready to celebrate the new year with our new program.',
     links: "<ul><li><a href='#' class='link-arrow'>Learn more</a></li><li><a href='#' class='link-arrow'>Another Link</a></li></ul>",
     button: { url: '#', title: 'Learn More' },
 };
