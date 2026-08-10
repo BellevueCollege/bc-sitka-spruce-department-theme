@@ -44,8 +44,8 @@
 	.tab-header {
 		--bs-gutter-x: 3.25rem;
 		background: var(--gray--xlight);
-		padding-top: var(--sitka-container-spacing);
-		padding-bottom: calc( var(--sitka-container-spacing) * 0.5);
+		padding-top: calc( var(--bs-gutter-x) * 0.5);
+		padding-bottom: calc( var(--bs-gutter-x) * 0.5);
 	}
 
 	// Inset container for tabs
