@@ -26,7 +26,7 @@
 		--bs-heading-color: var(--black);
 		color: var(--black);
 
-		margin-bottom: var(--sitka-container-spacing);
+		margin-bottom: var(--bs-gutter-x);
 		&:last-child {
 			margin-bottom: 0;
 		}
