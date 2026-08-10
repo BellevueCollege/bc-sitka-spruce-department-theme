@@ -10,8 +10,9 @@
 	}
 
 
+	// Not a container-xl, so it cannot inherit the shared heading-to-body gap.
 	.tab-wrapper {
-		padding-top: 0;
+		padding-top: var(--sitka-container-spacing);
 		padding-bottom: 0;
 	}
 }

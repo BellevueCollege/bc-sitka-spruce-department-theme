@@ -1,7 +1,8 @@
 .gform_wrapper {
 	background-color: var(--gray--xlight);
-	padding: 2rem;
-	margin-bottom: 2rem;
+	padding-block: var(--sitka-container-spacing);
+	padding-inline: 2rem;
+	margin-bottom: var(--sitka-container-spacing);
 	border-radius: var(--bs-border-radius);
 
 	--gf-ctrl-accent-color: var(--bc-brutus-blue) !important;

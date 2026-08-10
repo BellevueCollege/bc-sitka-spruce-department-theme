@@ -3,9 +3,10 @@
 .news-feature {
 	overflow: hidden;
 
-	&--featured-item,
-	.justify-content-md-center {
-		margin-top: var(--sitka-container-spacing);
+	// The list row carries mt-4 as the featured-story separator; with no featured
+	// story it leads the section and the heading gap is already supplied above.
+	&--list:first-child {
+		margin-top: 0;
 	}
 
 	.news-feature--featured-item .eyebrow {
@@ -63,7 +64,7 @@
 		}
 
 		p {
-			@include global-spacing(2x, margin-top);
+			margin-top: $spacing--xsmall;
 		}
 	}
 
@@ -90,6 +91,6 @@
 
 .news-feature .col-md-4 + .col-md-4 {
 	@include media-breakpoint-down(md) {
-		margin-top: 1.5rem;
+		margin-top: var(--sitka-container-spacing);
 	}
 }

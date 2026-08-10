@@ -26,7 +26,8 @@
   a {
     @include link-arrow;
     @include typeface(h4);
-    @include global-spacing(xsmall, padding-top padding-bottom);
+    padding-top: $spacing--xsmall;
+    padding-bottom: $spacing--xsmall;
     display: block;
     width: 100%;
     border-top: rem-calc(2) solid $gray--light;

@@ -14,11 +14,11 @@
 {# WP path or fallback path #}
 {% if has_wrapper %}
 	<section {{ wrapper_attributes|raw }}
-	{% if not wrapper_has_id and anchor %} 
+	{% if not wrapper_has_id and anchor %}
 	id="{{ anchor }}"
 	{% endif %}
 
-	{% if heading_id %} 
+	{% if heading_id %}
 	aria-labelledby="{{ heading_id }}"
 	{% endif %}>
 
@@ -38,9 +38,9 @@
 				'heading': title|default(''),
 				'subheading': description|default(''),
 				'anchor': _heading_id,
-				linkClass: 'link-accent-lg text-white',	
+				linkClass: 'link-accent-lg text-white',
 			} %}
-		<div class="container-xl global-spacing--2x oho-animate-sequence">
+		<div class="container-xl oho-animate-sequence diffs--items">
 			<div class="row justify-content-sm-center gy-3">
 				{{ content|default('')|raw }}
 			</div>

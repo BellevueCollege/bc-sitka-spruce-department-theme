@@ -1,11 +1,11 @@
-.single-agendas, 
-.single-action-item, 
+.single-agendas,
+.single-action-item,
 .single-resolution,
 .post-type-archive-agendas,
 .post-type-archive-action-item,
 .post-type-archive-resolution {
     #main-content .flexible-page-intro-wrapper {
-        margin-bottom: 1.5rem !important; 
+        margin-bottom: var(--sitka-container-spacing) !important;
     }
 	.tab-wrapper.container-xl,
 	.block-wrapper.alignstandard {

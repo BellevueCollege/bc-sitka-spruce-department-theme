@@ -8,7 +8,7 @@
 	}
 
 	&-logo {
-		margin-bottom: 1.5rem;
+		margin-bottom: var(--sitka-container-spacing);
 		display: block;
 	}
 
@@ -81,7 +81,7 @@
 			margin: 0;
 		}
 	}
-	
+
 	.footer-contact-link {
 		display: block;
 		white-space: nowrap;

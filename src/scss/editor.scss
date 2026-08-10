@@ -18,11 +18,15 @@
 	@import "components";
 	@import "pages";
 
+	// card-section and listing-section build section-heading markup in their edit
+	// functions, so the editor needs the atom to preview headings accurately.
+	@import "stories/section-heading";
+
 	// Bootstrap Reboot (above) overrides WordPress core editor block spacing in the iframe.
-	// Re-apply core's default inter-block margin (packages/block-editor default-editor-styles).
+	// Use --sitka-container-spacing so editor block gaps match frontend container gutters.
 	.wp-block {
-		margin-top: 1.75rem;
-		margin-bottom: 1.75rem;
+		margin-top: var(--sitka-container-spacing);
+		margin-bottom: var(--sitka-container-spacing);
 	}
 
 	.wp-block:first-child {
@@ -35,6 +39,26 @@
 	.wp-block > .announcement {
 		margin-top: 0;
 		margin-bottom: 0;
+	}
+
+	// Homepage intro is followed by another root .wp-block (not a bare .section),
+	// so frontend :has(+ .section) rules do not match here. Collapse editor
+	// block margins and intro margin-bottom so only the follower's own spacing
+	// (e.g. section padding) remains — matching the frontend adjacency fix.
+	.is-root-container > .wp-block-bc-sitka-spruce-template-homepage {
+		margin-bottom: 0;
+
+		.content-and-location {
+			margin-bottom: 0;
+		}
+	}
+
+	.is-root-container > .wp-block-bc-sitka-spruce-template-homepage + .wp-block {
+		margin-top: 0;
+
+		> .section.section-white {
+			padding-top: 0;
+		}
 	}
 
 	// Accordion collapse items stack flush; Bootstrap accordion styles handle separation.
@@ -55,8 +79,8 @@
  * paragraph gets a gap without spacing list items inside a list.
  */
 .block-editor-block-list__layout.is-root-container > :where(.wp-block) {
-  margin-top: 28px;
-  margin-bottom: 28px;
+  margin-top: var(--sitka-container-spacing);
+  margin-bottom: var(--sitka-container-spacing);
 }
 
 /* Override Bootstrap in Nested Blocks */

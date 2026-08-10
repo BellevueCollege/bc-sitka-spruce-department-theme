@@ -27,11 +27,10 @@
     //styling for all of the contact item(s)
     color: var(--bc-brutus-blue);
     background-color: var(--contact-item-bg);
-    margin: 1.5rem;
-    margin-right: 1.5rem;
+    margin: var(--sitka-container-spacing);
     border-radius: 0.5rem;
     border: none;
-    padding:1.5rem 2.5rem;
+    padding: var(--sitka-container-spacing) 2.5rem;
 
     &:last-child {
         margin-top: 0;

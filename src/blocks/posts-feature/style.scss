@@ -63,7 +63,7 @@
 		}
 
 		p {
-			@include global-spacing(2x, margin-top);
+			margin-top: $spacing--xsmall;
 		}
 	}
 
@@ -90,6 +90,6 @@
 
 .news-feature .col-md-4 + .col-md-4 {
 	@include media-breakpoint-down(md) {
-		margin-top: 1.5rem;
+		margin-top: var(--sitka-container-spacing);
 	}
 }

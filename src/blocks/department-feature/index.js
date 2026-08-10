@@ -132,7 +132,7 @@ registerBlockType( 'bc-sitka-spruce/department-feature', {
 
 			let card_content = `
 				<h3>${ title }</h3>
-				<div class="global-spacing--3x">${ summary }</div>
+				<div class="organization-feature__summary">${ summary }</div>
 			`;
 			const twigCardHTML = Twig.twig({
 				ref: '@stories/card-horizontal/card-horizontal.twig',
