@@ -2,7 +2,7 @@
 .accordion-section-wrapper {
 
 	.accordion-section-heading {
-		margin-bottom: calc(var(--sitka-container-spacing) / 2);
+		margin-bottom: var(--sitka-container-spacing);
 	}
 	.accordion-section-content > .accordion {
 		margin-bottom: 0; // Override default margin-bottom on accordion block
