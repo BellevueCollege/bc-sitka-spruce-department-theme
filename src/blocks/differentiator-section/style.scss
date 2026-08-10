@@ -3,9 +3,15 @@
 .diffs {
 	margin-top: 0;
 
+	&.section {
+		// Bottom spacing lives on --container; avoid stacking with .section padding-bottom.
+		padding-bottom: 0;
+	}
+
 	&--container {
 		width: 100%;
 		overflow: hidden;
+		padding-bottom: var(--sitka-container-spacing);
 
 		.section-heading {
 			margin-top: 0;
@@ -28,7 +34,6 @@
 
 				h2 {
 					font-size: 2.75rem;
-					margin-bottom: 0;
 				}
 
 				.section-heading__subheading {
@@ -79,7 +84,7 @@
 			display: inline-block;
 		}
 
-		padding-bottom: 2.5rem;
+		padding-bottom: var(--sitka-container-spacing);
 	}
 
 	&--hero {
@@ -102,7 +107,7 @@
 
 @media screen and (min-width: 576px) and (max-width: 767px) {
 	.diffs--container .col-sm-6:nth-child(3) {
-		margin-top: 2.5rem;
-		margin-bottom: 2.5rem;
+		margin-top: var(--sitka-container-spacing);
+		margin-bottom: var(--sitka-container-spacing);
 	}
 }

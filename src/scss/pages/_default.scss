@@ -43,8 +43,8 @@
 		margin-bottom: var( --sitka-container-spacing );
 
 		@include media-breakpoint-down('md') {
-			margin-top: 1.5rem;
-			margin-bottom: 1.5rem;
+			margin-top: var(--sitka-container-spacing);
+			margin-bottom: var(--sitka-container-spacing);
 			@include make-container();
 		}
 		@include media-breakpoint-up('md') {

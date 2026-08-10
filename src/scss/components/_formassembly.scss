@@ -23,7 +23,7 @@
 			h5,
 			h6 {
 				font-size: 2rem;
-				margin-top: 1.5rem;
+				margin-top: var(--sitka-container-spacing);
 			}
 		}
 		.actions {
@@ -35,12 +35,11 @@
 			// Fieldsets (radios and checkboxes) need more top margin, because Gravity Forms
 			// moves the fieldset label into the margin area. The specificity here is
 			// unfortunately high, because of how Gravity Forms styles fieldsets.
-			@include global-spacing(xsmall, margin-top);
 			border: 2px solid var(--bc-brutus-blue);
 			background-color: var(--gray--xlight);
 			border-radius: 0.25rem;
 			margin-top: 1.95rem !important;
-			margin-bottom: 1.5rem;
+			margin-bottom: var(--sitka-container-spacing);
 
 			legend {
 				margin-top: -0.9rem;
