@@ -1,13 +1,61 @@
 .arch-shape {
-    width: 100%;
-    height: 10vw;
-    background-color: var(--bc-rainy-night-blue);
-	clip-path: ellipse(65% 100% at center 120%);
+	width: 100%;
+	height: 10vw;
+	background-color: var( --bc-rainy-night-blue );
+	clip-path: ellipse( 65% 100% at center calc( 100% + var( --sitka-container-spacing ) ) );
 	overflow: hidden;
+	position: relative;
+	z-index: 0;
 
 	& + div {
 		margin-top: 0;
 		padding-top: 0;
 	}
-}
 
+	& + .curved-top {
+		position: relative;
+		z-index: 1;
+		margin-top: 0;
+		overflow: visible;
+	}
+
+	@include media-breakpoint-up(md) {
+		& + .curved-top {
+			--arch-shape-offset: -2.5vw;
+
+			// Contain the heading's offset margin so it cannot collapse with the
+			// following body's margin-top, which would eat the designed gap.
+			.section-heading {
+				display: flow-root;
+			}
+
+			.section-heading > .container-xl {
+				position: relative;
+				z-index: 2;
+				top: var( --arch-shape-offset );
+				margin-bottom: var( --arch-shape-offset );
+			}
+
+			// Bare offset sections carry the compensation themselves; move it onto
+			// a contained ::after so sibling body gaps survive collapse.
+			.curved-top-offset-section {
+				display: flow-root;
+				position: relative;
+				z-index: 2;
+				top: var( --arch-shape-offset );
+
+				&::after {
+					display: block;
+					margin-bottom: var( --arch-shape-offset );
+					content: "";
+				}
+			}
+		}
+	}
+
+	@include media-breakpoint-up(lg) {
+		& + .curved-top {
+			--arch-shape-offset: calc( -10vw + ( var( --sitka-container-spacing ) * 3 ) );
+		}
+	}
+}
