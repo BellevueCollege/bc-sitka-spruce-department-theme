@@ -381,6 +381,30 @@ add_filter( 'document_title_separator', function( $sep ) {
 	return ' - ';
 }, 10, 1 );
 
+/**
+ * Reduce an ACF field value to plain text, for use as a meta description.
+ *
+ * Both fields feeding the description filter below can carry markup. 'summary'
+ * is a textarea with 'new_lines' set to 'br', so ACF runs the stored text
+ * through nl2br() before get_field() returns it, and 'intro_text' is a textarea
+ * that can pick up tags when content is pasted in from a word processor. Line
+ * breaks and block level tags are turned into spaces first, so that
+ * '<p>One</p><p>Two</p>' does not collapse into 'OneTwo'.
+ *
+ * Returns an empty string for values that hold no text, which lets the filter
+ * fall through to the description The SEO Framework generates itself.
+ */
+function plain_text_meta_description( $value ): string {
+	if ( ! is_string( $value ) || '' === $value ) {
+		return '';
+	}
+
+	$value = preg_replace( '#<(?:br|/p|/div|/li|/h[1-6]|/blockquote)\b[^>]*>#i', ' ', $value );
+
+	// Strips the remaining tags, collapses whitespace, and trims.
+	return wp_strip_all_tags( $value, true );
+}
+
 // Use Summary or Intro as description by default
 // Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
 add_filter( 'the_seo_framework_generated_description', function( $description, $context ) {
@@ -391,13 +415,15 @@ add_filter( 'the_seo_framework_generated_description', function( $description, $
 	if ( ! isset( $context['id'] ) ) return $description;
 
 	// If an Intro Text is available, return it.
-	if ( get_field( 'intro_text', $context['id'] ) && "" !== get_field( 'intro_text', $context['id'] ) ) {
-		return get_field( 'intro_text', $context['id'] );
+	$intro_text = plain_text_meta_description( get_field( 'intro_text', $context['id'] ) );
+	if ( '' !== $intro_text ) {
+		return $intro_text;
 	}
 
 	// If a Summary is available, return it (used on Posts)
-	if ( get_field( 'summary', $context['id'] ) && "" !== get_field( 'summary', $context['id'] ) ) {
-		return get_field( 'summary', $context['id'] );
+	$summary = plain_text_meta_description( get_field( 'summary', $context['id'] ) );
+	if ( '' !== $summary ) {
+		return $summary;
 	}
 
 	// Fall back to normal
