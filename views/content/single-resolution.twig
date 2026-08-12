@@ -25,7 +25,7 @@
 
                 {# call out display logic#}
                 {% set action_item_id = post.meta('associated_action_item') ?: post.meta('associated-action-item') %}
-                {% set agenda_id = post.met('associated_agenda') ?: post.meta('associated-agenda') %}
+                {% set agenda_id = post.meta('associated_agenda') ?: post.meta('associated-agenda') %}
             
                 {% if agenda_id or action_item_id %}
                     {# Pull in Associated Agenda #}
@@ -35,20 +35,23 @@
                                 {% if agenda_id %}
                                     {# Convert raw into Timber P. Obj.#}
                                     {% set agenda = get_post(agenda_id) %}
-                                    <li><strong>Agenda:</strong>
-                                        <a href="{{ agenda.link }}">{{ agenda.title }}</a>
-                                    </li>
+                                    {% if agenda %}
+                                        <li><strong>Agenda:</strong>
+                                            <a href="{{ agenda.link }}">{{ agenda.title }}</a>
+                                        </li>
+                                    {% endif %}
                                 {% endif %}
 
+                                {#Related Action Items #}
                                 {% if action_item_id %}
                                     {# Convert raw ACF into Timber P. Obj. #}
-                                    {% set action_item = action_item_id is iterable ? action_item_id : [action_item_id] %}
+                                    {% set action_items = action_item_id is iterable ? action_item_id : [action_item_id] %}
                                     <li class="{{ agenda_id ? 'mt-2' : '' }}">
                                     <strong>Action Item:</strong>
                                     {% for item in action_items %}
                                         {% set action_item = get_post(item) %}
                                             {% if action_item %}
-                                                <a href="{{ action_item.link }}">{{ action_item.title }}</a>
+                                                <a href="{{ action_item.link }}">{{ action_item.title|default('') }}</a>
                                             {% endif %}
                                         {% endfor %}
                                     </li>
@@ -59,6 +62,9 @@
                         {% include '@stories/callout/callout.twig' with {
                             title: 'Related Content',
                             links: related_html,
+                            text: '',
+                            content: '',
+                            description: '',
                             wrapper_classes: 'callout-wrapper'
                         } %}
                     </div>
