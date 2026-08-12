@@ -44,7 +44,7 @@
                         {#Related Resolution#}
                         {% if resolution_id %}
                             {#Covert raw to timber Post Obj.#}
-                            {% set resolution = resolution_id is iterable ? resolution_id : [resolution_id] %}
+                            {% set resolutions = resolution_id is iterable ? resolution_id : [resolution_id] %}
                             <li class="{{ agenda_id ? 'mt-2' : '' }}">
                                 {% for item in resolutions %}
                                     {% set resolution = get_post(item) %}
