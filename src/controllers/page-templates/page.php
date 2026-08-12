@@ -34,6 +34,9 @@ if ( get_option( 'page_on_front' ) ) {
 // Implode the pages array to a comma separated string
 $pages_to_hide = implode( ',', $pages_to_hide );
 
+$context['is_child_page']   = $context['post']->post_parent > 0;
+$context['site_name']       = get_bloginfo( 'name' );
+
 if ( $context['post']->post_parent > 0 ) {
 	$context['parent_page']['title'] = get_the_title( $context['post']->post_parent );
 	$context['parent_page']['url']   = get_permalink( $context['post']->post_parent );
