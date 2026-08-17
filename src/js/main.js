@@ -61,10 +61,13 @@ import BCLightboxModal from 'bc-lightbox-modal';
     globalButtonToggle.add('.button-toggle').run();
 
 	/**
-	 * Enable find-in-page search inside collapsed accordion panels.
+	 * Find-in-page search via hidden=until-found on collapsed panels and inactive tab panes.
 	 */
-	const accordionUntilFound = new AccordionUntilFound();
-	accordionUntilFound.add('.accordion-collapse.collapse').run();
+	const untilFoundCollapse = new UntilFoundCollapse();
+	untilFoundCollapse.add('.accordion-collapse.collapse').run();
+
+	const untilFoundTabs = new UntilFoundTab();
+	untilFoundTabs.add('.tab-content > .tab-pane').run();
 
     /**
      * Close Search button - on click toggles the search toggle

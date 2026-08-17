@@ -1,19 +1,27 @@
-// Port of Bootstrap PR #42025 — allow until-found to use content-visibility
+// Bootstrap Reboot hides all [hidden] with display:none, which blocks hidden=until-found.
 [hidden]:not([hidden="until-found"]) {
 	display: none !important;
 }
 
-// Port of Bootstrap issue #41479 workaround
-[hidden="until-found"].collapse:not(.show) {
-	// display:none prevents beforematch from firing; block keeps layout containment
+// until-found needs display:block for beforematch, but hidden content must not leave a visible gap.
+@mixin until-found-zero-footprint {
 	display: block !important;
-	// until-found still generates a box; collapse it so padding/borders do not show
 	height: 0 !important;
 	min-height: 0 !important;
 	overflow: hidden !important;
 	padding: 0 !important;
 	margin: 0 !important;
 	border-width: 0 !important;
+}
+
+// Closed collapse panels that are searchable via find-in-page.
+[hidden="until-found"].collapse:not(.show) {
+	@include until-found-zero-footprint;
+}
+
+// Inactive tab panes: Bootstrap hides them with display:none, so until-found lives on the pane.
+[hidden="until-found"].tab-pane:not(.active) {
+	@include until-found-zero-footprint;
 }
 
 [hidden="until-found"] {
