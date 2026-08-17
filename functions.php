@@ -100,8 +100,8 @@ function block_registration_helper( array $blocks ) {
 
 /**
  * Disable FitText in Editor
- * 
- * This shouldn't be needed (it is included in theme.json), but that is not working consistantly. 
+ *
+ * This shouldn't be needed (it is included in theme.json), but that is not working consistantly.
  */
 add_filter( 'register_block_type_args', function( $args, $block_type ) {
 	$blocks = [
@@ -856,7 +856,7 @@ add_filter( 'ed11y_default_options', function ( $options ) {
 
 	// Ignore ACF interfaces that appear in the editor
 	// Ignore false positive on application step single heading
-	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a, .application-step-single-heading';
+	$options['ed11y_ignore_elements'] .= '.acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a, .application-step-single-heading';
 
 	// Ignore sub-headings inside app-steps-blocks - incorrectly flagged as skipping level
 	$options['ed11y_ignore_elements'] .= ', h4.application-step-single-heading';
