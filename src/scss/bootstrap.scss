@@ -9,3 +9,6 @@
 
 // Import Bootstrap minimal preset
 @import 'bc-theme-layer-bs5/scss/presets/_minimal';
+
+// hidden=until-found overrides (after Reboot)
+@import 'lib/bootstrap/hidden-until-found';

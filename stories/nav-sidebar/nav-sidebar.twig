@@ -12,17 +12,19 @@
 					{{ nav_title }}
 				</button>
 			</h2>
-			<div id="nav-sidebar-collapse" class="accordion-collapse collapse p-3 d-md-block"  data-bs-parent="#nav-sidebar">
-				<a href="{{ parent_page.url|esc_url }}" class="parent-link"><i class="fa-regular fa-arrow-left-long" aria-hidden="true"></i> {{ parent_page.title }}</a>
-				<hr>
-				<div
-					class="nav-sidebar-menu"
-					data-item-open-text="{{ __('Open the %s menu', 'bc-sitka-spruce') }}"
-					data-item-close-text="{{ __('Close the %s menu', 'bc-sitka-spruce') }}"
-					data-menu-has-items-selector=".page_item_has_children > a"
-					data-menu-active-trail-selector=".current_page_item.page_item_has_children"
-				>
-					{{ context_menu }}
+			<div id="nav-sidebar-collapse" class="accordion-collapse collapse d-md-block" data-bs-parent="#nav-sidebar">
+				<div class="accordion-body p-3">
+					<a href="{{ parent_page.url|esc_url }}" class="parent-link"><i class="fa-regular fa-arrow-left-long" aria-hidden="true"></i> {{ parent_page.title }}</a>
+					<hr>
+					<div
+						class="nav-sidebar-menu"
+						data-item-open-text="{{ __('Open the %s menu', 'bc-sitka-spruce') }}"
+						data-item-close-text="{{ __('Close the %s menu', 'bc-sitka-spruce') }}"
+						data-menu-has-items-selector=".page_item_has_children > a"
+						data-menu-active-trail-selector=".current_page_item.page_item_has_children"
+					>
+						{{ context_menu }}
+					</div>
 				</div>
 			</div>
 		</div>

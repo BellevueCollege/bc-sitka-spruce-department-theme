@@ -20,34 +20,36 @@
 							{{ __('Additional Details', 'bc-sitka-spruce') }}
 						</button>
 					</h2>
-					<div id="nav-sidebar-collapse" class="accordion-collapse collapse p-3 d-md-block"  data-bs-parent="#nav-sidebar">
-						<a href="{{ blog_home_url|esc_url }}" class="parent-link"><i class="fa-regular fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
-						<hr>
-						<h2 class="post-additional-title card-title-small d-none d-md-block">{{ __('Additional Details', 'bc-sitka-spruce') }}</h2>
+					<div id="nav-sidebar-collapse" class="accordion-collapse collapse d-md-block" data-bs-parent="#nav-sidebar">
+						<div class="accordion-body p-3">
+							<a href="{{ blog_home_url|esc_url }}" class="parent-link"><i class="fa-regular fa-arrow-left-long" aria-hidden="true"></i> {{ __('Back to Listing View', 'bc-sitka-spruce') }}</a>
+							<hr>
+							<h2 class="post-additional-title card-title-small d-none d-md-block">{{ __('Additional Details', 'bc-sitka-spruce') }}</h2>
 
-						<h3 class="h6">{{ __('Author', 'bc-sitka-spruce') }}</h3>
-						{% if author_override %}
-							<p>{{ author_override }}</p>
-						{% else %}
-							<p>{{ post.author.name }}</p>
-						{% endif %}
-						<h3 class="h6">{{ __('Published', 'bc-sitka-spruce') }}</h3>
-						<p>{{ post.date }}</p>
-					{# This controls how the contact selector block displays individual profiles on default wordpress pages/posts, works in conjunction with single-post.php #}
-						{% if contact %}
-							<div class="post-additional-contact">
-								<h3 class="h6">{{ __('Contact', 'bc-sitka-spruce') }}</h3>
-								{% include '@stories/contact-item/contact-item.twig' with {
-									first_name: contact.first_name,
-									last_name: contact.last_name,
-									pronouns: contact.pronouns,
-									position: contact.position,
-									phone: contact.phone,
-									email: contact.email,
-									scheduling_links: contact.scheduling_links,
-								} %}
-							</div>
-						{% endif %}
+							<h3 class="h6">{{ __('Author', 'bc-sitka-spruce') }}</h3>
+							{% if author_override %}
+								<p>{{ author_override }}</p>
+							{% else %}
+								<p>{{ post.author.name }}</p>
+							{% endif %}
+							<h3 class="h6">{{ __('Published', 'bc-sitka-spruce') }}</h3>
+							<p>{{ post.date }}</p>
+							{# This controls how the contact selector block displays individual profiles on default wordpress pages/posts, works in conjunction with single-post.php #}
+							{% if contact %}
+								<div class="post-additional-contact">
+									<h3 class="h6">{{ __('Contact', 'bc-sitka-spruce') }}</h3>
+									{% include '@stories/contact-item/contact-item.twig' with {
+										first_name: contact.first_name,
+										last_name: contact.last_name,
+										pronouns: contact.pronouns,
+										position: contact.position,
+										phone: contact.phone,
+										email: contact.email,
+										scheduling_links: contact.scheduling_links,
+									} %}
+								</div>
+							{% endif %}
+						</div>
 					</div>
 				</div>
 			</nav>

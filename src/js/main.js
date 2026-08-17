@@ -60,6 +60,12 @@ import BCLightboxModal from 'bc-lightbox-modal';
     const globalButtonToggle = new ButtonToggle();
     globalButtonToggle.add('.button-toggle').run();
 
+	/**
+	 * Enable find-in-page search inside collapsed accordion panels.
+	 */
+	const accordionUntilFound = new AccordionUntilFound();
+	accordionUntilFound.add('.accordion-collapse.collapse').run();
+
     /**
      * Close Search button - on click toggles the search toggle
      */
