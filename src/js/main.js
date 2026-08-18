@@ -6,6 +6,8 @@ import {
 	ButtonToggle,
 	HeaderState,
 	Slider,
+	UntilFoundCollapse,
+	UntilFoundTab,
 } from 'bc-theme-layer-bs5/js';
 import BCLightboxModal from 'bc-lightbox-modal';
 
@@ -59,6 +61,15 @@ import BCLightboxModal from 'bc-lightbox-modal';
      */
     const globalButtonToggle = new ButtonToggle();
     globalButtonToggle.add('.button-toggle').run();
+
+	/**
+	 * Find-in-page search via hidden=until-found on collapsed panels and inactive tab panes.
+	 */
+	const untilFoundCollapse = new UntilFoundCollapse();
+	untilFoundCollapse.add('.accordion-collapse.collapse').run();
+
+	const untilFoundTabs = new UntilFoundTab();
+	untilFoundTabs.add('.tab-content > .tab-pane').run();
 
     /**
      * Close Search button - on click toggles the search toggle
