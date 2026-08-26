@@ -2,18 +2,15 @@
 # .azuredevops/templates/deploy-theme.yml
 # Reusable deploy template. Expects the theme ZIP to already
 # be downloaded by the calling pipeline before invoking.
+#
+# Requires variable group in scope with:
+#   serverThemesPath, serverWpPath, serverBackupPath
+# sshServiceConnection must be passed as a compile-time literal
+# (Azure DevOps cannot resolve service connections from runtime macros).
 # ============================================================
 
 parameters:
   - name: sshServiceConnection
-    type: string
-  - name: serverThemesPath
-    type: string
-  - name: serverWpPath
-    type: string
-  - name: serverBackupPath
-    type: string
-  - name: themeName
     type: string
   - name: zipSourceFolder
     type: string
@@ -25,8 +22,8 @@ steps:
     inputs:
       sshEndpoint: '${{ parameters.sshServiceConnection }}'
       sourceFolder: '${{ parameters.zipSourceFolder }}'
-      contents: '${{ parameters.themeName }}.zip'
-      targetFolder: '${{ parameters.serverThemesPath }}'
+      contents: '$(themeName).zip'
+      targetFolder: '$(serverThemesPath)'
       overwrite: true
       failOnEmptySource: true
     displayName: 'Copy ZIP to Server'
@@ -39,13 +36,13 @@ steps:
       inline: |
         set -e
 
-        THEME_DIR="${{ parameters.serverThemesPath }}/${{ parameters.themeName }}"
-        THEME_ZIP="${{ parameters.serverThemesPath }}/${{ parameters.themeName }}.zip"
-        WP_PATH="${{ parameters.serverWpPath }}"
+        THEME_DIR="$(serverThemesPath)/$(themeName)"
+        THEME_ZIP="$(serverThemesPath)/$(themeName).zip"
+        WP_PATH="$(serverWpPath)"
         # $$(date) escapes Azure macro syntax so the shell receives $(date ...)
-        BACKUP_FILE="${{ parameters.serverBackupPath }}/${{ parameters.themeName }}_$$(date +%Y%m%d_%H%M%S).zip"
+        BACKUP_FILE="$(serverBackupPath)/$(themeName)_$$(date +%Y%m%d_%H%M%S).zip"
 
-        mkdir -p "${{ parameters.serverBackupPath }}"
+        mkdir -p "$(serverBackupPath)"
 
         if [ -d "$THEME_DIR" ]; then
           echo "Backing up existing theme..."
@@ -63,7 +60,7 @@ steps:
           --skip-plugins \
           --skip-themes
 
-        wp theme is-installed "${{ parameters.themeName }}" --path="$WP_PATH"
+        wp theme is-installed "$(themeName)" --path="$WP_PATH"
 
         echo "Done."
     displayName: 'Backup and Install Theme'
@@ -74,7 +71,7 @@ steps:
       sshEndpoint: '${{ parameters.sshServiceConnection }}'
       runOptions: inline
       inline: |
-        rm -f "${{ parameters.serverThemesPath }}/${{ parameters.themeName }}.zip"
+        rm -f "$(serverThemesPath)/$(themeName).zip"
         echo "ZIP removed from server."
     displayName: 'Cleanup ZIP from Server'
     condition: succeeded()
