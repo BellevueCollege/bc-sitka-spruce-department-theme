@@ -154,13 +154,10 @@ stages:
                 - download: current
                   artifact: '$(themeName)'
                   displayName: 'Download Artifact'
+                # sshServiceConnection must be a literal — must match Project Settings → Service connections
                 - template: .azuredevops/templates/deploy-theme.yml
                   parameters:
-                    sshServiceConnection: $(sshServiceConnection)
-                    serverThemesPath: $(serverThemesPath)
-                    serverWpPath: $(serverWpPath)
-                    serverBackupPath: $(serverBackupPath)
-                    themeName: $(themeName)
+                    sshServiceConnection: 'Kinsta- BC 2022 Redesign Content Stage - Stage-BC Sitka Spruce Department Theme'
                     zipSourceFolder: '$(Pipeline.Workspace)/$(themeName)'
 
       # - deployment: KinstaBackstop
@@ -178,9 +175,5 @@ stages:
       #             displayName: 'Download Artifact'
       #           - template: .azuredevops/templates/deploy-theme.yml
       #             parameters:
-      #               sshServiceConnection: $(sshServiceConnection)
-      #               serverThemesPath: $(serverThemesPath)
-      #               serverWpPath: $(serverWpPath)
-      #               serverBackupPath: $(serverBackupPath)
-      #               themeName: $(themeName)
+      #               sshServiceConnection: 'Kinsta - BackstopJS'
       #               zipSourceFolder: '$(Pipeline.Workspace)/$(themeName)'
