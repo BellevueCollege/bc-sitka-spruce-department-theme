@@ -1,0 +1,80 @@
+# ============================================================
+# .azuredevops/templates/deploy-theme.yml
+# Reusable deploy template. Expects the theme ZIP to already
+# be downloaded by the calling pipeline before invoking.
+# ============================================================
+
+parameters:
+  - name: sshServiceConnection
+    type: string
+  - name: serverThemesPath
+    type: string
+  - name: serverWpPath
+    type: string
+  - name: serverBackupPath
+    type: string
+  - name: themeName
+    type: string
+  - name: zipSourceFolder
+    type: string
+
+steps:
+
+  # Copy ZIP to server
+  - task: CopyFilesOverSSH@0
+    inputs:
+      sshEndpoint: '${{ parameters.sshServiceConnection }}'
+      sourceFolder: '${{ parameters.zipSourceFolder }}'
+      contents: '${{ parameters.themeName }}.zip'
+      targetFolder: '${{ parameters.serverThemesPath }}'
+      overwrite: true
+      failOnEmptySource: true
+    displayName: 'Copy ZIP to Server'
+
+  # Backup existing theme, install new one via WP CLI
+  - task: SSH@0
+    inputs:
+      sshEndpoint: '${{ parameters.sshServiceConnection }}'
+      runOptions: inline
+      inline: |
+        set -e
+
+        THEME_DIR="${{ parameters.serverThemesPath }}/${{ parameters.themeName }}"
+        THEME_ZIP="${{ parameters.serverThemesPath }}/${{ parameters.themeName }}.zip"
+        WP_PATH="${{ parameters.serverWpPath }}"
+        # $$(date) escapes Azure macro syntax so the shell receives $(date ...)
+        BACKUP_FILE="${{ parameters.serverBackupPath }}/${{ parameters.themeName }}_$$(date +%Y%m%d_%H%M%S).zip"
+
+        mkdir -p "${{ parameters.serverBackupPath }}"
+
+        if [ -d "$THEME_DIR" ]; then
+          echo "Backing up existing theme..."
+          cd "$(dirname "$THEME_DIR")"
+          zip -r "$BACKUP_FILE" "$(basename "$THEME_DIR")"
+          echo "Backup saved to $BACKUP_FILE"
+        else
+          echo "No existing theme found — skipping backup."
+        fi
+
+        echo "Installing new theme..."
+        wp theme install "$THEME_ZIP" \
+          --force \
+          --path="$WP_PATH" \
+          --skip-plugins \
+          --skip-themes
+
+        wp theme is-installed "${{ parameters.themeName }}" --path="$WP_PATH"
+
+        echo "Done."
+    displayName: 'Backup and Install Theme'
+
+  # Clean up ZIP from server (only runs if install succeeded)
+  - task: SSH@0
+    inputs:
+      sshEndpoint: '${{ parameters.sshServiceConnection }}'
+      runOptions: inline
+      inline: |
+        rm -f "${{ parameters.serverThemesPath }}/${{ parameters.themeName }}.zip"
+        echo "ZIP removed from server."
+    displayName: 'Cleanup ZIP from Server'
+    condition: succeeded()
