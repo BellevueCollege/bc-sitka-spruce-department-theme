@@ -156,13 +156,9 @@ export default function Edit( props ) {
 	const handleUpdateTabTitle = ( newTabTitle ) => {
 		// Update attribute on this block
 		setAttributes( { tabTitle: newTabTitle } );
-		const targetTabPanel = tabContentBlock.innerBlocks.find( (block) => block.attributes.tabId === tabId );
-		console.log();
-		// Update attribute on the corresponding tab panel
-		// tabContentBlock.innerBlocks.forEach( panel => {
+		const targetTabPanel = tabContentBlock.innerBlocks.find( ( block ) => block.attributes.tabId === tabId );
 
 		dispatch( 'core/block-editor' ).updateBlockAttributes( targetTabPanel.clientId, { tabTitle: newTabTitle } );
-		// } );
 
 	}
 
