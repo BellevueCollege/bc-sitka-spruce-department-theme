@@ -11,7 +11,7 @@
 	// Row layout for content and callout
 	.wp-block-bc-sitka-spruce-application-step-single.container-xl {
 		margin: 0;
-		padding: 1rem 4rem;
+		padding: 1rem;
 		background-color: var(--gray--xlight);
 
 
@@ -20,14 +20,16 @@
 			background-color: var(--gray--xxlight);
 		}
 
-		& > .block-editor-inner-blocks > .block-editor-block-list__layout {
-			@include make-row();
-		}
-		.wp-block-bc-sitka-spruce-callout {
-			@include make-col();
-		}
+		// Match bio/body section editor layout: flex + gap (Bootstrap row mixins omit gutters here)
+		@include media-breakpoint-up(md) {
+			& > .block-editor-inner-blocks > .block-editor-block-list__layout {
+				display: flex;
+				gap: 2rem;
+			}
 
-		.wp-block-bc-sitka-spruce-application-step-single-content {
+			.wp-block-bc-sitka-spruce-callout {
+				flex: 1 1 25%;
+			}
 		}
 	}
 	.block-list-appender.wp-block {
