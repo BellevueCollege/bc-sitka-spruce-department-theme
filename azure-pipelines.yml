@@ -35,8 +35,22 @@ extends:
   template: templates/ci/theme-ci.yml@templates
   parameters:
     themeName: 'bc-sitka-spruce-department-theme'
-    sshServiceConnectionTest: 'cstage'
-    variableGroupTest: 'kinsta-cstage'
+    testEnvironments:
+      - name: KinstaCstage
+        displayName: 'Kinsta: CStage'
+        environment: kinsta-cstage
+        sshServiceConnection: cstage
+        variableGroup: kinsta-cstage
+      - name: KinstaBackstop
+        displayName: 'Kinsta: BackstopJS'
+        environment: kinsta-backstopjs
+        sshServiceConnection: backstopjs
+        variableGroup: kinsta-backstopjs
+      - name: KinstaBcqaelizabeth
+        displayName: 'Kinsta: bcqaelizabeth'
+        environment: kinsta-bcqaelizabeth
+        sshServiceConnection: bcqaelizabeth
+        variableGroup: kinsta-bcqaelizabeth
     buildSteps:
       - task: Npm@1
         inputs:
