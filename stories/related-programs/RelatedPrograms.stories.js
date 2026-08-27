@@ -1,6 +1,6 @@
 import twigRelatedPrograms from "./related-programs.twig";
 
-import Slider from '/src/js/modules/slider';
+import { Slider } from 'bc-theme-layer-bs5/js';
 
 
 // Note: the media gallery slider is not loading fully, which is causing formatting issues
