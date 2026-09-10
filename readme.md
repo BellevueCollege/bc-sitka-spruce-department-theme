@@ -33,7 +33,7 @@ Once these requirements are installed, you can install project dependencies via 
   - `src/library/` - PHP classes used for various utility functions
   - `src/scss/` - SCSS files used by the theme
     - `src/scss/blocks/` - SCSS files to style non-bundled blocks (aka Mayflower Blocks etc). Each are compiled to their own files in `assets/dist/scss/blocks/`
-    - `src/scss/lib/` - Setup for third-party libraries like Bootstrap
+    - `src/scss/lib/` - Third-party libraries (gerillass, fontawesome). Bootstrap config lives in the `bc-theme-layer-bs5` npm package.
     - `src/scss/variables/` - SCSS variables used across other files
     - `src/scss/_block_styles.scss` - Does not output any SCSS, but provides basic setup needed to include variables etc in Block specific SCSS files.
 - `stories/` - Twig stories, used by Blocks and Storybook
@@ -50,14 +50,16 @@ Once these requirements are installed, you can install project dependencies via 
 
 ### Adding styles to a non-bundled block (aka from Core or Mayflower Bocks)
 1. Create a new SCSS file in `src/scss/blocks`, using the naming convention `[namespace]-[block-name].scss`. Example: `mayflower-blocks/alert` would be `mayflower-blocks-alert.scss`
-  - If you are adding Bootstrap styles to a block, within the block SCSS file first import `block-styles`, then the Bootstrap component styles for that block. For example: 
-  
+  - If you are adding Bootstrap styles to a block, within the block SCSS file first import `block-styles`, then the shared preset for that component. For example:
+
   ```scss
   @import '/src/scss/block-styles';
-  @import "~bootstrap/scss/alert";
+  @import 'bc-theme-layer-bs5/scss/presets/_alert';
 
   // any other styles here!
   ```
+
+  Bootstrap configuration is provided by the shared `bc-theme-layer-bs5` package. Theme `bootstrap.scss` imports `bootstrap/_config` plus `presets/_minimal`; block bundles can import individual presets from `bc-theme-layer-bs5/scss/presets/`.
 
 2. In `webpack.config.js`, add a new entry point, setting the `block` flag to `true`, and passing in the file name without the extension. Example: `...scssEntryPoint( 'mayflower-blocks-alert', true ),`
 3. In `functions.php`, enqueue the style by adding the block to the array within the `enqueue_block_styles()` function

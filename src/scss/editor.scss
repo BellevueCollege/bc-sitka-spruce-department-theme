@@ -1,5 +1,4 @@
 @import "variables";
-@import 'variables/css';
 
 @import "lib/gerillass";
 @import "lib/fontawesome";
@@ -8,12 +7,9 @@
 @import "mixins";
 
 
-// Import Bootstrap configuration for access to mixins, variables, and functions
+// Import shared Bootstrap configuration for access to mixins, variables, and functions
 // but NOT the actual Bootstrap CSS (that's in bootstrap.scss)
-@import "lib/bootstrap/config";
-
-// CSS Variables
-@import "~bootstrap/scss/root";
+@import "bc-theme-layer-bs5/scss/bootstrap/_vars";
 
 
 .editor-styles-wrapper {

@@ -1,6 +1,5 @@
 @import 'variables/animation';
-@import 'variables/colors';
+@import 'bc-theme-layer-bs5/scss/bootstrap/_tokens';
 @import 'variables/type';
 @import 'variables/spacing';
-@import 'variables/bootstrap';
-// @import 'variables/css'; < - this causes output - only needs to be used one time
+@import 'variables/css';

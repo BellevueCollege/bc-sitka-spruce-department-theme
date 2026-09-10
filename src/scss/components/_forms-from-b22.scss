@@ -34,7 +34,7 @@ form .form-control {
 }
 
 @mixin form-input() {
-	border-color: get_color($sitka-colors, 'gray--xlight');
+	border-color: get_color($utility-colors, 'gray--xlight');
 	//color: $text-color;
 	text-transform: none;
 	//background: $white;
@@ -167,7 +167,7 @@ form .form-control {
 }
 
 .form-block__title {
-	background-color: get_color( $sitka-colors, 'gray--xlight' );
+	background-color: get_color( $utility-colors, 'gray--xlight' );
 
 	@include global-spacing(7x, padding-top);
 
