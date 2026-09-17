@@ -34,6 +34,8 @@ class Enqueuer implements EnqueuerInterface {
 
 	protected array $blockStyles = array();
 
+	protected array $shortcodeStyles = array();
+
 	protected array $deregisteredStyles = array();
 
 	protected bool $appendVersion = false;
@@ -48,6 +50,7 @@ class Enqueuer implements EnqueuerInterface {
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueScripts' ), 10, 0 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterScripts' ), 99, 0 );
 		add_action( 'enqueue_block_assets', array( $this, 'setupRegisterStyles' ), 10, 0 ); // Register styles on front end and in block editor
+		add_filter( 'pre_do_shortcode_tag', array( $this, 'enqueueBlockStylesForShortcode' ), 10, 4 );
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupEnqueueStyles' ), 10, 0 ); // Enqueue registered styles on front end only
 		add_action( 'wp_enqueue_scripts', array( $this, 'setupDeregisterStyles' ), 99, 0 );
 		add_action( 'init', array( $this, 'setupEnqueueBlockStyles' ), 10, 0 );
@@ -161,7 +164,8 @@ class Enqueuer implements EnqueuerInterface {
 	public function addBlockStyle(
 		string $handle,
 		array $blocks,
-		array $dependencies = array()
+		array $dependencies = array(),
+		array $shortcodes = array()
 	): void {
 		$handle_prefix = 'bc-sitka-spruce-style-';
 		$path          = '/assets/dist/css/blocks/';
@@ -182,6 +186,18 @@ class Enqueuer implements EnqueuerInterface {
 				$full_handle => $blocks,
 			)
 		);
+		// Handle Shortcodes
+		foreach ( $shortcodes as $shortcodeTag ) {
+			if ( $shortcodeTag === '' ) {
+				continue;
+			}
+			if ( ! isset( $this->shortcodeStyles[ $shortcodeTag ] ) ) {
+				$this->shortcodeStyles[ $shortcodeTag ] = array();
+			}
+			if ( ! in_array( $full_handle, $this->shortcodeStyles[ $shortcodeTag ], true ) ) {
+				$this->shortcodeStyles[ $shortcodeTag ][] = $full_handle;
+			}
+		}
 	}
 
 
@@ -328,6 +344,33 @@ class Enqueuer implements EnqueuerInterface {
 				wp_enqueue_block_style( $block, array( 'handle' => $handle ) );
 			}
 		}
+	}
+
+	/**
+	 * Enqueue block styles when a registered shortcode is about to render.
+	 *
+	 * @param mixed $shortcodeOutput
+	 *   Short-circuit return value; must be passed through unchanged.
+	 * @param string $shortcodeTag
+	 *   Shortcode tag being processed.
+	 * @param array<string, string>|string $attributes
+	 *   Shortcode attributes.
+	 * @param array<int, string> $match
+	 *   Regex match from the shortcode parser.
+	 *
+	 * @return mixed
+	 *   Unchanged short-circuit value so the shortcode still runs.
+	 */
+	public function enqueueBlockStylesForShortcode( $shortcodeOutput, string $shortcodeTag, $attributes, array $match ) {
+		if ( ! isset( $this->shortcodeStyles[ $shortcodeTag ] ) ) {
+			return $shortcodeOutput;
+		}
+
+		foreach ( $this->shortcodeStyles[ $shortcodeTag ] as $handle ) {
+			wp_enqueue_style( $handle );
+		}
+
+		return $shortcodeOutput;
 	}
 
 	/**

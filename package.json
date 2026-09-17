@@ -1,6 +1,6 @@
 {
   "name": "bc-sitka-spruce-department-theme",
-  "version": "1.9.5",
+  "version": "1.9.6",
   "description": "Bellevue College Theme for Level 3 Department Sites",
   "main": "theme.json",
   "scripts": {
@@ -50,7 +50,7 @@
     "sass-embedded": "^1.99.0",
     "process": "^0.11.10",
     "storybook": "^10.1.8",
-    "swiper": "^12.1.0",
+    "swiper": "^14.2.0",
     "twig": "^3.0.0",
     "vite-plugin-twig-drupal": "^1.7.0",
     "webpack-remove-empty-scripts": "^1.0.4"
