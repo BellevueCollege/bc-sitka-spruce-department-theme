@@ -697,17 +697,7 @@ add_filter( 'register_profile_post_type_args', function ( $args ) {
 } );
 
 
-/*
- * Profile Post Type — title & slug from ACF name fields.
- *
- * Profile does not support `title`, so Gutenberg publishes with a shared
- * auto-draft-N slug. ACF name fields arrive in a later metabox request, so
- * several profiles can all store the same `_wp_old_slug` and WordPress then
- * redirects `/profile/auto-draft-N/` to the wrong person.
- *
- * Use first/last name when available. On first publish, fall back to a
- * per-post placeholder so the editor View link is unique to this profile.
- */
+/** Profile Post Type — title & slug from ACF name fields.*/
 
 /** Slug WordPress assigns to a profile that has never had a title. */
 const PROFILE_AUTO_DRAFT_SLUG_PREFIX = 'auto-draft';
@@ -715,14 +705,7 @@ const PROFILE_AUTO_DRAFT_SLUG_PREFIX = 'auto-draft';
 /** Slug used until ACF delivers the name, unique per profile. */
 const PROFILE_PLACEHOLDER_SLUG_PREFIX = 'profile-';
 
-/**
- * Build profile title and slug from name fields.
- *
- * @param string $first_name First name.
- * @param string $last_name  Last name.
- * @param string $role       Optional position/role.
- * @return array{title: string, slug: string}|null
- */
+//Build profile title and slug from name fields.
 function build_profile_title_and_slug( string $first_name, string $last_name, string $role = '' ): ?array {
 	$first_name = trim( $first_name );
 	$last_name  = trim( $last_name );
@@ -739,12 +722,8 @@ function build_profile_title_and_slug( string $first_name, string $last_name, st
 	);
 }
 
-/**
- * Read first name, last name, and role from a profile REST request.
- *
- * @param \WP_REST_Request $request REST request.
- * @return array{first_name: string, last_name: string, role: string}
- */
+//Read first name, last name, and role from a profile REST request.
+
 function get_profile_name_fields_from_rest_request( $request ): array {
 	$acf = $request->get_param( 'acf' );
 
@@ -766,13 +745,7 @@ function get_profile_name_fields_from_rest_request( $request ): array {
 	);
 }
 
-/**
- * Set profile title and slug before Gutenberg REST insert/update.
- *
- * @param \stdClass        $prepared_post Post data being inserted.
- * @param \WP_REST_Request $request       REST request.
- * @return \stdClass
- */
+//Set profile title and slug before Gutenberg REST insert/update.
 function set_profile_title_and_slug_for_rest( $prepared_post, $request ) {
 	$name_fields = get_profile_name_fields_from_rest_request( $request );
 	$built       = build_profile_title_and_slug(
@@ -790,11 +763,7 @@ function set_profile_title_and_slug_for_rest( $prepared_post, $request ) {
 }
 add_filter( 'rest_pre_insert_profile', __NAMESPACE__ . '\set_profile_title_and_slug_for_rest', 10, 2 );
 
-/**
- * Read first name, last name, and role from a submitted ACF form.
- *
- * @return array{first_name: string, last_name: string, role: string}
- */
+//Read first name, last name, and role from a submitted ACF form.
 function get_profile_name_fields_from_post_data(): array {
 	$acf = ( isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) ? $_POST['acf'] : array();
 
@@ -804,31 +773,12 @@ function get_profile_name_fields_from_post_data(): array {
 		'role'       => (string) ( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '' ),
 	);
 }
-
-/**
- * Whether a slug is a shared WordPress placeholder rather than a real name.
- *
- * Publishing several profiles on an `auto-draft-N` slug makes them all store the
- * same `_wp_old_slug`, so WordPress later redirects that URL to whichever
- * profile it finds first.
- *
- * @param string $slug Slug to test.
- */
 function is_generic_profile_slug( string $slug ): bool {
 	return $slug === '' || strpos( $slug, PROFILE_AUTO_DRAFT_SLUG_PREFIX ) === 0;
 }
 
-/**
- * Set profile title and slug for any save, including the ACF metabox request.
- *
- * ACF posts its fields in a separate request that lands after Gutenberg's REST
- * save, so on first publish there is no name to build a slug from yet. Fall back
- * to a per-post placeholder so the published URL is unique to this profile.
- *
- * @param array $data    Sanitized post data.
- * @param array $postarr Raw post data.
- * @return array
- */
+//Set profile title and slug for any save, including the ACF metabox request.
+
 function filter_profile_insert_post_data( array $data, array $postarr ): array {
 	if ( ( $data['post_type'] ?? '' ) !== 'profile' ) {
 		return $data;
@@ -873,11 +823,8 @@ function filter_profile_insert_post_data( array $data, array $postarr ): array {
 }
 add_filter( 'wp_insert_post_data', __NAMESPACE__ . '\filter_profile_insert_post_data', 10, 2 );
 
-/**
- * Sync profile title and slug after ACF fields are saved.
- *
- * @param int|string $post_id Post ID (or ACF options page key).
- */
+//Sync profile title and slug after ACF fields are saved.
+
 function sync_profile_title_and_slug( $post_id ): void {
 	if ( ! is_numeric( $post_id ) ) {
 		return;
