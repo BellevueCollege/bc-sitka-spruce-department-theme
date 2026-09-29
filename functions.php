@@ -30,74 +30,41 @@ add_action( 'after_setup_theme', function() {
  * Register Blocks
  *
  * Any blocks that are part of the theme should be registered here.
+ * 
+ * This requires that the theme be built via `npm run build` or `npm run build:manifest`
+ * to generate the blocks-manifest.php file.
  */
-function register_blocks() {
-	$blocks = array(
-		'differentiator-section',
-		'differentiator-section/differentiator',
-		'contact-selector',
-		'content-and-location',
-		'template-homepage',
-		'hero-image',
-		'card-section',
-		'card-section/card-section-card',
-		'tabcordion',
-		'tabcordion/tabcordion-list',
-		'tabcordion/tabcordion-list-tab',
-		'tabcordion/tabcordion-content',
-		'tabcordion/tabcordion-content-panel',
-		'application-steps-tabs',
-		'application-steps-tabs/application-step-single',
-		'application-steps-tabs/application-step-single-content',
-		'callout',
-		'tabs-section',
-		'news-feature-core',
-		'testimonial-section',
-		'announcement-banner',
-		'support-feature',
-		'department-feature',
-		'accordion-section',
-		'accordion-section/accordion-section-content',
-		'media-gallery-section',
-		'listing-section',
-		'listing-section/listing-section-list-item',
-		'listing-section/listing-section-list-item-links',
-		'course-information-section',
-		'course-information-section/course-information-section-content',
-		'narrow-content',
-		'body-section',
-		'body-section/body-section-content',
-		'profiles-section',
-		'template-program-info',
-		'degrees-certificates-section',
-		'checkerboard-section',
-		'bio-section',
-		'bio-section/bio-section-content',
-	);
+add_action('init', function() {
+    $dist_dir = get_template_directory() . '/assets/dist';
+    $blocks_build_dir = $dist_dir . '/blocks';
+    $manifest = $dist_dir . '/blocks-manifest.php';
 
-	// Only register posts feature block if posts are enabled
-	if ( get_option( 'options_enable_posts') ) {
-		$blocks[] = 'posts-feature';
-	}
 
-	// Register Blocks
-	block_registration_helper( $blocks );
-}
-add_action( 'init', __NAMESPACE__ . '\register_blocks' );
-
+    if ( file_exists( $manifest ) ) {
+        // High-performance registration for WP 6.8
+        wp_register_block_types_from_metadata_collection( $blocks_build_dir, $manifest );
+    }
+});
 /**
- * Helper Function for Registering Blocks
- *
- * TODO: Move this to a helper function file
+ * Intercept block registration from the manifest.
+ * Only allows the posts-feature block if the theme option is enabled.
  */
-function block_registration_helper( array $blocks ) {
-	$block_path = get_template_directory() . '/assets/dist/blocks/';
-	foreach ( $blocks as $block ) {
-		$block = $block_path . $block;
-		register_block_type( $block );
-	}
-}
+add_filter( 'block_type_metadata', function( $metadata ) {
+    // Check if this is the posts-feature block
+    if ( isset( $metadata['name'] ) && 'bc-sitka-spruce/posts-feature' === $metadata['name'] ) {
+        // Check your theme option
+        $posts_enabled = get_option( 'options_enable_posts' );
+		//debug REMOVE
+		error_log( 'Filter Check: Posts block is ' . ($enabled ? 'ENABLED' : 'BLOCKED') );
+        // If posts are disabled, return false to prevent registration
+        if ( ! $posts_enabled ) {
+            return false;
+        }
+    }
+    return $metadata;
+}, 10, 1 );
 
+<<<<<<< Updated upstream
 /**
  * Disable FitText in Editor
  *
@@ -117,6 +84,20 @@ add_filter( 'register_block_type_args', function( $args, $block_type ) {
 	return $args;
 }, 10, 2 );
 
+=======
+//debug REMOVE
+add_action('init', function() {
+    $dist_dir = get_template_directory() . '/assets/dist';
+    $manifest = $dist_dir . '/blocks-manifest.php';
+
+    if ( file_exists( $manifest ) ) {
+        error_log( 'Gemini Check: Manifest FOUND at ' . $manifest ); // [cite: 83, 115]
+        wp_register_block_types_from_metadata_collection( $dist_dir . '/blocks', $manifest );
+    } else {
+        error_log( 'Gemini Check: Manifest NOT FOUND!' );
+    }
+});
+>>>>>>> Stashed changes
 
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-bootstrap', src: '/assets/dist/css/bootstrap.asset.php', use_asset_file: true, preload: 'preload' );
@@ -383,61 +364,96 @@ add_filter( 'document_title_separator', function( $sep ) {
 	return ' - ';
 }, 10, 1 );
 
-// Use Summary or Intro as description by default
+/**
+ * Turn HTML or entity-encoded markup into a single line of plain text.
+ *
+ * @param mixed $text Raw field or generated description.
+ * @return string Plain text. Empty when $text is not a string.
+ */
+function clean_plain_text( $text ): string {
+	if ( ! is_string( $text ) ) {
+		return '';
+	}
+
+	$cleaned = html_entity_decode( $text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+	$cleaned = preg_replace( '/<!--(.|\s)*?-->/', '', $cleaned );
+	$cleaned = wp_strip_all_tags( $cleaned, true );
+	$cleaned = preg_replace( '/\s+/', ' ', $cleaned );
+
+	return trim( $cleaned );
+}
+
+/**
+ * Whether text contains HTML tags, comments, or encoded markup.
+ *
+ * Plain comparisons such as "5 < 10" are left alone.
+ *
+ * @param string $text Text to inspect.
+ */
+function text_has_markup( string $text ): bool {
+	return 1 === preg_match( '/<!--|<\/?[a-zA-Z]|&(?:lt|gt|amp|quot|#\d+);/', $text );
+}
+
+/**
+ * First non-empty plain-text value from a list of ACF fields.
+ *
+ * @param int      $post_id     Post ID.
+ * @param string[] $field_names ACF field names, in preference order.
+ */
+function plain_text_from_acf_fields( int $post_id, array $field_names ): string {
+	if ( ! function_exists( 'get_field' ) ) {
+		return '';
+	}
+
+	foreach ( $field_names as $field_name ) {
+		$cleaned = clean_plain_text( get_field( $field_name, $post_id ) );
+
+		if ( '' !== $cleaned ) {
+			return $cleaned;
+		}
+	}
+
+	return '';
+}
+
+// Use Summary or Intro as description by default.
 // Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
 add_filter( 'the_seo_framework_generated_description', function( $description, $context ) {
 	$post_id = $context['id'] ?? null;
 
-	// ACF is available? check custom intro/summary fields first
-	if ( $post_id && function_exists( 'get_field' ) ) {
-        $intro_text = get_field( 'intro_text', $post_id );
-        if ( is_string( $intro_text ) && '' !== trim( $intro_text ) ) {
-			$cleaned = html_entity_decode( $intro_text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-            return wp_strip_all_tags( $intro_text, true );
-        }
+	if ( $post_id ) {
+		$from_fields = plain_text_from_acf_fields( (int) $post_id, array( 'intro_text', 'summary' ) );
 
-        $summary = get_field( 'summary', $post_id );
-        if ( is_string( $summary ) && '' !== trim( $summary ) ) {
-			$cleaned = html_entity_decode( $intro_text, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
-            return wp_strip_all_tags( $summary, true );
-        }
-    }
+		if ( '' !== $from_fields ) {
+			return $from_fields;
+		}
+	}
 
-	// fallback for standard post/page content: strip HTML
-	if ( ! empty( $description ) ) {
-		// Decode entity-encoded tags (e.g. &lt;h1&gt; -> <h1>)
-		$cleaned = html_entity_decode( $description, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+	if ( ! is_string( $description ) || '' === trim( $description ) ) {
+		return $description;
+	}
 
-		// Strip block comments (<!-- wp:... -->)
-		$cleaned = preg_replace( '/<!--(.|\s)*?-->/', '', $cleaned );
-
-		// Strip all HTML tags
-		$cleaned = wp_strip_all_tags( $cleaned, true );
-
-		// Normalize extra whitespace
-		return trim( preg_replace( '/\s+/', ' ', $cleaned ) );
-    }
-	return $description;
+	return clean_plain_text( $description );
 }, 20, 2 );
 
 /**
- * Sanitize the meta description output rendered in <head> (being generated by SEO Framework)
+ * Strip markup from a description that is about to be printed.
+ *
+ * Hand-written descriptions with characters like "<" are not rewritten.
+ *
+ * @param mixed $description Description about to be printed.
+ * @return mixed
  */
-add_filter( 'the_seo_framework_description_output', function( $description ) {
-    if ( ! empty( $description ) ) {
-        // Decode HTML entities (e.g., &lt;h1&gt; -> <h1>)
-        $cleaned = html_entity_decode( $description, ENT_QUOTES | ENT_HTML5, 'UTF-8' );
+function clean_description_output( $description ) {
+	if ( ! is_string( $description ) || ! text_has_markup( $description ) ) {
+		return $description;
+	}
 
-        // Strip HTML comments and tags
-        $cleaned = preg_replace( '/<!--(.|\s)*?-->/', '', $cleaned );
-        $cleaned = wp_strip_all_tags( $cleaned, true );
-
-        // Normalize spaces and return
-        return trim( preg_replace( '/\s+/', ' ', $cleaned ) );
-    }
-
-    return $description;
-}, 99, 1 );
+	return clean_plain_text( $description );
+}
+add_filter( 'the_seo_framework_description_output', __NAMESPACE__ . '\clean_description_output', 99 );
+add_filter( 'the_seo_framework_ogdescription_output', __NAMESPACE__ . '\clean_description_output', 99 );
+add_filter( 'the_seo_framework_twitterdescription_output', __NAMESPACE__ . '\clean_description_output', 99 );
 
 /* SEO Title Handling Fix */
 
@@ -453,12 +469,17 @@ add_filter('the_seo_framework_title_from_generation', function ($post_title, $ar
         global $post;
         if ($post && get_post_type($post) === 'profile') {
             $args['id'] = $post->ID;
-			$first = get_field('first_name', $args['id']);
-			$last  = get_field('last_name', $args['id']);
-			$role  = get_field('position_role', $args['id']);
+			$first = get_field( 'first_name', $args['id'] );
+			$last  = get_field( 'last_name', $args['id'] );
+			$role  = get_field( 'position_role', $args['id'] );
+			$built = build_profile_title_and_slug(
+				is_string( $first ) ? $first : '',
+				is_string( $last ) ? $last : '',
+				is_string( $role ) ? $role : ''
+			);
 
-			if ($first && $last && $role) {
-				return "{$last}, {$first} – {$role}";
+			if ( null !== $built ) {
+				return $built['title'];
 			}
         }
     }
@@ -699,47 +720,48 @@ add_filter( 'register_profile_post_type_args', function ( $args ) {
 } );
 
 
-/** Profile Post Type — title & slug from ACF name fields.*/
+/**
+ * Profile title and slug.
+ *
+ * The public slug comes from the title, "Last, First - Role", so an existing
+ * profile stays at /profile/doe-jane-director/ on the next save. Two people
+ * with the same name and different roles do not share a slug.
+ */
 
-/** Slug WordPress assigns to a profile that has never had a title. */
-const PROFILE_AUTO_DRAFT_SLUG_PREFIX = 'auto-draft';
-
-/** Slug used until ACF delivers the name, unique per profile. */
-const PROFILE_PLACEHOLDER_SLUG_PREFIX = 'profile-';
-
-//Build profile title and slug from name fields.
+/**
+ * Build a profile title and the slug derived from that title.
+ *
+ * @param string $first_name First name.
+ * @param string $last_name  Last name.
+ * @param string $role       Position or role. Omitted from the title when empty.
+ * @return array{title: string, slug: string}|null Null when either name is empty.
+ */
 function build_profile_title_and_slug( string $first_name, string $last_name, string $role = '' ): ?array {
 	$first_name = trim( $first_name );
 	$last_name  = trim( $last_name );
+	$role       = trim( $role );
 
-	if ( $first_name === '' || $last_name === '' ) {
+	if ( '' === $first_name || '' === $last_name ) {
 		return null;
 	}
 
-	$full_name = trim( "{$first_name} {$last_name}" );
+	$title = '' !== $role
+		? "{$last_name}, {$first_name} - {$role}"
+		: "{$last_name}, {$first_name}";
 
 	return array(
-		'title' => $role !== '' ? "{$last_name}, {$first_name} – {$role}" : $full_name,
-		'slug'  => sanitize_title( $full_name ),
+		'title' => $title,
+		'slug'  => sanitize_title( $title ),
 	);
 }
 
-//Read first name, last name, and role from a profile REST request.
-
-function get_profile_name_fields_from_rest_request( $request ): array {
-	$acf = $request->get_param( 'acf' );
-
-	if ( empty( $acf ) || ! is_array( $acf ) ) {
-		$params = $request->get_json_params();
-		$acf    = ( is_array( $params ) && isset( $params['acf'] ) && is_array( $params['acf'] ) )
-			? $params['acf']
-			: array();
-	}
-
-	if ( empty( $acf ) && isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) {
-		$acf = $_POST['acf'];
-	}
-
+/**
+ * Read first name, last name, and role from an ACF value array.
+ *
+ * @param array $acf Values keyed by field key or field name.
+ * @return array{first_name: string, last_name: string, role: string}
+ */
+function profile_name_fields_from_values( array $acf ): array {
 	return array(
 		'first_name' => (string) ( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '' ),
 		'last_name'  => (string) ( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '' ),
@@ -747,86 +769,120 @@ function get_profile_name_fields_from_rest_request( $request ): array {
 	);
 }
 
-//Set profile title and slug before Gutenberg REST insert/update.
-function set_profile_title_and_slug_for_rest( $prepared_post, $request ) {
-	$name_fields = get_profile_name_fields_from_rest_request( $request );
+/**
+ * Title and slug for a profile that already has ACF name fields saved.
+ *
+ * @param int $post_id Profile ID.
+ * @return array{title: string, slug: string}|null
+ */
+function saved_profile_title_and_slug( int $post_id ): ?array {
+	if ( ! function_exists( 'get_field' ) ) {
+		return null;
+	}
+
+	$first_name = get_field( 'first_name', $post_id );
+	$last_name  = get_field( 'last_name', $post_id );
+	$role       = get_field( 'position_role', $post_id );
+
+	return build_profile_title_and_slug(
+		is_string( $first_name ) ? $first_name : '',
+		is_string( $last_name ) ? $last_name : '',
+		is_string( $role ) ? $role : ''
+	);
+}
+
+/**
+ * A slug WordPress can resolve without colliding with another profile's old auto-draft URL.
+ *
+ * @param string $slug    Desired slug.
+ * @param int    $post_id Profile ID. Zero when the post does not exist yet.
+ * @param string $status  Post status being saved.
+ */
+function unique_profile_slug( string $slug, int $post_id, string $status ): string {
+	return wp_unique_post_slug( $slug, $post_id, $status, 'profile', 0 );
+}
+
+/**
+ * Set the profile title and slug before Gutenberg inserts or updates the post.
+ */
+add_filter( 'rest_pre_insert_profile', function( $prepared_post, $request ) {
+	$acf = $request->get_param( 'acf' );
+
+	if ( ! is_array( $acf ) ) {
+		$params = $request->get_json_params();
+		$acf    = ( is_array( $params ) && isset( $params['acf'] ) && is_array( $params['acf'] ) ) ? $params['acf'] : array();
+	}
+
+	$name_fields = profile_name_fields_from_values( $acf );
 	$built       = build_profile_title_and_slug(
 		$name_fields['first_name'],
 		$name_fields['last_name'],
 		$name_fields['role']
 	);
 
-	if ( null !== $built ) {
-		$prepared_post->post_title = $built['title'];
-		$prepared_post->post_name  = $built['slug'];
+	if ( null === $built ) {
+		return $prepared_post;
 	}
+
+	$prepared_post->post_title = $built['title'];
+	$prepared_post->post_name  = unique_profile_slug(
+		$built['slug'],
+		(int) ( $prepared_post->ID ?? 0 ),
+		(string) ( $prepared_post->post_status ?? 'draft' )
+	);
 
 	return $prepared_post;
-}
-add_filter( 'rest_pre_insert_profile', __NAMESPACE__ . '\set_profile_title_and_slug_for_rest', 10, 2 );
+}, 10, 2 );
 
-//Read first name, last name, and role from a submitted ACF form.
-function get_profile_name_fields_from_post_data(): array {
-	$acf = ( isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) ? $_POST['acf'] : array();
-
-	return array(
-		'first_name' => (string) ( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '' ),
-		'last_name'  => (string) ( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '' ),
-		'role'       => (string) ( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '' ),
-	);
-}
-function is_generic_profile_slug( string $slug ): bool {
-	return $slug === '' || strpos( $slug, PROFILE_AUTO_DRAFT_SLUG_PREFIX ) === 0;
-}
-
-//Set profile title and slug for any save, including the ACF metabox request.
-
-function filter_profile_insert_post_data( array $data, array $postarr ): array {
-	if ( ( $data['post_type'] ?? '' ) !== 'profile' ) {
-		return $data;
-	}
-
-	// Trashing appends __trashed to the slug; leave WordPress's bookkeeping alone.
-	if ( ( $data['post_status'] ?? '' ) === 'trash' ) {
+/**
+ * Set the profile title and slug on save, including the later ACF metabox request.
+ *
+ * Names are often missing from the Gutenberg REST body. Publishing then keeps a
+ * per-post placeholder instead of the shared auto-draft slug. The metabox save
+ * replaces that placeholder with the name slug.
+ */
+add_filter( 'wp_insert_post_data', function( $data, $postarr ) {
+	if ( ( $data['post_type'] ?? '' ) !== 'profile' || ( $data['post_status'] ?? '' ) === 'trash' ) {
 		return $data;
 	}
 
 	$post_id     = (int) ( $postarr['ID'] ?? 0 );
-	$name_fields = get_profile_name_fields_from_post_data();
+	$name_fields = profile_name_fields_from_values(
+		( isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) ? $_POST['acf'] : array()
+	);
 	$built       = build_profile_title_and_slug(
 		$name_fields['first_name'],
 		$name_fields['last_name'],
 		$name_fields['role']
 	);
 
-	// Fall back to already-saved values, e.g. publishing a draft that has names.
 	if ( null === $built && $post_id ) {
-		$built = build_profile_title_and_slug(
-			(string) get_field( 'first_name', $post_id ),
-			(string) get_field( 'last_name', $post_id ),
-			(string) get_field( 'position_role', $post_id )
-		);
+		$built = saved_profile_title_and_slug( $post_id );
 	}
 
 	if ( null !== $built ) {
 		$data['post_title'] = $built['title'];
-		$data['post_name']  = wp_unique_post_slug(
-			$built['slug'],
-			$post_id,
-			$data['post_status'],
-			$data['post_type'],
-			(int) ( $data['post_parent'] ?? 0 )
-		);
-	} elseif ( $post_id && $data['post_status'] === 'publish' && is_generic_profile_slug( $data['post_name'] ?? '' ) ) {
-		$data['post_name'] = PROFILE_PLACEHOLDER_SLUG_PREFIX . $post_id;
+		$data['post_name']  = unique_profile_slug( $built['slug'], $post_id, (string) $data['post_status'] );
+		return $data;
+	}
+
+	$slug = (string) ( $data['post_name'] ?? '' );
+
+	if ( $post_id && 'publish' === $data['post_status'] && ( '' === $slug || 0 === strpos( $slug, 'auto-draft' ) ) ) {
+		$data['post_name'] = 'profile-' . $post_id;
 	}
 
 	return $data;
-}
-add_filter( 'wp_insert_post_data', __NAMESPACE__ . '\filter_profile_insert_post_data', 10, 2 );
+}, 10, 2 );
 
-//Sync profile title and slug after ACF fields are saved.
-
+/**
+ * Apply the title and slug after ACF has stored the name fields.
+ *
+ * Compares against the unique slug, so a suffixed slug such as doe-jane-director-2
+ * is not written again on every save.
+ *
+ * @param int|string $post_id Post ID, or an ACF options page key.
+ */
 function sync_profile_title_and_slug( $post_id ): void {
 	if ( ! is_numeric( $post_id ) ) {
 		return;
@@ -834,44 +890,39 @@ function sync_profile_title_and_slug( $post_id ): void {
 
 	$post_id = (int) $post_id;
 
-	if ( get_post_type( $post_id ) !== 'profile' || wp_is_post_revision( $post_id ) ) {
+	if ( 'profile' !== get_post_type( $post_id ) || wp_is_post_revision( $post_id ) ) {
 		return;
 	}
 
-	if ( get_post_status( $post_id ) === 'trash' ) {
+	if ( 'trash' === get_post_status( $post_id ) ) {
 		return;
 	}
 
-	$built = build_profile_title_and_slug(
-		(string) get_field( 'first_name', $post_id ),
-		(string) get_field( 'last_name', $post_id ),
-		(string) get_field( 'position_role', $post_id )
-	);
+	$built = saved_profile_title_and_slug( $post_id );
+	$post  = get_post( $post_id );
 
-	if ( null === $built ) {
+	if ( null === $built || ! $post ) {
 		return;
 	}
 
-	$post = get_post( $post_id );
+	$unique_slug = unique_profile_slug( $built['slug'], $post_id, $post->post_status );
 
-	if ( ! $post || ( $post->post_name === $built['slug'] && $post->post_title === $built['title'] ) ) {
+	if ( $post->post_name === $unique_slug && $post->post_title === $built['title'] ) {
 		return;
 	}
 
 	$callback = __NAMESPACE__ . '\sync_profile_title_and_slug';
 
 	remove_action( 'acf/save_post', $callback, 20 );
-	remove_filter( 'wp_insert_post_data', __NAMESPACE__ . '\filter_profile_insert_post_data', 10 );
 
 	wp_update_post(
 		array(
 			'ID'         => $post_id,
 			'post_title' => $built['title'],
-			'post_name'  => $built['slug'],
+			'post_name'  => $unique_slug,
 		)
 	);
 
-	add_filter( 'wp_insert_post_data', __NAMESPACE__ . '\filter_profile_insert_post_data', 10, 2 );
 	add_action( 'acf/save_post', $callback, 20 );
 }
 add_action( 'acf/save_post', __NAMESPACE__ . '\sync_profile_title_and_slug', 20 );
