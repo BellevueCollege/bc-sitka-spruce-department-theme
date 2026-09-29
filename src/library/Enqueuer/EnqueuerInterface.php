@@ -107,10 +107,14 @@ interface EnqueuerInterface {
 	 * @param string[] $dependencies
 	 *   Array of dependencies, using the short name of the stylesheet
 	 *   (only works for styles registered with `addBlockStyle`)
+	 * @param string[] $shortcodes
+	 *   Shortcode tags (e.g. TablePress `table`) that enqueue this stylesheet when
+	 *   the shortcode is rendered.
 	 */
 	public function addBlockStyle(
 		string $handle,
 		array $blocks,
-		array $dependencies = array()
+		array $dependencies = array(),
+		array $shortcodes = array()
 	): void;
 }
