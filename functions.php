@@ -54,8 +54,6 @@ add_filter( 'block_type_metadata', function( $metadata ) {
     if ( isset( $metadata['name'] ) && 'bc-sitka-spruce/posts-feature' === $metadata['name'] ) {
         // Check your theme option
         $posts_enabled = get_option( 'options_enable_posts' );
-		//debug REMOVE
-		error_log( 'Filter Check: Posts block is ' . ($enabled ? 'ENABLED' : 'BLOCKED') );
         // If posts are disabled, return false to prevent registration
         if ( ! $posts_enabled ) {
             return false;
@@ -64,7 +62,6 @@ add_filter( 'block_type_metadata', function( $metadata ) {
     return $metadata;
 }, 10, 1 );
 
-<<<<<<< Updated upstream
 /**
  * Disable FitText in Editor
  *
@@ -84,20 +81,6 @@ add_filter( 'register_block_type_args', function( $args, $block_type ) {
 	return $args;
 }, 10, 2 );
 
-=======
-//debug REMOVE
-add_action('init', function() {
-    $dist_dir = get_template_directory() . '/assets/dist';
-    $manifest = $dist_dir . '/blocks-manifest.php';
-
-    if ( file_exists( $manifest ) ) {
-        error_log( 'Gemini Check: Manifest FOUND at ' . $manifest ); // [cite: 83, 115]
-        wp_register_block_types_from_metadata_collection( $dist_dir . '/blocks', $manifest );
-    } else {
-        error_log( 'Gemini Check: Manifest NOT FOUND!' );
-    }
-});
->>>>>>> Stashed changes
 
 $enqueuer = Theme::enqueuer();
 $enqueuer->addStyle( handle: 'bc-sitka-spruce-bootstrap', src: '/assets/dist/css/bootstrap.asset.php', use_asset_file: true, preload: 'preload' );
