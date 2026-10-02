@@ -5,6 +5,9 @@ import {
 	specialNeighborCases,
 } from './section-interactions.data.js';
 
+import '/assets/dist/css/blocks/nav.css';
+import '/assets/dist/blocks/tabcordion/style-index.css';
+
 export default {
 	title: 'Stories/Section Interactions',
 	component: 'section-interactions',
@@ -27,6 +30,8 @@ export default {
 					'7. Colored → Announcement: content inset inside the colored band; one spacing unit between band and announcement.',
 					'8. Last section: no redundant bottom margin.',
 					'9. Curved-top headings sit inside the arch crescent without collapsing the gap below.',
+					'10. xlight-tabcordion-tabs-white: one spacing unit above the tabcordion card border.',
+					'11. xlight-tabcordion-tabs-white: one spacing unit before the white section heading (from section padding, not card margin).',
 				].join('\n'),
 			},
 		},

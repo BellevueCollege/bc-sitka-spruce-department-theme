@@ -29,11 +29,6 @@ $context['wrapper_attrs'] = get_block_wrapper_attributes(
 	)
 );
 
-// $wrapper_attrs = get_block_wrapper_attributes(
-//  array(
-//      'class' => 'card',
-//  )
-// );
 if ( $attributes['format'] === 'tabs' ) {
 	Timber::render( '/stories/tabcordion/tabcordion-top-tabs-card.twig', $context );
 } elseif ( $attributes['format'] === 'pills' ) {
