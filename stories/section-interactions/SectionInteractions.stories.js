@@ -27,7 +27,7 @@ export default {
 					'4. Arch is a transition atom: valid cases are predecessor → arch → rainy-night curved-top with real section-heading. Crescent + dark body read as one transition.',
 					'5. rainy-arch-hidden: arch must not display.',
 					'6. Same-color stacks: 2px separator without extra gap.',
-					'7. Colored → Announcement: content inset inside the colored band; one spacing unit between band and announcement.',
+					'7. Colored → Announcement: content inset inside the colored band; one spacing unit between band and announcement (announcement inside `.wp-block-bc-sitka-spruce-announcement-banner`, matching WP).',
 					'8. Last section: no redundant bottom margin.',
 					'9. Curved-top headings sit inside the arch crescent without collapsing the gap below.',
 					'10. xlight-tabcordion-tabs-white: one spacing unit above the tabcordion card border.',
