@@ -106,18 +106,17 @@ export function tabcordionTabsSegment() {
 }
 
 /**
- * Build a stub announcement segment (adjacency only; not full banner markup).
+ * Build an announcement segment using production banner markup inside the block wrapper.
  *
- * @param {string} [label]
+ * @param {string} [label] Visible case label and banner heading.
  * @returns {object}
  */
 export function announcementSegment(label = 'Announcement') {
 	return {
-		type: 'section',
+		type: 'announcement',
 		label,
-		classes: 'announcement container-xl',
-		showDivider: false,
-		innerClass: 'container-xl',
+		title: label,
+		description: '<p class="mb-0">Announcement banner stub for section adjacency QA.</p>',
 	};
 }
 

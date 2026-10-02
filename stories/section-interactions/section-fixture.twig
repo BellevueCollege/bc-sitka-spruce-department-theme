@@ -28,6 +28,17 @@
       </div>
     </div>
   </div>
+{% elseif type == 'announcement' %}
+  {# WordPress wraps the block; without this, .section:has(+ .announcement) adjacency rules misfire in Storybook. #}
+  <div class="wp-block-bc-sitka-spruce-announcement-banner">
+    {% include '@stories/announcement-banner/announcement-banner.twig' with {
+      title: title,
+      description: description,
+      image: null,
+      button: null,
+      links: null,
+    } %}
+  </div>
 {% elseif type == 'blockWrapper' %}
   <div class="block-wrapper">
     <p class="fw-semibold mb-0 container-xl">{{ label }}</p>
