@@ -6,13 +6,36 @@ import twigTabListTab from "./components/tab-list-tab.twig";
 import twigTabContent from "./components/content.twig";
 import twigTabContentPanel from "./components/content-panel.twig";
 
+// Block styles, same handles as block.json. On WordPress these enqueue inside
+// enqueue_block_assets, which runs before the theme prints bootstrap.css and main.css.
 import '/assets/dist/css/blocks/nav.css';
-import '/assets/dist/blocks/tabcordion/style-index.css';
+import '/assets/dist/css/blocks/tabs.css';
 import '/assets/dist/css/blocks/tabcordion-list.css';
+import '/assets/dist/blocks/tabcordion/style-index.css';
+// Same files preview.js already imports. A second static import is dropped by Vite, so
+// they stay ahead of nav.css. Inlining them into the story puts them after block CSS,
+// matching wp_enqueue_scripts (theme styles after block styles).
+import bootstrapStylesheet from '/assets/dist/css/bootstrap.css?inline';
+import mainStylesheet from '/assets/dist/css/main.css?inline';
+import mainScriptStylesheet from '/assets/dist/js/main.css?inline';
+
+/**
+ * Print theme styles after block styles, matching WordPress enqueue order.
+ *
+ * @param {Function} storyFn
+ * @returns {string}
+ */
+const withThemeStylesAfterBlockStyles = ( storyFn ) => {
+	const html = storyFn();
+	const themeStyles = `<style data-sitka-theme-styles>${ bootstrapStylesheet }${ mainStylesheet }${ mainScriptStylesheet }</style>`;
+
+	return themeStyles + html;
+};
 
 export default {
 	title: "Stories/Tabcordion",
 	component: "tabcordion",
+	decorators: [ withThemeStylesAfterBlockStyles ],
 	argTypes: {
 		heading_level: {
 			control: 'select',
