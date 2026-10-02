@@ -49,6 +49,16 @@
 	margin-top: var( --sitka-container-spacing );
 }
 
+// Classic tabs tabcordion: `.tab-wrapper.container-xl` is the section sibling (wp-block nested inside; not `.block-wrapper`).
+.section + .tab-wrapper.container-xl:has( > .wp-block-bc-sitka-spruce-tabcordion.tabcordion-tabs ) {
+	margin-top: var( --sitka-container-spacing );
+}
+
+// A following `.section` supplies top padding for the gap; inner `.tabcordion-tabs` keeps `margin-bottom: 0` so spacing is not doubled.
+.tab-wrapper.container-xl:has( > .wp-block-bc-sitka-spruce-tabcordion.tabcordion-tabs ):has( + .section ) > .wp-block-bc-sitka-spruce-tabcordion.tabcordion-tabs {
+	margin-bottom: 0;
+}
+
 // Hide arch shape if next section is dark.
 // When the arch is hidden before a curved-top rainy section, restore section
 // padding-top so headings are not flush against the predecessor (child-only

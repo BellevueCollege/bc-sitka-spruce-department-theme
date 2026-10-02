@@ -95,6 +95,17 @@ export function blockWrapperSegment(label = 'Block wrapper') {
 }
 
 /**
+ * Build a minimal classic-tabs tabcordion segment (`.tab-wrapper` > wp-block; no `.block-wrapper`).
+ *
+ * @returns {object}
+ */
+export function tabcordionTabsSegment() {
+	return {
+		type: 'tabcordionTabs',
+	};
+}
+
+/**
  * Build a stub announcement segment (adjacency only; not full banner markup).
  *
  * @param {string} [label]
@@ -266,6 +277,19 @@ export const specialNeighborCases = [
 		segments: [
 			sectionSegment(white, ' (first)'),
 			blockWrapperSegment('Block wrapper (second)'),
+		],
+	},
+	{
+		id: 'xlight-tabcordion-tabs-white',
+		label: 'X-Light → Tabs tabcordion → White',
+		segments: [
+			sectionSegment(xlight, ' (first)'),
+			tabcordionTabsSegment(),
+			sectionSegment(white, ' (second)', {
+				withSectionHeading: true,
+				heading: 'White section heading',
+				subheading: '<p>Spacing below tabcordion card</p>',
+			}),
 		],
 	},
 	{
