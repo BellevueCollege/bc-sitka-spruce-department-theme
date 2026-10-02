@@ -15,26 +15,35 @@
 
 .contact-item-r {
 
-    //styling for left-hand side/ column of contact item(s)
-    h3 {
-        color: var(--black);
-    }
-    // description/paragraph styling
-    .position-text {
-        color: var(--black);
-    }
+	//styling for left-hand side/ column of contact item(s)
+	h3 {
+		color: var(--black);
+	}
+	// description/paragraph styling
+	.position-text {
+		color: var(--black);
+	}
 
-    //styling for all of the contact item(s)
-    color: var(--bc-brutus-blue);
-    background-color: var(--contact-item-bg);
-    margin: var(--bs-gutter-x);
-    border-radius: 0.5rem;
-    border: none;
-    padding: var(--bs-gutter-x) calc(var(--bs-gutter-x) * 0.5); // half the gutter for horizontal padding since columns have padding already
+	//styling for all of the contact item(s)
+	color: var(--bc-brutus-blue);
+	background-color: var(--contact-item-bg);
+	border-radius: 0.5rem;
+	border: none;
+	padding: calc( var(--bs-gutter-x) * 0.5) 0; // half the gutter for horizontal padding since columns have padding already
+	margin-top: calc( var(--bs-gutter-x) * 0.5);
+	margin-bottom: calc( var(--bs-gutter-x) * 0.5);
 
-    &:last-child {
-        margin-top: 0;
-    }
+	&:last-child {
+		margin-top: 0;
+	}
+
+	@include media-breakpoint-up(md) {
+		margin-right: 0; // there is negative margin by default - setting it to 0 keeps left and right even.
+	}
+
+	@include media-breakpoint-up(lg) {
+		padding: var(--bs-gutter-x) calc(var(--bs-gutter-x) * 0.5); // half the gutter for horizontal padding since columns have padding already
+	}
 }
 
 .contact-item-wrapper:last-child .contact-item-r {
