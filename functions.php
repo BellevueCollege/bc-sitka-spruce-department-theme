@@ -100,8 +100,8 @@ function block_registration_helper( array $blocks ) {
 
 /**
  * Disable FitText in Editor
- * 
- * This shouldn't be needed (it is included in theme.json), but that is not working consistantly. 
+ *
+ * This shouldn't be needed (it is included in theme.json), but that is not working consistantly.
  */
 add_filter( 'register_block_type_args', function( $args, $block_type ) {
 	$blocks = [
@@ -850,22 +850,14 @@ if ( $sitka_ga_id ) {
 }
 
 /**
- * Customize Default Editoria11y Plugin Settings
+ * Add Classes to Ignore for Editoria11y Plugin
+ *
+ * Any non-theme-provided classes should be added via plugin settings instead.
  */
 add_filter( 'ed11y_default_options', function ( $options ) {
 
-	// Ignore ACF interfaces that appear in the editor
-	// Ignore false positive on application step single heading
-	$options['ed11y_ignore_elements'] .= ', .acf-block-fields .acf-table, .acf-block-fields .acf-row, .acf-block-fields a, .application-step-single-heading';
-
-	// Ignore sub-headings inside app-steps-blocks - incorrectly flagged as skipping level
-	$options['ed11y_ignore_elements'] .= ', h4.application-step-single-heading';
-
-	// Disable content auditing within my-calendar plugin, as it's not user-fixable
-	$options['ed11y_ignore_elements'] .= ', #my-calendar, #my-calendar *, .mc-main, .mc-main *';
-
 	// Ignore editoria11y decorative images
-	$options['ed11y_ignore_elements'] .= ', .a11y-decorative, .a11y-hide-warning';
+	$options['ed11y_ignore_elements'] .= '.a11y-decorative, .a11y-hide-warning';
 
 	return $options;
 } );

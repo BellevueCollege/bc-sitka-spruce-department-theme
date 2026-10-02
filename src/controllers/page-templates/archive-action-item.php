@@ -11,29 +11,14 @@ $context['title'] = 'Board of Trustees Action Items'; // Fallback title
 $args = array(
     'post_type'      => 'action-item',
     'posts_per_page' => -1, // Get all of them'
-    //allows posts w/o meta_key in results
-    'meta_query'     => array(
-        'relation' => 'OR',
-        array(
-            'key'     => 'meeting_date',
-            'compare' => 'EXISTS',
-        ),
-        array(
-            'key'     => 'meeting_date',
-            'compare' => 'NOT EXISTS',
-        ),
-    ),
-    'orderby' => array(
-        'meta_value' => 'DESC',
-        'date'       => 'DESC', // Secondary sort by publish date
-    ),
 );
 $agendas = Timber::get_posts( $args );
 
-//Group them by Year (this is how they were grouped in douglas theme)
+//Group them by Year 
 $posts_by_year = array();
 foreach ( $agendas as $agenda ) {
     $year = null; // always reset (to prevent hiccup date associated with last item)
+    $sort_time = 0;
     $meeting_date = $agenda->meta('meeting_date');
 
     if ( ! empty( $meeting_date ) ) {
@@ -46,22 +31,38 @@ foreach ( $agendas as $agenda ) {
 
         if ( $date_time ) {
             $year = $date_time->format( 'Y' );
-            $agenda->localized_meeting_date = wp_date( 'F j, Y', $date_time->getTimestamp(), wp_timezone() );
+            $sort_time = $date_time->getTimestamp();
+            $agenda->localized_meeting_date = wp_date( 'F j, Y', $sort_time, wp_timezone() );
         }
     } else {
         // Fallback to WP publish date for the year group
-        $post_timestamp = strtotime( $agenda->post_date );
-        $year = gmdate( 'Y', $post_timestamp );
-        $agenda->localized_meeting_date = wp_date( 'F j, Y', $post_timestamp );
+        $date_time = date_create_immutable( $agenda->post_date, wp_timezone() );
+
+        if ( $date_time ) {
+            $year = $date_time->format( 'Y' );
+            $sort_time = $date_time->getTimestamp();
+            $agenda->localized_meeting_date = wp_date( 'F j, Y', $sort_time, wp_timezone() );
+        }
     }
 
     if ( $year ) {
+        // Attach raw sort timestamp for sorting inside the year group
+        $agenda->sort_timestamp = $sort_time;
         $posts_by_year[ $year ][] = $agenda;
     }
 }
 
 //Sort so the years are in descending order (newest/latest to oldest/earliest)
 krsort( $posts_by_year );
+
+//Sort posts w/in each year descending by date
+foreach ( $posts_by_year as $year => &$posts ) {
+    usort( $posts, function( $a, $b ) {
+        return $b->sort_timestamp <=> $a->sort_timestamp;
+    } );
+}
+unset( $posts ); // break reference
+
 //Pass  to Twig
 $context['posts_by_year'] = $posts_by_year;
 

@@ -1,10 +1,15 @@
 <div class="nav-sidebar-wrapper">
 	<a class="visually-hidden-focusable" href="#after-nav-sidebar-landmark">Skip sidebar navigation</a>
-	<nav class="nav-sidebar rounded shadow accordion" id="nav-sidebar" aria-label="{{ __('In this section', 'bc-sitka-spruce') }}">
+	{% if is_child_page %}
+		{% set nav_title = __('More in this section', 'bc-sitka-spruce') %}
+	{% else %}
+		{% set nav_title = __('Explore %s', 'bc-sitka-spruce')|format(site_name) %}
+	{% endif %}
+	<nav class="nav-sidebar rounded shadow accordion" id="nav-sidebar" aria-label="{{ nav_title }}">
 		<div class="accordion-item">
 			<h2 class="accordion-header d-md-none">
 				<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#nav-sidebar-collapse" aria-expanded="false" aria-controls="nav-sidebar-collapse">
-					{{ __('More in this section', 'bc-sitka-spruce') }}
+					{{ nav_title }}
 				</button>
 			</h2>
 			<div id="nav-sidebar-collapse" class="accordion-collapse collapse p-3 d-md-block"  data-bs-parent="#nav-sidebar">

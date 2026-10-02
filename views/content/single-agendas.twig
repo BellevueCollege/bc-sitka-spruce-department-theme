@@ -15,14 +15,14 @@
         {% set banner_subtitle = post.localized_meeting_date ? (post.localized_meeting_date ~ ' ' ~ is_special) : is_special %}
 
         {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
-            title: post.title,
-            subtitle: banner_subtitle
+            title: post.title|default(''),
+            subtitle: banner_subtitle|default('')
         } %}
 
         <div class="single-agendas-page container pb-4">
             <div class="row">
                 <div class= "col-lg-8">
-                    {{ post.content }}
+                    {{ post.content|default('') }}
                 </div>
 
                 {% set action_items = post.meta('related_action_items') %}
@@ -41,15 +41,14 @@
                                 {% if action_items %}
                                     <li><strong> Action Items: </strong></li>
                                         <ul class='ms-3'>
-                                        {# Pulling in Bi-Directional Action Items #}
-                                        {% for item in action_items %}
-                                            {# If 'item' is already a post object use it directly
-                                            {# Otherwise, convert the ID into a Post object. #}
-                                            {% set action_obj = Post(item) %}
-                                            {% if action_obj %}
-                                                <li><a href="{{ action_obj.link }}">{{ action_obj.title }}</a></li>
-                                            {% endif %}
-                                        {% endfor %}
+                                            {# Pulling in Bi-Directional Action Items #}
+                                            {% for item in action_items %}
+                                                {# Convert ACF into Timber Post object #}
+                                                {% set action_item = get_post(item) %}
+                                                <li>
+                                                    <a href="{{ action_item.link }}">{{ action_item.title|default('') }}</a>
+                                                </li>
+                                            {% endfor %}
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -58,14 +57,14 @@
                                 {% if resolutions %}
                                     <li class="{{ action_items ? 'mt-2' : '' }}"><strong>Resolutions:</strong>
                                         <ul class='ms-3'>
-                                        {# Pulling in Bi-Directional Resolutions #}
-                                        {% for item in resolutions %}
-                                            {# Convert the raw ACF data into a Timber Post object #}
-                                            {% set res_obj = Post(item) %}
-                                            {% if res_obj %}
-                                                <li><a href="{{ res_obj.link }}">{{ res_obj.title }}</a></li>
-                                            {% endif %}
-                                        {% endfor %}
+                                            {# Pulling in Bi-Directional Resolutions #}
+                                            {% for item in resolutions %}
+                                                {# Convert the raw ACF data into a Timber Post object #}
+                                                {% set resolution = get_post(item) %}
+                                                <li>
+                                                    <a href="{{resolution.link}}">{{ resolution.title|default('') }}</a>
+                                                </li>
+                                            {% endfor %}
                                         </ul>
                                     </li>
                                 {% endif %}
@@ -74,7 +73,10 @@
                             
                         {% include '@stories/callout/callout.twig' with {
                             title: 'Related Content',
-                            links: related_html,
+                            links: related_html ? related_html ~ '' : '',
+                            text: '',
+                            content: '',
+                            description: '',
                             wrapper_classes: 'callout-wrapper'
                         } %}
                     </div>
