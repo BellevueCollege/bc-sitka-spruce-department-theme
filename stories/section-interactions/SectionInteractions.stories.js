@@ -1,0 +1,56 @@
+import twigSectionInteractions from './section-interactions.twig';
+import {
+	buildBackgroundPairCases,
+	archAndStructuralCases,
+	specialNeighborCases,
+} from './section-interactions.data.js';
+
+import '/assets/dist/css/blocks/nav.css';
+import '/assets/dist/blocks/tabcordion/style-index.css';
+
+export default {
+	title: 'Stories/Section Interactions',
+	component: 'section-interactions',
+	tags: ['autodocs'],
+	parameters: {
+		layout: 'fullscreen',
+		docs: {
+			description: {
+				component: [
+					'Composite visual QA for `.section` adjacency rules in `_section.scss`.',
+					'Three stories keep Chromatic snapshot usage low.',
+					'',
+					'Acceptance checklist:',
+					'1. Adjacent colored sections meet with no white strip.',
+					'2. White sections: spacing above content; divider + spacing below content.',
+					'3. White before colored / arch: divider hidden; white section still has bottom spacing.',
+					'4. Arch is a transition atom: valid cases are predecessor → arch → rainy-night curved-top with real section-heading. Crescent + dark body read as one transition.',
+					'5. rainy-arch-hidden: arch must not display.',
+					'6. Same-color stacks: 2px separator without extra gap.',
+					'7. Colored → Announcement: content inset inside the colored band; one spacing unit between band and announcement (announcement inside `.wp-block-bc-sitka-spruce-announcement-banner`, matching WP).',
+					'8. Last section: no redundant bottom margin.',
+					'9. Curved-top headings sit inside the arch crescent without collapsing the gap below.',
+					'10. xlight-tabcordion-tabs-white: one spacing unit above the tabcordion card border.',
+					'11. xlight-tabcordion-tabs-white: one spacing unit before the white section heading (from section padding, not card margin).',
+				].join('\n'),
+			},
+		},
+	},
+};
+
+const Template = ({ cases }) => twigSectionInteractions({ cases });
+
+export const BackgroundPairs = Template.bind({});
+BackgroundPairs.args = {
+	cases: buildBackgroundPairCases(),
+};
+
+export const ArchAndStructural = Template.bind({});
+ArchAndStructural.args = {
+	cases: archAndStructuralCases,
+};
+
+export const SpecialNeighbors = Template.bind({});
+SpecialNeighbors.args = {
+	cases: specialNeighborCases,
+};

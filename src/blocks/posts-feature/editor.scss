@@ -1,8 +1,8 @@
 @import '/src/scss/block-styles';
 
 .news-feature-component {
-	padding-top: 6rem;
-	padding-bottom: 6rem;
+	padding-top: var(--sitka-container-spacing);
+	padding-bottom: var(--sitka-container-spacing);
 
 	.news-feature--featured-item {
 		figure svg {

@@ -5,6 +5,11 @@
 		--text-color: var(--white);
 	}
 
+	& > .container-xl {
+		// Slider adds extra margin, so this is to offset it
+		margin-top: calc(  var(--sitka-container-spacing) / 3 );
+	}
+
 	.swiper-slide {
 
 		&-visible {

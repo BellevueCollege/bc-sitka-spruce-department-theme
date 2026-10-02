@@ -18,7 +18,8 @@
 
 	hr.light-rule {
 		@include media-breakpoint-up('sm') {
-			margin: 3rem 0;
+			margin-block: var(--sitka-container-spacing);
+			margin-inline: 0;
 		}
 	}
 

@@ -35,7 +35,7 @@
 			padding: 0 1rem;
 
 			.accordion-body {
-				padding-top: 1.5rem;
+				padding-top: var(--sitka-container-spacing);
 				padding-bottom: 1rem;
 			}
 		}
@@ -79,8 +79,7 @@
 
 	// Wrap content in a container to control width, when needed.
 	&.wrap-content {
-
-		margin-bottom: 3.25rem;
+		margin-bottom: var( --sitka-container-spacing );
 
 		.accordion {
 			--bs-accordion-body-padding-x: 0;
@@ -98,12 +97,10 @@
 		}
 		.accordion .tab-content {
 			@include make-container();
-			padding-top: calc( var(--bs-gutter-x) * 0.25);
-			padding-bottom: calc( var(--bs-gutter-x) * 0.25);
+			padding-top: calc( var(--sitka-container-spacing) * 0.5);
+			padding-bottom: var(--sitka-container-spacing);
 
 			background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('gray--xxlight') 100%);
-
-
 
 			@include media-breakpoint-up('lg') {
 				--bs-gutter-x: 7.5rem;
@@ -122,7 +119,7 @@
 }
 
 .tabcordion.tabcordion-tabs {
-	margin-bottom: 1.5rem;
+	margin-bottom: var(--sitka-container-spacing);
 	&:not(.alignwide) {
 		max-width: var(--wp--style--global--content-size);
 	}

@@ -1,0 +1,12 @@
+{#
+/**
+ * @file
+ * Isolated case wrapper for section adjacency testing. Only used in Storybook (not WordPress)
+ */
+#}
+<div class="section-interactions__case border border-warning mb-4">
+  <h2 class="p-2 my-0 h4 text-bg-warning">{{ label }}</h2>
+  {% for segment in segments %}
+    {% include '@stories/section-interactions/section-fixture.twig' with segment only %}
+  {% endfor %}
+</div>

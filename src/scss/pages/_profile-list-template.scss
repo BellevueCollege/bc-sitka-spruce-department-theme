@@ -4,7 +4,7 @@
 	}
 
 	.filter-form-col {
-		margin-bottom: 2rem;
+		margin-bottom: var(--sitka-container-spacing);
 		@include make-col-ready();
 		@include media-breakpoint-up(lg) {
 			@include make-col(4);

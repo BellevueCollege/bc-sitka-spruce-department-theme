@@ -36,7 +36,7 @@
 	.sock-manager {
 
 		@include media-breakpoint-down(lg) {
-			padding-top: 2rem;
+			padding-top: var(--sitka-container-spacing);
 			border-top: 2px solid var(--bc-fountain-blue);
 		}
 

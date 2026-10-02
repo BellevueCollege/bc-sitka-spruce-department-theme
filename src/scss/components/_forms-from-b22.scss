@@ -76,7 +76,7 @@ form .form-control {
 .gform_wrapper {
 	//background-color: $gray--xlight;
 
-	@include global-spacing(7x, padding-bottom);
+	padding-bottom: var(--sitka-container-spacing);
 
 	//--bs-border-color: #{$white};
 
@@ -106,7 +106,7 @@ form .form-control {
 		}
 
 		.row + .row {
-			@include global-spacing(4x, margin-top);
+			margin-top: var(--sitka-container-spacing);
 		}
 	}
 
@@ -169,7 +169,7 @@ form .form-control {
 .form-block__title {
 	background-color: get_color( $utility-colors, 'gray--xlight' );
 
-	@include global-spacing(7x, padding-top);
+	padding-top: var(--sitka-container-spacing);
 
 	& > .form-block__title {
 		margin-top: 0 !important;
