@@ -16,36 +16,66 @@
 			<div id="site-header--site-title" class="col col-lg-auto d-flex">
 				<div class="site-title h4 flex-grow-1 mt-2"><a href="{{ site_homepage_url }}">{{ site_title }}</a></div>
 				<button
-					class="btn btn-link button-toggle menu-toggle d-lg-none"
-					data-button-open-class="menu-expanded"
-					data-button-disable-at="1025"
-					data-button-focus-trap="header-wrapper"
-					aria-expanded="false"
-					aria-controls="site-header--main-nav site-header--utility-nav site-header--cta site-header--search"
+					class="btn btn-link menu-toggle d-lg-none"
+					data-bs-toggle="offcanvas"
+					data-bs-target="#site-header--offcanvas"
+					aria-controls="site-header--offcanvas"
 				>
-					<span class="visually-hidden">{{ __('Menu', 'bc-sitka-spruce') }}</span>
+					<span class="visually-hidden">{{ __('Open menu', 'bc-sitka-spruce') }}</span>
 					<i class="fas fa-bars" aria-hidden="true"></i>
 				</button>
 			</div>
-			<nav id="site-header--menu-wrapper" class="col-lg-auto flex-grow-1 " aria-label="{{ __('Main Menu', 'bc-sitka-spruce') }}">
-				<div
-					id="site-header--main-nav"
-					class="main-menu accessible-menu"
-					data-item-open-text="{{ __('Open the %s menu', 'bc-sitka-spruce') }}"
-					data-item-close-text="{{ __('Close the %s menu', 'bc-sitka-spruce') }}"
-					data-menu-has-items-selector=".menu-item-has-children > a"
-				>
-					{{ menu }}
+			<div id="site-header--menu-column" class="col-lg">
+				<div class="offcanvas-lg offcanvas-end" tabindex="-1" id="site-header--offcanvas" aria-labelledby="site-header--offcanvas-label">
+					<div class="offcanvas-header justify-content-end">
+						<h2 class="offcanvas-title visually-hidden" id="site-header--offcanvas-label">{{ __('Menu', 'bc-sitka-spruce') }}</h2>
+						<button
+							type="button"
+							class="btn btn-sm btn-outline-primary"
+							data-bs-dismiss="offcanvas"
+							data-bs-target="#site-header--offcanvas"
+						>
+							{{ __('Close Menu', 'bc-sitka-spruce') }} <i class="fa-sharp fa-solid fa-arrow-right"></i>
+						</button>
+					</div>
+					<div class="offcanvas-body">
+						<nav id="site-header--menu-wrapper" class="flex-grow-1" aria-label="{{ __('Main Menu', 'bc-sitka-spruce') }}">
+							<div
+								id="site-header--main-nav"
+								class="main-menu accessible-menu"
+								data-item-open-text="{{ __('Open the %s menu', 'bc-sitka-spruce') }}"
+								data-item-close-text="{{ __('Close the %s menu', 'bc-sitka-spruce') }}"
+								data-menu-has-items-selector=".menu-item-has-children > a"
+							>
+								{{ menu }}
 
+							</div>
+							<div id="site-header--cta" class="cta-menu accessible-menu">
+								{{ menu_cta }}
+							</div>
+						</nav>
+						<nav
+							id="site-header--utility-nav-mobile"
+							class="utility-menu accessible-menu d-lg-none"
+							data-menu-has-items-selector=".menu-item-has-children > a"
+						>
+							<ul class="menu justify-content-end">
+								{% include '@views/static-content/menu-utility.twig' with { li_class: 'menu-item' } %}
+							</ul>
+						</nav>
+						<div class="site-header--search d-lg-none">
+							{% include '@stories/site-search-form/site-search-form.twig' with {
+								search_field_id: 'college-search-field-mobile',
+								search_submit_id: 'college-search-submit-mobile'
+							} %}
+						</div>
+					</div>
 				</div>
-				<div id="site-header--cta" class="cta-menu accessible-menu">
-					{{ menu_cta }}
-				</div>
-			</nav>
+			</div>
 		</div>
 		<nav
 			id="site-header--utility-nav"
-			class="utility-menu accessible-menu"
+			class="utility-menu accessible-menu d-none d-lg-block"
 			data-menu-has-items-selector=".menu-item-has-children > a"
 		>
 			<ul class="menu justify-content-end">
@@ -66,11 +96,9 @@
 			</ul>
 		</nav>
 	</div>
-	<div id="site-header--search" class="">
+	<div id="site-header--search" class="site-header--search">
 		<div class="container-xl">
-
-			{% include '@stories/site-search-form/site-search-form.twig' %}
-
+			{% include '@stories/site-search-form/site-search.twig' %}
 		</div>
 	</div>
 </header>

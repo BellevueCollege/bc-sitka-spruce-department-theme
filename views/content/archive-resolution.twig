@@ -1,0 +1,29 @@
+{#
+/**
+ * @file
+ * Bellevue template for the Resolutions archive list.
+ */
+#}
+{% extends '@views/system/wrapper.twig' %}
+
+{% block content %}
+    <div class="flexible-page">
+        {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
+            title: title|default('Resolutions Archive'),
+        } %}
+
+        <div class="archive-resolution-page container-xl">
+            {# Loop through data passed from PHP #}
+            {% for year, posts in posts_by_year %}
+
+                <div class="year-group">
+                    <h2> {{ year }} </h2>
+                    {% include '@stories/agenda-list/agenda-list.twig' with {
+                        variant: 'resolution',
+                        posts: posts,
+                    } only %}
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

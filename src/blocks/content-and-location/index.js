@@ -1,22 +1,19 @@
 import { __ } from '@wordpress/i18n';
 import { registerBlockType } from '@wordpress/blocks';
-import { useBlockProps } from '@wordpress/block-editor';
-import { InnerBlocks } from '@wordpress/block-editor';
-import { RawHTML } from '@wordpress/element';
+import { useBlockProps, InnerBlocks, RichText } from '@wordpress/block-editor';
+import { RawHTML, useState, useEffect } from '@wordpress/element';
 import Twig from '../../js/modules/twig-setup';
 import apiFetch from '@wordpress/api-fetch';
-import { useState } from '@wordpress/element';
-import { Disabled } from '@wordpress/components';
-import { RichText } from '@wordpress/block-editor';
-
-import './style.scss';
-import './editor.scss';
-
 import {
     Card,
     CardBody,
-    CardHeader
+    CardHeader,
+    Disabled,
+    Spinner,
 } from '@wordpress/components';
+
+import './style.scss';
+import './editor.scss';
 
 /**
  * Mock the WordPress __ Function in Timber
@@ -34,7 +31,34 @@ Twig.extendFilter("esc_html", (input) => {
 	return input;
 });
 
+/**
+ * Build Twig context for the location-and-hours sidebar preview.
+ *
+ * @param {Object|null} sidebarContent Options API response.
+ * @return {Object} Twig render context.
+ */
+const buildLocationHoursContext = ( sidebarContent ) => {
+    const context = {
+        location: sidebarContent?.location ?? '',
+        hours: sidebarContent?.hours ?? '',
+        contact_url: sidebarContent?.contact_page_url ?? '',
+    };
 
+    const locationImage = sidebarContent?.location_image;
+
+    if ( locationImage ) {
+        const imageSrc = locationImage.sizes?.['homepage-location'] ?? locationImage.url;
+
+        if ( imageSrc ) {
+            context.image_array = {
+                src: imageSrc,
+                alt: locationImage.alt ?? '',
+            };
+        }
+    }
+
+    return context;
+};
 
 registerBlockType( 'bc-sitka-spruce/content-and-location', {
 
@@ -45,42 +69,36 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
 
         const [ locationSidebarContent, setLocationSidebarContent ] = useState(null);
 
-        if ( ! locationSidebarContent ) {
+        useEffect( () => {
             apiFetch( {
-                path: '/bc-sitka-spruce/v1/options'
-            } )
-                .then( ( response ) => {
-                    setLocationSidebarContent( response );
-                    // console.log( response );
-                }
-            );
-        }
+                path: '/bc-sitka-spruce/v1/options',
+            } ).then( ( response ) => {
+                setLocationSidebarContent( response );
+            } );
+        }, [] );
 
 
         const LocationAndHours = () => {
+            let locationHoursHTML = '';
+            const twigContext = buildLocationHoursContext( locationSidebarContent );
 
-            if ( ! locationSidebarContent ) {
+            try {
+                locationHoursHTML = Twig.twig({
+                    ref: '@stories/location-and-hours/location-and-hours.twig',
+                }).render( twigContext );
+            } catch ( error ) {
                 return (
-                    <p>Loading...</p>
+                    <p>{ __( 'Unable to preview Location and Hours sidebar.', 'bc-sitka-spruce' ) }</p>
                 );
             }
 
-            const locationHoursHTML = Twig.twig({
-                ref: '@stories/location-and-hours/location-and-hours.twig',
-            }).render({
-                image_array: {
-                    src: locationSidebarContent.location_image.sizes['homepage-location'] ?? locationSidebarContent.location_image.url,
-                    alt: locationSidebarContent.location_image.alt
-                },
-                location: locationSidebarContent.location,
-                hours: locationSidebarContent.hours,
-                contact_url: locationSidebarContent.contact_page_url
-            });
             return (
                 <RawHTML>{ locationHoursHTML }</RawHTML>
             );
+        };
 
-        }
+		// is the location sidebar enabled in the site options?
+        const isLocationSidebarEnabled = Boolean( locationSidebarContent?.display_location_card );
 
         return (
             <div { ...blockProps }>
@@ -111,15 +129,30 @@ registerBlockType( 'bc-sitka-spruce/content-and-location', {
                         />
                     </div>
                     <div className = "col-md-4">
-                        <Disabled>
-                            <LocationAndHours />
-                        </Disabled>
-                        <hr />
-                        <Card>
-                            <CardBody>
-                                {__( 'Visit the "Site Options" area to edit or disable the Location and Hours Sidebar', 'bc-sitka-spruce' )}
-                            </CardBody>
-                        </Card>
+                        { locationSidebarContent && ! isLocationSidebarEnabled ? (
+                            <Card>
+                                <CardBody>
+                                    { __( 'The Location and Hours sidebar is currently disabled. Visit the "Site Options" area to enable it.', 'bc-sitka-spruce' ) }
+                                </CardBody>
+                            </Card>
+                        ) : locationSidebarContent && isLocationSidebarEnabled ? (
+                            <>
+                                <Disabled>
+                                    <LocationAndHours />
+                                </Disabled>
+                                <hr />
+                                <Card>
+                                    <CardBody>
+                                        { __( 'Visit the "Site Options" area to edit or disable the Location and Hours Sidebar', 'bc-sitka-spruce' ) }
+                                    </CardBody>
+                                </Card>
+                            </>
+                        ) : (
+                            <p className="content-and-location-sidebar-loading">
+                                <Spinner />
+                                { __( 'Loading...', 'bc-sitka-spruce' ) }
+                            </p>
+                        ) }
                     </div>
                 </div>
             </div>

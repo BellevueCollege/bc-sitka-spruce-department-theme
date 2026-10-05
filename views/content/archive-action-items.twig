@@ -1,0 +1,40 @@
+{#
+/**
+ * @file
+ * Bellevue template for the Action Items archive list.
+ */
+#}
+{% extends '@views/system/wrapper.twig' %}
+
+{% block content %}
+    <div class="flexible-page">
+        {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
+            title: title|default('Action Items Archive'),
+        } %}
+
+        <div class="archive-action-item-page container-xl">
+            {% set accordion_items = [] %}
+            {% for year, posts in posts_by_year %}
+                {% set list_content %}
+                    {% include '@stories/agenda-list/agenda-list.twig' with {
+                        variant: 'action-item',
+                        posts: posts,
+                        extra_classes: 'mb-0',
+                    } only %}
+                {% endset %}
+                {% set accordion_items = accordion_items|merge([{
+                    id: 'year-' ~ year,
+                    title: year ~ ' Action Items',
+                    is_open: loop.first,
+                    content: list_content,
+                }]) %}
+            {% endfor %}
+
+            {% include '@stories/bootstrap-accordion/bootstrap-accordion.twig' with {
+                accordion_id: 'actionItemsYearAccordion',
+                keep_one_open_only: true,
+                items: accordion_items,
+            } %}
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{#
+/**
+ * @file
+ * Bellevue template for an agenda.
+ */
+#}
+{% extends '@views/system/wrapper.twig' %}
+
+{% block content %}
+    {# Date is preformatted in PHP via wp_date / wp_timezone to avoid day offset. #}
+    {% set is_special = post.meta('special_meeting') ? '(Special Meeting)' : '' %}
+
+    <div class="flexible-page">
+        {# Pass date into banner through subtitle #}
+        {% set banner_subtitle = post.localized_meeting_date ? (post.localized_meeting_date ~ ' ' ~ is_special) : is_special %}
+
+        {% include '@stories/flexible-page-intro/flexible-page-intro.twig' with {
+            title: post.title|default(''),
+            subtitle: banner_subtitle|default('')
+        } %}
+
+        <div class="single-agendas-page container pb-4">
+            <div class="row">
+                <div class= "col-lg-8">
+                    {{ post.content|default('') }}
+                </div>
+
+                {% set action_items = post.meta('related_action_items') %}
+                {% set resolutions = post.meta('related_resolutions') %}
+
+                {# Ensure they are arrays #}
+                {% if action_items and action_items is not iterable %}{% set action_items = [action_items] %}{% endif %}
+                {% if resolutions and resolutions is not iterable %}{% set resolutions = [resolutions] %}{% endif %}
+                
+                {# Only show call out if one or more options exist #}
+                {% if action_items or resolutions %}
+                    <div class="col-lg-4">
+                        {% set related_html %}
+                            <ul class="list-unstyled mb-0">
+
+                                {% if action_items %}
+                                    <li><strong> Action Items: </strong></li>
+                                        <ul class='ms-3'>
+                                            {# Pulling in Bi-Directional Action Items #}
+                                            {% for item in action_items %}
+                                                {# Convert ACF into Timber Post object #}
+                                                {% set action_item = get_post(item) %}
+                                                <li>
+                                                    <a href="{{ action_item.link }}">{{ action_item.title|default('') }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+
+                                {#Loops no matter what, if 1 or more items is selected #}
+                                {% if resolutions %}
+                                    <li class="{{ action_items ? 'mt-2' : '' }}"><strong>Resolutions:</strong>
+                                        <ul class='ms-3'>
+                                            {# Pulling in Bi-Directional Resolutions #}
+                                            {% for item in resolutions %}
+                                                {# Convert the raw ACF data into a Timber Post object #}
+                                                {% set resolution = get_post(item) %}
+                                                <li>
+                                                    <a href="{{resolution.link}}">{{ resolution.title|default('') }}</a>
+                                                </li>
+                                            {% endfor %}
+                                        </ul>
+                                    </li>
+                                {% endif %}
+                            </ul>
+                        {% endset %}
+                            
+                        {% include '@stories/callout/callout.twig' with {
+                            title: 'Related Content',
+                            links: related_html ? related_html ~ '' : '',
+                            text: '',
+                            content: '',
+                            description: '',
+                            wrapper_classes: 'callout-wrapper'
+                        } %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

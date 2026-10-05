@@ -33,9 +33,9 @@ registerBlockType( metadata.name, {
 			<>
 				<div className="arch-shape alignfull"></div>
 				<div { ...blockProps }>
-					<div className="diffs--container text-white">
+					<div className="diffs--container">
 						<div className="container-xl">
-							<div className="row">
+							<div className="row text-white">
 								<div className="col-md-9">
 									<RichText
 										tagName="h2"

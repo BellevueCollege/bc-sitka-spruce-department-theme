@@ -1,5 +1,7 @@
 /** @type { import('@storybook/html-vite').Preview } */
 import Twig from "twig";
+import '../assets/dist/js/main.css';
+import '../assets/dist/css/bootstrap.css';
 import '../assets/dist/css/main.css';
 
 // import '/node_modules/@awesome.me/kit-7a7c3bfd75/icons/css/all.css'

@@ -1,0 +1,24 @@
+<div class="accordion bootstrap-accordion" id="{{ accordion_id|default('genericAccordion') }}">
+    {% for item in items %}
+        <div class="accordion-item">
+            <h2 class="accordion-header" id="heading-{{ item.id }}">
+                <button class="accordion-button {% if not item.is_open %}collapsed{% endif %}"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#collapse-{{ item.id }}"
+                        aria-expanded="{% if item.is_open %}true{% else %}false{% endif %}"
+                        aria-controls="collapse-{{ item.id }}">
+                    {{ item.title }}
+                </button>
+            </h2>
+            <div id="collapse-{{ item.id }}"
+                class="accordion-collapse collapse {% if item.is_open %}show{% endif %}"
+                aria-labelledby="heading-{{ item.id }}"
+                {% if keep_one_open_only %}data-bs-parent="#{{ accordion_id|default('genericAccordion') }}"{% endif %}>
+                <div class="accordion-body">
+                    {{ item.content|raw }}
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+</div>

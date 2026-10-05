@@ -1,3 +1,4 @@
+
 <section class="bg-trees-dark flexible-page-intro-wrapper {{ not has_header_image ? 'no-header-image' : '' }}">
 	{% include '@stories/breadcrumbs/breadcrumbs.twig' %}
 	<div class="container-xl flexible-page-intro">
@@ -6,6 +7,8 @@
 				<h1>{{ title }}</h1>
 				{% if intro_text %}
 					<p class="lead">{{ intro_text }}</p>
+					{% elseif subtitle %}
+                    <p class="lead mb-0">{{ subtitle }}</p>
 				{% endif %}
 			</div>
 			{% if header_image %}

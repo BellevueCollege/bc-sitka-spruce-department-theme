@@ -8,6 +8,30 @@ import BCLightboxModal from 'bc-lightbox-modal';
 (() => {
 	window.bootstrap = bootstrap;
 
+	  /**
+	 * Teleport the nav offcanvas to <body> on open to escape ancestor stacking
+	 * contexts that would otherwise cause it to render behind the admin bar.
+	 * The placeholder comment node restores it to its original DOM position
+	 * on close, keeping the lg+ inline nav rendering intact.
+	 */
+	const offcanvasEl = document.getElementById('site-header--offcanvas');
+	if (offcanvasEl) {
+		let placeholder = null;
+
+		offcanvasEl.addEventListener('show.bs.offcanvas', () => {
+		placeholder = document.createComment('offcanvas-placeholder');
+		offcanvasEl.before(placeholder);
+		document.body.appendChild(offcanvasEl);
+		});
+
+		offcanvasEl.addEventListener('hidden.bs.offcanvas', () => {
+		if (placeholder) {
+			placeholder.replaceWith(offcanvasEl);
+			placeholder = null;
+		}
+		});
+	}
+
     /**
      * Add the accessible Main menu.
      */

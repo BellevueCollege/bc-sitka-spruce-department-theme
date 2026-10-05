@@ -1,0 +1,22 @@
+// Bootstrap for Block Editor - Scoped to .editor-styles-wrapper
+// This ensures Bootstrap styles only apply to block content, not the editor UI
+
+.editor-styles-wrapper {
+	// Import theme variables first (needed for Bootstrap customizations)
+	@import 'variables';
+
+	// Import Bootstrap customizations (must come before Bootstrap imports)
+	@import 'variables/bootstrap';
+
+	// Import Bootstrap configuration (functions, variables, maps, mixins, utilities)
+	@import 'lib/bootstrap/config';
+
+	// Import Bootstrap CSS variables
+	@import '~bootstrap/scss/root';
+
+	// Import Bootstrap components
+	@import 'lib/bootstrap/components';
+
+	// Import Bootstrap helpers and utilities
+	@import 'lib/bootstrap/helpers';
+}

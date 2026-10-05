@@ -5,6 +5,20 @@ const webpack = require( 'webpack' );
 
 // Utilities.
 const path = require( 'path' );
+const sass = require( 'sass-embedded' );
+
+/**
+ * Sass deprecation warnings to silence.
+ * Bootstrap 5 uses deprecated @import syntax and global functions that cannot be fixed.
+ * Custom code has been updated to use modern Sass module syntax.
+ */
+const SASS_DEPRECATION_SILENCE_LIST = [
+	'legacy-js-api',
+	'import',
+	'color-functions',
+	'if-function',
+	'global-builtin',
+];
 
 /**
  * Defines the entry point for compiling SCSS files based on the handle provided.
@@ -29,6 +43,22 @@ const scssEntryPoint = ( handle, block = false ) => {
 module.exports = {
 	...defaultConfig,
 	name: 'custom',
+	cache: {
+		type: 'filesystem',
+		buildDependencies: {
+			config: [__filename],
+		},
+	},
+	watchOptions: {
+		ignored: [
+			'**/node_modules',
+			'**/logs',
+			'**/reports',
+			'**/.git',
+			'**/vrt',
+		],
+		aggregateTimeout: 100, // Delay before rebuilding to batch changes (lowered for single file changes)
+	},
 	plugins: [
         ...defaultConfig.plugins,
         new webpack.ProvidePlugin({
@@ -38,7 +68,59 @@ module.exports = {
 	module: {
 		...defaultConfig.module,
 		rules: [
-			...defaultConfig.module.rules,
+			...defaultConfig.module.rules.map( rule => {
+				// Only modify SCSS rules that use sass-loader
+				if ( ! ( rule.test && rule.test.test( '.scss' ) && rule.use ) ) {
+					return rule;
+				}
+
+				// Check if this rule contains sass-loader
+				const hasSassLoader = rule.use.some( loader =>
+					( typeof loader === 'string' && loader.includes( 'sass-loader' ) ) ||
+					( typeof loader === 'object' && loader.loader && loader.loader.includes( 'sass-loader' ) )
+				);
+
+				if ( ! hasSassLoader ) {
+					return rule;
+				}
+
+				// Add silenceDeprecations to sass-loader options
+				return {
+					...rule,
+					use: rule.use.map( loader => {
+						const isSassLoader = ( typeof loader === 'string' && loader.includes( 'sass-loader' ) ) ||
+							( typeof loader === 'object' && loader.loader && loader.loader.includes( 'sass-loader' ) );
+
+						if ( ! isSassLoader ) {
+							return loader;
+						}
+
+						if ( typeof loader === 'string' ) {
+							return {
+								loader,
+								options: {
+									implementation: sass,
+									sassOptions: {
+										silenceDeprecations: SASS_DEPRECATION_SILENCE_LIST,
+									},
+								},
+							};
+						}
+
+						return {
+							...loader,
+							options: {
+								...loader.options,
+								implementation: sass,
+								sassOptions: {
+									...( loader.options?.sassOptions || {} ),
+									silenceDeprecations: SASS_DEPRECATION_SILENCE_LIST,
+								},
+							},
+						};
+					} ),
+				};
+			} ),
 			{
 				test: /\.twig$/,
 				type: 'asset/source',
@@ -49,6 +131,8 @@ module.exports = {
 		// Call defaultConfig.entry() as a function to get auto-detected block.json entries
 		...( typeof defaultConfig.entry === 'function' ? defaultConfig.entry() : defaultConfig.entry ),
 		// Add your custom SCSS entries
+		...scssEntryPoint( 'bootstrap' ),
+		...scssEntryPoint( 'bootstrap-editor' ),
 		...scssEntryPoint( 'main' ),
 		...scssEntryPoint( 'editor' ),
 		...scssEntryPoint( 'alert', true ),

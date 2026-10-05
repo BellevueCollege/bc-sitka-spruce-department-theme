@@ -3,13 +3,16 @@
 /// Global spacing variables.
 ////
 @use 'sass:math';
+@use 'sass:meta';
+@use 'sass:list';
+@use 'sass:map';
 
 
 $rem-base: 1;
 $space-base: .5rem;
 
 @function strip-unit($number) {
-  @if type-of($number) == 'number' and not unitless($number) {
+  @if meta.type-of($number) == 'number' and not math.is-unitless($number) {
     @return $number / ($number * 0 + 1);
   }
 
@@ -28,17 +31,17 @@ $space-base: .5rem;
 }
 
 @function space-calc($values, $base-value: $rem-base) {
-  $max: length($values);
+  $max: list.length($values);
 
   @if $max ==1 {
-    @return convert-to-space(nth($values, 1), $base-value);
+    @return convert-to-space(list.nth($values, 1), $base-value);
   }
 
   $remValues: (
   );
 
   @for $i from 1 through $max {
-    $remValues: append($remValues, convert-to-space(nth($values, $i), $base-value));
+    $remValues: list.append($remValues, convert-to-space(list.nth($values, $i), $base-value));
   }
 
   @return $remValues;
@@ -181,7 +184,7 @@ $global-spacing: (
 ///   }
 
 @mixin global-spacing($size, $properties) {
-  @each $breakpoint, $spacing in map-get($global-spacing, $size) {
+  @each $breakpoint, $spacing in map.get($global-spacing, $size) {
     @include breakpoint(min, $breakpoint) {
       @each $type in $properties {
         #{$type}: #{$spacing};
@@ -196,6 +199,6 @@ $global-spacing: (
 /// @param {String} $breakpoint - The Foundation breakpoint value to get.
 
 @function global-spacing($size, $breakpoint) {
-  $spacing: map-get($global-spacing, $size);
-  @return map-get($spacing, $breakpoint);
+  $spacing: map.get($global-spacing, $size);
+  @return map.get($spacing, $breakpoint);
 }

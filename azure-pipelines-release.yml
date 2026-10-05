@@ -1,0 +1,48 @@
+# ============================================================
+# azure-pipelines-release.yml — Release Pipeline
+# Extends shared templates from bc-wordpress-devops-templates.
+# GITHUB_PAT must be set as a secret pipeline variable in Azure DevOps.
+# ============================================================
+
+trigger: none
+pr: none
+
+resources:
+  repositories:
+    - repository: templates
+      type: github
+      name: BellevueCollege/bc-wordpress-devops-templates
+      endpoint: github-service-connection
+
+  pipelines:
+    - pipeline: ci
+      # Must match the exact CI pipeline name in Azure DevOps > Pipelines
+      source: 'bc-sitka-spruce-department-theme'
+      trigger:
+        branches:
+          include:
+            - 'refs/tags/v*'
+
+extends:
+  template: templates/release/theme-release.yml@templates
+  parameters:
+    themeName: 'bc-sitka-spruce-department-theme'
+    githubRepo: 'bc-sitka-spruce-department-theme'
+    productionEnvironments:
+      - name: KinstaProd
+        displayName: 'Kinsta: Production'
+        environment: kinsta-wwwbellevuecollegeedu
+        sshServiceConnection: wwwbellevuecollegeedu
+        variableGroup: kinsta-wwwbellevuecollegeedu
+      - name: FormsInstall1
+        displayName: 'On Site: Forms (Install 1)'
+        environment: onprem-forms
+        sshServiceConnection: formsprod-c1
+        variableGroup: onprem-forms
+        agentPool: Default
+      - name: FormsInstall2
+        displayName: 'On Site: PCI Forms (Install 2)'
+        environment: onprem-forms
+        sshServiceConnection: formsprod-c1
+        variableGroup: onprem-forms-pci
+        agentPool: Default

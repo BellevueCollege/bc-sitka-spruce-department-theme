@@ -55,24 +55,48 @@ $context['sections'] = get_field( 'sections' ) ? array_map(
 					),
 				),
 			);
+
+			// Fetch the profiles
 			$profiles = get_posts( $args );
-			return array(
-				'title'    => $section['section_title'] ?? '',
-				'profiles' => $profiles ? array_map(
-					function ( $profile ) {
+
+			// Format profiles for output
+			$formatted_profiles = array();
+			if ( $profiles ) {
+				// 1. Build the array of profile data
+				$formatted_profiles = array_map(
+					function ( $profile_id ) {
 						return array(
-							'first_name'    => esc_html( get_field( 'first_name', $profile ) ?? '' ),
-							'last_name'     => esc_html( get_field( 'last_name', $profile ) ?? '' ),
-							'pronouns'       => esc_html( get_field( 'gender_pronouns', $profile ) ?? '' ),
-							'position'      => esc_html( get_field( 'position_role', $profile ) ?? '' ),
-							'profile_image' => get_field( 'profile_image', $profile ) ?
-								wp_get_attachment_image( get_field( 'profile_image', $profile )['ID'], 'profile-list-image', false, array( 'class' => 'img-fluid rounded-top' ) )
+							'first_name'    => esc_html( get_field( 'first_name', $profile_id ) ?? '' ),
+							'last_name'     => esc_html( get_field( 'last_name', $profile_id ) ?? '' ),
+							'pronouns'      => esc_html( get_field( 'gender_pronouns', $profile_id ) ?? '' ),
+							'position'      => esc_html( get_field( 'position_role', $profile_id ) ?? '' ),
+							'profile_image' => get_field( 'profile_image', $profile_id ) ?
+								wp_get_attachment_image( get_field( 'profile_image', $profile_id )['ID'], 'profile-list-image', false, array( 'class' => 'img-fluid rounded-top' ) )
 								: '',
-							'profile_url'   => esc_url( get_permalink( $profile ) ?? '' ),
+							'profile_url'   => esc_url( get_permalink( $profile_id ) ?? '' ),
+							// Surface the pin value here for sorting (cast to int so it's strictly 1 or 0)
+							'is_pinned'     => (int) get_field( 'pin_profile_in_listing', $profile_id ),
 						);
 					},
 					$profiles
-				) : null,
+				);
+
+				// 2. Sort the array (done in PHP since the query doesn't allow for multiple orderby clauses)
+				usort( $formatted_profiles, function ( $a, $b ) {
+					// Primary Sort: Pinned profiles first
+					if ( $a['is_pinned'] !== $b['is_pinned'] ) {
+						return $b['is_pinned'] - $a['is_pinned'];
+					}
+
+					// Secondary Sort: Alphabetical by last name (case-insensitive)
+					return strcasecmp( $a['last_name'], $b['last_name'] );
+				});
+			}
+
+			// 3. Return the final payload
+			return array(
+				'title'    => $section['section_title'] ?? '',
+				'profiles' => ! empty( $formatted_profiles ) ? $formatted_profiles : null,
 			);
 		}
 	},

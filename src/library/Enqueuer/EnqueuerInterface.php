@@ -27,6 +27,9 @@ interface EnqueuerInterface {
 	 *   Load the script in the footer.
 	 * @param bool $use_asset_file
 	 *   Load the script using version and dependencies from an asset file.
+	 * @param string $preload
+	 *   Resource hint type for preloading (e.g., 'preload', 'prefetch'). Empty
+	 *   string for no preloading.
 	 */
 	public function addScript(
 		string $handle,
@@ -35,7 +38,8 @@ interface EnqueuerInterface {
 		$base_path = '',
 		$version = null,
 		bool $footer = true,
-		bool $use_asset_file = false
+		bool $use_asset_file = false,
+		string $preload = ''
 	): void;
 
 	/**
@@ -69,6 +73,9 @@ interface EnqueuerInterface {
 	 *   Defaults to FALSE.
 	 * @param bool $enqueue
 	 *   Enqueue the stylesheet or just register it. Defaults to TRUE to enqueue.
+	 * @param string $preload
+	 *   Resource hint type for preloading (e.g., 'preload', 'prefetch'). Empty
+	 *   string for no preloading.
 	 */
 	public function addStyle(
 		string $handle,
@@ -78,7 +85,8 @@ interface EnqueuerInterface {
 		$version = null,
 		string $media = 'all',
 		bool $use_asset_file = false,
-		bool $enqueue = true
+		bool $enqueue = true,
+		string $preload = ''
 	): void;
 
 	/**
@@ -99,10 +107,14 @@ interface EnqueuerInterface {
 	 * @param string[] $dependencies
 	 *   Array of dependencies, using the short name of the stylesheet
 	 *   (only works for styles registered with `addBlockStyle`)
+	 * @param string[] $shortcodes
+	 *   Shortcode tags (e.g. TablePress `table`) that enqueue this stylesheet when
+	 *   the shortcode is rendered.
 	 */
 	public function addBlockStyle(
 		string $handle,
 		array $blocks,
-		array $dependencies = array()
+		array $dependencies = array(),
+		array $shortcodes = array()
 	): void;
 }
