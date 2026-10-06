@@ -1,6 +1,10 @@
 # ============================================================
 # azure-pipelines.yml — CI Pipeline
 # Extends shared templates from bc-wordpress-devops-templates.
+#
+# E2e secrets: Azure DevOps Library variable group "sitka-e2e"
+#   LT_USERNAME, LT_ACCESS_KEY, GITHUB_PAT, ACF_DOWNLOAD_URL
+# Link the group to this pipeline before the Test stage can pass.
 # ============================================================
 
 trigger:
@@ -24,6 +28,9 @@ pr:
     include:
       - '**'
 
+variables:
+  - group: sitka-e2e
+
 resources:
   repositories:
     - repository: templates
@@ -35,6 +42,7 @@ extends:
   template: templates/ci/theme-ci.yml@templates
   parameters:
     themeName: 'bc-sitka-spruce-department-theme'
+    runTests: true
     testEnvironments:
       - name: KinstaCstage
         displayName: 'Kinsta: CStage'
@@ -62,3 +70,22 @@ extends:
           sources: 'style.css'
           addBOM: true
         displayName: 'Inject Version into style.css'
+    testSetupSteps:
+      - template: templates/steps/build-base.yml@templates
+        parameters:
+          phpVersion: '8.2'
+          nodeVersion: '24.x'
+          runComposer: true
+          runNpm: true
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          customCommand: 'run build'
+        displayName: 'NPM Build (test job)'
+      - task: replacetokens@6
+        inputs:
+          sources: 'style.css'
+          addBOM: true
+        displayName: 'Inject Version into style.css (test job)'
+    testSteps:
+      - template: .azuredevops/e2e-test-steps.yml@self

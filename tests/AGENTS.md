@@ -141,13 +141,23 @@ One WordPress database; parallel workers race on posts and editor state.
 
 ---
 
-## CI (`azure-pipelines-e2e.yml`)
+## CI (Azure DevOps — `azure-pipelines.yml` Test stage)
 
-1. `npm ci`, `npm run build`, Playwright Chromium.
-2. `npm run env:e2e:start` once.
+E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`). **DeployTest_*** Kinsta stages wait for Test to pass.
+
+**One-time ADO setup:** Create Library variable group **`sitka-e2e`** with `LT_USERNAME`, `LT_ACCESS_KEY`, `GITHUB_PAT`, `ACF_DOWNLOAD_URL`, and authorize it for the `bc-sitka-spruce-department-theme` CI pipeline.
+
+**Test job flow** (see [`.azuredevops/e2e-test-steps.yml`](../.azuredevops/e2e-test-steps.yml)):
+
+1. `build-base` + `npm run build` + `replacetokens` on `style.css` (Test job does not reuse the Build artifact zip).
+2. Playwright Chromium, `env:e2e:start` once.
 3. `test:e2e:functional` with `E2E_WPENV_EXTERNAL=1`.
 4. LambdaTest tunnel + `test:e2e:visual` with `E2E_WPENV_EXTERNAL=1` and `E2E_LAMBDATEST_TUNNEL_AUTO=0`.
-5. Stop tunnel and `env:e2e:stop` (always).
+5. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/test-results/*.xml`.
+
+**Re-run e2e only:** Queue the CI pipeline manually and run the **Test** stage only.
+
+**Job timeout:** Hosted agents default to 60 minutes for the Test job; watch duration on first full PR run.
 
 ---
 
