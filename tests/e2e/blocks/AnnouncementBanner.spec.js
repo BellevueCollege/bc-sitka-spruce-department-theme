@@ -1,7 +1,14 @@
 // tests/e2e/blocks/announcement-banner.spec.js
 import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
-import { publishAndGetUrl, prepareEditorPage } from '../helpers/editor.js';
+import {
+	closeEditorSettingsSidebar,
+	prepareEditorPage,
+	publishAndGetUrl,
+	settleLocatorForScreenshot,
+	visitPublishedFrontend,
+} from '../helpers/editor.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { uploadTestImage } from '../helpers/wp-cli.js';
 
 const BLOCK_NAME = 'bc-sitka-spruce/announcement-banner';
@@ -71,7 +78,8 @@ const FIXTURE = {
 };
 
 test.describe( 'Announcement Banner Block', () => {
-	test.beforeEach( async ( { admin, editor, page } ) => {
+	test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
+		skipDuplicateBlockViewport( testInfo );
 		await prepareEditorPage( { admin, editor, page } );
 	} );
 
@@ -86,8 +94,8 @@ test.describe( 'Announcement Banner Block', () => {
 
 		test( 'editor snapshot — with button and image @visual', async ( {
 			editor,
+			page,
 		} ) => {
-
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -98,6 +106,8 @@ test.describe( 'Announcement Banner Block', () => {
 				`[data-type="${ BLOCK_NAME }"]`
 			);
 			await waitForBlockToRender( editor, BLOCK_NAME );
+			await closeEditorSettingsSidebar( page );
+			await settleLocatorForScreenshot( block );
 			await expect( block ).toBeVisible();
 			await expect( block ).toHaveScreenshot( 'editor-with-button.png', {
 				maxDiffPixelRatio: 0.02,
@@ -106,8 +116,8 @@ test.describe( 'Announcement Banner Block', () => {
 
 		test( 'editor snapshot — with links and image @visual', async ( {
 			editor,
+			page,
 		} ) => {
-
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -118,14 +128,15 @@ test.describe( 'Announcement Banner Block', () => {
 				`[data-type="${ BLOCK_NAME }"]`
 			);
 			await waitForBlockToRender( editor, BLOCK_NAME );
+			await closeEditorSettingsSidebar( page );
+			await settleLocatorForScreenshot( block );
 			await expect( block ).toBeVisible();
 			await expect( block ).toHaveScreenshot( 'editor-with-links.png', {
 				maxDiffPixelRatio: 0.02,
 			} );
 		} );
 
-		test( 'editor snapshot — no image @visual', async ( { editor } ) => {
-
+		test( 'editor snapshot — no image @visual', async ( { editor, page } ) => {
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
 				attributes: { data: FIXTURE.noImage() },
@@ -135,6 +146,7 @@ test.describe( 'Announcement Banner Block', () => {
 				`[data-type="${ BLOCK_NAME }"]`
 			);
 			await waitForBlockToRender( editor, BLOCK_NAME );
+			await closeEditorSettingsSidebar( page );
 			await expect( block ).toBeVisible();
 			await expect( block ).toHaveScreenshot( 'editor-no-image.png', {
 				maxDiffPixelRatio: 0.02,
@@ -147,7 +159,6 @@ test.describe( 'Announcement Banner Block', () => {
 			editor,
 			page,
 		} ) => {
-
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -155,20 +166,22 @@ test.describe( 'Announcement Banner Block', () => {
 			} );
 
 			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-
 			const banner = getBannerLocator( page, 'Test Announcement' );
+			await visitPublishedFrontend( page, url );
 			await expect( banner ).toBeVisible();
-			await expect( banner ).toHaveScreenshot( 'frontend-with-button.png', {
-				maxDiffPixelRatio: 0.02,
-			} );
+			await settleLocatorForScreenshot( banner );
+			await expect( banner ).toHaveScreenshot(
+				'frontend-with-button.png',
+				{
+					maxDiffPixelRatio: 0.02,
+				}
+			);
 		} );
 
 		test( 'frontend snapshot — with links and image @visual', async ( {
 			editor,
 			page,
 		} ) => {
-
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -177,19 +190,21 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
 			const banner = getBannerLocator( page, 'Test Announcement' );
 			await expect( banner ).toBeVisible();
-			await expect( banner ).toHaveScreenshot( 'frontend-with-links.png', {
-				maxDiffPixelRatio: 0.02,
-			} );
+			await settleLocatorForScreenshot( banner );
+			await expect( banner ).toHaveScreenshot(
+				'frontend-with-links.png',
+				{
+					maxDiffPixelRatio: 0.02,
+				}
+			);
 		} );
 
 		test( 'frontend snapshot — no image @visual', async ( {
 			editor,
 			page,
 		} ) => {
-
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
 				attributes: { data: FIXTURE.noImage() },
@@ -197,15 +212,17 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
-			const banner = getBannerLocator( page, 'Test Announcement No Image' );
+			const banner = getBannerLocator(
+				page,
+				'Test Announcement No Image'
+			);
 			await expect( banner ).toBeVisible();
 			await expect( banner ).toHaveScreenshot( 'frontend-no-image.png', {
 				maxDiffPixelRatio: 0.02,
 			} );
 		} );
 
-		test( 'renders button with correct href and target @visual', async ( {
+		test( 'renders button with correct href and target', async ( {
 			editor,
 			page,
 		} ) => {
@@ -217,18 +234,23 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
-			const button = getBannerLocator( page, 'Test Announcement' ).getByRole(
-				'link',
-				{ name: 'Learn More' }
-			);
+			const button = getBannerLocator(
+				page,
+				'Test Announcement'
+			).getByRole( 'link', { name: 'Learn More' } );
 
 			await expect( button ).toBeVisible();
-			await expect( button ).toHaveAttribute( 'href', 'https://example.com' );
+			await expect( button ).toHaveAttribute(
+				'href',
+				'https://example.com'
+			);
 			await expect( button ).toHaveAttribute( 'target', '_blank' );
 		} );
 
-		test( 'renders all links in repeater @visual', async ( { editor, page } ) => {
+		test( 'renders all links in repeater', async ( {
+			editor,
+			page,
+		} ) => {
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -237,7 +259,6 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
 			const banner = getBannerLocator( page, 'Test Announcement' );
 			await expect(
 				banner.getByRole( 'link', { name: 'Link One' } )
@@ -253,7 +274,10 @@ test.describe( 'Announcement Banner Block', () => {
 			).toHaveAttribute( 'target', '_blank' );
 		} );
 
-		test( 'renders image when provided @visual', async ( { editor, page } ) => {
+		test( 'renders image when provided', async ( {
+			editor,
+			page,
+		} ) => {
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -262,12 +286,11 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
 			const banner = getBannerLocator( page, 'Test Announcement' );
 			await expect( banner.locator( 'img' ) ).toBeVisible();
 		} );
 
-		test( 'renders without image when not provided @visual', async ( {
+		test( 'renders without image when not provided', async ( {
 			editor,
 			page,
 		} ) => {
@@ -278,8 +301,10 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
-			const banner = getBannerLocator( page, 'Test Announcement No Image' );
+			const banner = getBannerLocator(
+				page,
+				'Test Announcement No Image'
+			);
 			await expect( banner ).toBeVisible();
 			await expect( banner.locator( 'img' ) ).toHaveCount( 0 );
 		} );
@@ -348,7 +373,6 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
 			const banner = getBannerLocator( page, 'Test Announcement' );
 			await expect( banner ).toBeVisible();
 			await expect( banner ).toMatchAriaSnapshot( {
@@ -368,7 +392,6 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
 			const banner = getBannerLocator( page, 'Test Announcement' );
 			await expect( banner ).toBeVisible();
 			await expect( banner ).toMatchAriaSnapshot( {
@@ -384,8 +407,10 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
-			const banner = getBannerLocator( page, 'Test Announcement No Image' );
+			const banner = getBannerLocator(
+				page,
+				'Test Announcement No Image'
+			);
 			await expect( banner ).toBeVisible();
 			await expect( banner ).toMatchAriaSnapshot( {
 				name: 'frontend-no-image.yml',
@@ -406,12 +431,11 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
 			await expect(
 				getBannerLocator( page, 'Test Announcement' )
 			).toBeVisible();
 
-			const results = await new AxeBuilder( { page } )
+			const results = await new AxeBuilder( { page: page } )
 				.include( 'article' )
 				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
 				.analyze();
@@ -431,12 +455,11 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
 			await expect(
 				getBannerLocator( page, 'Test Announcement' )
 			).toBeVisible();
 
-			const results = await new AxeBuilder( { page } )
+			const results = await new AxeBuilder( { page: page } )
 				.include( 'article' )
 				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
 				.analyze();
@@ -452,12 +475,11 @@ test.describe( 'Announcement Banner Block', () => {
 
 			const url = await publishAndGetUrl( editor, page );
 			await page.goto( url );
-
 			await expect(
 				getBannerLocator( page, 'Test Announcement No Image' )
 			).toBeVisible();
 
-			const results = await new AxeBuilder( { page } )
+			const results = await new AxeBuilder( { page: page } )
 				.include( 'article' )
 				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
 				.analyze();

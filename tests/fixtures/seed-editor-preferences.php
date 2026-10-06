@@ -3,8 +3,7 @@
  * Disable the starter pattern modal for the admin user in e2e tests.
  *
  * Idempotent: safe to run before every Playwright session.
- * Invoked via:
- *   wp-env run --config=.wp-env-tests.json cli wp eval-file .../seed-editor-preferences.php
+ * Invoked via POST /wp-json/e2e/v1/seed during Playwright global setup.
  *
  * @package BcSitkaSpruce
  */

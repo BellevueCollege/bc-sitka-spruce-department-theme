@@ -1,7 +1,13 @@
 // tests/e2e/blocks/PostsFeature.spec.js
 import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
-import { publishAndGetUrl, prepareEditorPage } from '../helpers/editor.js';
+import {
+	prepareEditorCanvasForScreenshot,
+	prepareEditorPage,
+	publishAndGetUrl,
+	settleLocatorForScreenshot,
+} from '../helpers/editor.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedPostsFeatureData } from '../helpers/wp-cli.js';
 
 const BLOCK_NAME = 'bc-sitka-spruce/posts-feature';
@@ -51,7 +57,8 @@ test.describe( 'Posts Feature Block', () => {
 		seed = seedPostsFeatureData();
 	} );
 
-	test.beforeEach( async ( { admin, editor, page } ) => {
+	test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
+		skipDuplicateBlockViewport( testInfo );
 		await prepareEditorPage( { admin, editor, page } );
 	} );
 
@@ -115,7 +122,8 @@ test.describe( 'Posts Feature Block', () => {
 
 		test( 'editor snapshot — full configuration @visual', async ( {
 			editor,
-		} ) => {
+			page,
+		}, testInfo ) => {
 
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -127,6 +135,9 @@ test.describe( 'Posts Feature Block', () => {
 			);
 			await waitForFeaturedPostInEditor( editor, seed.featuredPostTitle );
 			await waitForListPostsInEditor( editor, seed.listPostTitles );
+			await prepareEditorCanvasForScreenshot( page, testInfo );
+			await block.scrollIntoViewIfNeeded();
+			await settleLocatorForScreenshot( block );
 			await expect( block ).toHaveScreenshot(
 				'posts-feature-editor-full.png',
 				{ maxDiffPixelRatio: 0.02 }
@@ -228,6 +239,7 @@ test.describe( 'Posts Feature Block', () => {
 
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
+			await settleLocatorForScreenshot( section );
 			await expect( section ).toHaveScreenshot(
 				'posts-feature-frontend-full.png',
 				{ maxDiffPixelRatio: 0.02 }

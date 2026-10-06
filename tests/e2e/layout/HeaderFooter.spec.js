@@ -12,6 +12,7 @@ import {
 	expandMainNavSubmenu,
 	openHeaderMenuIfCollapsed,
 } from '../helpers/header.js';
+import { normalizeE2eUrlForPlaywright } from '../helpers/e2e-navigation.js';
 import { seedSiteChromeData } from '../helpers/wp-cli.js';
 
 /** WCAG 2.x tags passed to axe-core scoped audits. */
@@ -28,7 +29,7 @@ test.describe( 'Header and Footer', () => {
 	} );
 
 	test.beforeEach( async ( { page } ) => {
-		await page.goto( seed.pageUrl );
+		await page.goto( normalizeE2eUrlForPlaywright( seed.pageUrl ) );
 		await page.locator( '#header-wrapper' ).waitFor( { state: 'visible' } );
 		await page.locator( 'footer.footer' ).waitFor( { state: 'visible' } );
 	} );

@@ -13,7 +13,8 @@ export async function openHeaderMenuIfCollapsed( page ) {
 	}
 
 	await menuToggle.click();
-	await expect( page.locator( 'body' ) ).toHaveClass( /menu-expanded/ );
+	// Bootstrap offcanvas, not a body.menu-expanded class.
+	await expect( page.locator( '#site-header--offcanvas' ) ).toBeVisible();
 	await expect( page.locator( '#site-header--main-nav' ) ).toBeVisible();
 }
 

@@ -9,6 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+require_once __DIR__ . '/e2e-query-helpers.php';
 require_once ABSPATH . 'wp-admin/includes/image.php';
 require_once ABSPATH . 'wp-admin/includes/file.php';
 require_once ABSPATH . 'wp-admin/includes/media.php';
@@ -29,7 +30,7 @@ $post_titles = array(
 );
 
 foreach ( $post_titles as $title ) {
-	$existing = get_page_by_title( $title, OBJECT, 'post' );
+	$existing = e2e_get_post_by_title( $title, 'post' );
 	if ( $existing ) {
 		wp_delete_post( $existing->ID, true );
 	}
@@ -70,6 +71,12 @@ if ( is_wp_error( $attachment_id ) || ! $attachment_id ) {
 	echo wp_json_encode( array( 'error' => 'Failed to import fixture image.' ) );
 	exit( 1 );
 }
+
+update_post_meta(
+	$attachment_id,
+	'_wp_attachment_image_alt',
+	'E2E Posts Feature fixture image'
+);
 
 $post_ids = array();
 $dates    = array(

@@ -3,8 +3,7 @@
  * Seed menus, ACF Site Options, and a test page for header/footer e2e tests.
  *
  * Idempotent: deletes and recreates fixture data on each run so Playwright
- * tests start from a known state. Invoked via:
- *   wp-env run --config=.wp-env-tests.json cli wp eval-file .../seed-site-chrome.php
+ * tests start from a known state. Invoked via POST /wp-json/e2e/v1/seed.
  *
  * @package BcSitkaSpruce
  */
@@ -12,6 +11,8 @@
 if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
+require_once __DIR__ . '/e2e-query-helpers.php';
 
 $main_menu_name = 'E2E Main Menu';
 $cta_menu_name  = 'E2E CTA Menu';
@@ -166,7 +167,7 @@ update_field( 'sitewide_notice_text', '', 'option' );
 
 // --- Published test page (header/footer render via wrapper.twig) ---
 
-$existing_page = get_page_by_title( $page_title, OBJECT, 'page' );
+$existing_page = e2e_get_post_by_title( $page_title, 'page' );
 if ( $existing_page ) {
 	wp_delete_post( $existing_page->ID, true );
 }

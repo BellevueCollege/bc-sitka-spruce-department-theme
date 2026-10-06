@@ -1,0 +1,14 @@
+{
+	"mayflowerBlocks": {
+		"source": "local",
+		"path": "../mayflower-blocks"
+	},
+	"ohoViews": {
+		"source": "local",
+		"path": "../bellevue-2022-theme-plugins/oho-views"
+	},
+	"acf": {
+		"source": "local",
+		"path": "../third-party-plugins/advanced-custom-fields-pro"
+	}
+}

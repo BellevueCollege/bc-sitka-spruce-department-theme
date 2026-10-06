@@ -1,0 +1,43 @@
+{
+	"breadcrumbTrail": {
+		"slug": "breadcrumb-trail",
+		"displayName": "Breadcrumb Trail",
+		"required": true,
+		"blueprintInstallOnly": true,
+		"remote": {
+			"url": "https://downloads.wordpress.org/plugin/breadcrumb-trail.1.1.0.zip"
+		},
+		"activate": "breadcrumb-trail/breadcrumb-trail.php"
+	},
+	"mayflowerBlocks": {
+		"slug": "mayflower-blocks",
+		"displayName": "Mayflower Blocks",
+		"required": true,
+		"envPathVar": "MAYFLOWER_BLOCKS_PATH",
+		"remote": {
+			"url": "https://github.com/BellevueCollege/mayflower-blocks/releases/download/v0.0.0-placeholder/mayflower-blocks.zip",
+			"directoryName": "mayflower-blocks"
+		}
+	},
+	"ohoViews": {
+		"slug": "oho-views",
+		"displayName": "OHO Views",
+		"required": true,
+		"envPathVar": "OHO_VIEWS_PATH",
+		"remote": {
+			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/oho-views.zip",
+			"directoryName": "oho-views"
+		}
+	},
+	"acf": {
+		"slug": "advanced-custom-fields-pro",
+		"displayName": "Advanced Custom Fields PRO",
+		"required": false,
+		"envPathVar": "ACF_PATH",
+		"blueprintInstallOnly": true,
+		"remote": {
+			"urlEnv": "ACF_DOWNLOAD_URL"
+		},
+		"activate": "advanced-custom-fields-pro/acf.php"
+	}
+}

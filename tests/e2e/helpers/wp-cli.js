@@ -1,19 +1,16 @@
-import { execSync } from 'child_process';
-import { existsSync, mkdirSync, readFileSync, unlinkSync, writeFileSync } from 'fs';
+import { execSync, spawnSync } from 'child_process';
+import { existsSync, unlinkSync } from 'fs';
 import path from 'path';
-import { isVisualDockerRun } from './visual-docker.js';
+import { WP_ENV_E2E_CONFIG } from './e2e-env.js';
 
 export const THEME_SLUG = 'bc-sitka-spruce-department-theme';
 export const THEME_PATH = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
 
 const projectRoot = process.cwd();
 const wpEnvBin = path.join( projectRoot, 'node_modules', '.bin', 'wp-env' );
-const wpEnvTestsConfig = '.wp-env-tests.json';
 
 /**
  * Resolve the Playwright artifacts directory (absolute path).
- *
- * WP_ARTIFACTS_PATH may be absolute (Docker) or relative to the project root.
  *
  * @return {string}
  */
@@ -27,31 +24,62 @@ function resolveArtifactsPath() {
 
 const artifactsPath = resolveArtifactsPath();
 const adminStorageStatePath = path.join( artifactsPath, 'storage-states', 'admin.json' );
-const visualDockerSeedsPath = path.join( artifactsPath, 'e2e-seeds' );
 
 /**
- * Run a WP-CLI command in the wp-env tests environment.
+ * Run a WP-CLI command in the e2e wp-env environment.
  *
  * @param {string} command WP-CLI command without the leading `wp`.
  * @return {string}
  */
-export function runTestsCli( command ) {
-	if ( isVisualDockerRun() ) {
-		throw new Error(
-			'wp-env CLI cannot run inside the Playwright Docker container. ' +
-				'Run npm run test:e2e:visual so host prep seeds data first.'
-		);
+const WP_ENV_BOOT_RETRY_LIMIT = 30;
+const WP_ENV_BOOT_RETRY_DELAY_MS = 2_000;
+
+/**
+ * @param {import('child_process').SpawnSyncReturns<string>} result
+ * @return {boolean}
+ */
+function isWpEnvNotInitialized( result ) {
+	const combined = `${ result.stdout || '' }\n${ result.stderr || '' }`;
+	return combined.includes( 'Environment not initialized' );
+}
+
+export function runE2eCli( command ) {
+	const shellCommand = `"${ wpEnvBin }" run --config=${ WP_ENV_E2E_CONFIG } cli ${ command }`;
+
+	for ( let attempt = 1; attempt <= WP_ENV_BOOT_RETRY_LIMIT; attempt++ ) {
+		try {
+			const output = execSync( shellCommand, {
+				encoding: 'utf8',
+				cwd: projectRoot,
+			} );
+			return extractCommandOutput( output );
+		} catch ( error ) {
+			const execError = /** @type {Error & { stdout?: string, stderr?: string }} */ (
+				error
+			);
+			const failure = {
+				status: 1,
+				stdout: execError.stdout || '',
+				stderr: execError.stderr || execError.message,
+			};
+
+			if (
+				isWpEnvNotInitialized( failure ) &&
+				attempt < WP_ENV_BOOT_RETRY_LIMIT
+			) {
+				spawnSync( 'sleep', [ String( WP_ENV_BOOT_RETRY_DELAY_MS / 1000 ) ] );
+				continue;
+			}
+
+			throw new Error(
+				failure.stderr?.trim() ||
+					failure.stdout?.trim() ||
+					'wp-env CLI command failed.'
+			);
+		}
 	}
 
-	const output = execSync(
-		`"${ wpEnvBin }" run --config=${ wpEnvTestsConfig } cli ${ command }`,
-		{
-			encoding: 'utf8',
-			cwd: projectRoot,
-		}
-	);
-
-	return extractCommandOutput( output );
+	throw new Error( 'wp-env CLI did not become ready for seeding.' );
 }
 
 /**
@@ -80,31 +108,12 @@ function extractCommandOutput( output ) {
 }
 
 /**
- * Read a JSON seed file written by writeVisualDockerSeedCaches on the host.
- *
- * @param {string} filename Seed filename under artifacts/e2e-seeds/.
- * @return {unknown}
- */
-function readVisualDockerSeedCache( filename ) {
-	const seedPath = path.join( visualDockerSeedsPath, filename );
-
-	if ( ! existsSync( seedPath ) ) {
-		throw new Error(
-			`Missing seed cache ${ seedPath }. ` +
-				'Run npm run test:e2e:visual so host prep writes seeds first.'
-		);
-	}
-
-	return JSON.parse( readFileSync( seedPath, 'utf8' ) );
-}
-
-/**
- * Import the announcement-banner test image via wp-env tests cli.
+ * Import the announcement-banner test image via wp-env CLI.
  *
  * @return {number}
  */
 function importTestImageAttachment() {
-	const result = runTestsCli(
+	const result = runE2eCli(
 		`wp media import ${ THEME_PATH }/tests/fixtures/test-image-260x174.png --porcelain`
 	);
 	return parseInt( result, 10 );
@@ -125,33 +134,19 @@ export function uploadTestImage() {
 		return cachedTestImageAttachmentId;
 	}
 
-	if ( isVisualDockerRun() ) {
-		const { attachmentId } = readVisualDockerSeedCache( 'test-image.json' );
-		cachedTestImageAttachmentId = attachmentId;
-		return cachedTestImageAttachmentId;
-	}
-
 	cachedTestImageAttachmentId = importTestImageAttachment();
 	return cachedTestImageAttachmentId;
 }
 
 /**
  * Disable the starter pattern modal for the admin user (idempotent).
- *
- * In Docker visual runs, prepare-visual-docker-host.mjs already seeded this on
- * the host (wp-env CLI is unavailable inside the Playwright container).
  */
 export function seedEditorPreferences() {
 	if ( editorPreferencesSeeded ) {
 		return;
 	}
 
-	if ( isVisualDockerRun() ) {
-		editorPreferencesSeeded = true;
-		return;
-	}
-
-	runTestsCli(
+	runE2eCli(
 		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-editor-preferences.php`
 	);
 	editorPreferencesSeeded = true;
@@ -168,18 +163,15 @@ export function clearAdminStorageState() {
 
 /**
  * Seed categories and posts for Posts Feature e2e tests.
+ *
+ * @return {unknown}
  */
 export function seedPostsFeatureData() {
 	if ( cachedPostsFeatureSeed ) {
 		return cachedPostsFeatureSeed;
 	}
 
-	if ( isVisualDockerRun() ) {
-		cachedPostsFeatureSeed = readVisualDockerSeedCache( 'posts-feature.json' );
-		return cachedPostsFeatureSeed;
-	}
-
-	const result = runTestsCli(
+	const result = runE2eCli(
 		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-posts-feature.php`
 	);
 	cachedPostsFeatureSeed = JSON.parse( result );
@@ -196,44 +188,9 @@ export function seedSiteChromeData() {
 		return cachedSiteChromeSeed;
 	}
 
-	if ( isVisualDockerRun() ) {
-		cachedSiteChromeSeed = readVisualDockerSeedCache( 'site-chrome.json' );
-		return cachedSiteChromeSeed;
-	}
-
-	const result = runTestsCli(
+	const result = runE2eCli(
 		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-site-chrome.php`
 	);
 	cachedSiteChromeSeed = JSON.parse( result );
 	return cachedSiteChromeSeed;
-}
-
-/**
- * Write WP-CLI seed results to disk for Playwright-in-Docker visual runs.
- * Must run on the host before starting the Playwright container.
- */
-export function writeVisualDockerSeedCaches() {
-	mkdirSync( visualDockerSeedsPath, { recursive: true } );
-
-	const attachmentId = importTestImageAttachment();
-	writeFileSync(
-		path.join( visualDockerSeedsPath, 'test-image.json' ),
-		JSON.stringify( { attachmentId } )
-	);
-
-	const postsFeatureResult = runTestsCli(
-		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-posts-feature.php`
-	);
-	writeFileSync(
-		path.join( visualDockerSeedsPath, 'posts-feature.json' ),
-		postsFeatureResult
-	);
-
-	const siteChromeResult = runTestsCli(
-		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-site-chrome.php`
-	);
-	writeFileSync(
-		path.join( visualDockerSeedsPath, 'site-chrome.json' ),
-		siteChromeResult
-	);
 }
