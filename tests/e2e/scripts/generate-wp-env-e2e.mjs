@@ -35,9 +35,17 @@ function buildWpEnvConfig( resolvedPlugins ) {
 	}
 
 	const themePath = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
+	const pluginActivations = resolvedPlugins
+		.filter( ( plugin ) => plugin.activateBootstrapPath )
+		.map(
+			( plugin ) =>
+				`wp-env run --config=${ WP_ENV_E2E_CONFIG } cli wp plugin activate ${ plugin.activateBootstrapPath }`
+		);
+
 	const afterStart = [
 		`THEME_SLUG=${ THEME_SLUG }`,
 		`wp-env run --config=${ WP_ENV_E2E_CONFIG } cli wp theme activate "$THEME_SLUG"`,
+		...pluginActivations,
 		`wp-env run --config=${ WP_ENV_E2E_CONFIG } cli wp rewrite structure '/%postname%/' --hard`,
 		`wp-env run --config=${ WP_ENV_E2E_CONFIG } cli wp rewrite flush`,
 		`wp-env run --config=${ WP_ENV_E2E_CONFIG } cli wp eval-file ${ themePath }/tests/fixtures/seed-editor-preferences.php`,

@@ -13,7 +13,7 @@ import {
 	openHeaderMenuIfCollapsed,
 } from '../helpers/header.js';
 import { normalizeE2eUrlForPlaywright } from '../helpers/e2e-navigation.js';
-import { seedSiteChromeData } from '../helpers/wp-cli.js';
+import { seedChromeVariant, seedSiteChromeData } from '../helpers/wp-cli.js';
 
 /** WCAG 2.x tags passed to axe-core scoped audits. */
 const WCAG_TAGS = [ 'wcag2a', 'wcag2aa', 'wcag22a', 'wcag22aa', 'best-practice' ];
@@ -146,6 +146,46 @@ test.describe( 'Header and Footer', () => {
 			await expect( footer ).toMatchAriaSnapshot( {
 				name: 'footer-default.yml',
 			} );
+		} );
+	} );
+
+	test.describe( 'Chrome option variants', () => {
+		test( 'renders sitewide notice when enabled', async ( { page } ) => {
+			const chrome = seedChromeVariant( 'notice' );
+			await page.goto( normalizeE2eUrlForPlaywright( chrome.pageUrl ) );
+			await expect( page.getByText( 'E2E sitewide notice message.' ) ).toBeVisible();
+		} );
+
+		test( 'header snapshot — expanded main menu @visual', async ( { page } ) => {
+			seedChromeVariant( 'default' );
+			await page.goto( normalizeE2eUrlForPlaywright( seed.pageUrl ) );
+			await openHeaderMenuIfCollapsed( page );
+			await expandMainNavSubmenu( page, 'Programs' );
+			const header = page.locator( '#header-wrapper' );
+			await expect( header ).toHaveScreenshot(
+				'header-menu-expanded.png',
+				SCREENSHOT_OPTIONS
+			);
+		} );
+
+		test( 'footer snapshot — email contact @visual', async ( { page } ) => {
+			const chrome = seedChromeVariant( 'emailFooter' );
+			await page.goto( normalizeE2eUrlForPlaywright( chrome.pageUrl ) );
+			const footer = page.locator( 'footer.footer' );
+			await expect(
+				footer.getByRole( 'link', { name: 'e2e-footer@example.com' } )
+			).toBeVisible();
+			await expect( footer ).toHaveScreenshot(
+				'footer-email-only.png',
+				SCREENSHOT_OPTIONS
+			);
+		} );
+
+		test( 'sock shows location and CTA when configured', async ( { page } ) => {
+			const chrome = seedChromeVariant( 'sock' );
+			await page.goto( normalizeE2eUrlForPlaywright( chrome.pageUrl ) );
+			await expect( page.getByText( 'E2E Sock CTA' ) ).toBeVisible();
+			await expect( page.getByText( '123 Test Street' ) ).toBeVisible();
 		} );
 	} );
 

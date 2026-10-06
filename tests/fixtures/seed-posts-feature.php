@@ -112,6 +112,18 @@ foreach ( $post_titles as $index => $title ) {
 	$post_ids[ $title ] = (int) $post_id;
 }
 
+// Keep the default post behind every seeded post so blog index order does not drift as the container ages.
+$hello_world = e2e_get_post_by_title( 'Hello world!', 'post' );
+if ( $hello_world ) {
+	wp_update_post(
+		array(
+			'ID'            => $hello_world->ID,
+			'post_date'     => '2020-01-15 12:00:00',
+			'post_date_gmt' => '2020-01-15 12:00:00',
+		)
+	);
+}
+
 echo wp_json_encode(
 	array(
 		'categoryId'       => $category_id,

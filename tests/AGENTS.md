@@ -51,6 +51,7 @@ flowchart LR
 | Path | Role |
 |------|------|
 | `blocks/*.spec.js` | Block-focused specs (editor + frontend + snapshots) |
+| `pages/*.spec.js` | Page integration specs (composed templates, section order, interactions) |
 | `layout/*.spec.js` | Theme chrome (header/footer) |
 | `fixtures/test.js` | Extends `@wordpress/e2e-test-utils-playwright` `test` / `expect` — **import from here** |
 | `helpers/` | Shared flows (`editor.js`, `header.js`, `e2e-env.js`, `lambdatest.js`, `wp-cli.js`, `viewports.js`) |
@@ -92,6 +93,27 @@ Avoids macOS IPv6/`::1` mismatches between Playwright and wp-env.
 ### Block registration allowlist
 
 Only blocks listed in `BC_SITKA_E2E_ALLOWED_THEME_BLOCKS` in the mu-plugin stay registered. Loading every block’s `editorScript` through the tunnel slows LambdaTest editor screenshots. **Add the block name when adding a new block spec.**
+
+### Bellevue 2022 / core-site blocks (deferred on frontend)
+
+These blocks need multisite main-site CPT data. Page integration seeds omit them on homepages; [`tests/e2e/blocks/CoreSiteBlocks.spec.js`](e2e/blocks/CoreSiteBlocks.spec.js) only checks editor insert/load:
+
+- `bc-sitka-spruce/department-feature`
+- `bc-sitka-spruce/news-feature-core`
+- `bc-sitka-spruce/support-feature`
+- `bc-sitka-spruce/differentiator` / `differentiator-section`
+- `bc-sitka-spruce/degrees-certificates-section`
+- `bc-sitka-spruce/template-program-info`
+
+### Templates deferred until multisite e2e
+
+- **`single-program.php`** — related programs and catalog sidebar use core-site data via `switch_to_blog()`. [`tests/e2e/pages/SingleProgram.spec.js`](e2e/pages/SingleProgram.spec.js) is skipped; do not seed `program` CPTs in integration fixtures until wp-env supports multisite.
+
+### Page integration seeds
+
+- [`tests/fixtures/seed-e2e-integration.php`](../fixtures/seed-e2e-integration.php) — published pages/CPTs for `pages/*.spec.js` (via `seedIntegrationData()` in `wp-cli.js`).
+- [`tests/fixtures/e2e-homepage-variant.php`](../fixtures/e2e-homepage-variant.php) — sets `site_type` and static front page per homepage spec.
+- [`tests/fixtures/seed-chrome-variants.php`](../fixtures/seed-chrome-variants.php) — ACF chrome states for extended header/footer tests.
 
 ### Seeding: WP-CLI via wp-env
 
@@ -189,3 +211,4 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | Plugin sources | `tests/e2e/scripts/resolve-plugin.mjs`, `plugins.json` |
 | URL filters + blocks | `tests/e2e/mu-plugins/e2e-seed-endpoint.php` |
 | npm scripts | `package.json` (`test:e2e:*`, `env:e2e:*`, `tunnel:e2e:*`) |
+| ADO e2e steps | `.azuredevops/e2e-test-steps.yml`, root `azure-pipelines.yml` |

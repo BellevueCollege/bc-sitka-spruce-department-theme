@@ -7,6 +7,10 @@
 		"source": "local",
 		"path": "../bellevue-2022-theme-plugins/oho-views"
 	},
+	"trusteesAgenda": {
+		"source": "local",
+		"path": "../trustees-agenda"
+	},
 	"acf": {
 		"source": "local",
 		"path": "../third-party-plugins/advanced-custom-fields-pro"

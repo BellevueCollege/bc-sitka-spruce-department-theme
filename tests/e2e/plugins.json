@@ -19,6 +19,26 @@
 			"directoryName": "mayflower-blocks"
 		}
 	},
+	"tablePress": {
+		"slug": "tablepress",
+		"displayName": "TablePress",
+		"required": true,
+		"blueprintInstallOnly": true,
+		"remote": {
+			"url": "https://downloads.wordpress.org/plugin/tablepress.3.1.2.zip"
+		},
+		"activate": "tablepress/tablepress.php"
+	},
+	"trusteesAgenda": {
+		"slug": "trustees-agenda",
+		"displayName": "Trustees Agenda",
+		"required": true,
+		"remote": {
+			"url": "https://github.com/BellevueCollege/trustees-agenda/releases/download/v1.4.1/trustees-agenda.zip",
+			"directoryName": "trustees-agenda"
+		},
+		"activate": "trustees-agenda/trustees-agenda.php"
+	},
 	"ohoViews": {
 		"slug": "oho-views",
 		"displayName": "OHO Views",

@@ -122,6 +122,7 @@ function importTestImageAttachment() {
 let cachedTestImageAttachmentId = null;
 let cachedPostsFeatureSeed = null;
 let cachedSiteChromeSeed = null;
+let cachedIntegrationSeed = null;
 let editorPreferencesSeeded = false;
 
 /**
@@ -193,4 +194,47 @@ export function seedSiteChromeData() {
 	);
 	cachedSiteChromeSeed = JSON.parse( result );
 	return cachedSiteChromeSeed;
+}
+
+/**
+ * Seed page integration fixtures (homepages, templates, governance).
+ *
+ * @return {Promise<Record<string, unknown>>}
+ */
+export function seedIntegrationData() {
+	if ( cachedIntegrationSeed ) {
+		return cachedIntegrationSeed;
+	}
+
+	const result = runE2eCli(
+		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-e2e-integration.php`
+	);
+	cachedIntegrationSeed = JSON.parse( result );
+	return cachedIntegrationSeed;
+}
+
+/**
+ * Set which homepage is the static front page for integration tests.
+ *
+ * @param {'dept'|'div'|'suppt'} variant
+ * @return {{ siteType: string, pageUrl: string }}
+ */
+export function applyHomepageVariant( variant ) {
+	const result = runE2eCli(
+		`wp eval "require '${ THEME_PATH }/tests/fixtures/e2e-homepage-variant.php'; echo wp_json_encode( e2e_apply_homepage_variant( '${ variant }' ) );"`
+	);
+	return JSON.parse( result );
+}
+
+/**
+ * Configure header/footer ACF options for a chrome variant test.
+ *
+ * @param {'default'|'notice'|'sock'|'emailFooter'} variant
+ * @return {{ variant: string, pageUrl: string }}
+ */
+export function seedChromeVariant( variant ) {
+	const result = runE2eCli(
+		`wp eval "require '${ THEME_PATH }/tests/fixtures/seed-chrome-variants.php'; echo wp_json_encode( e2e_chrome_variant_seed( '${ variant }' ) );"`
+	);
+	return JSON.parse( result );
 }

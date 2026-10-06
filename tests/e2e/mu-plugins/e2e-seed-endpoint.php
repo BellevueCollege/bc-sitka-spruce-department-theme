@@ -116,8 +116,54 @@ add_filter( 'wp_calculate_image_srcset', 'bc_sitka_e2e_rewrite_image_srcset', 1 
  * Theme blocks kept registered in e2e (matches tests/e2e specs).
  */
 const BC_SITKA_E2E_ALLOWED_THEME_BLOCKS = array(
+	'bc-sitka-spruce/accordion-section',
+	'bc-sitka-spruce/accordion-section-content',
 	'bc-sitka-spruce/announcement-banner',
+	'bc-sitka-spruce/application-step-single',
+	'bc-sitka-spruce/application-step-single-content',
+	'bc-sitka-spruce/application-steps-tabs',
+	'bc-sitka-spruce/bio-section',
+	'bc-sitka-spruce/bio-section-content',
+	'bc-sitka-spruce/body-section',
+	'bc-sitka-spruce/body-section-content',
+	'bc-sitka-spruce/callout',
+	'bc-sitka-spruce/card-section',
+	'bc-sitka-spruce/card-section-card',
+	'bc-sitka-spruce/checkerboard-section',
+	'bc-sitka-spruce/contact-selector',
+	'bc-sitka-spruce/content-and-location',
+	'bc-sitka-spruce/course-information-section',
+	'bc-sitka-spruce/course-information-section-content',
+	'bc-sitka-spruce/degrees-certificates-section',
+	'bc-sitka-spruce/department-feature',
+	'bc-sitka-spruce/differentiator',
+	'bc-sitka-spruce/differentiator-section',
+	'bc-sitka-spruce/hero-image',
+	'bc-sitka-spruce/listing-section',
+	'bc-sitka-spruce/listing-section-list-item',
+	'bc-sitka-spruce/listing-section-list-item-links',
+	'bc-sitka-spruce/media-gallery-section',
+	'bc-sitka-spruce/narrow-content',
+	'bc-sitka-spruce/news-feature-core',
 	'bc-sitka-spruce/posts-feature',
+	'bc-sitka-spruce/profiles-section',
+	'bc-sitka-spruce/support-feature',
+	'bc-sitka-spruce/tabcordion',
+	'bc-sitka-spruce/tabcordion-content',
+	'bc-sitka-spruce/tabcordion-content-panel',
+	'bc-sitka-spruce/tabcordion-list',
+	'bc-sitka-spruce/tabcordion-list-tab',
+	'bc-sitka-spruce/tabs-section',
+	'bc-sitka-spruce/template-homepage',
+	'bc-sitka-spruce/template-program-info',
+	'bc-sitka-spruce/testimonial-section',
+);
+
+add_shortcode(
+	'e2e_marker',
+	static function (): string {
+		return '<span class="e2e-shortcode-marker">E2E shortcode output</span>';
+	}
 );
 
 add_action(

@@ -1,0 +1,157 @@
+- navigation "Toolbar":
+  - menu:
+    - group:
+      - menuitem "About WordPress"
+    - group:
+      - menuitem "E2E Department Site"
+    - group:
+      - menuitem "2 updates available"
+    - group:
+      - menuitem "0 Comments in moderation"
+    - group:
+      - menuitem "New"
+    - group:
+      - menuitem "Edit Profile"
+  - menu:
+    - group:
+      - menuitem "Howdy, admin"
+    - group:
+      - menuitem "Search":
+        - textbox "Search"
+        - text: ""
+- link "Skip to content":
+  - /url: "#main-content"
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://127.0.0.1:8889
+  - navigation "Main Menu":
+    - list:
+      - listitem:
+        - link "Programs":
+          - /url: https://example.com/programs
+        - button "Toggle the Programs menu": 
+      - listitem:
+        - link "About":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact":
+          - /url: https://example.com/contact
+    - list:
+      - listitem:
+        - link "Apply Now":
+          - /url: https://example.com/apply
+      - listitem:
+        - link "Request Info":
+          - /url: https://example.com/request-info
+  - navigation:
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+      - listitem:
+        - link "Search":
+          - /url: "#"
+- main:
+  - heading "Ada Lovelace" [level=1]
+  - paragraph: E2E Faculty
+  - heading "About Me" [level=2]
+  - paragraph: This is a place to enter basic biographical information about this person. You can use the headings below, add something different, or delete them entirely.
+  - paragraph:
+    - strong: Specific information about this person should be added in the ‘Profile CPT’ section-
+    - text: scroll to the bottom of the page to find it!
+  - paragraph:
+    - strong: Remember to delete this starter text when you’re done!
+  - heading "Education" [level=3]
+  - list:
+    - listitem
+  - heading "Current Course(s)" [level=3]
+  - list:
+    - listitem
+  - complementary:
+    - heading "Optional Callout" [level=3]
+    - paragraph: This is a place to feature additional related information!
+  - heading "Support Services" [level=2]
+  - heading "Example Service this person may be part of" [level=3]
+  - paragraph: Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Dui id ornare arcu odio.
+  - paragraph
+- complementary:
+  - heading "For questions about this site, contact our site manager" [level=2]
+  - paragraph:
+    - strong: E2E Manager
+    - text: Web Coordinator
+    - link "e2e-manager@example.com":
+      - /url: mailto:e2e-manager@example.com
+- contentinfo:
+  - link "Bellevue College (links to college homepage)":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College (links to college homepage)"
+  - heading "E2E Department Site" [level=2]
+  - separator
+  - text: Phone Number
+  - paragraph:
+    - link /\+1 \d+-\d+-\d+/:
+      - /url: tel:+14255641000
+  - text: Address
+  - paragraph: /Bellevue College \d+ Landerholm Circle SE Bellevue, WA \d+-\d+/
+  - list:
+    - listitem:
+      - link "Facebook":
+        - /url: https://www.facebook.com/bellevuecollege
+    - listitem:
+      - link "LinkedIn":
+        - /url: https://www.linkedin.com/school/bellevue-college
+    - listitem:
+      - link "YouTube":
+        - /url: https://www.youtube.com/bellevuecollege
+  - navigation "Major Site Sections":
+    - list:
+      - listitem:
+        - link "Programs ":
+          - /url: https://example.com/programs
+      - listitem:
+        - link "About ":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact ":
+          - /url: https://example.com/contact
+  - navigation "Footer Utility Links":
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+  - navigation "Global Links":
+    - list:
+      - listitem:
+        - link "Accessibility ":
+          - /url: https://www.bellevuecollege.edu/accessibility/
+      - listitem:
+        - link "Emergency Alerts ":
+          - /url: https://www.bellevuecollege.edu/emergency-alerts/
+      - listitem:
+        - link "Equal Opportunity ":
+          - /url: https://www.bellevuecollege.edu/equal-opportunity/
+      - listitem:
+        - link "Public Disclosure ":
+          - /url: https://www.bellevuecollege.edu/legal-information/public-disclosure/
+      - listitem:
+        - link "Website Info ":
+          - /url: https://www.bellevuecollege.edu/website-information/
+  - paragraph:
+    - text: /© \d+ Bellevue College\. All Rights Reserved\./
+    - link "Privacy Notice":
+      - /url: https://www.bellevuecollege.edu/accessibility/
