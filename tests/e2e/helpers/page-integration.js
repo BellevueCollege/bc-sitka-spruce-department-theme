@@ -38,24 +38,6 @@ export async function visitIntegrationPage( page, url ) {
 		} );
 		const status = response?.status() ?? 0;
 
-		// #region agent log
-		fetch( 'http://127.0.0.1:7247/ingest/cdee1a20-8a01-40a2-b3ce-d42ed32a62b2', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Debug-Session-Id': '6a545d',
-			},
-			body: JSON.stringify( {
-				sessionId: '6a545d',
-				location: 'page-integration.js:visitIntegrationPage',
-				message: 'goto attempt',
-				data: { attempt, status, normalized },
-				timestamp: Date.now(),
-				hypothesisId: 'H1',
-			} ),
-		} ).catch( () => {} );
-		// #endregion
-
 		if ( status > 0 && status < 500 ) {
 			break;
 		}

@@ -18,18 +18,36 @@ export const VIEWPORT_PROJECTS = [
  * Skip tablet and mobile copies of block editor and ARIA tests.
  *
  * Those trees matched desktop in the last functional run. Header layout,
- * axe, and @visual screenshots still run on every viewport. LambdaTest
- * runs keep every project.
+ * axe, and page @visual screenshots still run on every viewport (including
+ * LambdaTest). Block editor @visual baselines are desktop-only even on LT.
  *
  * @param {import('@playwright/test').TestInfo} testInfo
  */
 export function skipDuplicateBlockViewport( testInfo ) {
+	const titlePath = testInfo.titlePath.join( ' ' );
+
+	if ( titlePath.includes( '@visual' ) ) {
+		const isBlockEditorVisual =
+			titlePath.includes( 'editor snapshot' ) ||
+			( testInfo.titlePath.includes( 'Editor' ) &&
+				titlePath.includes( '@visual' ) );
+		if (
+			isBlockEditorVisual &&
+			testInfo.project.name !== 'desktop'
+		) {
+			testInfo.skip(
+				true,
+				'Block editor @visual baselines are desktop-only (tier 2).'
+			);
+		}
+		return;
+	}
+
 	if ( process.env.E2E_LAMBDATEST === '1' || testInfo.project.name === 'desktop' ) {
 		return;
 	}
 
-	const titlePath = testInfo.titlePath.join( ' ' );
-	if ( titlePath.includes( '@visual' ) || titlePath.includes( 'Accessibility' ) ) {
+	if ( titlePath.includes( 'Accessibility' ) ) {
 		return;
 	}
 

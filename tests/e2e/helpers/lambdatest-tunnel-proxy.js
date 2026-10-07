@@ -70,24 +70,6 @@ async function fulfillFromHostWordPress( route, tunnelOrigin ) {
 	const target = new URL( request.url() );
 	const tunnelHost = new URL( tunnelOrigin ).host;
 
-	// #region agent log
-	fetch( 'http://127.0.0.1:7247/ingest/cdee1a20-8a01-40a2-b3ce-d42ed32a62b2', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-Debug-Session-Id': '6a545d',
-		},
-		body: JSON.stringify( {
-			sessionId: '6a545d',
-			location: 'lambdatest-tunnel-proxy.js:fulfillFromHostWordPress',
-			message: 'proxy request',
-			data: { pathname: target.pathname, host: target.host },
-			timestamp: Date.now(),
-			hypothesisId: 'H2',
-		} ),
-	} ).catch( () => {} );
-	// #endregion
-
 	if ( target.searchParams.get( 'meta-box-loader' ) === '1' ) {
 		await route.fulfill( {
 			status: 200,
@@ -109,29 +91,6 @@ async function fulfillFromHostWordPress( route, tunnelOrigin ) {
 			headers: buildUpstreamHeaders( request.headers(), tunnelHost ),
 			body: request.postDataBuffer(),
 		} );
-
-		// #region agent log
-		fetch( 'http://127.0.0.1:7247/ingest/cdee1a20-8a01-40a2-b3ce-d42ed32a62b2', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Debug-Session-Id': '6a545d',
-			},
-			body: JSON.stringify( {
-				sessionId: '6a545d',
-				location: 'lambdatest-tunnel-proxy.js:fulfillFromHostWordPress',
-				message: 'proxy upstream status',
-				data: {
-					pathname: target.pathname,
-					status: upstream.status,
-					location: upstream.headers.location ?? upstream.headers.Location ?? '',
-				},
-				timestamp: Date.now(),
-				hypothesisId: 'H4',
-				runId: 'post-fix',
-			} ),
-		} ).catch( () => {} );
-		// #endregion
 
 		const responseHeaders = rewriteProxiedResponseHeaders(
 			upstream.headers,
@@ -160,26 +119,6 @@ async function fulfillFromHostWordPress( route, tunnelOrigin ) {
 			body: responseBody,
 		} );
 	} catch ( error ) {
-		// #region agent log
-		fetch( 'http://127.0.0.1:7247/ingest/cdee1a20-8a01-40a2-b3ce-d42ed32a62b2', {
-			method: 'POST',
-			headers: {
-				'Content-Type': 'application/json',
-				'X-Debug-Session-Id': '6a545d',
-			},
-			body: JSON.stringify( {
-				sessionId: '6a545d',
-				location: 'lambdatest-tunnel-proxy.js:fulfillFromHostWordPress',
-				message: 'proxy upstream error',
-				data: {
-					pathname: target.pathname,
-					error: error instanceof Error ? error.message : String( error ),
-				},
-				timestamp: Date.now(),
-				hypothesisId: 'H3',
-			} ),
-		} ).catch( () => {} );
-		// #endregion
 		await route.abort();
 	}
 }

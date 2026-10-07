@@ -88,7 +88,12 @@ test.describe( 'Flexible page integration', () => {
 
 	test( 'tabs section snapshot @visual', async ( { page }, testInfo ) => {
 		skipDuplicateBlockViewport( testInfo );
-		const tabsSection = page.locator( '.wp-block-bc-sitka-spruce-tabs-section' );
+
+		if ( testInfo.project.name !== 'desktop' ) {
+			await page.getByRole( 'button', { name: 'E2E Tab One' } ).click();
+		}
+
+		const tabsSection = page.locator( '.tabs-section-component' );
 		await expect( tabsSection ).toBeVisible();
 		await expect( tabsSection ).toHaveScreenshot( 'flexible-page-tabs-section.png', {
 			maxDiffPixelRatio: 0.02,
