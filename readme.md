@@ -117,12 +117,29 @@ npm run test:e2e -- --project=desktop tests/e2e/blocks/PostsFeature.spec.js
 
 `npm run test:e2e` runs functional tests on the host, then `@visual` tests on LambdaTest, across **desktop, tablet, and mobile**.
 
-- `npm run test:e2e:functional` — non-visual tests (includes `@aria`)
-- `npm run test:e2e:aria` — ARIA accessibility-tree snapshots only
-- `npm run test:e2e:aria:update` — refresh `*.yml` ARIA baselines on the host
-- `npm run test:e2e:visual` — `@visual` screenshot tests on LambdaTest
-- `npm run test:e2e:update-snapshots` — refresh PNG baselines on LambdaTest
-- `npm run test:e2e:ui` / `test:e2e:debug` — functional tests only
+| Command | Purpose |
+|---------|---------|
+| `npm run test:e2e:functional` | Non-visual tests (includes `@aria`) |
+| `npm run test:e2e:functional:external` | Same when wp-env is already running |
+| `npm run test:e2e:aria` | `@aria` accessibility-tree snapshots only (host) |
+| `npm run test:e2e:visual` | `@visual` screenshot tests (LambdaTest) |
+| `npm run test:e2e` | Functional, then visual (full suite) |
+
+**Update snapshot baselines** (uses `--update-snapshots=changed` — only writes files that differ):
+
+| Command | Purpose |
+|---------|---------|
+| `npm run test:e2e:aria:update` | Refresh `*.yml` ARIA baselines on the host |
+| `npm run test:e2e:visual:update` | Refresh `*.png` baselines on LambdaTest |
+| `npm run test:e2e:update` | ARIA update, then visual update (needs LambdaTest for the second step) |
+| `npm run test:e2e:update:last-failed` | Update only tests that **failed** on the previous run (see workflow below) |
+| `npm run test:e2e:aria:update:last-failed` / `test:e2e:visual:update:last-failed` | Same, scoped to `@aria` or `@visual` |
+
+`npm run test:e2e:update-snapshots` is a deprecated alias for `test:e2e:visual:update`.
+
+**Incremental snapshot workflow:** run `test:e2e:functional`, `test:e2e:aria`, or `test:e2e:visual` first; then `npm run test:e2e:update:last-failed` to re-run and accept baselines for failed tests only. To update one spec: `npm run test:e2e:aria:update -- tests/e2e/pages/Foo.spec.js`.
+
+- `npm run test:e2e:ui` / `test:e2e:debug` — functional tests only (interactive)
 
 Optional environment variables: `ACF_DOWNLOAD_URL`, `GITHUB_PAT`, `BUILD_ID` (LambdaTest build label), `E2E_LAMBDATEST_TUNNEL_AUTO` (`0` disables auto-starting the tunnel in global setup).
 
@@ -181,4 +198,5 @@ Once the block has been created, ensure that it is registered in `functions.php`
 |-------|--------|---------|
 | **Playwright (full suite)** | Functional on host + visual on LambdaTest | `npm run test:e2e` |
 | **Playwright visual** | Screenshot baselines on LambdaTest | `npm run test:e2e:visual` |
+| **Refresh all snapshots** | ARIA on host + PNG on LambdaTest | `npm run test:e2e:update` |
 | **CI (Azure)** | Same as full suite with external wp-env | See [`.azuredevops/e2e-test-steps.yml`](.azuredevops/e2e-test-steps.yml) |

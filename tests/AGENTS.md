@@ -96,7 +96,7 @@ Otherwise rely on **tier 0** (page integration + seeds) and/or **tier 1** (`Core
 - `prepareEditorPage` + `skipDuplicateBlockViewport` in `beforeEach`.
 - Functional tests per variant that matter—**no snapshot required per variant**.
 - **At most** one canonical variant for `@visual` and `@aria` (editor + frontend each).
-- Committed PNG baselines **only** via LambdaTest (`npm run test:e2e:update-snapshots`).
+- Committed PNG baselines **only** via LambdaTest (`npm run test:e2e:visual:update`).
 
 ### Relationship to page tests
 
@@ -202,7 +202,7 @@ One WordPress database; parallel workers race on posts and editor state.
 | Admin cookies | [`global-setup.js`](e2e/global-setup.js) | Host login, then remap storage state for tunnel host |
 | Navigation | [`e2e-navigation.js`](e2e/helpers/e2e-navigation.js) | Rewrite seed permalinks for visual runs |
 
-Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:update-snapshots`).
+Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:visual:update`). Refresh all snapshot types with `npm run test:e2e:update`; after a failing run, `npm run test:e2e:update:last-failed` re-runs only failed snapshot tests.
 
 ### Editor preferences seed
 
@@ -271,5 +271,5 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | wp-env generate + start | `tests/e2e/scripts/generate-wp-env-e2e.mjs`, `start-wp-env-e2e.mjs` |
 | Plugin sources | `tests/e2e/scripts/resolve-plugin.mjs`, `plugins.json` |
 | URL filters + blocks | `tests/e2e/mu-plugins/e2e-seed-endpoint.php` |
-| npm scripts | `package.json` (`test:e2e:*`, `env:e2e:*`, `tunnel:e2e:*`) |
+| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:*`, `tunnel:e2e:*` |
 | ADO e2e steps | `.azuredevops/e2e-test-steps.yml`, root `azure-pipelines.yml` |
