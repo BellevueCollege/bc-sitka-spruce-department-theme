@@ -12,13 +12,18 @@ import {
 	getLambdaTestWsEndpoint,
 	isLambdaTestRun,
 } from './tests/e2e/helpers/lambdatest.js';
-import { getHostE2eBaseUrl } from './tests/e2e/helpers/e2e-env.js';
+import {
+	getPlaywrightBaseUrl,
+	WP_ENV_E2E_READY_LOG,
+} from './tests/e2e/helpers/e2e-env.js';
 import { VIEWPORT_PROJECTS } from './tests/e2e/helpers/viewports.js';
 
-const E2E_BASE_URL = getHostE2eBaseUrl();
-const useExternalWpEnv = process.env.E2E_WPENV_EXTERNAL === '1';
+if ( ! process.env.WP_BASE_URL ) {
+	process.env.WP_BASE_URL = getPlaywrightBaseUrl();
+}
 
-process.env.WP_BASE_URL = E2E_BASE_URL;
+const E2E_BASE_URL = getPlaywrightBaseUrl();
+const useExternalWpEnv = process.env.E2E_WPENV_EXTERNAL === '1';
 
 const artifactsPath =
 	process.env.WP_ARTIFACTS_PATH ?? path.join( process.cwd(), 'artifacts' );
@@ -36,7 +41,7 @@ const config = {
 	workers: 1,
 	reporter: process.env.CI
 		? [
-				[ 'github' ],
+				[ 'list' ],
 				[ 'junit', { outputFile: junitOutputFile } ],
 		  ]
 		: baseConfig.reporter,
@@ -44,9 +49,14 @@ const config = {
 		? undefined
 		: {
 				command: 'node tests/e2e/scripts/start-wp-env-e2e.mjs',
-				stdout: '[e2e] wp-env e2e ready',
+				stdout: 'pipe',
 				reuseExistingServer: ! process.env.CI,
 				timeout: 300_000,
+				wait: {
+					stdout: new RegExp(
+						WP_ENV_E2E_READY_LOG.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' )
+					),
+				},
 		  },
 	use: {
 		...baseConfig.use,

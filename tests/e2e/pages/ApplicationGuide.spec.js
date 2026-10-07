@@ -2,9 +2,9 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedIntegrationData, seedSiteChromeData } from '../helpers/wp-cli.js';
 
 let pageUrl;
@@ -26,6 +26,8 @@ test.describe( 'Application guide integration', () => {
 		await expect( page.getByRole( 'heading', { name: 'Application Steps' } ) ).toBeVisible();
 		await expect( page.getByRole( 'heading', { name: 'Additional Resources' } ) ).toBeVisible();
 		await expect( page.getByRole( 'heading', { name: 'More Info' } ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: 'Support Available' } ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: 'Department Feature' } ) ).toBeVisible();
 	} );
 
 	test( 'shows the first application step', async ( { page }, testInfo ) => {
@@ -38,7 +40,7 @@ test.describe( 'Application guide integration', () => {
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'application-guide-frontend.yml',
 		} );

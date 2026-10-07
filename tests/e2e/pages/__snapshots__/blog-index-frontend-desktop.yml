@@ -78,7 +78,7 @@
   - separator
   - heading "E2E List Post 4" [level=3]:
     - link "E2E List Post 4":
-      - /url: http://127.0.0.1:8889/e2e-list-post-4/
+      - /url: http://127.0.0.1:8889/e2e-dept/e2e-list-post-4/
   - paragraph: Summary for E2E List Post 4.
   - separator
   - paragraph:
@@ -87,7 +87,7 @@
   - separator
   - heading "E2E List Post 1" [level=3]:
     - link "E2E List Post 1":
-      - /url: http://127.0.0.1:8889/e2e-list-post-1/
+      - /url: http://127.0.0.1:8889/e2e-dept/e2e-list-post-1/
   - paragraph: Summary for E2E List Post 1.
   - separator
   - paragraph:
@@ -96,7 +96,7 @@
   - separator
   - heading "E2E List Post 2" [level=3]:
     - link "E2E List Post 2":
-      - /url: http://127.0.0.1:8889/e2e-list-post-2/
+      - /url: http://127.0.0.1:8889/e2e-dept/e2e-list-post-2/
   - paragraph: Summary for E2E List Post 2.
   - separator
   - paragraph:
@@ -105,7 +105,7 @@
   - separator
   - heading "E2E List Post 3" [level=3]:
     - link "E2E List Post 3":
-      - /url: http://127.0.0.1:8889/e2e-list-post-3/
+      - /url: http://127.0.0.1:8889/e2e-dept/e2e-list-post-3/
   - paragraph: Summary for E2E List Post 3.
   - separator
   - paragraph:
@@ -114,7 +114,7 @@
   - separator
   - heading "E2E Featured Post" [level=3]:
     - link "E2E Featured Post":
-      - /url: http://127.0.0.1:8889/e2e-featured-post/
+      - /url: http://127.0.0.1:8889/e2e-dept/e2e-featured-post/
   - paragraph: Summary for E2E Featured Post.
   - separator
   - paragraph:

@@ -53,7 +53,7 @@ function e2e_load_pattern_markup( string $pattern_basename ): string {
 }
 
 /**
- * Homepage pattern content without core-site or Gravity Forms blocks.
+ * Homepage pattern content without Gravity Forms blocks.
  *
  * @param string $pattern_basename Pattern file name.
  * @return string
@@ -61,21 +61,7 @@ function e2e_load_pattern_markup( string $pattern_basename ): string {
 function e2e_homepage_pattern_for_seed( string $pattern_basename ): string {
 	$content = e2e_load_pattern_markup( $pattern_basename );
 
-	$strip_blocks = array(
-		'bc-sitka-spruce/differentiator-section',
-		'bc-sitka-spruce/differentiator',
-		'bc-sitka-spruce/degrees-certificates-section',
-		'bc-sitka-spruce/support-feature',
-		'bc-sitka-spruce/department-feature',
-		'bc-sitka-spruce/news-feature-core',
-		'gravityforms/form',
-	);
-
-	foreach ( $strip_blocks as $block_name ) {
-		$content = e2e_strip_block_from_content( $content, $block_name );
-	}
-
-	return $content;
+	return e2e_strip_block_from_content( $content, 'gravityforms/form' );
 }
 
 /**

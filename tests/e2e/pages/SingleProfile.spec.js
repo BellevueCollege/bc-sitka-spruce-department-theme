@@ -2,9 +2,9 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedIntegrationData, seedSiteChromeData } from '../helpers/wp-cli.js';
 
 let pageUrl;
@@ -24,10 +24,11 @@ test.describe( 'Single profile integration', () => {
 		await expect( page.getByRole( 'heading', { name: 'About Me' } ) ).toBeVisible();
 		await expect( page.getByText( 'Optional Callout' ) ).toBeVisible();
 		await expect( page.getByRole( 'heading', { name: 'Support Services' } ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: 'In the News' } ) ).toBeVisible();
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'single-profile-frontend.yml',
 		} );

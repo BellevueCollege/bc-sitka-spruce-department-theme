@@ -1,8 +1,18 @@
 import http from 'node:http';
-import { getE2ePort, getHostE2eBaseUrl } from './e2e-env.js';
+import { setTimeout as delay } from 'node:timers/promises';
+import {
+	E2E_SUBSITE_SLUG,
+	getE2ePort,
+	getHostE2eBaseUrl,
+	getMainSiteBaseUrl,
+} from './e2e-env.js';
 import { getLambdaTestPlaygroundBaseUrl } from './lambdatest.js';
 
-const MAX_PROXY_DEBUG_LOGS = 15;
+const LAMBDATEST_TUNNEL_HOST_ALIAS = 'host.docker.internal';
+
+const THEME_FAVICON_PATH =
+	'/wp-content/themes/bc-sitka-spruce-department-theme/assets/favicons/favicon.ico';
+
 const REQUEST_HEADER_SKIP = new Set( [ 'host', 'content-length', 'connection' ] );
 const RESPONSE_HEADER_SKIP = new Set( [
 	'transfer-encoding',
@@ -10,29 +20,42 @@ const RESPONSE_HEADER_SKIP = new Set( [
 	'connection',
 ] );
 
-let proxyLogCount = 0;
-
 /**
  * Proxy LambdaTest browser requests to wp-env on the host loopback address.
  *
  * The tunnel often fails to reach host.docker.internal reliably; local HTTP works.
  *
- * @param {import('@playwright/test').Page} page
+ * @param {import('@playwright/test').Page | import('@playwright/test').BrowserContext} routingTarget
  * @return {Promise<void>}
  */
-export async function installLambdaTestTunnelProxy( page ) {
-	const port = getE2ePort();
-	const tunnelOrigin = getLambdaTestPlaygroundBaseUrl();
-	const loopbackOrigin = `http://127.0.0.1:${ port }`;
-	const localhostOrigin = `http://localhost:${ port }`;
+/**
+ * Match wp-env HTTP(S) on the e2e port (subsite root and nested paths).
+ *
+ * Glob patterns like `${ subsiteBase }/**` miss the subsite front URL when the
+ * base already ends with `/`, and the tunnel then serves `dial tcp [::1]:8889`.
+ *
+ * @param {string} url
+ * @return {boolean}
+ */
+function shouldProxyE2eRequest( url ) {
+	try {
+		const parsed = new URL( url );
+		const port = String( getE2ePort() );
+		const hostMatches =
+			parsed.hostname === '127.0.0.1' ||
+			parsed.hostname === 'localhost' ||
+			parsed.hostname === LAMBDATEST_TUNNEL_HOST_ALIAS;
 
-	await page.route( `${ tunnelOrigin }/**`, ( route ) =>
-		fulfillFromHostWordPress( route, tunnelOrigin )
-	);
-	await page.route( `${ loopbackOrigin }/**`, ( route ) =>
-		fulfillFromHostWordPress( route, tunnelOrigin )
-	);
-	await page.route( `${ localhostOrigin }/**`, ( route ) =>
+		return hostMatches && parsed.port === port;
+	} catch {
+		return false;
+	}
+}
+
+export async function installLambdaTestTunnelProxy( routingTarget ) {
+	const tunnelOrigin = getLambdaTestPlaygroundBaseUrl();
+
+	await routingTarget.route( shouldProxyE2eRequest, ( route ) =>
 		fulfillFromHostWordPress( route, tunnelOrigin )
 	);
 }
@@ -47,23 +70,237 @@ async function fulfillFromHostWordPress( route, tunnelOrigin ) {
 	const target = new URL( request.url() );
 	const tunnelHost = new URL( tunnelOrigin ).host;
 
+	// #region agent log
+	fetch( 'http://127.0.0.1:7247/ingest/cdee1a20-8a01-40a2-b3ce-d42ed32a62b2', {
+		method: 'POST',
+		headers: {
+			'Content-Type': 'application/json',
+			'X-Debug-Session-Id': '6a545d',
+		},
+		body: JSON.stringify( {
+			sessionId: '6a545d',
+			location: 'lambdatest-tunnel-proxy.js:fulfillFromHostWordPress',
+			message: 'proxy request',
+			data: { pathname: target.pathname, host: target.host },
+			timestamp: Date.now(),
+			hypothesisId: 'H2',
+		} ),
+	} ).catch( () => {} );
+	// #endregion
+
+	if ( target.searchParams.get( 'meta-box-loader' ) === '1' ) {
+		await route.fulfill( {
+			status: 200,
+			contentType: 'text/html; charset=UTF-8',
+			body: '',
+		} );
+		return;
+	}
+
+	const faviconUpstreamPath = resolveFaviconUpstreamPath( target.pathname );
+	const upstreamPath = faviconUpstreamPath
+		? `${ faviconUpstreamPath }${ target.search }`
+		: `${ target.pathname }${ target.search }`;
+
 	try {
-		const upstream = await requestHostWordPress( {
+		const upstream = await requestHostWordPressWithRetry( {
 			method: request.method(),
-			path: `${ target.pathname }${ target.search }`,
+			path: upstreamPath,
 			headers: buildUpstreamHeaders( request.headers(), tunnelHost ),
 			body: request.postDataBuffer(),
 		} );
-		logProxiedResponse( request.url(), upstream.status );
+
+		// #region agent log
+		fetch( 'http://127.0.0.1:7247/ingest/cdee1a20-8a01-40a2-b3ce-d42ed32a62b2', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Debug-Session-Id': '6a545d',
+			},
+			body: JSON.stringify( {
+				sessionId: '6a545d',
+				location: 'lambdatest-tunnel-proxy.js:fulfillFromHostWordPress',
+				message: 'proxy upstream status',
+				data: {
+					pathname: target.pathname,
+					status: upstream.status,
+					location: upstream.headers.location ?? upstream.headers.Location ?? '',
+				},
+				timestamp: Date.now(),
+				hypothesisId: 'H4',
+				runId: 'post-fix',
+			} ),
+		} ).catch( () => {} );
+		// #endregion
+
+		const responseHeaders = rewriteProxiedResponseHeaders(
+			upstream.headers,
+			tunnelOrigin
+		);
+		if (
+			upstream.status === 403 &&
+			isEditorTaxonomyPrefetchRequest( target )
+		) {
+			const slug = target.pathname.split( '/' ).pop() ?? 'category';
+			await route.fulfill( {
+				status: 200,
+				contentType: 'application/json; charset=UTF-8',
+				body: buildTaxonomyPrefetchStub( slug ),
+			} );
+			return;
+		}
+
+		const responseBody = rewriteProxiedResponseBody(
+			upstream.body,
+			responseHeaders
+		);
 		await route.fulfill( {
 			status: upstream.status,
-			headers: upstream.headers,
-			body: upstream.body,
+			headers: responseHeaders,
+			body: responseBody,
 		} );
 	} catch ( error ) {
-		logProxiedResponse( request.url(), 0, error );
+		// #region agent log
+		fetch( 'http://127.0.0.1:7247/ingest/cdee1a20-8a01-40a2-b3ce-d42ed32a62b2', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Debug-Session-Id': '6a545d',
+			},
+			body: JSON.stringify( {
+				sessionId: '6a545d',
+				location: 'lambdatest-tunnel-proxy.js:fulfillFromHostWordPress',
+				message: 'proxy upstream error',
+				data: {
+					pathname: target.pathname,
+					error: error instanceof Error ? error.message : String( error ),
+				},
+				timestamp: Date.now(),
+				hypothesisId: 'H3',
+			} ),
+		} ).catch( () => {} );
+		// #endregion
 		await route.abort();
 	}
+}
+
+/**
+ * @param {URL} target
+ * @return {boolean}
+ */
+function isEditorTaxonomyPrefetchRequest( target ) {
+	return (
+		target.pathname.includes( '/wp-json/wp/v2/taxonomies/' ) &&
+		target.searchParams.get( 'context' ) === 'edit'
+	);
+}
+
+/**
+ * @param {string} slug
+ * @return {string}
+ */
+function buildTaxonomyPrefetchStub( slug ) {
+	return JSON.stringify( {
+		slug,
+		name: slug,
+		rest_base: slug,
+		types: [ 'post' ],
+		visibility: { show_ui: true },
+	} );
+}
+
+/**
+ * @param {string} value
+ * @return {string}
+ */
+function rewriteLoopbackHostsInText( value ) {
+	const port = String( getE2ePort() );
+	const tunnelRoot = `http://${ LAMBDATEST_TUNNEL_HOST_ALIAS }:${ port }`;
+
+	return value
+		.replaceAll( `http://127.0.0.1:${ port }`, tunnelRoot )
+		.replaceAll( `http://localhost:${ port }`, tunnelRoot )
+		.replaceAll( `127.0.0.1%3A${ port }`, `${ LAMBDATEST_TUNNEL_HOST_ALIAS }%3A${ port }` )
+		.replaceAll( `localhost%3A${ port }`, `${ LAMBDATEST_TUNNEL_HOST_ALIAS }%3A${ port }` );
+}
+
+/**
+ * @param {Buffer} body
+ * @param {Record<string, string>} headers
+ * @return {Buffer}
+ */
+function rewriteProxiedResponseBody( body, headers ) {
+	const contentType = getHeaderValue( headers, 'content-type' );
+	if ( ! shouldRewriteResponseBody( contentType ) ) {
+		return body;
+	}
+
+	if ( getHeaderValue( headers, 'content-encoding' ) ) {
+		return body;
+	}
+
+	return Buffer.from( rewriteLoopbackHostsInText( body.toString( 'utf8' ) ), 'utf8' );
+}
+
+/**
+ * @param {string | undefined} contentType
+ * @return {boolean}
+ */
+function shouldRewriteResponseBody( contentType ) {
+	if ( ! contentType ) {
+		return false;
+	}
+
+	const normalized = contentType.toLowerCase();
+
+	return (
+		normalized.includes( 'text/html' ) ||
+		normalized.includes( 'application/json' ) ||
+		normalized.includes( 'javascript' ) ||
+		normalized.includes( 'text/css' ) ||
+		normalized.includes( 'application/xml' ) ||
+		normalized.includes( 'text/xml' )
+	);
+}
+
+/**
+ * @param {Record<string, string>} headers
+ * @param {string} name
+ * @return {string}
+ */
+function getHeaderValue( headers, name ) {
+	const direct = headers[ name ];
+	if ( typeof direct === 'string' ) {
+		return direct;
+	}
+
+	const match = Object.entries( headers ).find(
+		( [ headerName ] ) => headerName.toLowerCase() === name
+	);
+
+	return match ? match[ 1 ] : '';
+}
+
+/**
+ * @param {Record<string, string>} headers
+ * @param {string} tunnelOrigin
+ * @return {Record<string, string>}
+ */
+function rewriteProxiedResponseHeaders( headers, tunnelOrigin ) {
+	const rewritten = { ...headers };
+
+	for ( const [ name, value ] of Object.entries( rewritten ) ) {
+		if ( typeof value !== 'string' ) {
+			continue;
+		}
+
+		const nextValue = rewriteLoopbackHostsInText( value );
+		if ( nextValue !== value ) {
+			rewritten[ name ] = nextValue;
+		}
+	}
+
+	return rewritten;
 }
 
 /**
@@ -72,8 +309,13 @@ async function fulfillFromHostWordPress( route, tunnelOrigin ) {
  * @return {Record<string, string>}
  */
 function buildUpstreamHeaders( incoming, tunnelHost ) {
+	const upstreamHost = new URL( getMainSiteBaseUrl() ).host;
+
 	/** @type {Record<string, string>} */
-	const headers = { host: tunnelHost };
+	const headers = {
+		host: upstreamHost,
+		'x-e2e-public-origin': tunnelHost,
+	};
 
 	for ( const [ name, value ] of Object.entries( incoming ) ) {
 		if ( REQUEST_HEADER_SKIP.has( name.toLowerCase() ) ) {
@@ -86,20 +328,68 @@ function buildUpstreamHeaders( incoming, tunnelHost ) {
 }
 
 /**
+ * Browsers request /favicon.ico at the site root; map to the theme asset.
+ *
+ * @param {string} pathname
+ * @return {string | null}
+ */
+function resolveFaviconUpstreamPath( pathname ) {
+	if ( ! pathname.endsWith( '/favicon.ico' ) ) {
+		return null;
+	}
+
+	if ( pathname === '/favicon.ico' ) {
+		return THEME_FAVICON_PATH;
+	}
+
+	const subsitePrefix = `/${ E2E_SUBSITE_SLUG }`;
+	if ( pathname === `${ subsitePrefix }/favicon.ico` ) {
+		return `${ subsitePrefix }${ THEME_FAVICON_PATH }`;
+	}
+
+	return null;
+}
+
+const UPSTREAM_RETRYABLE_STATUSES = new Set( [ 502, 503, 504 ] );
+const UPSTREAM_MAX_ATTEMPTS = 4;
+const UPSTREAM_RETRY_DELAY_MS = 400;
+
+/**
+ * @param {{ method: string, path: string, headers: Record<string, string>, body: Buffer | null }} request
+ * @return {Promise<{ status: number, headers: Record<string, string>, body: Buffer }>}
+ */
+async function requestHostWordPressWithRetry( request ) {
+	let lastResponse = await requestHostWordPress( request );
+
+	for (
+		let attempt = 1;
+		attempt < UPSTREAM_MAX_ATTEMPTS &&
+		UPSTREAM_RETRYABLE_STATUSES.has( lastResponse.status );
+		attempt++
+	) {
+		await delay( UPSTREAM_RETRY_DELAY_MS * attempt );
+		lastResponse = await requestHostWordPress( request );
+	}
+
+	return lastResponse;
+}
+
+/**
  * @param {{ method: string, path: string, headers: Record<string, string>, body: Buffer | null }} request
  * @return {Promise<{ status: number, headers: Record<string, string>, body: Buffer }>}
  */
 function requestHostWordPress( request ) {
-	const hostUrl = new URL( getHostE2eBaseUrl() );
+	const port = getE2ePort();
 
 	return new Promise( ( resolve, reject ) => {
 		const upstream = http.request(
 			{
-				hostname: hostUrl.hostname,
-				port: hostUrl.port,
+				host: '127.0.0.1',
+				port,
 				path: request.path,
 				method: request.method,
 				headers: request.headers,
+				family: 4,
 			},
 			( response ) => {
 				const chunks = [];
@@ -140,41 +430,4 @@ function toFulfillHeaders( rawHeaders ) {
 	}
 
 	return headers;
-}
-
-/**
- * @param {string} url
- * @param {number} status
- * @param {unknown} [error]
- */
-function logProxiedResponse( url, status, error ) {
-	const isFailure = status === 0 || status >= 400;
-	if ( proxyLogCount >= MAX_PROXY_DEBUG_LOGS ) {
-		return;
-	}
-
-	proxyLogCount += 1;
-
-	// #region agent log
-	fetch( 'http://127.0.0.1:7318/ingest/2d137c06-c08e-496e-837b-46890e3b1347', {
-		method: 'POST',
-		headers: {
-			'Content-Type': 'application/json',
-			'X-Debug-Session-Id': 'c90b84',
-		},
-		body: JSON.stringify( {
-			sessionId: 'c90b84',
-			runId: 'visual-suite',
-			hypothesisId: 'D',
-			location: 'tests/e2e/helpers/lambdatest-tunnel-proxy.js',
-			message: isFailure ? 'tunnel_proxy_failed' : 'tunnel_proxy_ok',
-			data: {
-				status,
-				url,
-				error: error instanceof Error ? error.message : '',
-			},
-			timestamp: Date.now(),
-		} ),
-	} ).catch( () => {} );
-	// #endregion
 }

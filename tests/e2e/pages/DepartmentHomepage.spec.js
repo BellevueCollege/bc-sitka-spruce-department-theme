@@ -2,9 +2,9 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	applyHomepageVariant,
 	seedIntegrationData,
@@ -28,6 +28,10 @@ test.describe( 'Department homepage integration', () => {
 		const main = page.locator( 'main, .site-content, #content' ).first();
 		await expect( main.getByRole( 'heading', { name: /Department Homepage/i } ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: /Why \[X\] at Bellevue College/i } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'Stats about BC' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'Degrees and Certificates' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'Support Section' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'News Section' } ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'Listing Section' } ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'Accordion Section' } ) ).toBeVisible();
 		await expect( main.getByText( 'Media Gallery' ) ).toBeVisible();
@@ -42,7 +46,7 @@ test.describe( 'Department homepage integration', () => {
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'department-homepage-frontend.yml',
 		} );

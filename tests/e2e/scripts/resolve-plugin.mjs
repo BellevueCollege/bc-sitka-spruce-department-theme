@@ -25,6 +25,7 @@ const PLACEHOLDER_RELEASE_FRAGMENT = 'v0.0.0-placeholder';
  * @property {string | null} mountHostPath Host directory to bind-mount, if any.
  * @property {string | null} blueprintInstallUrl Remote zip URL for installPlugin step.
  * @property {string | null} activateBootstrapPath Relative to plugins dir when known.
+ * @property {('main'|'subsite')[]} activateOn Sites where the plugin should be activated.
  */
 
 /**
@@ -78,6 +79,7 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
 		remote,
 		activate: activateBootstrapPath = null,
 		blueprintInstallOnly = false,
+		activateOn = [ 'subsite' ],
 	} = catalogEntry;
 
 	const base = {
@@ -88,6 +90,7 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
 		mountHostPath: null,
 		blueprintInstallUrl: null,
 		activateBootstrapPath,
+		activateOn,
 	};
 
 	if ( envPathVar ) {

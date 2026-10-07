@@ -2,9 +2,9 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedIntegrationData, seedSiteChromeData } from '../helpers/wp-cli.js';
 
 let governance;
@@ -31,7 +31,7 @@ test.describe( 'Governance templates integration', () => {
 
 	test( 'agenda aria snapshot @aria', async ( { page }, testInfo ) => {
 		test.skip( ! governance.agendaUrl, 'Trustees Agenda plugin not available.' );
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await visitIntegrationPage( page, governance.agendaUrl );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'governance-agenda-frontend.yml',

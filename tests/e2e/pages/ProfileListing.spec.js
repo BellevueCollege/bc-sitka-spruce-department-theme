@@ -2,9 +2,9 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedIntegrationData, seedSiteChromeData } from '../helpers/wp-cli.js';
 
 let listingUrl;
@@ -35,7 +35,7 @@ test.describe( 'Profile listing integration', () => {
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'profile-listing-frontend.yml',
 		} );

@@ -1,0 +1,162 @@
+<?php
+/**
+ * Wire core-site block attributes using the main-site seed map.
+ *
+ * @package BcSitkaSpruce
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/** Option key on the main site storing core post IDs for e2e. */
+const E2E_CORE_SEED_OPTION = 'bc_sitka_e2e_core_seed';
+
+/** Shared program title between main-site core seed and subsite local program posts. */
+const E2E_CORE_PROGRAM_TITLE = 'E2E Program Alpha';
+
+/**
+ * Load the core seed map from the main site.
+ *
+ * @return array<string, mixed>
+ */
+function e2e_get_core_seed_map(): array {
+	if ( ! is_multisite() ) {
+		$map = get_option( E2E_CORE_SEED_OPTION, array() );
+		return is_array( $map ) ? $map : array();
+	}
+
+	$main_site_id = get_main_site_id();
+	switch_to_blog( $main_site_id );
+	$map = get_option( E2E_CORE_SEED_OPTION, array() );
+	restore_current_blog();
+
+	return is_array( $map ) ? $map : array();
+}
+
+/**
+ * Inject core post IDs into serialized block markup.
+ *
+ * @param string               $content Block markup.
+ * @param array<string, mixed> $map     Core seed map.
+ * @return string
+ */
+function e2e_wire_core_site_blocks_in_content( string $content, array $map ): string {
+	if ( empty( $map ) ) {
+		return $content;
+	}
+
+	if ( ! empty( $map['organizationId'] ) ) {
+		$content = e2e_set_block_attribute(
+			$content,
+			'bc-sitka-spruce/department-feature',
+			'departmentId',
+			(int) $map['organizationId']
+		);
+	}
+
+	if ( ! empty( $map['newsStoryId'] ) ) {
+		$content = e2e_set_block_attribute(
+			$content,
+			'bc-sitka-spruce/news-feature-core',
+			'largeStoryId',
+			(int) $map['newsStoryId']
+		);
+	}
+
+	if ( ! empty( $map['newsTypeId'] ) ) {
+		$content = e2e_set_block_attribute(
+			$content,
+			'bc-sitka-spruce/news-feature-core',
+			'smallStoryTypes',
+			array( (int) $map['newsTypeId'] )
+		);
+	}
+
+	if ( ! empty( $map['identitySupportId'] ) ) {
+		$content = e2e_set_block_attribute(
+			$content,
+			'bc-sitka-spruce/support-feature',
+			'supportPosts',
+			array( (int) $map['identitySupportId'] )
+		);
+	}
+
+	if ( ! empty( $map['differentiatorIds'] ) && is_array( $map['differentiatorIds'] ) ) {
+		$index = 0;
+		$content = preg_replace_callback(
+			'#<!-- wp:bc-sitka-spruce/differentiator(?:\s+\{.*?\})?\s*/-->#s',
+			static function ( $matches ) use ( $map, &$index ) {
+				$ids = $map['differentiatorIds'];
+				if ( ! isset( $ids[ $index ] ) ) {
+					return $matches[0];
+				}
+				$post_id = (int) $ids[ $index ];
+				$index++;
+				return '<!-- wp:bc-sitka-spruce/differentiator {"differentiatorPostId":' . $post_id . '} /-->';
+			},
+			$content
+		) ?? $content;
+	}
+
+	return is_string( $content ) ? $content : '';
+}
+
+/**
+ * Merge or set a single block attribute in serialized markup.
+ *
+ * @param string $content    Block markup.
+ * @param string $block_name Block name without wp: prefix.
+ * @param string $attribute  Attribute key.
+ * @param mixed  $value      Attribute value.
+ * @return string
+ */
+function e2e_set_block_attribute(
+	string $content,
+	string $block_name,
+	string $attribute,
+	mixed $value
+): string {
+	$escaped = preg_quote( $block_name, '#' );
+	$pattern = '#<!-- wp:' . $escaped . '(?:\s+(\{.*?\}))?\s*/-->#s';
+
+	return preg_replace_callback(
+		$pattern,
+		static function ( $matches ) use ( $block_name, $attribute, $value ) {
+			$attributes = array();
+			if ( ! empty( $matches[1] ) ) {
+				$decoded = json_decode( $matches[1], true );
+				if ( is_array( $decoded ) ) {
+					$attributes = $decoded;
+				}
+			}
+			$attributes[ $attribute ] = $value;
+			$json                     = wp_json_encode( $attributes );
+			return '<!-- wp:' . $block_name . ' ' . $json . ' /-->';
+		},
+		$content,
+		1
+	) ?? $content;
+}
+
+/**
+ * Attach a local program post to the degrees block segment (first row).
+ *
+ * @param string $content   Block markup.
+ * @param int    $program_id Local program post ID.
+ * @return string
+ */
+function e2e_wire_degrees_block_program( string $content, int $program_id ): string {
+	if ( $program_id <= 0 ) {
+		return $content;
+	}
+
+	$encoded_ids = wp_json_encode( array( $program_id ) );
+
+	return preg_replace(
+		'/"field_671a706dffac6":""/',
+		'"field_671a706dffac6":' . $encoded_ids,
+		$content,
+		1
+	) ?? $content;
+}

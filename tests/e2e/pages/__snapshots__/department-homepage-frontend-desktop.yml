@@ -3,15 +3,17 @@
     - group:
       - menuitem "About WordPress"
     - group:
+      - menuitem "My Sites"
+    - group:
       - menuitem "E2E Department Site"
     - group:
-      - menuitem "2 updates available"
+      - menuitem "1 update available"
     - group:
       - menuitem "0 Comments in moderation"
     - group:
-      - menuitem "New"
-    - group:
       - menuitem "Edit Page"
+    - group:
+      - menuitem "New"
   - menu:
     - group:
       - menuitem "Howdy, admin"
@@ -26,7 +28,7 @@
     - /url: https://www.bellevuecollege.edu
     - img "Bellevue College - Link to college homepage"
   - link "E2E Department Site":
-    - /url: http://127.0.0.1:8889
+    - /url: http://127.0.0.1:8889/e2e-dept
   - navigation "Main Menu":
     - list:
       - listitem:
@@ -69,7 +71,27 @@
   - complementary:
     - heading "Optional Callout" [level=3]
     - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
+  - region "Stats about BC":
+    - heading "Stats about BC" [level=2]
+  - text: "/Warning: Attempt to read property “name” on string in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/Program[\\d,.]+[hmsp]+ on line \\d+ Warning: Attempt to read property “name” on string in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/Program[\\d,.]+[hmsp]+ on line \\d+/"
+  - heading "Degrees and Certificates" [level=2]
+  - heading "Degree Options" [level=3]
+  - heading "E2E Alpha" [level=4]:
+    - link "E2E Alpha":
+      - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-alpha/
+  - text: E2E core program overview.
+  - term: Degree
+  - definition
+  - term: Duration
+  - definition: 2 years
+  - term: Pathway(s)
+  - definition:
+    - list
+  - term: Focus Area(s)
+  - definition:
+    - list
   - separator
+  - heading "Certificate Options" [level=3]
   - article:
     - heading "Announcement Banner" [level=2]
     - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
@@ -85,6 +107,16 @@
   - heading "Leadership" [level=3]
   - paragraph: No employees found!
   - heading "Checkerboards Headline" [level=2]
+  - text: "/Warning: Trying to access array offset on value of type int in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/SupportFeature[\\d,.]+[hmsp]+ on line \\d+/"
+  - heading "Support Section" [level=2]
+  - tablist:
+    - tab "E2E Core Identity Support" [selected]
+  - tabpanel "E2E Core Identity Support":
+    - heading "E2E Core Identity Support" [level=3]
+    - heading "E2E Support Tab" [level=4]
+    - text: E2E support tab summary content.
+  - text: "/Warning: Trying to access array offset on value of type int in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/News[\\d,.]+[hmsp]+ on line \\d+/"
+  - heading "News Section" [level=2]
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:

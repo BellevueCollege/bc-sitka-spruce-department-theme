@@ -1,9 +1,9 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	seedChromeVariant,
 	seedIntegrationData,
@@ -36,7 +36,7 @@ test.describe( 'Blog templates integration', () => {
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await visitIntegrationPage( page, blogIndexUrl );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'blog-index-frontend.yml',

@@ -2,9 +2,9 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	applyHomepageVariant,
 	seedIntegrationData,
@@ -30,6 +30,8 @@ test.describe( 'Division homepage integration', () => {
 		await expect( main.getByText( 'Announcement Banner' ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'Our Departments/Sub-units' } ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'Our Services/Facilities' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'Stats about BC' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'News Section Title' } ) ).toBeVisible();
 		await expect( main.getByText( 'Division Staff' ) ).toBeVisible();
 	} );
 
@@ -38,7 +40,7 @@ test.describe( 'Division homepage integration', () => {
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'division-homepage-frontend.yml',
 		} );

@@ -1,10 +1,46 @@
-import { test } from '../fixtures/test.js';
+import { test, expect } from '../fixtures/test.js';
+import {
+	runAxeOnSelector,
+	visitIntegrationPage,
+} from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
+import { seedIntegrationData, seedSiteChromeData } from '../helpers/wp-cli.js';
 
-/**
- * `single-program.php` loads related programs via `Program::get_single_from_core_by_title()`
- * and expects a multisite core site. wp-env is single-site, so frontend integration is deferred
- * until the e2e environment can run multisite (same constraint as populated core-site blocks).
- */
-test.describe.skip( 'Single program integration', () => {
-	test( 'pending multisite e2e environment', () => {} );
+let programUrl;
+
+test.describe( 'Single program integration', () => {
+	test.beforeAll( () => {
+		seedSiteChromeData();
+		const seed = seedIntegrationData();
+		programUrl = seed.programUrl;
+	} );
+
+	test.beforeEach( async ( { page } ) => {
+		await visitIntegrationPage( page, programUrl );
+	} );
+
+	test( 'renders program template without fatal errors', async ( { page } ) => {
+		await expect( page.locator( 'body' ) ).not.toContainText( 'fatal error' );
+		await expect( page.locator( 'main, .site-content, #content' ).first() ).toBeVisible();
+	} );
+
+	test( 'shows related programs region', async ( { page } ) => {
+		const main = page.locator( 'main, .site-content, #content' ).first();
+		await expect(
+			main.getByRole( 'heading', { name: 'Programs in this Department' } )
+		).toBeVisible();
+		await expect( main.getByRole( 'link', { name: 'E2E Beta' } ) ).toBeVisible();
+	} );
+
+	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
+		skipDuplicateBlockViewport( testInfo );
+		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
+			name: 'single-program-frontend.yml',
+		} );
+	} );
+
+	test( 'main content passes axe', async ( { page } ) => {
+		const results = await runAxeOnSelector( page, '.related-programs-wrapper' );
+		expect( results.violations ).toEqual( [] );
+	} );
 } );

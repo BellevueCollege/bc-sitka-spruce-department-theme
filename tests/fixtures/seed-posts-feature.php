@@ -124,6 +124,8 @@ if ( $hello_world ) {
 	);
 }
 
+flush_rewrite_rules( false );
+
 echo wp_json_encode(
 	array(
 		'categoryId'       => $category_id,

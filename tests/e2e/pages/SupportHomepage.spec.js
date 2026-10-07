@@ -2,9 +2,9 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	applyHomepageVariant,
 	seedIntegrationData,
@@ -31,6 +31,9 @@ test.describe( 'Support homepage integration', () => {
 		await expect( main.getByText( 'Featured Experience' ) ).toBeVisible();
 		await expect( main.getByText( 'Checkerboards Headline' ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'Resources/FAQs' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'Support Section' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'Specialized Resources and Support' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'News Section' } ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: /Why \[X\] at Bellevue College/i } ) ).toBeVisible();
 	} );
 
@@ -41,7 +44,7 @@ test.describe( 'Support homepage integration', () => {
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'support-homepage-frontend.yml',
 		} );

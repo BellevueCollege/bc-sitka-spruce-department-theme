@@ -47,7 +47,9 @@ Once these requirements are installed, you can install project dependencies via 
 
 ## End-to-end tests
 
-Block editor and frontend tests use [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) (Docker) and Playwright via `@wordpress/scripts`. WordPress runs at `http://127.0.0.1:8889`.
+Block editor and frontend tests use [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) (Docker) and Playwright via `@wordpress/scripts`. E2e uses **multisite** on port **8889**; the Sitka department subsite is **`http://127.0.0.1:8889/e2e-dept/`** (Playwright default `baseURL`). The network main site is `http://127.0.0.1:8889` for Bellevue 2022 CPT data.
+
+Agent-oriented details: [`tests/AGENTS.md`](tests/AGENTS.md).
 
 Run `npm run build` before tests. Docker (or Podman with `docker` on your PATH) must be running.
 
@@ -65,7 +67,7 @@ npm run env:e2e:start
 npm run test:e2e:functional:external
 ```
 
-Use `test:e2e:functional:external` whenever wp-env is already up. Set `E2E_WPENV_EXTERNAL=1` so Playwright skips its `webServer` and uses `http://127.0.0.1:8889`.
+Use `test:e2e:functional:external` whenever wp-env is already up. Set `E2E_WPENV_EXTERNAL=1` so Playwright skips its `webServer` (same subsite URL as above).
 
 **Single-command runs:** `npm run test:e2e:functional` generates `.wp-env.e2e.json`, starts wp-env, then runs tests. The first boot can take several minutes while images download. Playwright waits for `[e2e] wp-env e2e ready` in the webServer log (not merely an open port), so global setup does not run before `wp-env start` finishes.
 
@@ -98,9 +100,11 @@ Equivalent `docker run` (built from the same flags as `npm run tunnel:e2e:start`
 docker run --rm -d --name e2e-tunnel -p 8000:8000 --add-host=host.docker.internal:host-gateway -e LT_USERNAME -e LT_ACCESS_KEY lambdatest/tunnel:latest --tunnelName e2e-tunnel --infoAPIPort 8000
 ```
 
-**503 / `dial tcp [::1]:8889` on `@visual` tests:** LambdaTest browsers use `http://host.docker.internal:8889` (not `127.0.0.1`) so the tunnel reaches wp-env on the host. Restart wp-env after mu-plugin changes. Override with `E2E_LAMBDATEST_PLAYGROUND_URL` if needed.
+**503 / `dial tcp [::1]:8889` on `@visual` tests:** LambdaTest browsers use `http://host.docker.internal:8889/e2e-dept` (not `127.0.0.1`) so the tunnel reaches wp-env on the host. Restart wp-env after mu-plugin changes. Override with `E2E_LAMBDATEST_PLAYGROUND_URL` if needed.
 
-**Slow LambdaTest editor loads:** E2e unregisters all `bc-sitka-spruce/*` blocks except those under test (`announcement-banner`, `posts-feature`). Only tag tests with `@visual` when they call `toHaveScreenshot`. Run `npm run build` so dist assets exist.
+**Slow LambdaTest editor loads:** E2e unregisters `bc-sitka-spruce/*` blocks not listed in `BC_SITKA_E2E_ALLOWED_THEME_BLOCKS` in the e2e mu-plugin (see [`tests/AGENTS.md`](tests/AGENTS.md)). Only tag tests with `@visual` when they call `toHaveScreenshot`. Run `npm run build` so dist assets exist.
+
+**Mayflower Blocks in CI:** [`tests/e2e/plugins.json`](tests/e2e/plugins.json) downloads release **v3.11** from GitHub. Locally you can still use `plugins.local.json` or `MAYFLOWER_BLOCKS_PATH`.
 
 **Visual / snapshot runs stall or fail with `api.lambdatest.com` / `ConnectTimeoutError`:** `@visual` tests need outbound HTTPS to LambdaTest. If the tunnel is not running, start it with the commands above. See [LambdaTest docker tunnel docs](https://www.lambdatest.com/support/docs/docker-tunnel/).
 
@@ -138,7 +142,6 @@ Nightwatch VRT against Kinsta QA has been removed. Equivalent coverage on wp-env
 | Announcement banner | [`tests/e2e/blocks/AnnouncementBanner.spec.js`](tests/e2e/blocks/AnnouncementBanner.spec.js) |
 | Block editor / posts | [`tests/e2e/blocks/PostsFeature.spec.js`](tests/e2e/blocks/PostsFeature.spec.js) |
 | Other templates | [`tests/e2e/pages/*.spec.js`](tests/e2e/pages/) |
-
 
 ## Documentation
 

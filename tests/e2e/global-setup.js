@@ -6,20 +6,18 @@ import defaultGlobalSetup from '@wordpress/scripts/config/playwright/global-setu
 import {
 	ensureTunnelRunning,
 	getLambdaTestPlaygroundBaseUrl,
-	getLambdaTestWsEndpoint,
 	isLambdaTestRun,
 	isTunnelAutoStartEnabled,
 	stopLambdaTestTunnelContainer,
 } from './helpers/lambdatest.js';
-import { getHostE2eBaseUrl } from './helpers/e2e-env.js';
-import { seedEditorPreferences } from './helpers/wp-cli.js';
+import { getPlaywrightBaseUrl } from './helpers/e2e-env.js';
 
 /**
  * @param {import('@playwright/test').FullConfig} config
  * @return {import('@playwright/test').FullConfig}
  */
 function configWithHostE2eBaseUrl( config ) {
-	const hostE2eUrl = getHostE2eBaseUrl();
+	const hostE2eUrl = getPlaywrightBaseUrl();
 
 	return {
 		...config,
@@ -45,20 +43,24 @@ async function ensureLambdaTestAdminSession( config ) {
 		return;
 	}
 
-	const baseURL = getLambdaTestPlaygroundBaseUrl();
-	const browser = await chromium.connect( getLambdaTestWsEndpoint() );
+	const tunnelBaseUrl = getLambdaTestPlaygroundBaseUrl();
+	const hostBaseUrl = getPlaywrightBaseUrl();
+	// Host Chrome cannot resolve host.docker.internal; log in on loopback, then remap cookies.
+	const browser = await chromium.launch( { channel: 'chrome' } );
 
 	try {
-		const context = await browser.newContext( { baseURL } );
+		const context = await browser.newContext( { baseURL: hostBaseUrl } );
 		const page = await context.newPage();
 
-		await page.goto( '/wp-admin/' );
+		await page.goto( 'wp-admin/', {
+			waitUntil: 'domcontentloaded',
+		} );
 
 		const bodyText = await page.locator( 'body' ).innerText().catch( () => '' );
 		if ( bodyText.includes( '[::1]' ) || bodyText.includes( 'connection refused' ) ) {
 			throw new Error(
 				'LambdaTest tunnel could not reach WordPress. On macOS/Podman, base URL must be ' +
-					`${ baseURL } (not 127.0.0.1). Restart wp-env and the e2e-tunnel container.`
+					`${ tunnelBaseUrl } (not 127.0.0.1). Restart wp-env and the e2e-tunnel container.`
 			);
 		}
 
@@ -69,7 +71,20 @@ async function ensureLambdaTestAdminSession( config ) {
 			await page.waitForURL( /wp-admin/ );
 		}
 
-		await context.storageState( { path: storageStatePath } );
+		const storageState = await context.storageState();
+		const tunnelHost = new URL( tunnelBaseUrl ).hostname;
+		const loopbackHost = new URL( hostBaseUrl ).hostname;
+
+		for ( const cookie of storageState.cookies ) {
+			cookie.domain = cookie.domain.replace( loopbackHost, tunnelHost );
+		}
+
+		for ( const origin of storageState.origins ?? [] ) {
+			origin.origin = origin.origin.replace( loopbackHost, tunnelHost );
+		}
+
+		const fs = await import( 'node:fs' );
+		fs.writeFileSync( storageStatePath, JSON.stringify( storageState, null, 2 ) );
 	} finally {
 		await browser.close();
 	}
@@ -90,59 +105,6 @@ export default async function globalSetup( config ) {
 		startedTunnelInThisRun = tunnelResult.startedTunnelInThisRun;
 	}
 
-	try {
-		console.log( '[e2e] Seeding editor preferences…' );
-		seedEditorPreferences();
-		// #region agent log
-		fetch(
-			'http://127.0.0.1:7318/ingest/2d137c06-c08e-496e-837b-46890e3b1347',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-Debug-Session-Id': 'c90b84',
-				},
-				body: JSON.stringify( {
-					sessionId: 'c90b84',
-					runId: 'global-setup',
-					hypothesisId: 'C',
-					location: 'tests/e2e/global-setup.js:seed',
-					message: 'editor_preferences_seeded',
-					data: { ok: true },
-					timestamp: Date.now(),
-				} ),
-			}
-		).catch( () => {} );
-		// #endregion
-	} catch ( seedError ) {
-		// #region agent log
-		fetch(
-			'http://127.0.0.1:7318/ingest/2d137c06-c08e-496e-837b-46890e3b1347',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-Debug-Session-Id': 'c90b84',
-				},
-				body: JSON.stringify( {
-					sessionId: 'c90b84',
-					runId: 'global-setup',
-					hypothesisId: 'C',
-					location: 'tests/e2e/global-setup.js:seed',
-					message: 'editor_preferences_seed_failed',
-					data: {
-						error:
-							seedError instanceof Error
-								? seedError.message
-								: String( seedError ),
-					},
-					timestamp: Date.now(),
-				} ),
-			}
-		).catch( () => {} );
-		// #endregion
-		throw seedError;
-	}
 	console.log( '[e2e] Authenticating admin (wp-scripts global setup)…' );
 	await defaultGlobalSetup( configWithHostE2eBaseUrl( config ) );
 

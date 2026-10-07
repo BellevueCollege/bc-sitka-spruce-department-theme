@@ -1,5 +1,5 @@
 import { spawnSync } from 'node:child_process';
-import { getE2ePort } from './e2e-env.js';
+import { getE2ePort, getSubsiteBaseUrl } from './e2e-env.js';
 
 const LAMBDATEST_TUNNEL_NAME = 'e2e-tunnel';
 const DEFAULT_TUNNEL_INFO_PORT = 8000;
@@ -83,8 +83,17 @@ export function getLambdaTestPlaygroundBaseUrl() {
 		return process.env.E2E_LAMBDATEST_PLAYGROUND_URL.replace( /\/$/, '' );
 	}
 
-	const port = getE2ePort();
-	return `http://${ LAMBDATEST_TUNNEL_HOST_ALIAS }:${ port }`;
+	const subsiteUrl = getSubsiteBaseUrl();
+	try {
+		const parsed = new URL( subsiteUrl );
+		const port = parsed.port || String( getE2ePort() );
+		const path = parsed.pathname.replace( /\/$/, '' );
+		const base = `http://${ LAMBDATEST_TUNNEL_HOST_ALIAS }:${ port }${ path }`;
+		return base.endsWith( '/' ) ? base : `${ base }/`;
+	} catch {
+		const port = getE2ePort();
+		return `http://${ LAMBDATEST_TUNNEL_HOST_ALIAS }:${ port }/`;
+	}
 }
 
 /**

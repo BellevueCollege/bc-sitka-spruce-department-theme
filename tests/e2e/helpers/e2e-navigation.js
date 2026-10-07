@@ -1,8 +1,22 @@
-import { getE2ePort } from './e2e-env.js';
+import { getHostE2eBaseUrl, getMainSiteBaseUrl } from './e2e-env.js';
 import {
 	getLambdaTestPlaygroundBaseUrl,
 	isLambdaTestRun,
 } from './lambdatest.js';
+
+/**
+ * @param {string} url
+ * @param {string} fromOrigin
+ * @param {string} toOrigin
+ * @return {string}
+ */
+function replaceUrlOrigin( url, fromOrigin, toOrigin ) {
+	if ( ! url.startsWith( fromOrigin ) ) {
+		return url;
+	}
+
+	return `${ toOrigin }${ url.slice( fromOrigin.length ) }`;
+}
 
 /**
  * Rewrite loopback permalinks from WP-CLI seeds for LambdaTest navigation.
@@ -15,38 +29,33 @@ export function normalizeE2eUrlForPlaywright( url ) {
 		return url;
 	}
 
-	const port = getE2ePort();
-	const tunnelBase = getLambdaTestPlaygroundBaseUrl();
-	const loopback = `http://127.0.0.1:${ port }`;
-	const localhost = `http://localhost:${ port }`;
+	const tunnelSubsite = getLambdaTestPlaygroundBaseUrl().replace( /\/$/, '' );
+	const loopbackSubsite = getHostE2eBaseUrl();
+	const loopbackLocalhostSubsite = loopbackSubsite.replace(
+		'127.0.0.1',
+		'localhost'
+	);
 
-	const normalized = url
-		.replace( loopback, tunnelBase )
-		.replace( localhost, tunnelBase );
+	const tunnelOrigin = new URL( tunnelSubsite ).origin;
+	const loopbackOrigin = getMainSiteBaseUrl();
+	const loopbackLocalhostOrigin = loopbackOrigin.replace(
+		'127.0.0.1',
+		'localhost'
+	);
 
-	if ( normalized !== url ) {
-		// #region agent log
-		fetch(
-			'http://127.0.0.1:7318/ingest/2d137c06-c08e-496e-837b-46890e3b1347',
-			{
-				method: 'POST',
-				headers: {
-					'Content-Type': 'application/json',
-					'X-Debug-Session-Id': 'c90b84',
-				},
-				body: JSON.stringify( {
-					sessionId: 'c90b84',
-					runId: 'visual-suite',
-					hypothesisId: 'E',
-					location: 'tests/e2e/helpers/e2e-navigation.js',
-					message: 'normalized_loopback_navigation_url',
-					data: { from: url, to: normalized },
-					timestamp: Date.now(),
-				} ),
-			}
-		).catch( () => {} );
-		// #endregion
-	}
+	let normalized = url;
+	normalized = replaceUrlOrigin( normalized, loopbackSubsite, tunnelSubsite );
+	normalized = replaceUrlOrigin(
+		normalized,
+		loopbackLocalhostSubsite,
+		tunnelSubsite
+	);
+	normalized = replaceUrlOrigin( normalized, loopbackOrigin, tunnelOrigin );
+	normalized = replaceUrlOrigin(
+		normalized,
+		loopbackLocalhostOrigin,
+		tunnelOrigin
+	);
 
-	return normalized;
+	return normalized.replace( /([^:]\/)\/+/g, '$1' );
 }

@@ -13,77 +13,70 @@ if ( ! defined( 'ABSPATH' ) ) {
 const BC_SITKA_E2E_WP_PORT = 8889;
 
 /**
- * WordPress URL for the current request (host vs LambdaTest tunnel).
+ * Request origin host:port (no path) for loopback vs LambdaTest tunnel.
  */
-function bc_sitka_e2e_request_base_url(): string {
-	$port        = BC_SITKA_E2E_WP_PORT;
+function bc_sitka_e2e_request_origin(): string {
+	$port = BC_SITKA_E2E_WP_PORT;
+
+	// LambdaTest proxy keeps HTTP_HOST on loopback for multisite routing but exposes the browser origin here.
+	if ( isset( $_SERVER['HTTP_X_E2E_PUBLIC_ORIGIN'] ) ) {
+		$public_origin = trim( (string) $_SERVER['HTTP_X_E2E_PUBLIC_ORIGIN'] );
+		if ( $public_origin !== '' ) {
+			return $public_origin;
+		}
+	}
+
 	$host_header = isset( $_SERVER['HTTP_HOST'] ) ? (string) $_SERVER['HTTP_HOST'] : '';
 	$host_only   = preg_replace( '/:\d+$/', '', $host_header );
 
 	if ( $host_only === 'host.docker.internal' || $host_only === 'host.containers.internal' ) {
-		return 'http://' . $host_only . ':' . $port;
+		return $host_only . ':' . $port;
 	}
 
-	// Match Playwright WP_BASE_URL (127.0.0.1) even when wp-env defaults to localhost.
-	return 'http://127.0.0.1:' . $port;
+	return '127.0.0.1:' . $port;
 }
 
-add_filter(
-	'pre_option_siteurl',
-	static function () {
-		return bc_sitka_e2e_request_base_url();
-	},
-	1
-);
-
-add_filter(
-	'pre_option_home',
-	static function () {
-		return bc_sitka_e2e_request_base_url();
-	},
-	1
-);
-
 /**
- * @param mixed $value Option value.
- * @return string
- */
-function bc_sitka_e2e_filter_site_base_url( $value ) {
-	return bc_sitka_e2e_request_base_url();
-}
-
-add_filter( 'option_siteurl', 'bc_sitka_e2e_filter_site_base_url', 1 );
-add_filter( 'option_home', 'bc_sitka_e2e_filter_site_base_url', 1 );
-
-/**
- * Rewrite loopback URLs so script/style loads match the page origin (LambdaTest CORS).
+ * Rewrite loopback host/port in a URL while preserving path and query.
  *
  * @param string $url Generated URL.
  * @return string
  */
 function bc_sitka_e2e_rewrite_tunnel_url( $url ) {
-	if ( ! is_string( $url ) ) {
+	if ( ! is_string( $url ) || $url === '' ) {
 		return $url;
 	}
 
-	$request_base = bc_sitka_e2e_request_base_url();
-	$port         = (string) BC_SITKA_E2E_WP_PORT;
-	$loopback     = 'http://127.0.0.1:' . $port;
-	$localhost    = 'http://localhost:' . $port;
+	$target_origin = bc_sitka_e2e_request_origin();
+	$port          = (string) BC_SITKA_E2E_WP_PORT;
+	$loopback      = '127.0.0.1:' . $port;
+	$localhost     = 'localhost:' . $port;
 
-	if ( $request_base === $loopback ) {
-		$url = str_replace( $localhost, $loopback, $url );
-		return $url;
+	if ( $target_origin === $loopback ) {
+		return str_replace(
+			array( 'http://' . $localhost, 'https://' . $localhost ),
+			array( 'http://' . $loopback, 'https://' . $loopback ),
+			$url
+		);
 	}
 
-	$url = str_replace( $loopback, $request_base, $url );
-	$url = str_replace( $localhost, $request_base, $url );
+	$replacements = array(
+		'http://' . $loopback  => 'http://' . $target_origin,
+		'https://' . $loopback => 'https://' . $target_origin,
+		'http://' . $localhost => 'http://' . $target_origin,
+		'https://' . $localhost => 'https://' . $target_origin,
+	);
 
-	return $url;
+	return str_replace( array_keys( $replacements ), array_values( $replacements ), $url );
 }
 
 add_filter( 'site_url', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
 add_filter( 'home_url', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
+add_filter( 'network_site_url', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
+add_filter( 'option_siteurl', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
+add_filter( 'option_home', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
+add_filter( 'wp_redirect', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
+add_filter( 'login_url', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
 add_filter( 'plugins_url', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
 add_filter( 'content_url', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
 add_filter( 'includes_url', 'bc_sitka_e2e_rewrite_tunnel_url', 1 );
@@ -111,6 +104,39 @@ function bc_sitka_e2e_rewrite_image_srcset( $sources ) {
 }
 
 add_filter( 'wp_calculate_image_srcset', 'bc_sitka_e2e_rewrite_image_srcset', 1 );
+
+/**
+ * Skip host canonicalization when the LambdaTest proxy keeps HTTP_HOST on loopback.
+ *
+ * Without this, WordPress 301s to host.docker.internal while the upstream request
+ * still uses 127.0.0.1, which loops in the browser and surfaces as HTTP 503.
+ *
+ * @param string|false $redirect_url Canonical redirect target.
+ * @return string|false
+ */
+function bc_sitka_e2e_skip_canonical_redirect_for_tunnel( $redirect_url ) {
+	if (
+		isset( $_SERVER['HTTP_X_E2E_PUBLIC_ORIGIN'] ) &&
+		trim( (string) $_SERVER['HTTP_X_E2E_PUBLIC_ORIGIN'] ) !== ''
+	) {
+		return false;
+	}
+
+	return $redirect_url;
+}
+
+add_filter( 'redirect_canonical', 'bc_sitka_e2e_skip_canonical_redirect_for_tunnel', 1 );
+
+/**
+ * Block editor e2e does not rely on classic meta boxes; the loader fetch races navigation on LambdaTest.
+ */
+add_action(
+	'admin_init',
+	static function () {
+		remove_action( 'admin_enqueue_scripts', 'wp_enqueue_meta_box_loader' );
+	},
+	1
+);
 
 /**
  * Theme blocks kept registered in e2e (matches tests/e2e specs).

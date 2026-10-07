@@ -2,9 +2,9 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
-	skipAriaOnDuplicateViewport,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	seedChromeVariant,
 	seedIntegrationData,
@@ -68,7 +68,7 @@ test.describe( 'Flexible page integration', () => {
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
-		skipAriaOnDuplicateViewport( testInfo );
+		skipDuplicateBlockViewport( testInfo );
 		await expect( page.locator( '.narrow-content' ) ).toMatchAriaSnapshot( {
 			name: 'flexible-page-frontend.yml',
 		} );
@@ -84,5 +84,42 @@ test.describe( 'Flexible page integration', () => {
 			'flexible-page-full.png',
 			FULL_PAGE_SCREENSHOT_OPTIONS
 		);
+	} );
+
+	test( 'tabs section snapshot @visual', async ( { page }, testInfo ) => {
+		skipDuplicateBlockViewport( testInfo );
+		const tabsSection = page.locator( '.wp-block-bc-sitka-spruce-tabs-section' );
+		await expect( tabsSection ).toBeVisible();
+		await expect( tabsSection ).toHaveScreenshot( 'flexible-page-tabs-section.png', {
+			maxDiffPixelRatio: 0.02,
+		} );
+	} );
+
+	test( 'narrow content snapshot @visual', async ( { page }, testInfo ) => {
+		skipDuplicateBlockViewport( testInfo );
+		const narrowContent = page.locator( '.narrow-content' );
+		await expect( narrowContent ).toBeVisible();
+		await expect( narrowContent ).toHaveScreenshot(
+			'flexible-page-narrow-content.png',
+			{ maxDiffPixelRatio: 0.02 }
+		);
+	} );
+
+	test( 'mayflower row snapshot @visual', async ( { page }, testInfo ) => {
+		skipDuplicateBlockViewport( testInfo );
+		const row = page.locator( '.wp-block-mayflower-blocks-row' ).first();
+		await expect( row ).toBeVisible();
+		await expect( row ).toHaveScreenshot( 'flexible-page-mayflower-row.png', {
+			maxDiffPixelRatio: 0.02,
+		} );
+	} );
+
+	test( 'mayflower panel snapshot @visual', async ( { page }, testInfo ) => {
+		skipDuplicateBlockViewport( testInfo );
+		const panel = page.locator( '.wp-block-mayflower-blocks-panel' ).first();
+		await expect( panel ).toBeVisible();
+		await expect( panel ).toHaveScreenshot( 'flexible-page-mayflower-panel.png', {
+			maxDiffPixelRatio: 0.02,
+		} );
 	} );
 } );

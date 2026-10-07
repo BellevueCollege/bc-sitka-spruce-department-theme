@@ -74,7 +74,7 @@
     - list
   - button "Submit Search"
   - link "Clear All Filters":
-    - /url: http://127.0.0.1:8889/e2e-profile-listing/
+    - /url: http://127.0.0.1:8889/e2e-dept/e2e-profile-listing/
   - heading "No people matching your search." [level=2]
   - separator
   - heading "Our Faculty and Staff" [level=2]

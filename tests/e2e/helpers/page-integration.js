@@ -1,7 +1,10 @@
+import { setTimeout as delay } from 'node:timers/promises';
 import { expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
 import { normalizeE2eUrlForPlaywright } from './e2e-navigation.js';
-import { skipDuplicateBlockViewport } from './viewports.js';
+
+const VISIT_INTEGRATION_MAX_ATTEMPTS = 6;
+const VISIT_INTEGRATION_BASE_RETRY_DELAY_MS = 1_000;
 
 /** WCAG tags for scoped page integration axe runs. */
 export const WCAG_TAGS = [
@@ -27,7 +30,45 @@ export const FULL_PAGE_SCREENSHOT_OPTIONS = {
  * @param {string} url
  */
 export async function visitIntegrationPage( page, url ) {
-	await page.goto( normalizeE2eUrlForPlaywright( url ) );
+	const normalized = normalizeE2eUrlForPlaywright( url );
+
+	for ( let attempt = 1; attempt <= VISIT_INTEGRATION_MAX_ATTEMPTS; attempt++ ) {
+		const response = await page.goto( normalized, {
+			waitUntil: 'domcontentloaded',
+		} );
+		const status = response?.status() ?? 0;
+
+		// #region agent log
+		fetch( 'http://127.0.0.1:7247/ingest/cdee1a20-8a01-40a2-b3ce-d42ed32a62b2', {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				'X-Debug-Session-Id': '6a545d',
+			},
+			body: JSON.stringify( {
+				sessionId: '6a545d',
+				location: 'page-integration.js:visitIntegrationPage',
+				message: 'goto attempt',
+				data: { attempt, status, normalized },
+				timestamp: Date.now(),
+				hypothesisId: 'H1',
+			} ),
+		} ).catch( () => {} );
+		// #endregion
+
+		if ( status > 0 && status < 500 ) {
+			break;
+		}
+
+		if ( attempt === VISIT_INTEGRATION_MAX_ATTEMPTS ) {
+			throw new Error(
+				`visitIntegrationPage failed after ${ VISIT_INTEGRATION_MAX_ATTEMPTS } attempts (HTTP ${ status }): ${ normalized }`
+			);
+		}
+
+		await delay( VISIT_INTEGRATION_BASE_RETRY_DELAY_MS * attempt );
+	}
+
 	await page.locator( '#header-wrapper' ).waitFor( { state: 'visible' } );
 }
 
@@ -42,13 +83,6 @@ export async function runAxeOnSelector( page, selector ) {
 		.analyze();
 
 	return results;
-}
-
-/**
- * @param {import('@playwright/test').TestInfo} testInfo
- */
-export function skipAriaOnDuplicateViewport( testInfo ) {
-	skipDuplicateBlockViewport( testInfo );
 }
 
 /**

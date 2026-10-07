@@ -2,7 +2,7 @@
 import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
 import {
-	closeEditorSettingsSidebar,
+	prepareEditorCanvasForScreenshot,
 	prepareEditorPage,
 	publishAndGetUrl,
 	settleLocatorForScreenshot,
@@ -95,7 +95,7 @@ test.describe( 'Announcement Banner Block', () => {
 		test( 'editor snapshot — with button and image @visual', async ( {
 			editor,
 			page,
-		} ) => {
+		}, testInfo ) => {
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -106,7 +106,7 @@ test.describe( 'Announcement Banner Block', () => {
 				`[data-type="${ BLOCK_NAME }"]`
 			);
 			await waitForBlockToRender( editor, BLOCK_NAME );
-			await closeEditorSettingsSidebar( page );
+			await prepareEditorCanvasForScreenshot( page, testInfo );
 			await settleLocatorForScreenshot( block );
 			await expect( block ).toBeVisible();
 			await expect( block ).toHaveScreenshot( 'editor-with-button.png', {
@@ -117,7 +117,7 @@ test.describe( 'Announcement Banner Block', () => {
 		test( 'editor snapshot — with links and image @visual', async ( {
 			editor,
 			page,
-		} ) => {
+		}, testInfo ) => {
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
@@ -128,7 +128,7 @@ test.describe( 'Announcement Banner Block', () => {
 				`[data-type="${ BLOCK_NAME }"]`
 			);
 			await waitForBlockToRender( editor, BLOCK_NAME );
-			await closeEditorSettingsSidebar( page );
+			await prepareEditorCanvasForScreenshot( page, testInfo );
 			await settleLocatorForScreenshot( block );
 			await expect( block ).toBeVisible();
 			await expect( block ).toHaveScreenshot( 'editor-with-links.png', {
@@ -136,7 +136,10 @@ test.describe( 'Announcement Banner Block', () => {
 			} );
 		} );
 
-		test( 'editor snapshot — no image @visual', async ( { editor, page } ) => {
+		test( 'editor snapshot — no image @visual', async ( {
+			editor,
+			page,
+		}, testInfo ) => {
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
 				attributes: { data: FIXTURE.noImage() },
@@ -146,7 +149,8 @@ test.describe( 'Announcement Banner Block', () => {
 				`[data-type="${ BLOCK_NAME }"]`
 			);
 			await waitForBlockToRender( editor, BLOCK_NAME );
-			await closeEditorSettingsSidebar( page );
+			await prepareEditorCanvasForScreenshot( page, testInfo );
+			await settleLocatorForScreenshot( block );
 			await expect( block ).toBeVisible();
 			await expect( block ).toHaveScreenshot( 'editor-no-image.png', {
 				maxDiffPixelRatio: 0.02,

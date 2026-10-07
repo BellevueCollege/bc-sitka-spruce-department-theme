@@ -12,6 +12,7 @@ import {
 	expandMainNavSubmenu,
 	openHeaderMenuIfCollapsed,
 } from '../helpers/header.js';
+import { settleLocatorForScreenshot } from '../helpers/editor.js';
 import { normalizeE2eUrlForPlaywright } from '../helpers/e2e-navigation.js';
 import { seedChromeVariant, seedSiteChromeData } from '../helpers/wp-cli.js';
 
@@ -121,9 +122,9 @@ test.describe( 'Header and Footer', () => {
 		} );
 
 		test( 'footer snapshot — default state @visual', async ( { page } ) => {
-
 			const footer = page.locator( 'footer.footer' );
 			await expect( footer ).toBeVisible();
+			await settleLocatorForScreenshot( footer );
 			await expect( footer ).toHaveScreenshot(
 				'footer-default.png',
 				SCREENSHOT_OPTIONS
@@ -175,6 +176,7 @@ test.describe( 'Header and Footer', () => {
 			await expect(
 				footer.getByRole( 'link', { name: 'e2e-footer@example.com' } )
 			).toBeVisible();
+			await settleLocatorForScreenshot( footer );
 			await expect( footer ).toHaveScreenshot(
 				'footer-email-only.png',
 				SCREENSHOT_OPTIONS
@@ -186,6 +188,17 @@ test.describe( 'Header and Footer', () => {
 			await page.goto( normalizeE2eUrlForPlaywright( chrome.pageUrl ) );
 			await expect( page.getByText( 'E2E Sock CTA' ) ).toBeVisible();
 			await expect( page.getByText( '123 Test Street' ) ).toBeVisible();
+		} );
+
+		test( 'sock snapshot when configured @visual', async ( { page } ) => {
+			const chrome = seedChromeVariant( 'sock' );
+			await page.goto( normalizeE2eUrlForPlaywright( chrome.pageUrl ) );
+			const sock = page.locator( 'aside.sock' );
+			await expect( sock ).toBeVisible();
+			await expect( sock ).toHaveScreenshot(
+				'sock-standard.png',
+				SCREENSHOT_OPTIONS
+			);
 		} );
 	} );
 

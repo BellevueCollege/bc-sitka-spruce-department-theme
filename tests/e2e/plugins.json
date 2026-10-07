@@ -4,6 +4,7 @@
 		"displayName": "Breadcrumb Trail",
 		"required": true,
 		"blueprintInstallOnly": true,
+		"activateOn": [ "subsite" ],
 		"remote": {
 			"url": "https://downloads.wordpress.org/plugin/breadcrumb-trail.1.1.0.zip"
 		},
@@ -13,17 +14,20 @@
 		"slug": "mayflower-blocks",
 		"displayName": "Mayflower Blocks",
 		"required": true,
+		"activateOn": [ "subsite" ],
 		"envPathVar": "MAYFLOWER_BLOCKS_PATH",
 		"remote": {
-			"url": "https://github.com/BellevueCollege/mayflower-blocks/releases/download/v0.0.0-placeholder/mayflower-blocks.zip",
+			"url": "https://github.com/BellevueCollege/mayflower-blocks/releases/download/v3.11/mayflower-blocks.zip",
 			"directoryName": "mayflower-blocks"
-		}
+		},
+		"activate": "mayflower-blocks/mayflower-blocks.php"
 	},
 	"tablePress": {
 		"slug": "tablepress",
 		"displayName": "TablePress",
 		"required": true,
 		"blueprintInstallOnly": true,
+		"activateOn": [ "subsite" ],
 		"remote": {
 			"url": "https://downloads.wordpress.org/plugin/tablepress.3.1.2.zip"
 		},
@@ -33,6 +37,7 @@
 		"slug": "trustees-agenda",
 		"displayName": "Trustees Agenda",
 		"required": true,
+		"activateOn": [ "subsite" ],
 		"remote": {
 			"url": "https://github.com/BellevueCollege/trustees-agenda/releases/download/v1.4.1/trustees-agenda.zip",
 			"directoryName": "trustees-agenda"
@@ -43,16 +48,67 @@
 		"slug": "oho-views",
 		"displayName": "OHO Views",
 		"required": true,
+		"activateOn": [ "subsite" ],
 		"envPathVar": "OHO_VIEWS_PATH",
 		"remote": {
 			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/oho-views.zip",
 			"directoryName": "oho-views"
-		}
+		},
+		"activate": "oho-views/oho-views.php"
+	},
+	"bellevue2022Organization": {
+		"slug": "bellevue-2022-organization",
+		"displayName": "Bellevue 2022 Organization",
+		"required": true,
+		"activateOn": [ "main", "subsite" ],
+		"envPathVar": "BELLEVUE_2022_ORGANIZATION_PATH",
+		"remote": {
+			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-organization.zip",
+			"directoryName": "bellevue-2022-organization"
+		},
+		"activate": "bellevue-2022-organization/bellevue-2022-organization.php"
+	},
+	"bellevue2022News": {
+		"slug": "bellevue-2022-news",
+		"displayName": "Bellevue 2022 News",
+		"required": true,
+		"activateOn": [ "main", "subsite" ],
+		"envPathVar": "BELLEVUE_2022_NEWS_PATH",
+		"remote": {
+			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-news.zip",
+			"directoryName": "bellevue-2022-news"
+		},
+		"activate": "bellevue-2022-news/bellevue-2022-news.php"
+	},
+	"bellevue2022Program": {
+		"slug": "bellevue-2022-program",
+		"displayName": "Bellevue 2022 Program",
+		"required": true,
+		"activateOn": [ "main", "subsite" ],
+		"envPathVar": "BELLEVUE_2022_PROGRAM_PATH",
+		"remote": {
+			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-program.zip",
+			"directoryName": "bellevue-2022-program"
+		},
+		"activate": "bellevue-2022-program/bellevue-2022-program.php"
+	},
+	"bellevue2022Components": {
+		"slug": "bellevue-2022-components",
+		"displayName": "Bellevue 2022 Components",
+		"required": true,
+		"activateOn": [ "main", "subsite" ],
+		"envPathVar": "BELLEVUE_2022_COMPONENTS_PATH",
+		"remote": {
+			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-components.zip",
+			"directoryName": "bellevue-2022-components"
+		},
+		"activate": "bellevue-2022-components/bellevue-2022-components.php"
 	},
 	"acf": {
 		"slug": "advanced-custom-fields-pro",
 		"displayName": "Advanced Custom Fields PRO",
 		"required": false,
+		"activateOn": [ "main", "subsite" ],
 		"envPathVar": "ACF_PATH",
 		"blueprintInstallOnly": true,
 		"remote": {

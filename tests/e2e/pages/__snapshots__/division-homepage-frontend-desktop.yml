@@ -3,15 +3,17 @@
     - group:
       - menuitem "About WordPress"
     - group:
+      - menuitem "My Sites"
+    - group:
       - menuitem "E2E Department Site"
     - group:
-      - menuitem "2 updates available"
+      - menuitem "1 update available"
     - group:
       - menuitem "0 Comments in moderation"
     - group:
-      - menuitem "New"
-    - group:
       - menuitem "Edit Page"
+    - group:
+      - menuitem "New"
   - menu:
     - group:
       - menuitem "Howdy, admin"
@@ -26,7 +28,7 @@
     - /url: https://www.bellevuecollege.edu
     - img "Bellevue College - Link to college homepage"
   - link "E2E Department Site":
-    - /url: http://127.0.0.1:8889
+    - /url: http://127.0.0.1:8889/e2e-dept
   - navigation "Main Menu":
     - list:
       - listitem:
@@ -69,6 +71,9 @@
     - paragraph: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis magna aliquam in leo pretium viverra.
   - heading "Our Departments/Sub-units" [level=2]
   - heading "Our Services/Facilities" [level=2]
+  - region "Stats about BC":
+    - heading "Stats about BC" [level=2]
+  - heading "Checkerboard Section" [level=2]
   - heading "Division Staff" [level=2]
   - heading "Leadership" [level=3]
   - paragraph: No employees found!
@@ -79,6 +84,9 @@
   - complementary:
     - heading "Optional Callout" [level=3]
     - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
+  - separator
+  - text: "/Warning: Trying to access array offset on value of type int in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/News[\\d,.]+[hmsp]+ on line \\d+/"
+  - heading "News Section Title" [level=2]
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:

@@ -3,15 +3,17 @@
     - group:
       - menuitem "About WordPress"
     - group:
+      - menuitem "My Sites"
+    - group:
       - menuitem "E2E Department Site"
     - group:
-      - menuitem "2 updates available"
+      - menuitem "1 update available"
     - group:
       - menuitem "0 Comments in moderation"
     - group:
-      - menuitem "New"
-    - group:
       - menuitem "Edit Page"
+    - group:
+      - menuitem "New"
   - menu:
     - group:
       - menuitem "Howdy, admin"
@@ -26,7 +28,7 @@
     - /url: https://www.bellevuecollege.edu
     - img "Bellevue College - Link to college homepage"
   - link "E2E Department Site":
-    - /url: http://127.0.0.1:8889
+    - /url: http://127.0.0.1:8889/e2e-dept
   - navigation "Main Menu":
     - list:
       - listitem:
@@ -87,6 +89,24 @@
   - article:
     - heading "Upcoming Deadline" [level=2]
     - paragraph: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel semper ridiculus lorem neque. Sem tempus sed odio amet, non a tristique blandit dictum.
+  - text: "/Warning: Trying to access array offset on value of type int in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/SupportFeature[\\d,.]+[hmsp]+ on line \\d+/"
+  - heading "Support Available" [level=2]
+  - tablist:
+    - tab "E2E Core Identity Support" [selected]
+  - tabpanel "E2E Core Identity Support":
+    - heading "E2E Core Identity Support" [level=3]
+    - heading "E2E Support Tab" [level=4]
+    - text: E2E support tab summary content.
+  - text: "/Warning: Trying to access array offset on value of type int in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/Department[\\d,.]+[hmsp]+ on line \\d+/"
+  - heading "Department Feature" [level=2]
+  - heading "E2E Core Organization" [level=3]:
+    - link "E2E Core Organization":
+      - /url: https://example.com/e2e-organization
+  - text: E2E organization summary for department feature.
+  - heading "Services & Resources" [level=4]
+  - list:
+    - listitem: E2E student service
+  - separator
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:

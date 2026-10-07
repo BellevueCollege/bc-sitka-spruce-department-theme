@@ -1,13 +1,19 @@
 import { execSync, spawnSync } from 'child_process';
 import { existsSync, unlinkSync } from 'fs';
 import path from 'path';
-import { WP_ENV_E2E_CONFIG } from './e2e-env.js';
+import {
+	getMainSiteBaseUrl,
+	getSubsiteBaseUrl,
+	WP_ENV_E2E_CONFIG,
+} from './e2e-env.js';
 
 export const THEME_SLUG = 'bc-sitka-spruce-department-theme';
 export const THEME_PATH = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
 
 const projectRoot = process.cwd();
 const wpEnvBin = path.join( projectRoot, 'node_modules', '.bin', 'wp-env' );
+
+const DEFAULT_CLI_SITE_URL = getSubsiteBaseUrl();
 
 /**
  * Resolve the Playwright artifacts directory (absolute path).
@@ -25,14 +31,24 @@ function resolveArtifactsPath() {
 const artifactsPath = resolveArtifactsPath();
 const adminStorageStatePath = path.join( artifactsPath, 'storage-states', 'admin.json' );
 
-/**
- * Run a WP-CLI command in the e2e wp-env environment.
- *
- * @param {string} command WP-CLI command without the leading `wp`.
- * @return {string}
- */
 const WP_ENV_BOOT_RETRY_LIMIT = 30;
 const WP_ENV_BOOT_RETRY_DELAY_MS = 2_000;
+
+/**
+ * Block until wp-env may have finished booting (cross-platform).
+ */
+function waitForWpEnvBootRetry() {
+	const seconds = Math.max( 1, Math.ceil( WP_ENV_BOOT_RETRY_DELAY_MS / 1000 ) );
+
+	if ( process.platform === 'win32' ) {
+		spawnSync( 'ping', [ '127.0.0.1', '-n', String( seconds + 1 ) ], {
+			stdio: 'ignore',
+		} );
+		return;
+	}
+
+	spawnSync( 'sleep', [ String( seconds ) ], { stdio: 'ignore' } );
+}
 
 /**
  * @param {import('child_process').SpawnSyncReturns<string>} result
@@ -43,8 +59,20 @@ function isWpEnvNotInitialized( result ) {
 	return combined.includes( 'Environment not initialized' );
 }
 
-export function runE2eCli( command ) {
-	const shellCommand = `"${ wpEnvBin }" run --config=${ WP_ENV_E2E_CONFIG } cli ${ command }`;
+/**
+ * Run a WP-CLI command in the e2e wp-env environment.
+ *
+ * @param {string} command WP-CLI command without the leading `wp`.
+ * @param {{ url?: string }} [options]
+ * @return {string}
+ */
+export function runE2eCli( command, options = {} ) {
+	const siteUrl = options.url ?? DEFAULT_CLI_SITE_URL;
+	const wpCommand = command.includes( '--url=' )
+		? command
+		: `${ command } --url=${ siteUrl }`;
+
+	const shellCommand = `"${ wpEnvBin }" run --config=${ WP_ENV_E2E_CONFIG } cli ${ wpCommand }`;
 
 	for ( let attempt = 1; attempt <= WP_ENV_BOOT_RETRY_LIMIT; attempt++ ) {
 		try {
@@ -67,7 +95,7 @@ export function runE2eCli( command ) {
 				isWpEnvNotInitialized( failure ) &&
 				attempt < WP_ENV_BOOT_RETRY_LIMIT
 			) {
-				spawnSync( 'sleep', [ String( WP_ENV_BOOT_RETRY_DELAY_MS / 1000 ) ] );
+				waitForWpEnvBootRetry();
 				continue;
 			}
 
@@ -122,9 +150,8 @@ function importTestImageAttachment() {
 let cachedTestImageAttachmentId = null;
 let cachedPostsFeatureSeed = null;
 let cachedSiteChromeSeed = null;
+let cachedCoreSiteSeed = null;
 let cachedIntegrationSeed = null;
-let editorPreferencesSeeded = false;
-
 /**
  * Upload the standard announcement-banner test image and return its attachment ID.
  *
@@ -140,26 +167,30 @@ export function uploadTestImage() {
 }
 
 /**
- * Disable the starter pattern modal for the admin user (idempotent).
- */
-export function seedEditorPreferences() {
-	if ( editorPreferencesSeeded ) {
-		return;
-	}
-
-	runE2eCli(
-		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-editor-preferences.php`
-	);
-	editorPreferencesSeeded = true;
-}
-
-/**
  * Remove cached admin auth so globalSetup refreshes REST credentials.
  */
 export function clearAdminStorageState() {
 	if ( existsSync( adminStorageStatePath ) ) {
 		unlinkSync( adminStorageStatePath );
 	}
+}
+
+/**
+ * Seed main-site CPT content for core-site blocks.
+ *
+ * @return {Record<string, unknown>}
+ */
+export function seedCoreSiteData() {
+	if ( cachedCoreSiteSeed ) {
+		return cachedCoreSiteSeed;
+	}
+
+	const result = runE2eCli(
+		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-e2e-core-site.php`,
+		{ url: getMainSiteBaseUrl() }
+	);
+	cachedCoreSiteSeed = JSON.parse( result );
+	return cachedCoreSiteSeed;
 }
 
 /**
@@ -199,12 +230,14 @@ export function seedSiteChromeData() {
 /**
  * Seed page integration fixtures (homepages, templates, governance).
  *
- * @return {Promise<Record<string, unknown>>}
+ * @return {Record<string, unknown>}
  */
 export function seedIntegrationData() {
 	if ( cachedIntegrationSeed ) {
 		return cachedIntegrationSeed;
 	}
+
+	seedCoreSiteData();
 
 	const result = runE2eCli(
 		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-e2e-integration.php`

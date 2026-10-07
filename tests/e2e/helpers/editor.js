@@ -1,3 +1,5 @@
+import { normalizeE2eUrlForPlaywright } from './e2e-navigation.js';
+
 /**
  * Exit the code editor and return to the visual block editor if active.
  */
@@ -7,8 +9,6 @@ export async function exitCodeEditor( page ) {
 		await exitButton.click();
 	}
 }
-
-import { normalizeE2eUrlForPlaywright } from './e2e-navigation.js';
 
 /**
  * @param {string | null} href
@@ -27,10 +27,11 @@ function getAbsolutePublishedPageUrl( href ) {
  */
 export async function publishAndGetUrl( editor, page ) {
 	await editor.publishPost();
-	await page.waitForSelector( '.editor-post-publish-panel' );
-	const href = await page
-		.locator( '.editor-post-publish-panel a:has-text("View Page")' )
-		.getAttribute( 'href' );
+	const viewPageLink = page.locator(
+		'.editor-post-publish-panel a:has-text("View Page")'
+	);
+	await viewPageLink.waitFor( { state: 'visible', timeout: 30_000 } );
+	const href = await viewPageLink.getAttribute( 'href' );
 
 	return getAbsolutePublishedPageUrl( href );
 }
@@ -43,7 +44,7 @@ export async function publishAndGetUrl( editor, page ) {
  * @return {Promise<void>}
  */
 export async function visitPublishedFrontend( page, url ) {
-	await page.goto( url );
+	await page.goto( url, { waitUntil: 'domcontentloaded' } );
 }
 
 /**
@@ -65,6 +66,9 @@ export async function closeEditorSettingsSidebar( page ) {
 	const closeButton = page.getByRole( 'button', { name: 'Close Settings' } );
 	if ( await closeButton.isVisible() ) {
 		await closeButton.click();
+		await closeButton.waitFor( { state: 'hidden', timeout: 5_000 } ).catch(
+			() => {}
+		);
 	}
 }
 
@@ -76,11 +80,18 @@ export async function closeEditorSettingsSidebar( page ) {
  */
 export async function hideEditorMetaBoxesForScreenshot( page ) {
 	await page.evaluate( () => {
-		const metaBoxesArea = document.querySelector(
-			'.edit-post-meta-boxes-area'
-		);
-		if ( metaBoxesArea instanceof HTMLElement ) {
-			metaBoxesArea.style.display = 'none';
+		const hideTargets = [
+			'.edit-post-meta-boxes-area',
+			'.edit-post-meta-boxes-main',
+			'.interface-interface-skeleton__footer',
+		];
+
+		for ( const selector of hideTargets ) {
+			document.querySelectorAll( selector ).forEach( ( element ) => {
+				if ( element instanceof HTMLElement ) {
+					element.style.display = 'none';
+				}
+			} );
 		}
 	} );
 }
