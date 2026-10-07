@@ -1,4 +1,4 @@
-// tests/e2e/blocks/announcement-banner.spec.js
+// tests/e2e/blocks/AnnouncementBanner.spec.js
 import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
 import {
@@ -113,51 +113,9 @@ test.describe( 'Announcement Banner Block', () => {
 				maxDiffPixelRatio: 0.02,
 			} );
 		} );
-
-		test( 'editor snapshot — with links and image @visual', async ( {
-			editor,
-			page,
-		}, testInfo ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withLinks( imageId ) },
-			} );
-
-			const block = editor.canvas.locator(
-				`[data-type="${ BLOCK_NAME }"]`
-			);
-			await waitForBlockToRender( editor, BLOCK_NAME );
-			await prepareEditorCanvasForScreenshot( page, testInfo );
-			await settleLocatorForScreenshot( block );
-			await expect( block ).toBeVisible();
-			await expect( block ).toHaveScreenshot( 'editor-with-links.png', {
-				maxDiffPixelRatio: 0.02,
-			} );
-		} );
-
-		test( 'editor snapshot — no image @visual', async ( {
-			editor,
-			page,
-		}, testInfo ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.noImage() },
-			} );
-
-			const block = editor.canvas.locator(
-				`[data-type="${ BLOCK_NAME }"]`
-			);
-			await waitForBlockToRender( editor, BLOCK_NAME );
-			await prepareEditorCanvasForScreenshot( page, testInfo );
-			await settleLocatorForScreenshot( block );
-			await expect( block ).toBeVisible();
-			await expect( block ).toHaveScreenshot( 'editor-no-image.png', {
-				maxDiffPixelRatio: 0.02,
-			} );
-		} );
 	} );
 
+	// Links and no-image variants are covered functionally and via axe—not separate snapshots.
 	test.describe( 'Frontend', () => {
 		test( 'frontend snapshot — with button and image @visual', async ( {
 			editor,
@@ -180,50 +138,6 @@ test.describe( 'Announcement Banner Block', () => {
 					maxDiffPixelRatio: 0.02,
 				}
 			);
-		} );
-
-		test( 'frontend snapshot — with links and image @visual', async ( {
-			editor,
-			page,
-		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withLinks( imageId ) },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-			const banner = getBannerLocator( page, 'Test Announcement' );
-			await expect( banner ).toBeVisible();
-			await settleLocatorForScreenshot( banner );
-			await expect( banner ).toHaveScreenshot(
-				'frontend-with-links.png',
-				{
-					maxDiffPixelRatio: 0.02,
-				}
-			);
-		} );
-
-		test( 'frontend snapshot — no image @visual', async ( {
-			editor,
-			page,
-		} ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.noImage() },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-			const banner = getBannerLocator(
-				page,
-				'Test Announcement No Image'
-			);
-			await expect( banner ).toBeVisible();
-			await expect( banner ).toHaveScreenshot( 'frontend-no-image.png', {
-				maxDiffPixelRatio: 0.02,
-			} );
 		} );
 
 		test( 'renders button with correct href and target', async ( {
@@ -332,39 +246,6 @@ test.describe( 'Announcement Banner Block', () => {
 			} );
 		} );
 
-		test( 'editor — with links and image @aria', async ( { editor } ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withLinks( imageId ) },
-			} );
-
-			const block = editor.canvas.locator(
-				`[data-type="${ BLOCK_NAME }"]`
-			);
-			await waitForBlockToRender( editor, BLOCK_NAME );
-			await expect( block ).toBeVisible();
-			await expect( block ).toMatchAriaSnapshot( {
-				name: 'editor-with-links.yml',
-			} );
-		} );
-
-		test( 'editor — no image @aria', async ( { editor } ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.noImage() },
-			} );
-
-			const block = editor.canvas.locator(
-				`[data-type="${ BLOCK_NAME }"]`
-			);
-			await waitForBlockToRender( editor, BLOCK_NAME );
-			await expect( block ).toBeVisible();
-			await expect( block ).toMatchAriaSnapshot( {
-				name: 'editor-no-image.yml',
-			} );
-		} );
-
 		test( 'frontend — with button and image @aria', async ( {
 			editor,
 			page,
@@ -381,43 +262,6 @@ test.describe( 'Announcement Banner Block', () => {
 			await expect( banner ).toBeVisible();
 			await expect( banner ).toMatchAriaSnapshot( {
 				name: 'frontend-with-button.yml',
-			} );
-		} );
-
-		test( 'frontend — with links and image @aria', async ( {
-			editor,
-			page,
-		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withLinks( imageId ) },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-			const banner = getBannerLocator( page, 'Test Announcement' );
-			await expect( banner ).toBeVisible();
-			await expect( banner ).toMatchAriaSnapshot( {
-				name: 'frontend-with-links.yml',
-			} );
-		} );
-
-		test( 'frontend — no image @aria', async ( { editor, page } ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.noImage() },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-			const banner = getBannerLocator(
-				page,
-				'Test Announcement No Image'
-			);
-			await expect( banner ).toBeVisible();
-			await expect( banner ).toMatchAriaSnapshot( {
-				name: 'frontend-no-image.yml',
 			} );
 		} );
 	} );

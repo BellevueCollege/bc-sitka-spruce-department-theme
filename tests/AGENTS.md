@@ -43,7 +43,7 @@ flowchart LR
 
 | Path | Role |
 |------|------|
-| `blocks/*.spec.js` | Block-focused specs (editor + frontend + snapshots) |
+| `blocks/*.spec.js` | Optional **tier 1–2** block specs (see [Block testing tiers](#block-testing-tiers)); not every theme block gets a file |
 | `pages/*.spec.js` | Page integration specs (composed templates, section order, interactions) |
 | `layout/*.spec.js` | Theme chrome (header/footer) |
 | `fixtures/test.js` | Extends `@wordpress/e2e-test-utils-playwright` `test` / `expect` — **import from here** |
@@ -54,6 +54,52 @@ flowchart LR
 | `**/__snapshots__/` | PNG and YAML baselines next to specs |
 
 Config: repo root [`playwright.config.js`](../playwright.config.js).
+
+---
+
+## Block testing tiers
+
+Most blocks are covered by **seeded page templates** (`pages/*.spec.js`) and the mu-plugin allowlist—not by a dedicated `blocks/*.spec.js`. Use three tiers so the suite does not grow into a per-block Nightwatch-style matrix.
+
+```mermaid
+flowchart TD
+  decision{Block needs dedicated spec?}
+  decision -->|No| pagesOnly["pages/*.spec.js + seeds only"]
+  decision -->|Core-site CPT blocks| tier1["Tier 1: CoreSiteBlocks insert smoke"]
+  decision -->|Complex ACF / variants / publish flow| tier2["Tier 2: blocks/*.spec.js full functional"]
+  tier2 --> snapshots["Snapshots: 1 editor + 1 frontend @visual; 1 editor + 1 frontend @aria"]
+  pagesOnly --> pageSignals["Homepage seeds assert blocks in template context"]
+```
+
+| Tier | Spec | Snapshots | Functional |
+|------|------|-----------|------------|
+| **0 — Composition** | None; block appears in seeded [`pages/*.spec.js`](e2e/pages/) | Page-level `@aria` / sectional `@visual` only | Template smoke in page specs |
+| **1 — Editor smoke** | [`CoreSiteBlocks.spec.js`](e2e/blocks/CoreSiteBlocks.spec.js) | None | Insert + visible in canvas |
+| **2 — Block contract** | e.g. [`PostsFeature.spec.js`](e2e/blocks/PostsFeature.spec.js), [`AnnouncementBanner.spec.js`](e2e/blocks/AnnouncementBanner.spec.js) | 2× `@visual`, 2× `@aria` (desktop via `skipDuplicateBlockViewport`) | Insert, publish→frontend, variant DOM/behavior, axe where variants differ |
+
+### When to add `blocks/<Block>.spec.js`
+
+Add or extend a block spec only when **at least two** are true:
+
+1. ACF or repeater fields with **meaningful variants** (button vs links, optional media, etc.).
+2. **Publish → frontend** behavior is not fully exercised by any seeded page template.
+3. **Data dependencies** (uploads, CPT queries, main-site switch) need isolated setup.
+4. Regressions are **high impact** or historically flaky in editor save/render.
+
+Otherwise rely on **tier 0** (page integration + seeds) and/or **tier 1** (`CoreSiteBlocks`).
+
+**Non-goals:** Do not add block specs for every Mayflower block; do not duplicate page-level layout confidence in block PNGs.
+
+### Standard block spec shape (tier 2)
+
+- `prepareEditorPage` + `skipDuplicateBlockViewport` in `beforeEach`.
+- Functional tests per variant that matter—**no snapshot required per variant**.
+- **At most** one canonical variant for `@visual` and `@aria` (editor + frontend each).
+- Committed PNG baselines **only** via LambdaTest (`npm run test:e2e:update-snapshots`).
+
+### Relationship to page tests
+
+Block specs own **field variants and publish contract** (href/target, repeaters, optional media). Page specs own **template composition** (section order, chrome, multisite context). Example: Announcement Banner appears in division/department/support homepage `@aria` YAML; [`AnnouncementBanner.spec.js`](e2e/blocks/AnnouncementBanner.spec.js) covers ACF variants and axe without mirroring every homepage layout.
 
 ---
 
@@ -101,7 +147,7 @@ The mu-plugin unregisters every `bc-sitka-spruce/*` block **not** listed in `BC_
 
 ### Bellevue 2022 / core-site blocks
 
-These blocks read main-site CPTs via `switch_to_blog()` / `network_site_url()` REST. Frontend coverage lives in `pages/*.spec.js` after [`seed-e2e-core-site.php`](../fixtures/seed-e2e-core-site.php) + [`e2e-core-content-helpers.php`](../fixtures/e2e-core-content-helpers.php). [`tests/e2e/blocks/CoreSiteBlocks.spec.js`](e2e/blocks/CoreSiteBlocks.spec.js) still covers editor insert/load.
+These blocks read main-site CPTs via `switch_to_blog()` / `network_site_url()` REST. **Tier 0** frontend coverage lives in `pages/*.spec.js` after [`seed-e2e-core-site.php`](../fixtures/seed-e2e-core-site.php) + [`e2e-core-content-helpers.php`](../fixtures/e2e-core-content-helpers.php). **Tier 1** editor insert/load is in [`CoreSiteBlocks.spec.js`](e2e/blocks/CoreSiteBlocks.spec.js)—no dedicated tier-2 block spec unless the checklist above applies.
 
 ### Page integration seeds
 

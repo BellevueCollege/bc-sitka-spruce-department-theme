@@ -139,7 +139,7 @@ Nightwatch VRT against Kinsta QA has been removed. Equivalent coverage on wp-env
 | Division homepage sections | [`tests/e2e/pages/DivisionHomepage.spec.js`](tests/e2e/pages/DivisionHomepage.spec.js) — section order, full-page `@visual`, `@aria` |
 | Flexible page full page | [`tests/e2e/pages/FlexiblePage.spec.js`](tests/e2e/pages/FlexiblePage.spec.js) — full-page `@visual` |
 | Flexible page per-block VRT (~40 tests) | Same file — targeted sectional `@visual` (tabs, narrow content, Mayflower row/panel) + functional assertions; seed markup in [`tests/fixtures/e2e-flexible-page-content.php`](tests/fixtures/e2e-flexible-page-content.php) |
-| Announcement banner | [`tests/e2e/blocks/AnnouncementBanner.spec.js`](tests/e2e/blocks/AnnouncementBanner.spec.js) |
+| Announcement banner | [`tests/e2e/blocks/AnnouncementBanner.spec.js`](tests/e2e/blocks/AnnouncementBanner.spec.js) (tier 2; see block tiers in [`tests/AGENTS.md`](tests/AGENTS.md)) |
 | Block editor / posts | [`tests/e2e/blocks/PostsFeature.spec.js`](tests/e2e/blocks/PostsFeature.spec.js) |
 | Other templates | [`tests/e2e/pages/*.spec.js`](tests/e2e/pages/) |
 
