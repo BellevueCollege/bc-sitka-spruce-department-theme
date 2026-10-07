@@ -199,7 +199,61 @@ async function downloadAndExtractPlugin( release ) {
  * @return {string}
  */
 function getGitHubToken() {
-	return ( process.env.GITHUB_PAT || process.env.GITHUB_TOKEN || '' ).trim();
+	return normalizeGitHubToken( process.env.GITHUB_PAT || process.env.GITHUB_TOKEN || '' );
+}
+
+/**
+ * @param {string} rawToken
+ * @return {string}
+ */
+function normalizeGitHubToken( rawToken ) {
+	let token = rawToken.trim();
+	if ( isWrappedInQuotes( token ) ) {
+		token = token.slice( 1, -1 ).trim();
+	}
+
+	return token.replace( /^(Bearer|token)\s+/i, '' ).trim();
+}
+
+/**
+ * @param {string} token
+ * @return {boolean}
+ */
+function isWrappedInQuotes( token ) {
+	const quote = token.charAt( 0 );
+	return ( quote === '"' || quote === "'" ) && token.endsWith( quote ) && token.length > 1;
+}
+
+/**
+ * @param {string} token
+ * @return {string}
+ */
+function describeGitHubToken( token ) {
+	if ( ! token ) {
+		return 'missing';
+	}
+
+	if ( token.startsWith( '$(' ) ) {
+		return 'set to an unexpanded $(variable)';
+	}
+
+	return `present (${ githubTokenKind( token ) }, ${ token.length } characters)`;
+}
+
+/**
+ * @param {string} token
+ * @return {string}
+ */
+function githubTokenKind( token ) {
+	if ( token.startsWith( 'github_pat_' ) ) {
+		return 'fine-grained';
+	}
+
+	if ( token.startsWith( 'ghp_' ) ) {
+		return 'classic';
+	}
+
+	return 'unrecognized format';
 }
 
 /**
@@ -252,12 +306,7 @@ async function resolveGitHubReleaseAssetUrl( parsed, token ) {
 
 	if ( ! releaseResponse.ok ) {
 		const body = await releaseResponse.json().catch( () => ( {} ) );
-		const githubMessage = body.message || releaseResponse.statusText;
-		throw new Error(
-			`GitHub API ${ releaseResponse.status } for ${ parsed.owner }/${ parsed.repo } ` +
-				`tag ${ parsed.tag }: ${ githubMessage }. Confirm GITHUB_PAT can read this repo. ` +
-				'If the org uses SAML SSO, authorize the token for BellevueCollege.'
-		);
+		throw new Error( githubApiErrorMessage( releaseResponse.status, parsed, token, body.message ) );
 	}
 
 	const release = await releaseResponse.json();
@@ -271,6 +320,31 @@ async function resolveGitHubReleaseAssetUrl( parsed, token ) {
 	}
 
 	return asset.url;
+}
+
+/**
+ * @param {number} statusCode
+ * @param {{ owner: string, repo: string, tag: string }} parsed
+ * @param {string} token
+ * @param {string | undefined} githubMessage
+ * @return {string}
+ */
+function githubApiErrorMessage( statusCode, parsed, token, githubMessage ) {
+	const target = `${ parsed.owner }/${ parsed.repo } tag ${ parsed.tag }`;
+	const detail = githubMessage || 'request failed';
+
+	if ( statusCode === 401 ) {
+		return (
+			`GitHub API 401 for ${ target }: ${ detail }. ${ describeGitHubToken( token ) }. ` +
+			'401 means this token string is invalid, expired, or revoked. ' +
+			'Replace the CI pipeline GITHUB_PAT secret with the raw token only.'
+		);
+	}
+
+	return (
+		`GitHub API ${ statusCode } for ${ target }: ${ detail }. ${ describeGitHubToken( token ) }. ` +
+		'Confirm the token can read this repo. If the org uses SAML SSO, authorize it for BellevueCollege.'
+	);
 }
 
 /**
@@ -288,17 +362,26 @@ function shouldSendGitHubAuth( hostname ) {
 async function downloadFile( url, destinationPath ) {
 	const token = getGitHubToken();
 	const parsedRelease = parseGitHubReleaseDownloadUrl( url );
-	let currentUrl = url;
 
-	if ( parsedRelease ) {
-		const tokenState = token ? 'present' : 'missing';
-		console.log( `[e2e] GitHub token for ${ parsedRelease.repo }: ${ tokenState }` );
-		if ( token ) {
-			currentUrl = await resolveGitHubReleaseAssetUrl( parsedRelease, token );
-		}
+	if ( ! parsedRelease ) {
+		await saveDownloadToFile( url, destinationPath, '', url );
+		return;
 	}
 
-	await saveDownloadToFile( currentUrl, destinationPath, token, url );
+	console.log( `[e2e] GitHub token for ${ parsedRelease.repo }: ${ describeGitHubToken( token ) }` );
+
+	try {
+		await saveDownloadToFile( url, destinationPath, '', url );
+		return;
+	} catch ( error ) {
+		if ( error.statusCode !== 404 || ! token ) {
+			throw error;
+		}
+		console.log( `[e2e] ${ parsedRelease.repo }: public download returned 404; retrying with GitHub API` );
+	}
+
+	const assetUrl = await resolveGitHubReleaseAssetUrl( parsedRelease, token );
+	await saveDownloadToFile( assetUrl, destinationPath, token, url );
 }
 
 /**
@@ -373,11 +456,13 @@ function nextRedirectUrl( response, currentUrl ) {
  */
 function throwDownloadFailed( originalUrl, response, token ) {
 	const tokenNote = token
-		? 'GITHUB_PAT is set in this job.'
+		? describeGitHubToken( token )
 		: 'GITHUB_PAT is not set in this job.';
-	throw new Error(
+	const error = new Error(
 		`Failed to download ${ originalUrl }: ${ response.status } ${ response.statusText }. ${ tokenNote }`
 	);
+	error.statusCode = response.status;
+	throw error;
 }
 
 /**
