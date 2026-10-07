@@ -109,6 +109,37 @@ function bc_sitka_e2e_rewrite_image_srcset( $sources ) {
 add_filter( 'wp_calculate_image_srcset', 'bc_sitka_e2e_rewrite_image_srcset', 1 );
 
 /**
+ * News, identity-support, and organization image fields return an attachment ID.
+ * Theme controllers read ['id'] on those post types. Reshape only those fields here
+ * so e2e matches that contract without changing theme PHP.
+ *
+ * @param mixed $value   Formatted ACF value.
+ * @param mixed $post_id Post the field belongs to.
+ * @return mixed
+ */
+function bc_sitka_e2e_core_image_field_as_array( $value, $post_id ) {
+	if ( ! is_numeric( $value ) ) {
+		return $value;
+	}
+
+	$post_type = get_post_type( $post_id );
+	$core_post_types = array( 'news', 'identity-support', 'organization' );
+
+	if ( ! in_array( $post_type, $core_post_types, true ) ) {
+		return $value;
+	}
+
+	$attachment_id = (int) $value;
+
+	return array(
+		'ID' => $attachment_id,
+		'id' => $attachment_id,
+	);
+}
+
+add_filter( 'acf/format_value/name=image', 'bc_sitka_e2e_core_image_field_as_array', 20, 2 );
+
+/**
  * Skip host canonicalization when the LambdaTest proxy keeps HTTP_HOST on loopback.
  *
  * Without this, WordPress 301s to host.docker.internal while the upstream request
