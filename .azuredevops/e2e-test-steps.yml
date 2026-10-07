@@ -1,5 +1,5 @@
 # Playwright + wp-env + LambdaTest steps for theme-ci Test stage.
-# Requires sitka-e2e via theme-ci testVariableGroups (LT_*, GITHUB_PAT, ACF_DOWNLOAD_URL).
+# Requires pipeline variables in ADO (LT_USERNAME, LT_ACCESS_KEY, GITHUB_PAT, ACF_DOWNLOAD_URL).
 
 steps:
   - script: npx playwright install --with-deps chromium

@@ -239,7 +239,7 @@ Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:vi
 
 E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`). **DeployTest_*** Kinsta stages wait for Test to pass.
 
-**One-time ADO setup:** Create Library variable group **`sitka-e2e`** with `LT_USERNAME`, `LT_ACCESS_KEY`, `GITHUB_PAT`, `ACF_DOWNLOAD_URL`, and authorize it for the `bc-sitka-spruce-department-theme` CI pipeline.
+**One-time ADO setup:** On the theme CI pipeline in ADO, configure **pipeline variables** `LT_USERNAME`, `LT_ACCESS_KEY`, `GITHUB_PAT`, `ACF_DOWNLOAD_URL` (optional). Do not add a root-level `variables:` block in `azure-pipelines.yml` when using `extends`.
 
 **Test job flow** (see [`.azuredevops/e2e-test-steps.yml`](../.azuredevops/e2e-test-steps.yml)):
 
