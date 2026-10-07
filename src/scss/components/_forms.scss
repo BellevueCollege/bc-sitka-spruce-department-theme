@@ -36,7 +36,7 @@ form .form-control {
 }
 
 @mixin form-input() {
-	border: 2px solid get_color($sitka-colors, 'gray--xlight');
+	border: 2px solid get_color($utility-colors, 'gray--xlight');
 	border-radius: calc( var(--bs-border-radius) * 0.5 );
 	color: var(--sitka-form-input-color, var( --black ));
 	text-transform: none;

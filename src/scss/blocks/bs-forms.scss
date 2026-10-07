@@ -1,6 +1,4 @@
 // Bundle of Bootstrap Forms Styles
 @import '/src/scss/block-styles';
 
-@import "~bootstrap/scss/forms";
-@import "~bootstrap/scss/dropdown";
-@import "~bootstrap/scss/button-group";
+@import 'bc-theme-layer-bs5/scss/presets/_forms';
