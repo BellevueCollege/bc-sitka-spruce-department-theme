@@ -124,6 +124,21 @@ Optional environment variables: `ACF_DOWNLOAD_URL`, `GITHUB_PAT`, `BUILD_ID` (La
 
 Commit updated `__snapshots__/*.png` files when visual baselines change. Commit updated `__snapshots__/*.yml` files when ARIA tree baselines change.
 
+### Coverage (legacy Nightwatch → Playwright)
+
+Nightwatch VRT against Kinsta QA has been removed. Equivalent coverage on wp-env:
+
+| Former Nightwatch target | Playwright replacement |
+|--------------------------|-------------------------|
+| Homepage header/footer/menu | [`tests/e2e/layout/HeaderFooter.spec.js`](tests/e2e/layout/HeaderFooter.spec.js) — `@visual`, `@aria`, axe |
+| Homepage sock | Same file — functional + **sock `@visual`** |
+| Division homepage sections | [`tests/e2e/pages/DivisionHomepage.spec.js`](tests/e2e/pages/DivisionHomepage.spec.js) — section order, full-page `@visual`, `@aria` |
+| Flexible page full page | [`tests/e2e/pages/FlexiblePage.spec.js`](tests/e2e/pages/FlexiblePage.spec.js) — full-page `@visual` |
+| Flexible page per-block VRT (~40 tests) | Same file — targeted sectional `@visual` (tabs, narrow content, Mayflower row/panel) + functional assertions; seed markup in [`tests/fixtures/e2e-flexible-page-content.php`](tests/fixtures/e2e-flexible-page-content.php) |
+| Announcement banner | [`tests/e2e/blocks/AnnouncementBanner.spec.js`](tests/e2e/blocks/AnnouncementBanner.spec.js) |
+| Block editor / posts | [`tests/e2e/blocks/PostsFeature.spec.js`](tests/e2e/blocks/PostsFeature.spec.js) |
+| Other templates | [`tests/e2e/pages/*.spec.js`](tests/e2e/pages/) |
+
 
 ## Documentation
 
@@ -157,12 +172,10 @@ Each block folder should include a `block.json` that defines the block and calls
 
 Once the block has been created, ensure that it is registered in `functions.php`
 
-### Running Visual Regression Tests
+### Running visual regression tests
 
 | Stack | Target | Command |
 |-------|--------|---------|
 | **Playwright (full suite)** | Functional on host + visual on LambdaTest | `npm run test:e2e` |
 | **Playwright visual** | Screenshot baselines on LambdaTest | `npm run test:e2e:visual` |
-| **Nightwatch VRT** | Public QA site (`bcqabackstopjs.kinsta.cloud`) | `npx nightwatch --env chrome,firefox` |
-
-Nightwatch tests screenshot header, footer, and sock against the QA environment and require LambdaTest credentials (`LT_USERNAME`, `LT_ACCESS_KEY`).
+| **CI (Azure)** | Same as full suite with external wp-env | See [`.azuredevops/e2e-test-steps.yml`](.azuredevops/e2e-test-steps.yml) |

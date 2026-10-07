@@ -6,14 +6,7 @@
 
 ---
 
-## Two test worlds (do not conflate)
-
-| Location | Stack | Status |
-|----------|--------|--------|
-| `tests/e2e/**` | Playwright + wp-env Docker WordPress + `@wordpress/scripts` / `@wordpress/e2e-test-utils-playwright` | **Active** — all new work goes here |
-| `tests/homepage.js`, `tests/FlexiblePage.js`, `tests/DivisionHomepage.js` | Legacy Nightwatch against remote Kinsta QA | **Legacy** — do not extend for theme block work |
-
-PHP seed **fixtures** live under `tests/fixtures/` and run via `wp-env run cli wp eval-file`.
+All automated tests live under **`tests/e2e/**`**: Playwright + wp-env Docker WordPress + `@wordpress/scripts` / `@wordpress/e2e-test-utils-playwright`. PHP seed **fixtures** live under `tests/fixtures/` and run via `wp-env run cli wp eval-file`.
 
 ---
 

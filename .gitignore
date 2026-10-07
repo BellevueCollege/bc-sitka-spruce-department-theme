@@ -1,34 +1,25 @@
 # Generally Ignore
 .htaccess
 *.log
-
 # ==================
 # Windows detritus
 # ==================
-
 # Windows image file caches
 Thumbs.db
 ehthumbs.db
-
 # Folder config file
 Desktop.ini
-
 # Recycle Bin used on file shares
 $RECYCLE.BIN/
-
 # Mac Crap
 .DS_Store
-
 # SASS Cache
 .sass-cache
-
 # Compiled Files
 /assets/dist/**
 /assets/dist/
-
 .idea/
 .vscode
-
 # Gulp/NPM stuff
 node_modules
 build
@@ -41,13 +32,10 @@ test/out-fixtures/*
 test/watch-*.txt
 gulp.1
 yarn-error.log
-
 # Composer
 /vendor/
-
 # Allow Build within Assets
 !*/vendor/*/build
-
 # Yarn
 .pnp.*
 .yarn/*
@@ -56,16 +44,13 @@ yarn-error.log
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
-
 # Backstop Files
 /backstop_data/*
 !/backstop_data/bitmaps_reference
 !/backstop_data/engine_scripts
-
 # Storybook - don't commit built files
 /storybook-static/
 *storybook.log
-
 # Playwright / E2E generated artifacts (do not commit)
 /artifacts/storage-states/
 /artifacts/test-results/
@@ -75,16 +60,5 @@ yarn-error.log
 /artifacts/e2e-plugins/
 /artifacts/e2e-seed-token
 /.wp-env.e2e.json
-
 # Per-developer e2e plugin paths (see tests/e2e/plugins.local.example.json)
 /tests/e2e/plugins.local.json
-
-#Nightwatch - don't commit
-/vrt/diff
-/vrt/latest
-/vrt-report
-/reports/*
-/DivisionHomepage
-/FlexiblePage
-/homepage
-
