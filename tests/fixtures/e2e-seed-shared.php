@@ -153,6 +153,18 @@ function e2e_upsert_post( string $title, string $post_type, array $args ): int {
 }
 
 /**
+ * @param int    $attachment_id Attachment post ID.
+ * @param string $alt_text      Accessible alternative text.
+ */
+function e2e_set_attachment_alt_text( int $attachment_id, string $alt_text ): void {
+	if ( $attachment_id <= 0 || $alt_text === '' ) {
+		return;
+	}
+
+	update_post_meta( $attachment_id, '_wp_attachment_image_alt', $alt_text );
+}
+
+/**
  * Import the standard e2e hero image attachment.
  *
  * @return int Attachment ID.
@@ -186,7 +198,10 @@ function e2e_import_hero_attachment(): int {
 		return 0;
 	}
 
-	return (int) $attachment_id;
+	$attachment_id = (int) $attachment_id;
+	e2e_set_attachment_alt_text( $attachment_id, 'E2E hero fixture image' );
+
+	return $attachment_id;
 }
 
 /**

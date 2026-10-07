@@ -103,7 +103,6 @@
       - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
   - paragraph: E2E Faculty
   - heading "Checkerboards Headline" [level=2]
-  - text: "/Warning: Trying to access array offset on value of type int in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/SupportFeature[\\d,.]+[hmsp]+ on line \\d+/"
   - heading "Support Section" [level=2]
   - tablist:
     - tab "E2E Core Identity Support" [selected]
@@ -111,8 +110,13 @@
     - heading "E2E Core Identity Support" [level=3]
     - heading "E2E Support Tab" [level=4]
     - text: E2E support tab summary content.
-  - text: "/Warning: Trying to access array offset on value of type int in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/News[\\d,.]+[hmsp]+ on line \\d+/"
   - heading "News Section" [level=2]
+  - figure
+  - text: Featured Story
+  - heading "E2E Core News Story" [level=3]:
+    - link "E2E Core News Story":
+      - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story/
+  - text: E2E featured news summary.
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:

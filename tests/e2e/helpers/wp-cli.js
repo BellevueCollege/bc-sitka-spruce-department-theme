@@ -135,6 +135,23 @@ function extractCommandOutput( output ) {
 	return lines[ lines.length - 1 ] ?? '';
 }
 
+const ANNOUNCEMENT_BANNER_TEST_IMAGE_ALT =
+	'E2E announcement banner test image';
+
+/**
+ * @param {number} attachmentId
+ */
+function setAnnouncementBannerTestImageAlt( attachmentId ) {
+	if ( ! attachmentId ) {
+		return;
+	}
+
+	const escapedAlt = ANNOUNCEMENT_BANNER_TEST_IMAGE_ALT.replace( /'/g, "'\\''" );
+	runE2eCli(
+		`wp post meta update ${ attachmentId } _wp_attachment_image_alt '${ escapedAlt }'`
+	);
+}
+
 /**
  * Import the announcement-banner test image via wp-env CLI.
  *
@@ -144,7 +161,9 @@ function importTestImageAttachment() {
 	const result = runE2eCli(
 		`wp media import ${ THEME_PATH }/tests/fixtures/test-image-260x174.png --porcelain`
 	);
-	return parseInt( result, 10 );
+	const attachmentId = parseInt( result, 10 );
+	setAnnouncementBannerTestImageAlt( attachmentId );
+	return attachmentId;
 }
 
 let cachedTestImageAttachmentId = null;
@@ -163,6 +182,7 @@ let cachedChromeVariantResult = null;
  */
 export function uploadTestImage() {
 	if ( cachedTestImageAttachmentId !== null ) {
+		setAnnouncementBannerTestImageAlt( cachedTestImageAttachmentId );
 		return cachedTestImageAttachmentId;
 	}
 

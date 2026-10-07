@@ -16,6 +16,19 @@ const BC_SITKA_E2E_WP_PORT = 8889;
 add_filter( 'show_admin_bar', '__return_false' );
 
 /**
+ * Editor-only a11y border overlays skew @visual baselines when Playwright uses admin cookies.
+ */
+function bc_sitka_e2e_dequeue_a11y_warnings_on_frontend(): void {
+	if ( is_admin() ) {
+		return;
+	}
+
+	wp_dequeue_script( 'bc-sitka-spruce-a11y-warnings' );
+}
+
+add_action( 'wp_enqueue_scripts', 'bc_sitka_e2e_dequeue_a11y_warnings_on_frontend', 100 );
+
+/**
  * Request origin host:port (no path) for loopback vs LambdaTest tunnel.
  */
 function bc_sitka_e2e_request_origin(): string {

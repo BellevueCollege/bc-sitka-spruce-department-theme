@@ -82,7 +82,7 @@ function e2e_flexible_page_block_markup( string $tablepress_id ): string {
 <!-- /wp:image -->
 <!-- wp:gallery {"linkTo":"none"} -->
 <figure class="wp-block-gallery has-nested-images columns-default is-cropped"><!-- wp:image -->
-<figure class="wp-block-image"><img alt="" src="/wp-content/themes/bc-sitka-spruce-department-theme/tests/fixtures/test-image-260x174.png"/></figure>
+<figure class="wp-block-image"><img alt="E2E gallery fixture image" src="/wp-content/themes/bc-sitka-spruce-department-theme/tests/fixtures/test-image-260x174.png"/></figure>
 <!-- /wp:image --></figure>
 <!-- /wp:gallery -->
 <!-- wp:audio /-->
@@ -97,7 +97,7 @@ function e2e_flexible_page_block_markup( string $tablepress_id ): string {
 <!-- wp:media-text {"mediaPosition":"right"} -->
 <div class="wp-block-media-text is-stacked-on-mobile"><div class="wp-block-media-text__content"><!-- wp:paragraph -->
 <p>E2E media-text content.</p>
-<!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img alt="" src="/wp-content/themes/bc-sitka-spruce-department-theme/tests/fixtures/test-image-260x174.png"/></figure></div>
+<!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img alt="E2E media-text fixture image" src="/wp-content/themes/bc-sitka-spruce-department-theme/tests/fixtures/test-image-260x174.png"/></figure></div>
 <!-- /wp:media-text -->
 <!-- wp:embed {"url":"{$embed_url}","type":"video","providerNameSlug":"youtube"} -->
 <figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube"><div class="wp-block-embed__wrapper">

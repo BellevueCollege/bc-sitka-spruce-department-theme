@@ -53,7 +53,7 @@ Agent-oriented details: [`tests/AGENTS.md`](tests/AGENTS.md).
 
 Run `npm run build` before tests. Docker (or Podman with `docker` on your PATH) must be running.
 
-**Local browser:** functional tests use the Google Chrome already installed on your Mac (`channel: 'chrome'`). You do not need `npm run playwright:install` locally. Azure installs Playwright's Chromium in the pipeline.
+**Local browser:** functional tests use the Google Chrome already installed on your computer (`channel: 'chrome'`). Azure Devops installs Playwright's Chromium in the pipeline.
 
 **How tests run:** `playwright test` (not `wp-scripts test-playwright`). Config and admin REST auth still come from `@wordpress/scripts`; only the CLI entrypoint differs so `@wordpress/scripts` does not re-run `playwright install` on every invocation. Use **Playwright ≥1.61** with Node 22+.
 

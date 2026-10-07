@@ -74,8 +74,13 @@
     - heading "Optional Callout" [level=3]
     - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
   - separator
-  - text: "/Warning: Trying to access array offset on value of type int in \\/var\\/www\\/html\\/wp-content\\/themes\\/bc-sitka-spruce-department-theme\\/src\\/controllers\\/News[\\d,.]+[hmsp]+ on line \\d+/"
   - heading "News Section Title" [level=2]
+  - figure
+  - text: Featured Story
+  - heading "E2E Core News Story" [level=3]:
+    - link "E2E Core News Story":
+      - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story/
+  - text: E2E featured news summary.
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:

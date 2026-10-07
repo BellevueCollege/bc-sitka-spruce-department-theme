@@ -36,7 +36,7 @@ flowchart LR
 2. **Functional** and **`@aria`** tests use **host** Chrome locally (`channel: 'chrome'`) or Chromium in CI.
 3. **`@visual`** tests use **LambdaTest** Linux Chrome (`E2E_LAMBDATEST=1`) for PNG baselines.
 4. **Admin auth** for wp-scripts setup uses **127.0.0.1**; LambdaTest runs get a **second** storage state logged in via **host.docker.internal**.
-5. **Front-end admin bar** is hidden via `show_admin_bar` in the e2e mu-plugin so public screenshots and `@aria` body snapshots match a visitor; the block editor still shows the toolbar in wp-admin.
+5. **Front-end admin bar** is hidden via `show_admin_bar` in the e2e mu-plugin so public screenshots and `@aria` body snapshots match a visitor; the block editor still shows the toolbar in wp-admin. The same mu-plugin dequeues `bc-sitka-spruce-a11y-warnings` on the public site so editor-only dashed alt borders do not appear in `@visual` runs that reuse admin cookies.
 
 ---
 
@@ -209,7 +209,7 @@ One WordPress database; parallel workers race on posts and editor state.
 | Docker tunnel `e2e-tunnel` | [`lambdatest.js`](e2e/helpers/lambdatest.js), [`lambdatest-tunnel.mjs`](e2e/scripts/lambdatest-tunnel.mjs) | Remote browsers reach host wp-env via `host.docker.internal:8889` |
 | Playwright `connect` | `playwright.config.js` when `E2E_LAMBDATEST=1` | Linux Chrome on LambdaTest |
 | Request proxy | [`lambdatest-tunnel-proxy.js`](e2e/helpers/lambdatest-tunnel-proxy.js) | Routes remote requests to loopback wp-env when the tunnel path is flaky |
-| URL rewrite + allowlist | [`e2e-seed-endpoint.php`](e2e/mu-plugins/e2e-seed-endpoint.php) | `X-E2E-Public-Origin`, asset URLs, block allowlist, front-end admin bar off |
+| URL rewrite + allowlist | [`e2e-seed-endpoint.php`](e2e/mu-plugins/e2e-seed-endpoint.php) | `X-E2E-Public-Origin`, asset URLs, block allowlist, front-end admin bar off, a11y-warnings script dequeued on frontend |
 | Admin cookies | [`global-setup.js`](e2e/global-setup.js) | Host login, then remap storage state for tunnel host |
 | Navigation | [`e2e-navigation.js`](e2e/helpers/e2e-navigation.js) | Rewrite seed permalinks for visual runs |
 
