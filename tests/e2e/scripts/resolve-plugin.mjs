@@ -14,6 +14,9 @@ const localPluginsPath = path.join( e2eRoot, 'plugins.local.json' );
 
 const MAX_REDIRECTS = 5;
 const GITHUB_USER_AGENT = 'bc-sitka-spruce-e2e';
+const GITHUB_API_VERSION = '2022-11-28';
+const GITHUB_RELEASE_DOWNLOAD_PATTERN =
+	/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/releases\/download\/([^/]+)\/([^/?#]+)$/;
 const PLACEHOLDER_RELEASE_FRAGMENT = 'v0.0.0-placeholder';
 
 /**
@@ -193,50 +196,188 @@ async function downloadAndExtractPlugin( release ) {
 }
 
 /**
+ * @return {string}
+ */
+function getGitHubToken() {
+	return ( process.env.GITHUB_PAT || process.env.GITHUB_TOKEN || '' ).trim();
+}
+
+/**
+ * Fine-grained PATs get 404 from github.com/.../releases/download even with Contents read.
+ * The releases API accepts the same token.
+ *
+ * @param {string} releaseDownloadUrl
+ * @return {{ owner: string, repo: string, tag: string, filename: string } | null}
+ */
+function parseGitHubReleaseDownloadUrl( releaseDownloadUrl ) {
+	const match = releaseDownloadUrl.match( GITHUB_RELEASE_DOWNLOAD_PATTERN );
+	if ( ! match ) {
+		return null;
+	}
+
+	return {
+		owner: match[ 1 ],
+		repo: match[ 2 ],
+		tag: decodeURIComponent( match[ 3 ] ),
+		filename: decodeURIComponent( match[ 4 ] ),
+	};
+}
+
+/**
+ * @param {string} token
+ * @param {string} accept
+ * @return {Record<string, string>}
+ */
+function githubApiHeaders( token, accept ) {
+	return {
+		Accept: accept,
+		Authorization: `Bearer ${ token }`,
+		'User-Agent': GITHUB_USER_AGENT,
+		'X-GitHub-Api-Version': GITHUB_API_VERSION,
+	};
+}
+
+/**
+ * @param {{ owner: string, repo: string, tag: string, filename: string }} parsed
+ * @param {string} token
+ * @return {Promise<string>} API URL for the release asset bytes.
+ */
+async function resolveGitHubReleaseAssetUrl( parsed, token ) {
+	const releaseApiUrl =
+		`https://api.github.com/repos/${ parsed.owner }/${ parsed.repo }` +
+		`/releases/tags/${ encodeURIComponent( parsed.tag ) }`;
+	const releaseResponse = await fetch( releaseApiUrl, {
+		headers: githubApiHeaders( token, 'application/vnd.github+json' ),
+	} );
+
+	if ( ! releaseResponse.ok ) {
+		const body = await releaseResponse.json().catch( () => ( {} ) );
+		const githubMessage = body.message || releaseResponse.statusText;
+		throw new Error(
+			`GitHub API ${ releaseResponse.status } for ${ parsed.owner }/${ parsed.repo } ` +
+				`tag ${ parsed.tag }: ${ githubMessage }. Confirm GITHUB_PAT can read this repo. ` +
+				'If the org uses SAML SSO, authorize the token for BellevueCollege.'
+		);
+	}
+
+	const release = await releaseResponse.json();
+	const asset = ( release.assets || [] ).find( ( item ) => item.name === parsed.filename );
+	if ( ! asset?.url ) {
+		const available = ( release.assets || [] ).map( ( item ) => item.name ).join( ', ' ) || 'none';
+		throw new Error(
+			`Release ${ parsed.tag } on ${ parsed.owner }/${ parsed.repo } has no asset ` +
+				`"${ parsed.filename }". Available: ${ available }`
+		);
+	}
+
+	return asset.url;
+}
+
+/**
+ * @param {string} hostname
+ * @return {boolean}
+ */
+function shouldSendGitHubAuth( hostname ) {
+	return hostname === 'github.com' || hostname === 'api.github.com';
+}
+
+/**
  * @param {string} url
  * @param {string} destinationPath
  */
 async function downloadFile( url, destinationPath ) {
+	const token = getGitHubToken();
+	const parsedRelease = parseGitHubReleaseDownloadUrl( url );
 	let currentUrl = url;
+
+	if ( parsedRelease ) {
+		const tokenState = token ? 'present' : 'missing';
+		console.log( `[e2e] GitHub token for ${ parsedRelease.repo }: ${ tokenState }` );
+		if ( token ) {
+			currentUrl = await resolveGitHubReleaseAssetUrl( parsedRelease, token );
+		}
+	}
+
+	await saveDownloadToFile( currentUrl, destinationPath, token, url );
+}
+
+/**
+ * @param {string} startUrl
+ * @param {string} destinationPath
+ * @param {string} token
+ * @param {string} originalUrl
+ */
+async function saveDownloadToFile( startUrl, destinationPath, token, originalUrl ) {
+	let currentUrl = startUrl;
 	let redirectCount = 0;
 
 	while ( redirectCount <= MAX_REDIRECTS ) {
-		const requestUrl = new URL( currentUrl );
-		const headers = {
-			Accept: 'application/octet-stream',
-			'User-Agent': GITHUB_USER_AGENT,
-		};
-
-		if ( requestUrl.host === 'github.com' ) {
-			const token = process.env.GITHUB_PAT || process.env.GITHUB_TOKEN;
-			if ( token ) {
-				headers.Authorization = `Bearer ${ token }`;
-			}
-		}
-
-		const response = await fetch( currentUrl, { headers, redirect: 'manual' } );
+		const response = await fetchReleaseBytes( currentUrl, token );
 
 		if ( response.status >= 300 && response.status < 400 ) {
-			const location = response.headers.get( 'location' );
-			if ( ! location ) {
-				throw new Error( `Redirect without location header for ${ currentUrl }` );
-			}
-			currentUrl = new URL( location, currentUrl ).href;
+			currentUrl = nextRedirectUrl( response, currentUrl );
 			redirectCount += 1;
 			continue;
 		}
 
 		if ( ! response.ok ) {
-			throw new Error(
-				`Failed to download ${ currentUrl }: ${ response.status } ${ response.statusText }`
-			);
+			throwDownloadFailed( originalUrl, response, token );
 		}
 
 		await pipeline( response.body, createWriteStream( destinationPath ) );
 		return;
 	}
 
-	throw new Error( `Too many redirects while downloading ${ url }` );
+	throw new Error( `Too many redirects while downloading ${ originalUrl }` );
+}
+
+/**
+ * @param {string} currentUrl
+ * @param {string} token
+ * @return {Promise<Response>}
+ */
+function fetchReleaseBytes( currentUrl, token ) {
+	const requestUrl = new URL( currentUrl );
+	const headers = {
+		Accept: 'application/octet-stream',
+		'User-Agent': GITHUB_USER_AGENT,
+	};
+
+	if ( token && shouldSendGitHubAuth( requestUrl.host ) ) {
+		headers.Authorization = `Bearer ${ token }`;
+		headers[ 'X-GitHub-Api-Version' ] = GITHUB_API_VERSION;
+	}
+
+	return fetch( currentUrl, { headers, redirect: 'manual' } );
+}
+
+/**
+ * @param {Response} response
+ * @param {string} currentUrl
+ * @return {string}
+ */
+function nextRedirectUrl( response, currentUrl ) {
+	const location = response.headers.get( 'location' );
+	if ( ! location ) {
+		throw new Error( `Redirect without location header for ${ currentUrl }` );
+	}
+
+	return new URL( location, currentUrl ).href;
+}
+
+/**
+ * @param {string} originalUrl
+ * @param {Response} response
+ * @param {string} token
+ * @return {never}
+ */
+function throwDownloadFailed( originalUrl, response, token ) {
+	const tokenNote = token
+		? 'GITHUB_PAT is set in this job.'
+		: 'GITHUB_PAT is not set in this job.';
+	throw new Error(
+		`Failed to download ${ originalUrl }: ${ response.status } ${ response.statusText }. ${ tokenNote }`
+	);
 }
 
 /**
