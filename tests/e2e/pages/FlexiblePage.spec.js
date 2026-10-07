@@ -18,10 +18,10 @@ test.describe( 'Flexible page integration', () => {
 		seedSiteChromeData();
 		const seed = seedIntegrationData();
 		pageUrl = seed.flexiblePageUrl;
+		seedChromeVariant( 'default' );
 	} );
 
 	test.beforeEach( async ( { page } ) => {
-		seedChromeVariant( 'default' );
 		await visitIntegrationPage( page, pageUrl );
 	} );
 
@@ -58,7 +58,7 @@ test.describe( 'Flexible page integration', () => {
 		await expect( page.getByText( 'E2E tab panel two content.' ) ).toBeVisible();
 	} );
 
-	test( 'opens tabcordion section below the tab breakpoint', async ( { page }, testInfo ) => {
+	test( 'opens tabcordion section below the tab breakpoint @viewport', async ( { page }, testInfo ) => {
 		if ( testInfo.project.name === 'desktop' ) {
 			testInfo.skip( true, 'Accordion behavior is validated on tablet and mobile.' );
 		}

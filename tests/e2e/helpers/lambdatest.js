@@ -122,7 +122,7 @@ export function getLambdaTestWsEndpoint() {
 			accessKey,
 			tunnel: true,
 			tunnelName: LAMBDATEST_TUNNEL_NAME,
-			video: true,
+			video: false,
 			console: true,
 		},
 	};

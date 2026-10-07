@@ -1,5 +1,5 @@
 import { execSync, spawnSync } from 'child_process';
-import { existsSync, unlinkSync } from 'fs';
+import { existsSync, unlinkSync, writeFileSync } from 'fs';
 import path from 'path';
 import {
 	getMainSiteBaseUrl,
@@ -152,6 +152,10 @@ let cachedPostsFeatureSeed = null;
 let cachedSiteChromeSeed = null;
 let cachedCoreSiteSeed = null;
 let cachedIntegrationSeed = null;
+/** @type {string|null} */
+let cachedChromeVariantKey = null;
+/** @type {{ variant: string, pageUrl: string }|null} */
+let cachedChromeVariantResult = null;
 /**
  * Upload the standard announcement-banner test image and return its attachment ID.
  *
@@ -266,8 +270,49 @@ export function applyHomepageVariant( variant ) {
  * @return {{ variant: string, pageUrl: string }}
  */
 export function seedChromeVariant( variant ) {
+	if ( cachedChromeVariantKey === variant && cachedChromeVariantResult ) {
+		return cachedChromeVariantResult;
+	}
+
 	const result = runE2eCli(
 		`wp eval "require '${ THEME_PATH }/tests/fixtures/seed-chrome-variants.php'; echo wp_json_encode( e2e_chrome_variant_seed( '${ variant }' ) );"`
 	);
-	return JSON.parse( result );
+	const parsed = JSON.parse( result );
+	cachedChromeVariantKey = variant;
+	cachedChromeVariantResult = parsed;
+	return parsed;
+}
+
+const blockFrontendSeedRequestPath = path.join(
+	projectRoot,
+	'tests/fixtures/.e2e-block-seed-request.json'
+);
+
+/** @type {Record<string, Record<string, { pageUrl: string }>>} */
+const cachedBlockFrontendPagesByBlock = {};
+
+/**
+ * Publish one page per block variant for frontend-only e2e tests.
+ *
+ * @param {string} blockName Full block name (e.g. bc-sitka-spruce/announcement-banner).
+ * @param {Record<string, { attributes: Record<string, unknown> }>} variants
+ * @return {Record<string, { pageUrl: string }>}
+ */
+export function seedBlockFrontendPages( blockName, variants ) {
+	if ( cachedBlockFrontendPagesByBlock[ blockName ] ) {
+		return cachedBlockFrontendPagesByBlock[ blockName ];
+	}
+
+	writeFileSync(
+		blockFrontendSeedRequestPath,
+		JSON.stringify( { blockName, variants } ),
+		'utf8'
+	);
+
+	const result = runE2eCli(
+		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-e2e-block-frontend-pages.php`
+	);
+	const parsed = JSON.parse( result );
+	cachedBlockFrontendPagesByBlock[ blockName ] = parsed;
+	return parsed;
 }

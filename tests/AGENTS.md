@@ -174,16 +174,27 @@ One WordPress database; parallel workers race on posts and editor state.
 
 ### Viewport projects and `@visual` budget
 
-- `desktop` / `tablet` / `mobile` projects for all runs.
-- `skipDuplicateBlockViewport` limits block-editor and `@aria` to **desktop**; screenshots, frontend layout, axe, and header/footer still run all viewports.
+- `desktop` runs the full functional suite; **tablet** and **mobile** projects use Playwright `grep: /@viewport|@visual/` so narrow viewports only run breakpoint-specific functional tests plus all `@visual` screenshots.
+- Tag breakpoint-only functional tests with **`@viewport`** (tabcordion accordion, application-guide accordion step, header offcanvas/submenu/CTA). Do not tag desktop-only tab tests, axe, `@aria`, or generic layout assertions.
+- `skipDuplicateBlockViewport` limits block-editor `@visual` to **desktop** (tablet/mobile still schedule those tests and skip in the hook). `@aria` stays desktop-only via the narrow project grep.
 - **`@visual` is only for tests that call `toHaveScreenshot`.** Attribute or DOM assertions belong in functional tests (host), not LambdaTest.
+
+### wp-env runtime (speed)
+
+- Generated `.wp-env.e2e.json` sets `SCRIPT_DEBUG: false` and `DISABLE_WP_CRON: true` (debug logging stays on). After changing these constants, restart wp-env; refresh committed PNG baselines on LambdaTest if frontend assets shift (`npm run test:e2e:visual:update`).
+- [`start-wp-env-e2e.mjs`](e2e/scripts/start-wp-env-e2e.mjs) enables PHP opcache in the WordPress container after boot. Restart wp-env after changing `wp-config` constants or PHP ini (`npm run env:e2e:stop`, then start again).
+
+### Block frontend fixtures (no editor boot)
+
+- Tier-2 block specs publish frontend pages once via [`seedBlockFrontendPages()`](e2e/helpers/wp-cli.js) and [`seed-e2e-block-frontend-pages.php`](../fixtures/seed-e2e-block-frontend-pages.php) (request payload in gitignored `tests/fixtures/.e2e-block-seed-request.json`). Frontend, `@aria`, axe, and frontend `@visual` tests `goto` those URLs; editor describes still use `prepareEditorPage()`.
 
 ### Test tags
 
 | Tag | Runner | Snapshots |
 |-----|--------|-----------|
-| (none) | Functional on host | — |
-| `@aria` | Host | `*.yml` (`toMatchAriaSnapshot`) |
+| (none) | Functional on host (desktop: all; tablet/mobile: none unless combined with `@viewport`) | — |
+| `@viewport` | Functional on tablet/mobile (and desktop) | — |
+| `@aria` | Host (desktop project) | `*.yml` (`toMatchAriaSnapshot`) |
 | `@visual` | LambdaTest | `*.png` (`toHaveScreenshot`) |
 
 ### LambdaTest tunnel

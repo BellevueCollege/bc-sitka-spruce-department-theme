@@ -17,7 +17,7 @@
 		"activateOn": [ "subsite" ],
 		"envPathVar": "MAYFLOWER_BLOCKS_PATH",
 		"remote": {
-			"url": "https://github.com/BellevueCollege/mayflower-blocks/releases/download/v3.11/mayflower-blocks.zip",
+			"url": "https://github.com/BellevueCollege/mayflower-blocks/releases/download/v3.11.2/mayflower-blocks-g4.zip",
 			"directoryName": "mayflower-blocks"
 		},
 		"activate": "mayflower-blocks/mayflower-blocks.php"

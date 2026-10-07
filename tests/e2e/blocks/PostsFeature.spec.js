@@ -4,11 +4,14 @@ import AxeBuilder from '@axe-core/playwright';
 import {
 	prepareEditorCanvasForScreenshot,
 	prepareEditorPage,
-	publishAndGetUrl,
 	settleLocatorForScreenshot,
+	visitPublishedFrontend,
 } from '../helpers/editor.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
-import { seedPostsFeatureData } from '../helpers/wp-cli.js';
+import {
+	seedBlockFrontendPages,
+	seedPostsFeatureData,
+} from '../helpers/wp-cli.js';
 
 const BLOCK_NAME = 'bc-sitka-spruce/posts-feature';
 
@@ -51,18 +54,25 @@ const FIXTURE = {
 };
 
 let seed;
+/** @type {Record<string, { pageUrl: string }>} */
+let frontendPages;
 
 test.describe( 'Posts Feature Block', () => {
 	test.beforeAll( () => {
 		seed = seedPostsFeatureData();
-	} );
-
-	test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
-		skipDuplicateBlockViewport( testInfo );
-		await prepareEditorPage( { admin, editor, page } );
+		frontendPages = seedBlockFrontendPages( BLOCK_NAME, {
+			empty: { attributes: FIXTURE.empty() },
+			full: { attributes: FIXTURE.full( seed ) },
+			listOnly: { attributes: FIXTURE.listOnly( seed ) },
+		} );
 	} );
 
 	test.describe( 'Editor', () => {
+		test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
+			skipDuplicateBlockViewport( testInfo );
+			await prepareEditorPage( { admin, editor, page } );
+		} );
+
 		test( 'inserts block into editor', async ( { editor } ) => {
 			await editor.insertBlock( { name: BLOCK_NAME } );
 
@@ -124,7 +134,6 @@ test.describe( 'Posts Feature Block', () => {
 			editor,
 			page,
 		}, testInfo ) => {
-
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
 				attributes: FIXTURE.full( seed ),
@@ -143,20 +152,30 @@ test.describe( 'Posts Feature Block', () => {
 				{ maxDiffPixelRatio: 0.02 }
 			);
 		} );
+
+		test( 'editor — full configuration @aria', async ( { editor } ) => {
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: FIXTURE.full( seed ),
+			} );
+
+			const block = editor.canvas.locator(
+				`[data-type="${ BLOCK_NAME }"]`
+			);
+			await waitForFeaturedPostInEditor( editor, seed.featuredPostTitle );
+			await waitForListPostsInEditor( editor, seed.listPostTitles );
+			await expect( block ).toBeVisible();
+			await expect( block ).toMatchAriaSnapshot( {
+				name: 'posts-feature-editor-full.yml',
+			} );
+		} );
 	} );
 
 	test.describe( 'Frontend', () => {
 		test( 'does not render when block has no configuration', async ( {
-			editor,
 			page,
 		} ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: FIXTURE.empty(),
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+			await visitPublishedFrontend( page, frontendPages.empty.pageUrl );
 
 			await expect( page.locator( 'section.news-feature' ) ).toHaveCount(
 				0
@@ -164,16 +183,9 @@ test.describe( 'Posts Feature Block', () => {
 		} );
 
 		test( 'renders featured story, list items, and CTA link', async ( {
-			editor,
 			page,
 		} ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: FIXTURE.full( seed ),
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+			await visitPublishedFrontend( page, frontendPages.full.pageUrl );
 
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
@@ -203,16 +215,9 @@ test.describe( 'Posts Feature Block', () => {
 		} );
 
 		test( 'renders list-only configuration without featured story', async ( {
-			editor,
 			page,
 		} ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: FIXTURE.listOnly( seed ),
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+			await visitPublishedFrontend( page, frontendPages.listOnly.pageUrl );
 
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
@@ -225,17 +230,9 @@ test.describe( 'Posts Feature Block', () => {
 		} );
 
 		test( 'frontend snapshot — full configuration @visual', async ( {
-			editor,
 			page,
 		} ) => {
-
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: FIXTURE.full( seed ),
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+			await visitPublishedFrontend( page, frontendPages.full.pageUrl );
 
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
@@ -245,37 +242,9 @@ test.describe( 'Posts Feature Block', () => {
 				{ maxDiffPixelRatio: 0.02 }
 			);
 		} );
-	} );
 
-	test.describe( 'ARIA snapshots', () => {
-		test( 'editor — full configuration @aria', async ( { editor } ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: FIXTURE.full( seed ),
-			} );
-
-			const block = editor.canvas.locator(
-				`[data-type="${ BLOCK_NAME }"]`
-			);
-			await waitForFeaturedPostInEditor( editor, seed.featuredPostTitle );
-			await waitForListPostsInEditor( editor, seed.listPostTitles );
-			await expect( block ).toBeVisible();
-			await expect( block ).toMatchAriaSnapshot( {
-				name: 'posts-feature-editor-full.yml',
-			} );
-		} );
-
-		test( 'frontend — full configuration @aria', async ( {
-			editor,
-			page,
-		} ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: FIXTURE.full( seed ),
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+		test( 'frontend — full configuration @aria', async ( { page } ) => {
+			await visitPublishedFrontend( page, frontendPages.full.pageUrl );
 
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
@@ -286,17 +255,8 @@ test.describe( 'Posts Feature Block', () => {
 	} );
 
 	test.describe( 'Accessibility', () => {
-		test( 'passes axe audit — list-only configuration', async ( {
-			editor,
-			page,
-		} ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: FIXTURE.listOnly( seed ),
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+		test( 'passes axe audit — list-only configuration', async ( { page } ) => {
+			await visitPublishedFrontend( page, frontendPages.listOnly.pageUrl );
 
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
@@ -309,17 +269,8 @@ test.describe( 'Posts Feature Block', () => {
 			expect( results.violations ).toEqual( [] );
 		} );
 
-		test( 'passes axe audit — full configuration', async ( {
-			editor,
-			page,
-		} ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: FIXTURE.full( seed ),
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+		test( 'passes axe audit — full configuration', async ( { page } ) => {
+			await visitPublishedFrontend( page, frontendPages.full.pageUrl );
 
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();

@@ -76,4 +76,5 @@ yarn-error.log
 
 # Per-developer e2e plugin paths (see tests/e2e/plugins.local.example.json)
 /tests/e2e/plugins.local.json
+/tests/fixtures/.e2e-block-seed-request.json
 

@@ -24,19 +24,32 @@ const SCREENSHOT_OPTIONS = { maxDiffPixelRatio: 0.02 };
 
 let seed;
 
+/**
+ * @param {import('@playwright/test').Page} page
+ * @param {string} url
+ */
+async function visitDefaultChromePage( page, url ) {
+	await page.goto( normalizeE2eUrlForPlaywright( url ) );
+	await page.locator( '#header-wrapper' ).waitFor( { state: 'visible' } );
+	await page.locator( 'footer.footer' ).waitFor( { state: 'visible' } );
+}
+
 test.describe( 'Header and Footer', () => {
 	test.beforeAll( () => {
 		seed = seedSiteChromeData();
+		seedChromeVariant( 'default' );
 	} );
 
-	test.beforeEach( async ( { page } ) => {
-		await page.goto( normalizeE2eUrlForPlaywright( seed.pageUrl ) );
-		await page.locator( '#header-wrapper' ).waitFor( { state: 'visible' } );
-		await page.locator( 'footer.footer' ).waitFor( { state: 'visible' } );
+	test.afterAll( () => {
+		seedChromeVariant( 'default' );
 	} );
 
 	test.describe( 'Header', () => {
-		test( 'renders top-level main navigation links', async ( { page } ) => {
+		test.beforeEach( async ( { page } ) => {
+			await visitDefaultChromePage( page, seed.pageUrl );
+		} );
+
+		test( 'renders top-level main navigation links @viewport', async ( { page } ) => {
 			await openHeaderMenuIfCollapsed( page );
 			const mainNav = page.locator( '#site-header--main-nav' );
 
@@ -48,7 +61,7 @@ test.describe( 'Header and Footer', () => {
 		} );
 
 		// Child items live in a collapsed submenu; hover reveals them on desktop.
-		test( 'renders child link when submenu is expanded', async ( { page } ) => {
+		test( 'renders child link when submenu is expanded @viewport', async ( { page } ) => {
 			await openHeaderMenuIfCollapsed( page );
 			await expandMainNavSubmenu( page, 'Programs' );
 
@@ -58,7 +71,7 @@ test.describe( 'Header and Footer', () => {
 			).toBeVisible();
 		} );
 
-		test( 'renders CTA menu buttons', async ( { page } ) => {
+		test( 'renders CTA menu buttons @viewport', async ( { page } ) => {
 			await openHeaderMenuIfCollapsed( page );
 			const ctaNav = page.locator( '#site-header--cta' );
 
@@ -78,7 +91,6 @@ test.describe( 'Header and Footer', () => {
 		} );
 
 		test( 'header snapshot — default state @visual', async ( { page } ) => {
-
 			const header = page.locator( '#header-wrapper' );
 			await expect( header ).toBeVisible();
 			await expect( header ).toHaveScreenshot(
@@ -89,6 +101,10 @@ test.describe( 'Header and Footer', () => {
 	} );
 
 	test.describe( 'Footer', () => {
+		test.beforeEach( async ( { page } ) => {
+			await visitDefaultChromePage( page, seed.pageUrl );
+		} );
+
 		test( 'renders site title, address, and phone contact', async ( { page } ) => {
 			const footer = page.locator( 'footer.footer' );
 			// Scope address assertions to the contact column to avoid copyright matches.
@@ -133,6 +149,10 @@ test.describe( 'Header and Footer', () => {
 	} );
 
 	test.describe( 'ARIA snapshots', () => {
+		test.beforeEach( async ( { page } ) => {
+			await visitDefaultChromePage( page, seed.pageUrl );
+		} );
+
 		test( 'header — default state @aria', async ( { page } ) => {
 			const header = page.locator( '#header-wrapper' );
 			await expect( header ).toBeVisible();
@@ -203,6 +223,10 @@ test.describe( 'Header and Footer', () => {
 	} );
 
 	test.describe( 'Accessibility', () => {
+		test.beforeEach( async ( { page } ) => {
+			await visitDefaultChromePage( page, seed.pageUrl );
+		} );
+
 		test( 'passes axe audit — header', async ( { page } ) => {
 			const header = page.locator( '#header-wrapper' );
 			await expect( header ).toBeVisible();

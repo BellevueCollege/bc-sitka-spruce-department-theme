@@ -119,7 +119,8 @@ function buildWpEnvConfig( resolvedPlugins ) {
 		config: {
 			WP_DEBUG: true,
 			WP_DEBUG_LOG: true,
-			SCRIPT_DEBUG: true,
+			SCRIPT_DEBUG: false,
+			DISABLE_WP_CRON: true,
 			WP_HOME: MAIN_SITE_URL,
 			WP_SITEURL: MAIN_SITE_URL,
 		},

@@ -115,7 +115,7 @@ npm run test:e2e
 npm run test:e2e -- --project=desktop tests/e2e/blocks/PostsFeature.spec.js
 ```
 
-`npm run test:e2e` runs functional tests on the host, then `@visual` tests on LambdaTest, across **desktop, tablet, and mobile**.
+`npm run test:e2e` runs functional tests on the host, then `@visual` tests on LambdaTest. **Desktop** runs the full functional suite; **tablet and mobile** run only `@viewport` breakpoint tests plus all `@visual` screenshots (see `tests/AGENTS.md`).
 
 | Command | Purpose |
 |---------|---------|

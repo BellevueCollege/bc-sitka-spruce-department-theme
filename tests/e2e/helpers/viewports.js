@@ -1,3 +1,6 @@
+/** Tablet and mobile functional runs only execute @viewport and @visual tests. */
+const NARROW_VIEWPORT_GREP = /@viewport|@visual/;
+
 /** Host and LambdaTest visual projects (same viewports for functional and @visual). */
 export const VIEWPORT_PROJECTS = [
 	{
@@ -6,10 +9,12 @@ export const VIEWPORT_PROJECTS = [
 	},
 	{
 		name: 'tablet',
+		grep: NARROW_VIEWPORT_GREP,
 		use: { viewport: { width: 768, height: 1024 } },
 	},
 	{
 		name: 'mobile',
+		grep: NARROW_VIEWPORT_GREP,
 		use: { viewport: { width: 375, height: 812 } },
 	},
 ];
@@ -17,9 +22,10 @@ export const VIEWPORT_PROJECTS = [
 /**
  * Skip tablet and mobile copies of block editor and ARIA tests.
  *
- * Those trees matched desktop in the last functional run. Header layout,
- * axe, and page @visual screenshots still run on every viewport (including
- * LambdaTest). Block editor @visual baselines are desktop-only even on LT.
+ * Tablet/mobile functional runs are limited to @viewport and @visual via
+ * project grep; this hook still skips block-editor @aria on narrow viewports
+ * when those tests are scheduled. Block editor @visual baselines are
+ * desktop-only even on LambdaTest.
  *
  * @param {import('@playwright/test').TestInfo} testInfo
  */

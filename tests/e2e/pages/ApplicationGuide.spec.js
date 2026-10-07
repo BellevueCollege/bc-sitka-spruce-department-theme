@@ -38,7 +38,7 @@ test.describe( 'Application guide integration', () => {
 		await expect( page.getByRole( 'tab', { name: 'Student Type 1' } ) ).toBeVisible();
 	} );
 
-	test( 'shows the first application step', async ( { page }, testInfo ) => {
+	test( 'shows the first application step @viewport', async ( { page }, testInfo ) => {
 		// Theme md is 769px, so the 768px tablet project renders the accordion, not tabs.
 		if ( testInfo.project.name !== 'desktop' ) {
 			await page.getByRole( 'button', { name: 'Student Type 1' } ).click();

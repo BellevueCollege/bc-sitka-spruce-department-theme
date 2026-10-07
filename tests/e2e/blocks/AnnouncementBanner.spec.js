@@ -4,12 +4,11 @@ import AxeBuilder from '@axe-core/playwright';
 import {
 	prepareEditorCanvasForScreenshot,
 	prepareEditorPage,
-	publishAndGetUrl,
 	settleLocatorForScreenshot,
 	visitPublishedFrontend,
 } from '../helpers/editor.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
-import { uploadTestImage } from '../helpers/wp-cli.js';
+import { seedBlockFrontendPages, uploadTestImage } from '../helpers/wp-cli.js';
 
 const BLOCK_NAME = 'bc-sitka-spruce/announcement-banner';
 
@@ -77,13 +76,31 @@ const FIXTURE = {
 	} ),
 };
 
+/** @type {Record<string, { pageUrl: string }>} */
+let frontendPages;
+
 test.describe( 'Announcement Banner Block', () => {
-	test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
-		skipDuplicateBlockViewport( testInfo );
-		await prepareEditorPage( { admin, editor, page } );
+	test.beforeAll( () => {
+		const imageId = uploadTestImage();
+		frontendPages = seedBlockFrontendPages( BLOCK_NAME, {
+			withButton: {
+				attributes: { data: FIXTURE.withButton( imageId ) },
+			},
+			withLinks: {
+				attributes: { data: FIXTURE.withLinks( imageId ) },
+			},
+			noImage: {
+				attributes: { data: FIXTURE.noImage() },
+			},
+		} );
 	} );
 
 	test.describe( 'Editor', () => {
+		test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
+			skipDuplicateBlockViewport( testInfo );
+			await prepareEditorPage( { admin, editor, page } );
+		} );
+
 		test( 'inserts block into editor', async ( { editor } ) => {
 			await editor.insertBlock( { name: BLOCK_NAME } );
 
@@ -113,122 +130,7 @@ test.describe( 'Announcement Banner Block', () => {
 				maxDiffPixelRatio: 0.02,
 			} );
 		} );
-	} );
 
-	// Links and no-image variants are covered functionally and via axe—not separate snapshots.
-	test.describe( 'Frontend', () => {
-		test( 'frontend snapshot — with button and image @visual', async ( {
-			editor,
-			page,
-		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withButton( imageId ) },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			const banner = getBannerLocator( page, 'Test Announcement' );
-			await visitPublishedFrontend( page, url );
-			await expect( banner ).toBeVisible();
-			await settleLocatorForScreenshot( banner );
-			await expect( banner ).toHaveScreenshot(
-				'frontend-with-button.png',
-				{
-					maxDiffPixelRatio: 0.02,
-				}
-			);
-		} );
-
-		test( 'renders button with correct href and target', async ( {
-			editor,
-			page,
-		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withButton( imageId ) },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-			const button = getBannerLocator(
-				page,
-				'Test Announcement'
-			).getByRole( 'link', { name: 'Learn More' } );
-
-			await expect( button ).toBeVisible();
-			await expect( button ).toHaveAttribute(
-				'href',
-				'https://example.com'
-			);
-			await expect( button ).toHaveAttribute( 'target', '_blank' );
-		} );
-
-		test( 'renders all links in repeater', async ( {
-			editor,
-			page,
-		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withLinks( imageId ) },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-			const banner = getBannerLocator( page, 'Test Announcement' );
-			await expect(
-				banner.getByRole( 'link', { name: 'Link One' } )
-			).toBeVisible();
-			await expect(
-				banner.getByRole( 'link', { name: 'Link Two' } )
-			).toBeVisible();
-			await expect(
-				banner.getByRole( 'link', { name: 'Link Three' } )
-			).toBeVisible();
-			await expect(
-				banner.getByRole( 'link', { name: 'Link Three' } )
-			).toHaveAttribute( 'target', '_blank' );
-		} );
-
-		test( 'renders image when provided', async ( {
-			editor,
-			page,
-		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withButton( imageId ) },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-			const banner = getBannerLocator( page, 'Test Announcement' );
-			await expect( banner.locator( 'img' ) ).toBeVisible();
-		} );
-
-		test( 'renders without image when not provided', async ( {
-			editor,
-			page,
-		} ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.noImage() },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
-			const banner = getBannerLocator(
-				page,
-				'Test Announcement No Image'
-			);
-			await expect( banner ).toBeVisible();
-			await expect( banner.locator( 'img' ) ).toHaveCount( 0 );
-		} );
-	} );
-
-	test.describe( 'ARIA snapshots', () => {
 		test( 'editor — with button and image @aria', async ( { editor } ) => {
 			const imageId = uploadTestImage();
 			await editor.insertBlock( {
@@ -245,19 +147,88 @@ test.describe( 'Announcement Banner Block', () => {
 				name: 'editor-with-button.yml',
 			} );
 		} );
+	} );
 
-		test( 'frontend — with button and image @aria', async ( {
-			editor,
+	test.describe( 'Frontend', () => {
+		test( 'frontend snapshot — with button and image @visual', async ( {
 			page,
 		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withButton( imageId ) },
-			} );
+			const banner = getBannerLocator( page, 'Test Announcement' );
+			await visitPublishedFrontend(
+				page,
+				frontendPages.withButton.pageUrl
+			);
+			await expect( banner ).toBeVisible();
+			await settleLocatorForScreenshot( banner );
+			await expect( banner ).toHaveScreenshot(
+				'frontend-with-button.png',
+				{
+					maxDiffPixelRatio: 0.02,
+				}
+			);
+		} );
 
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+		test( 'renders button with correct href and target', async ( {
+			page,
+		} ) => {
+			await visitPublishedFrontend(
+				page,
+				frontendPages.withButton.pageUrl
+			);
+			const button = getBannerLocator(
+				page,
+				'Test Announcement'
+			).getByRole( 'link', { name: 'Learn More' } );
+
+			await expect( button ).toBeVisible();
+			await expect( button ).toHaveAttribute(
+				'href',
+				'https://example.com'
+			);
+			await expect( button ).toHaveAttribute( 'target', '_blank' );
+		} );
+
+		test( 'renders all links in repeater', async ( { page } ) => {
+			await visitPublishedFrontend( page, frontendPages.withLinks.pageUrl );
+			const banner = getBannerLocator( page, 'Test Announcement' );
+			await expect(
+				banner.getByRole( 'link', { name: 'Link One' } )
+			).toBeVisible();
+			await expect(
+				banner.getByRole( 'link', { name: 'Link Two' } )
+			).toBeVisible();
+			await expect(
+				banner.getByRole( 'link', { name: 'Link Three' } )
+			).toBeVisible();
+			await expect(
+				banner.getByRole( 'link', { name: 'Link Three' } )
+			).toHaveAttribute( 'target', '_blank' );
+		} );
+
+		test( 'renders image when provided', async ( { page } ) => {
+			await visitPublishedFrontend(
+				page,
+				frontendPages.withButton.pageUrl
+			);
+			const banner = getBannerLocator( page, 'Test Announcement' );
+			await expect( banner.locator( 'img' ) ).toBeVisible();
+		} );
+
+		test( 'renders without image when not provided', async ( { page } ) => {
+			await visitPublishedFrontend( page, frontendPages.noImage.pageUrl );
+			const banner = getBannerLocator(
+				page,
+				'Test Announcement No Image'
+			);
+			await expect( banner ).toBeVisible();
+			await expect( banner.locator( 'img' ) ).toHaveCount( 0 );
+		} );
+
+		test( 'frontend — with button and image @aria', async ( { page } ) => {
+			await visitPublishedFrontend(
+				page,
+				frontendPages.withButton.pageUrl
+			);
 			const banner = getBannerLocator( page, 'Test Announcement' );
 			await expect( banner ).toBeVisible();
 			await expect( banner ).toMatchAriaSnapshot( {
@@ -267,18 +238,11 @@ test.describe( 'Announcement Banner Block', () => {
 	} );
 
 	test.describe( 'Accessibility', () => {
-		test( 'passes axe audit — with button and image', async ( {
-			editor,
-			page,
-		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withButton( imageId ) },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+		test( 'passes axe audit — with button and image', async ( { page } ) => {
+			await visitPublishedFrontend(
+				page,
+				frontendPages.withButton.pageUrl
+			);
 			await expect(
 				getBannerLocator( page, 'Test Announcement' )
 			).toBeVisible();
@@ -291,18 +255,8 @@ test.describe( 'Announcement Banner Block', () => {
 			expect( results.violations ).toEqual( [] );
 		} );
 
-		test( 'passes axe audit — with links and image', async ( {
-			editor,
-			page,
-		} ) => {
-			const imageId = uploadTestImage();
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.withLinks( imageId ) },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+		test( 'passes axe audit — with links and image', async ( { page } ) => {
+			await visitPublishedFrontend( page, frontendPages.withLinks.pageUrl );
 			await expect(
 				getBannerLocator( page, 'Test Announcement' )
 			).toBeVisible();
@@ -315,14 +269,8 @@ test.describe( 'Announcement Banner Block', () => {
 			expect( results.violations ).toEqual( [] );
 		} );
 
-		test( 'passes axe audit — no image', async ( { editor, page } ) => {
-			await editor.insertBlock( {
-				name: BLOCK_NAME,
-				attributes: { data: FIXTURE.noImage() },
-			} );
-
-			const url = await publishAndGetUrl( editor, page );
-			await page.goto( url );
+		test( 'passes axe audit — no image', async ( { page } ) => {
+			await visitPublishedFrontend( page, frontendPages.noImage.pageUrl );
 			await expect(
 				getBannerLocator( page, 'Test Announcement No Image' )
 			).toBeVisible();
