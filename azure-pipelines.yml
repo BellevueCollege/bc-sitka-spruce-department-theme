@@ -2,9 +2,9 @@
 # azure-pipelines.yml — CI Pipeline
 # Extends shared templates from bc-wordpress-devops-templates.
 #
-# E2e secrets: Azure DevOps Library variable group "sitka-e2e"
-#   LT_USERNAME, LT_ACCESS_KEY, GITHUB_PAT, ACF_DOWNLOAD_URL
-# Link the group to this pipeline before the Test stage can pass.
+# E2e secrets: Library variable group "sitka-e2e" (LT_*, GITHUB_PAT, ACF_DOWNLOAD_URL)
+# passed via testVariableGroups below — do not add a root-level variables: block here
+# (extends templates already define variables and ADO rejects duplicates).
 # ============================================================
 
 trigger:
@@ -28,9 +28,6 @@ pr:
     include:
       - '**'
 
-variables:
-  - group: sitka-e2e
-
 resources:
   repositories:
     - repository: templates
@@ -43,6 +40,8 @@ extends:
   parameters:
     themeName: 'bc-sitka-spruce-department-theme'
     runTests: true
+    testVariableGroups:
+      - sitka-e2e
     testEnvironments:
       - name: KinstaCstage
         displayName: 'Kinsta: CStage'
