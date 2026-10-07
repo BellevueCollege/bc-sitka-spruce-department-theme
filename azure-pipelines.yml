@@ -43,7 +43,6 @@ extends:
   parameters:
     themeName: 'bc-sitka-spruce-department-theme'
     runTests: true
-    testJobTimeoutInMinutes: 120
     testEnvironments:
       - name: KinstaCstage
         displayName: 'Kinsta: CStage'
