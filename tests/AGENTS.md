@@ -182,7 +182,7 @@ One WordPress database; parallel workers race on posts and editor state.
 ### wp-env runtime (speed)
 
 - Generated `.wp-env.e2e.json` sets `SCRIPT_DEBUG: false` and `DISABLE_WP_CRON: true` (debug logging stays on). After changing these constants, restart wp-env; refresh committed PNG baselines on LambdaTest if frontend assets shift (`npm run test:e2e:visual:update`).
-- [`start-wp-env-e2e.mjs`](e2e/scripts/start-wp-env-e2e.mjs) enables PHP opcache in the WordPress container after boot. Restart wp-env after changing `wp-config` constants or PHP ini (`npm run env:e2e:stop`, then start again).
+- First `wp-env start` after plugin/config changes can take several minutes while `afterStart` seeds multisite data; the CLI spinner may sit on “Starting WordPress” or “Executing afterStart Script” during that work.
 
 ### Block frontend fixtures (no editor boot)
 
