@@ -12,6 +12,103 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/e2e-query-helpers.php';
 
 /**
+ * Ensure a taxonomy term exists and return its ID.
+ *
+ * @param string $taxonomy Taxonomy slug.
+ * @param string $name     Term name.
+ * @return int
+ */
+function e2e_ensure_term( string $taxonomy, string $name ): int {
+	$existing = term_exists( $name, $taxonomy );
+	if ( is_array( $existing ) && isset( $existing['term_id'] ) ) {
+		return (int) $existing['term_id'];
+	}
+
+	$result = wp_insert_term( $name, $taxonomy );
+	if ( is_wp_error( $result ) ) {
+		echo wp_json_encode( array( 'error' => $result->get_error_message() ) );
+		exit( 1 );
+	}
+
+	return (int) $result['term_id'];
+}
+
+/**
+ * ACF image field value shape expected by theme controllers (`id` key).
+ *
+ * @param int $attachment_id Attachment post ID.
+ * @return array<string, int>
+ */
+function e2e_acf_image_value( int $attachment_id ): array {
+	return array(
+		'ID' => $attachment_id,
+		'id' => $attachment_id,
+	);
+}
+
+/**
+ * Seed degree sock site options for single-program template tests.
+ *
+ * @param int $hero_attachment_id Hero image attachment ID.
+ */
+function e2e_seed_degree_sock_site_options( int $hero_attachment_id ): void {
+	if ( ! function_exists( 'update_field' ) ) {
+		return;
+	}
+
+	$image = $hero_attachment_id > 0 ? e2e_acf_image_value( $hero_attachment_id ) : null;
+
+	update_field(
+		'degree_sock',
+		array(
+			'enable'           => 1,
+			'main_message'       => array(
+				'heading'          => 'E2E Degree Support',
+				'additional_text'  => 'E2E degree sock supporting text.',
+			),
+			'message_segments'   => array(
+				array(
+					'title'       => 'E2E Admissions',
+					'description' => 'E2E segment description.',
+					'button'      => array(
+						'title'  => 'Apply',
+						'url'    => 'https://example.com/apply',
+						'target' => '',
+					),
+				),
+			),
+			'admissions_contact' => array(
+				'image'       => $image,
+				'title'       => 'E2E Admissions Contact',
+				'description' => 'E2E admissions contact description.',
+				'button'      => array(
+					'title'  => 'Contact',
+					'url'    => 'https://example.com/contact',
+					'target' => '',
+				),
+			),
+		),
+		'option'
+	);
+}
+
+/**
+ * Load a taxonomy term for ACF fields that return WP_Term objects.
+ *
+ * @param int    $term_id  Term ID.
+ * @param string $taxonomy Taxonomy slug.
+ * @return \WP_Term|null
+ */
+function e2e_get_taxonomy_term( int $term_id, string $taxonomy ): ?\WP_Term {
+	$term = get_term( $term_id, $taxonomy );
+	if ( ! $term || is_wp_error( $term ) ) {
+		return null;
+	}
+
+	return $term;
+}
+
+/**
  * Delete a post by title if it exists.
  *
  * @param string $title     Post title.

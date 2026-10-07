@@ -37,6 +37,17 @@ test.describe( 'Support homepage integration', () => {
 		await expect( main.getByRole( 'heading', { name: /Why \[X\] at Bellevue College/i } ) ).toBeVisible();
 	} );
 
+	test( 'renders seeded dynamic block content', async ( { page }, testInfo ) => {
+		const main = page.locator( 'main, .site-content, #content' ).first();
+		await expect( main.getByRole( 'link', { name: /Ada Lovelace/i } ).first() ).toBeVisible();
+		await expect( main.getByText( 'No employees found!' ) ).toHaveCount( 0 );
+
+		if ( testInfo.project.name === 'desktop' ) {
+			await expect( main.getByRole( 'heading', { name: 'E2E Support Tab' } ) ).toBeVisible();
+			await expect( main.getByText( 'E2E support tab summary content.' ) ).toBeVisible();
+		}
+	} );
+
 	test( 'opens an accordion panel', async ( { page } ) => {
 		const accordionButton = page.locator( '.accordion-button' ).first();
 		await accordionButton.click();

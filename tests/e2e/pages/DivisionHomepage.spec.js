@@ -39,6 +39,12 @@ test.describe( 'Division homepage integration', () => {
 		await expect( page.locator( '.card-section .cards' ) ).toBeVisible();
 	} );
 
+	test( 'renders seeded dynamic block content', async ( { page } ) => {
+		const main = page.locator( 'main, .site-content, #content' ).first();
+		await expect( main.getByRole( 'link', { name: /Ada Lovelace/i } ).first() ).toBeVisible();
+		await expect( main.getByText( 'No employees found!' ) ).toHaveCount( 0 );
+	} );
+
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
 		skipDuplicateBlockViewport( testInfo );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {

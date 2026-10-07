@@ -3,5 +3,5 @@
     - /url: https://www.bellevuecollege.edu
     - img "Bellevue College - Link to college homepage"
   - link "E2E Department Site":
-    - /url: http://127.0.0.1:8889
+    - /url: http://127.0.0.1:8889/e2e-dept
   - button "Open menu"

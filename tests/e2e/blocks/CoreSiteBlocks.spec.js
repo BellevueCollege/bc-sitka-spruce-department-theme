@@ -26,9 +26,7 @@ test.describe( 'Core-site blocks (editor load only)', () => {
 		} );
 	}
 
-	test( 'inserts differentiator child inside differentiator section', async ( {
-		editor,
-	} ) => {
+	test( 'inserts differentiator section block', async ( { editor } ) => {
 		await editor.insertBlock( { name: 'bc-sitka-spruce/differentiator-section' } );
 		await expect(
 			editor.canvas.locator(

@@ -27,11 +27,13 @@ test.describe( 'Profile listing integration', () => {
 	} ) => {
 		await expect( page.locator( '.profile-listing-page' ) ).toBeVisible();
 		await expect( page.getByText( 'Our Faculty and Staff' ) ).toBeVisible();
-		const profileLink = page.getByRole( 'link', { name: /Ada|E2E Profile Ada/i } );
-		if ( await profileLink.count() ) {
-			await profileLink.first().click();
-			await expect( page ).toHaveURL( new RegExp( profileUrl.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' ) ) );
-		}
+		const profileLink = page.getByRole( 'link', { name: /Ada Lovelace/i } );
+		await expect( profileLink.first() ).toBeVisible();
+		await profileLink.first().click();
+		await expect( page ).toHaveURL(
+			new RegExp( profileUrl.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' ) )
+		);
+		await expect( page.getByText( 'No employees found!' ) ).toHaveCount( 0 );
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {

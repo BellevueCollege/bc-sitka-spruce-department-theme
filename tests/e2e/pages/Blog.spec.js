@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
+	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
@@ -47,5 +48,13 @@ test.describe( 'Blog templates integration', () => {
 		await visitIntegrationPage( page, blogIndexUrl );
 		const results = await runAxeOnSelector( page, '.post-list, .posts-list, .flexible-page' );
 		expect( results.violations ).toEqual( [] );
+	} );
+
+	test( 'full page snapshot @visual', async ( { page } ) => {
+		await visitIntegrationPage( page, blogIndexUrl );
+		await expect( page ).toHaveScreenshot(
+			'blog-index-full.png',
+			FULL_PAGE_SCREENSHOT_OPTIONS
+		);
 	} );
 } );

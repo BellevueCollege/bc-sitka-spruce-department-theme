@@ -140,23 +140,97 @@ function e2e_set_block_attribute(
 }
 
 /**
+ * Attach local program posts to empty degrees block segment rows (in order).
+ *
+ * @param string $content     Block markup.
+ * @param int[]  $program_ids Local program post IDs.
+ * @return string
+ */
+function e2e_wire_degrees_block_programs( string $content, array $program_ids ): string {
+	foreach ( $program_ids as $program_id ) {
+		$program_id = (int) $program_id;
+		if ( $program_id <= 0 ) {
+			continue;
+		}
+
+		$encoded_ids = wp_json_encode( array( $program_id ) );
+		$content     = preg_replace(
+			'/"field_671a706dffac6":""/',
+			'"field_671a706dffac6":' . $encoded_ids,
+			$content,
+			1
+		) ?? $content;
+	}
+
+	return $content;
+}
+
+/**
  * Attach a local program post to the degrees block segment (first row).
  *
- * @param string $content   Block markup.
+ * @param string $content    Block markup.
  * @param int    $program_id Local program post ID.
  * @return string
  */
 function e2e_wire_degrees_block_program( string $content, int $program_id ): string {
-	if ( $program_id <= 0 ) {
+	return e2e_wire_degrees_block_programs( $content, array( $program_id ) );
+}
+
+/**
+ * Inject profile taxonomy selectors into profiles-section block JSON.
+ *
+ * @param string $content              Block markup.
+ * @param int    $department_term_id   `department` term ID.
+ * @param int    $profile_type_term_id `profile_type` term ID.
+ * @return string
+ */
+function e2e_wire_profiles_sections_in_content(
+	string $content,
+	int $department_term_id,
+	int $profile_type_term_id
+): string {
+	if ( $department_term_id <= 0 || $profile_type_term_id <= 0 ) {
 		return $content;
 	}
 
-	$encoded_ids = wp_json_encode( array( $program_id ) );
+	$department_json    = wp_json_encode( array( $department_term_id ) );
+	$profile_type_json  = wp_json_encode( array( $profile_type_term_id ) );
 
-	return preg_replace(
-		'/"field_671a706dffac6":""/',
-		'"field_671a706dffac6":' . $encoded_ids,
-		$content,
-		1
+	$content = preg_replace(
+		'/"field_67181a0cebcad":""/',
+		'"field_67181a0cebcad":' . $department_json,
+		$content
 	) ?? $content;
+
+	$content = preg_replace(
+		'/"field_67181b0c4e673":""/',
+		'"field_67181b0c4e673":' . $profile_type_json,
+		$content
+	) ?? $content;
+
+	return $content;
+}
+
+/**
+ * Wire profiles-section repeater rows to manually selected profiles (node mode).
+ *
+ * @param string $content    Block markup.
+ * @param int    $profile_id Profile post ID.
+ * @return string
+ */
+function e2e_wire_profiles_sections_node_select( string $content, int $profile_id ): string {
+	if ( $profile_id <= 0 ) {
+		return $content;
+	}
+
+	$profiles_json = wp_json_encode( array( $profile_id ) );
+	$node_row      = '"field_6718186dcf4ee":"node","field_67181986c01c6":' . $profiles_json;
+
+	$content = preg_replace(
+		'/"field_6718186dcf4ee":"taxonomy","field_67181a0cebcad":(?:\[\d+\]|""|\d+),"field_67181b0c4e673":(?:\[\d+\]|""|\d+)/',
+		$node_row,
+		$content
+	) ?? $content;
+
+	return $content;
 }

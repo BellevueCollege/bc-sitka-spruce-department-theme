@@ -13,6 +13,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once __DIR__ . '/e2e-query-helpers.php';
+require_once __DIR__ . '/e2e-seed-shared.php';
+
+$hero_attachment_id = e2e_import_hero_attachment();
 
 $main_menu_name = 'E2E Main Menu';
 $cta_menu_name  = 'E2E CTA Menu';
@@ -150,6 +153,7 @@ update_field(
 );
 // Hide location card so sock snapshots stay stable without a location image.
 update_field( 'display_location_card', 0, 'option' );
+e2e_seed_degree_sock_site_options( $hero_attachment_id );
 update_field(
 	'website_manager',
 	array(

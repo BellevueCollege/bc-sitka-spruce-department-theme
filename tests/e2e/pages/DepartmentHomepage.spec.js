@@ -27,6 +27,7 @@ test.describe( 'Department homepage integration', () => {
 	test( 'renders primary sections in pattern order', async ( { page } ) => {
 		const main = page.locator( 'main, .site-content, #content' ).first();
 		await expect( main.getByRole( 'heading', { name: /Department Homepage/i } ) ).toBeVisible();
+		await expect( main.getByText( 'Announcement Banner' ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: /Why \[X\] at Bellevue College/i } ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'Stats about BC' } ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'Degrees and Certificates' } ) ).toBeVisible();
@@ -37,6 +38,20 @@ test.describe( 'Department homepage integration', () => {
 		await expect( main.getByText( 'Media Gallery' ) ).toBeVisible();
 		await expect( main.getByText( 'Profiles Section' ) ).toBeVisible();
 		await expect( main.getByText( 'Checkerboards Headline' ) ).toBeVisible();
+	} );
+
+	test( 'renders seeded dynamic block content', async ( { page }, testInfo ) => {
+		const main = page.locator( 'main, .site-content, #content' ).first();
+		await expect( main.getByRole( 'link', { name: 'E2E Alpha' } ) ).toBeVisible();
+		await expect( main.getByRole( 'link', { name: 'E2E Beta' } ) ).toBeVisible();
+		await expect( main.getByText( 'E2E Degree' ).first() ).toBeVisible();
+		await expect( main.getByRole( 'link', { name: /Ada Lovelace/i } ).first() ).toBeVisible();
+		await expect( main.getByText( 'No employees found!' ) ).toHaveCount( 0 );
+
+		if ( testInfo.project.name === 'desktop' ) {
+			await expect( main.getByText( 'E2E featured news summary' ) ).toBeVisible();
+			await expect( main.getByRole( 'heading', { name: 'E2E Support Tab' } ) ).toBeVisible();
+		}
 	} );
 
 	test( 'opens an accordion panel', async ( { page } ) => {

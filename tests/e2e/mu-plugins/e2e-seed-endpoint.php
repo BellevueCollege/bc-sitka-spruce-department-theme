@@ -12,6 +12,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** Must match tests/e2e/helpers/e2e-env.js E2E_WP_PORT. */
 const BC_SITKA_E2E_WP_PORT = 8889;
 
+// Front-end snapshots should match a visitor view; wp-admin still shows the toolbar for editor tests.
+add_filter( 'show_admin_bar', '__return_false' );
+
 /**
  * Request origin host:port (no path) for loopback vs LambdaTest tunnel.
  */

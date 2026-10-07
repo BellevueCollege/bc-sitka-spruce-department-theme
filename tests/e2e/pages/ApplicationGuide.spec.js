@@ -30,6 +30,14 @@ test.describe( 'Application guide integration', () => {
 		await expect( page.getByRole( 'heading', { name: 'Department Feature' } ) ).toBeVisible();
 	} );
 
+	test( 'shows application steps as tabs on desktop', async ( { page }, testInfo ) => {
+		if ( testInfo.project.name !== 'desktop' ) {
+			testInfo.skip( true, 'Tab list is hidden below the theme md breakpoint (769px).' );
+		}
+
+		await expect( page.getByRole( 'tab', { name: 'Student Type 1' } ) ).toBeVisible();
+	} );
+
 	test( 'shows the first application step', async ( { page }, testInfo ) => {
 		// Theme md is 769px, so the 768px tablet project renders the accordion, not tabs.
 		if ( testInfo.project.name !== 'desktop' ) {

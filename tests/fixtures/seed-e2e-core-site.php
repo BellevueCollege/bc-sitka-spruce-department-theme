@@ -12,28 +12,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 require_once __DIR__ . '/e2e-seed-shared.php';
 require_once __DIR__ . '/e2e-core-content-helpers.php';
 
-/**
- * Ensure a taxonomy term exists and return its term ID.
- *
- * @param string $taxonomy Taxonomy slug.
- * @param string $name     Term name.
- * @return int
- */
-function e2e_ensure_term( string $taxonomy, string $name ): int {
-	$existing = term_exists( $name, $taxonomy );
-	if ( is_array( $existing ) && isset( $existing['term_id'] ) ) {
-		return (int) $existing['term_id'];
-	}
-
-	$result = wp_insert_term( $name, $taxonomy );
-	if ( is_wp_error( $result ) ) {
-		echo wp_json_encode( array( 'error' => $result->get_error_message() ) );
-		exit( 1 );
-	}
-
-	return (int) $result['term_id'];
-}
-
 $hero_attachment_id = e2e_import_hero_attachment();
 
 $organization_id = e2e_upsert_post(
@@ -48,13 +26,7 @@ if ( function_exists( 'update_field' ) ) {
 	update_field( 'summary', 'E2E organization summary for department feature.', $organization_id );
 	update_field( 'url', 'https://example.com/e2e-organization', $organization_id );
 	if ( $hero_attachment_id ) {
-		update_field(
-			'image',
-			array(
-				'ID' => $hero_attachment_id,
-			),
-			$organization_id
-		);
+		update_field( 'image', e2e_acf_image_value( $hero_attachment_id ), $organization_id );
 	}
 	update_field(
 		'services_resources',
@@ -81,13 +53,7 @@ wp_set_object_terms( $news_id, array( (int) $news_type_id ), 'news_type' );
 if ( function_exists( 'update_field' ) ) {
 	update_field( 'summary', 'E2E featured news summary.', $news_id );
 	if ( $hero_attachment_id ) {
-		update_field(
-			'image',
-			array(
-				'ID' => $hero_attachment_id,
-			),
-			$news_id
-		);
+		update_field( 'image', e2e_acf_image_value( $hero_attachment_id ), $news_id );
 	}
 }
 
@@ -103,13 +69,7 @@ if ( function_exists( 'update_field' ) ) {
 	update_field( 'heading', 'E2E Support Tab', $identity_support_id );
 	update_field( 'summary', 'E2E support tab summary content.', $identity_support_id );
 	if ( $hero_attachment_id ) {
-		update_field(
-			'image',
-			array(
-				'ID' => $hero_attachment_id,
-			),
-			$identity_support_id
-		);
+		update_field( 'image', e2e_acf_image_value( $hero_attachment_id ), $identity_support_id );
 	}
 }
 
@@ -161,17 +121,33 @@ $core_program_beta_id = e2e_upsert_post(
 	)
 );
 
+$program_type_term = e2e_get_taxonomy_term( $program_type_id, 'program_type' );
+$degree_term         = e2e_get_taxonomy_term( $degree_term_id, 'degree' );
+
+wp_set_object_terms( $core_program_id, array( (int) $program_type_id ), 'program_type' );
+wp_set_object_terms( $core_program_id, array( (int) $degree_term_id ), 'degree' );
+wp_set_object_terms( $core_program_beta_id, array( (int) $program_type_id ), 'program_type' );
+wp_set_object_terms( $core_program_beta_id, array( (int) $degree_term_id ), 'degree' );
+
 if ( function_exists( 'update_field' ) ) {
 	update_field( 'short_name', 'E2E Alpha', $core_program_id );
 	update_field( 'overview', 'E2E core program overview.', $core_program_id );
-	update_field( 'type', (int) $program_type_id, $core_program_id );
-	update_field( 'degree', (int) $degree_term_id, $core_program_id );
+	if ( $program_type_term ) {
+		update_field( 'type', $program_type_term, $core_program_id );
+	}
+	if ( $degree_term ) {
+		update_field( 'degree', $degree_term, $core_program_id );
+	}
 	update_field( 'duration', '2 years', $core_program_id );
 
 	update_field( 'short_name', 'E2E Beta', $core_program_beta_id );
 	update_field( 'overview', 'E2E secondary core program overview.', $core_program_beta_id );
-	update_field( 'type', (int) $program_type_id, $core_program_beta_id );
-	update_field( 'degree', (int) $degree_term_id, $core_program_beta_id );
+	if ( $program_type_term ) {
+		update_field( 'type', $program_type_term, $core_program_beta_id );
+	}
+	if ( $degree_term ) {
+		update_field( 'degree', $degree_term, $core_program_beta_id );
+	}
 	update_field( 'duration', '1 year', $core_program_beta_id );
 }
 

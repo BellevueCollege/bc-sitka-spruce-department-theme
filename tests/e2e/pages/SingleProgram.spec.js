@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
+	FULL_PAGE_SCREENSHOT_OPTIONS,
 	runAxeOnSelector,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
@@ -30,6 +31,17 @@ test.describe( 'Single program integration', () => {
 			main.getByRole( 'heading', { name: 'Programs in this Department' } )
 		).toBeVisible();
 		await expect( main.getByRole( 'link', { name: 'E2E Beta' } ) ).toBeVisible();
+		await expect( main.getByText( 'E2E Degree' ).first() ).toBeVisible();
+		await expect( main.getByText( '2 years' ).first() ).toBeVisible();
+		await expect( main.getByRole( 'link', { name: /Ada Lovelace/i } ).first() ).toBeVisible();
+		await expect( main.getByText( 'No employees found!' ) ).toHaveCount( 0 );
+	} );
+
+	test( 'full page snapshot @visual', async ( { page } ) => {
+		await expect( page ).toHaveScreenshot(
+			'single-program-full.png',
+			FULL_PAGE_SCREENSHOT_OPTIONS
+		);
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {

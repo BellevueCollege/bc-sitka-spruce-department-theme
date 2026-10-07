@@ -286,6 +286,29 @@ test.describe( 'Posts Feature Block', () => {
 	} );
 
 	test.describe( 'Accessibility', () => {
+		test( 'passes axe audit — list-only configuration', async ( {
+			editor,
+			page,
+		} ) => {
+			await editor.insertBlock( {
+				name: BLOCK_NAME,
+				attributes: FIXTURE.listOnly( seed ),
+			} );
+
+			const url = await publishAndGetUrl( editor, page );
+			await page.goto( url );
+
+			const section = getPostsFeatureLocator( page );
+			await expect( section ).toBeVisible();
+
+			const results = await new AxeBuilder( { page } )
+				.include( 'section.news-feature' )
+				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
+				.analyze();
+
+			expect( results.violations ).toEqual( [] );
+		} );
+
 		test( 'passes axe audit — full configuration', async ( {
 			editor,
 			page,

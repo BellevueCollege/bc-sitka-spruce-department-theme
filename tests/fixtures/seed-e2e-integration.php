@@ -24,15 +24,53 @@ require_once __DIR__ . '/e2e-core-content-helpers.php';
 
 $core_map = e2e_get_core_seed_map();
 
-$hero_attachment_id = e2e_import_hero_attachment();
-$tablepress_id      = e2e_seed_tablepress_table();
-$profile_seed       = array();
+$hero_attachment_id    = e2e_import_hero_attachment();
+$tablepress_id         = e2e_seed_tablepress_table();
+$profile_seed          = array();
+$profile_department_id = e2e_ensure_term( 'department', 'E2E Department' );
+$profile_type_id       = e2e_ensure_term( 'profile_type', 'E2E Faculty' );
+
+$profile_content = e2e_load_pattern_markup( 'profile-content-v0.php' );
+$profile_content = e2e_wire_core_site_blocks_in_content( $profile_content, $core_map );
+
+$profile_post_id = e2e_upsert_post(
+	'E2E Profile Ada Lovelace',
+	'profile',
+	array( 'post_content' => $profile_content )
+);
+
+wp_set_object_terms(
+	$profile_post_id,
+	array( $profile_department_id ),
+	'department'
+);
+wp_set_object_terms(
+	$profile_post_id,
+	array( $profile_type_id ),
+	'profile_type'
+);
+
+if ( function_exists( 'update_field' ) ) {
+	update_field( 'first_name', 'Ada', $profile_post_id );
+	update_field( 'last_name', 'Lovelace', $profile_post_id );
+	update_field( 'position_role', 'E2E Faculty', $profile_post_id );
+}
+
+$profile_seed = array(
+	'profileId'  => (int) $profile_post_id,
+	'profileUrl' => (string) get_permalink( $profile_post_id ),
+);
+
+$program_pattern_content = e2e_wire_profiles_sections_node_select(
+	e2e_load_pattern_markup( 'program-content-v1.php' ),
+	$profile_post_id
+);
 
 $program_alpha_id = e2e_upsert_post(
 	E2E_CORE_PROGRAM_TITLE,
 	'program',
 	array(
-		'post_content' => e2e_load_pattern_markup( 'program-content-v1.php' ),
+		'post_content' => $program_pattern_content,
 	)
 );
 
@@ -40,7 +78,7 @@ $program_beta_id = e2e_upsert_post(
 	'E2E Program Beta',
 	'program',
 	array(
-		'post_content' => e2e_load_pattern_markup( 'program-content-v1.php' ),
+		'post_content' => $program_pattern_content,
 	)
 );
 
@@ -61,9 +99,13 @@ $homepage_urls = array();
 foreach ( $homepage_titles as $site_type => $title ) {
 	$content = e2e_homepage_pattern_for_seed( $homepage_patterns[ $site_type ] );
 	$content = e2e_wire_core_site_blocks_in_content( $content, $core_map );
+	$content = e2e_wire_profiles_sections_node_select( $content, $profile_post_id );
 
 	if ( $site_type === 'dept' ) {
-		$content = e2e_wire_degrees_block_program( $content, $program_alpha_id );
+		$content = e2e_wire_degrees_block_programs(
+			$content,
+			array( $program_alpha_id, $program_beta_id )
+		);
 	}
 
 	$page_id = e2e_upsert_post(
@@ -108,36 +150,19 @@ $application_page_id = e2e_upsert_post(
 );
 update_post_meta( $application_page_id, '_wp_page_template', 'template--no-sidebar.php' );
 
+$listing_content = e2e_strip_editor_setup_alert(
+	e2e_load_pattern_markup( 'page-flexible-directory-v0.php' )
+);
+$listing_content = e2e_wire_profiles_sections_node_select( $listing_content, $profile_post_id );
+
 $listing_page_id = e2e_upsert_post(
 	'E2E Profile Listing',
 	'page',
 	array(
-		'post_content' => e2e_strip_editor_setup_alert(
-			e2e_load_pattern_markup( 'page-flexible-directory-v0.php' )
-		),
+		'post_content' => $listing_content,
 	)
 );
 update_post_meta( $listing_page_id, '_wp_page_template', 'template--profile-listing.php' );
-
-$profile_content = e2e_load_pattern_markup( 'profile-content-v0.php' );
-$profile_content = e2e_wire_core_site_blocks_in_content( $profile_content, $core_map );
-
-$profile_post_id = e2e_upsert_post(
-	'E2E Profile Ada Lovelace',
-	'profile',
-	array( 'post_content' => $profile_content )
-);
-
-if ( function_exists( 'update_field' ) ) {
-	update_field( 'first_name', 'Ada', $profile_post_id );
-	update_field( 'last_name', 'Lovelace', $profile_post_id );
-	update_field( 'position_role', 'E2E Faculty', $profile_post_id );
-}
-
-$profile_seed = array(
-	'profileId'  => (int) $profile_post_id,
-	'profileUrl' => (string) get_permalink( $profile_post_id ),
-);
 
 $blog_page_id = e2e_upsert_post(
 	'E2E Blog Index',
@@ -191,10 +216,10 @@ if ( post_type_exists( 'agendas' ) ) {
 		update_field( 'related_action_items', array( $action_id ), $agenda_id );
 	}
 
-	$governance['agendaUrl']         = get_permalink( $agenda_id );
-	$governance['actionItemUrl']     = get_permalink( $action_id );
-	$governance['resolutionUrl']     = get_permalink( $resolution_id );
-	$governance['agendaArchiveUrl']  = get_post_type_archive_link( 'agendas' );
+	$governance['agendaUrl']        = get_permalink( $agenda_id );
+	$governance['actionItemUrl']    = get_permalink( $action_id );
+	$governance['resolutionUrl']    = get_permalink( $resolution_id );
+	$governance['agendaArchiveUrl'] = get_post_type_archive_link( 'agendas' );
 }
 
 echo wp_json_encode(
@@ -210,5 +235,7 @@ echo wp_json_encode(
 		'governance'          => $governance,
 		'tablepressId'        => $tablepress_id,
 		'profileSeed'         => $profile_seed,
+		'profileDepartmentId' => $profile_department_id,
+		'profileTypeId'       => $profile_type_id,
 	)
 );
