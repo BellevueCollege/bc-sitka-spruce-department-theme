@@ -115,7 +115,6 @@ function buildWpEnvConfig( resolvedPlugins ) {
 		core: null,
 		phpVersion: '8.2',
 		plugins,
-		themes: [ '.' ],
 		config: {
 			WP_DEBUG: true,
 			WP_DEBUG_LOG: true,
@@ -126,6 +125,8 @@ function buildWpEnvConfig( resolvedPlugins ) {
 		},
 		mappings: {
 			'wp-content/mu-plugins/e2e-seed-endpoint.php': muPluginPath,
+			// ADO checks out to …/s; map a stable theme slug instead of themes: ['.'].
+			[ `wp-content/themes/${ THEME_SLUG }` ]: projectRoot,
 		},
 		lifecycleScripts: {
 			afterStart,

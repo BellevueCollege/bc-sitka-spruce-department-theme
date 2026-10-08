@@ -1,4 +1,12 @@
-import { createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'fs';
+import {
+	createWriteStream,
+	existsSync,
+	mkdirSync,
+	readFileSync,
+	readdirSync,
+	rmSync,
+	statSync,
+} from 'fs';
 import { execSync } from 'child_process';
 import { createHash } from 'crypto';
 import path from 'path';
@@ -70,6 +78,40 @@ function throwPlaceholderRelease( remoteUrl, displayName ) {
 }
 
 /**
+ * Zip folder names (e.g. mayflower-blocks-g4) often differ from catalog paths (mayflower-blocks/…).
+ *
+ * @param {string} mountHostPath
+ * @param {string | null} catalogActivatePath
+ * @return {string | null}
+ */
+function resolveWordPressPluginBootstrapPath( mountHostPath, catalogActivatePath ) {
+	if ( ! mountHostPath || ! catalogActivatePath ) {
+		return catalogActivatePath;
+	}
+
+	const pluginMainFile = path.basename( catalogActivatePath );
+	const pluginDirectory = path.basename( mountHostPath );
+	return `${ pluginDirectory }/${ pluginMainFile }`;
+}
+
+/**
+ * @param {ResolvedE2ePlugin} base
+ * @param {string} mountHostPath
+ * @param {string | null} catalogActivatePath
+ * @return {ResolvedE2ePlugin}
+ */
+function withMountedPlugin( base, mountHostPath, catalogActivatePath ) {
+	return {
+		...base,
+		mountHostPath,
+		activateBootstrapPath: resolveWordPressPluginBootstrapPath(
+			mountHostPath,
+			catalogActivatePath
+		),
+	};
+}
+
+/**
  * @param {string} pluginKey
  * @param {import('../plugins.json')[string]} catalogEntry
  * @param {{ source?: string, path?: string } | undefined} localEntry
@@ -102,7 +144,7 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
 		const envPath = process.env[ envPathVar ];
 		if ( envPath && existsSync( envPath ) ) {
 			console.log( `[e2e] ${ pluginKey }: using ${ envPathVar }=${ envPath }` );
-			return { ...base, mountHostPath: path.resolve( envPath ) };
+			return withMountedPlugin( base, path.resolve( envPath ), activateBootstrapPath );
 		}
 	}
 
@@ -110,7 +152,7 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
 		const localPath = path.resolve( projectRoot, localEntry.path );
 		if ( existsSync( localPath ) ) {
 			console.log( `[e2e] ${ pluginKey }: using local ${ localPath }` );
-			return { ...base, mountHostPath: localPath };
+			return withMountedPlugin( base, localPath, activateBootstrapPath );
 		}
 		if ( required ) {
 			throwMissingLocalPath( pluginKey, displayName, localPath );
@@ -140,6 +182,8 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
 
 	if ( ! remoteUrl ) {
 		if ( ! required ) {
+			const sourceHint = remote?.urlEnv || 'remote URL';
+			console.log( `[e2e] ${ pluginKey }: skipped (${ sourceHint } not set)` );
 			return base;
 		}
 		throw new Error( `${ displayName } (${ pluginKey }) has no remote URL configured.` );
@@ -150,12 +194,14 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
 	}
 
 	const directoryName = remote.directoryName || slug;
+	const downloadSourceLabel = remote?.urlEnv || 'release URL';
+	console.log( `[e2e] ${ pluginKey }: downloading plugin archive (${ downloadSourceLabel })` );
 	const extractedRoot = await downloadAndExtractPlugin( {
 		url: remoteUrl,
 		directoryName,
 	} );
 	console.log( `[e2e] ${ pluginKey }: downloaded to ${ extractedRoot }` );
-	return { ...base, mountHostPath: extractedRoot };
+	return withMountedPlugin( base, extractedRoot, activateBootstrapPath );
 }
 
 /**
@@ -182,6 +228,41 @@ export async function resolveE2ePlugins() {
 }
 
 /**
+ * @param {string} zipPath
+ * @param {string} sourceUrl
+ * @return {void}
+ */
+function assertDownloadedZip( zipPath, sourceUrl ) {
+	const zipBytes = readFileSync( zipPath );
+	const isZipArchive =
+		zipBytes.length >= 4 &&
+		zipBytes[ 0 ] === 0x50 &&
+		zipBytes[ 1 ] === 0x4b;
+
+	if ( isZipArchive ) {
+		return;
+	}
+
+	const sizeInBytes = statSync( zipPath ).size;
+	throw new Error(
+		`Download from ${ maskSecretUrl( sourceUrl ) } did not return a zip file ` +
+			`(${ sizeInBytes } bytes). Check the URL or license key in ACF_DOWNLOAD_URL.`
+	);
+}
+
+/**
+ * @param {string} url
+ * @return {string}
+ */
+function maskSecretUrl( url ) {
+	if ( url.length <= 24 ) {
+		return '(configured URL)';
+	}
+
+	return `${ url.slice( 0, 20 ) }…`;
+}
+
+/**
  * @param {{ url: string, directoryName: string }} release
  * @return {Promise<string>}
  */
@@ -191,6 +272,7 @@ async function downloadAndExtractPlugin( release ) {
 
 	mkdirSync( extractParent, { recursive: true } );
 	await downloadFile( release.url, zipPath );
+	assertDownloadedZip( zipPath, release.url );
 	extractZip( zipPath, extractParent );
 	rmSync( zipPath, { force: true } );
 
