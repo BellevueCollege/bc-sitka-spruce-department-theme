@@ -98,3 +98,18 @@ export function getE2ePort() {
 
 	return E2E_WP_PORT;
 }
+
+/**
+ * Whether the current process is running in a CI pipeline (GitHub Actions, Azure DevOps, etc.).
+ *
+ * Azure Pipelines sets TF_BUILD but not CI; GitHub Actions sets CI=true.
+ *
+ * @return {boolean}
+ */
+export function isCiEnvironment() {
+	if ( process.env.CI === 'false' || process.env.CI === '0' ) {
+		return false;
+	}
+
+	return Boolean( process.env.CI ) || process.env.TF_BUILD === 'True';
+}

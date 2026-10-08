@@ -14,6 +14,7 @@ import {
 } from './tests/e2e/helpers/lambdatest.js';
 import {
 	getPlaywrightBaseUrl,
+	isCiEnvironment,
 	WP_ENV_E2E_READY_LOG,
 } from './tests/e2e/helpers/e2e-env.js';
 import { VIEWPORT_PROJECTS } from './tests/e2e/helpers/viewports.js';
@@ -24,6 +25,7 @@ if ( ! process.env.WP_BASE_URL ) {
 
 const E2E_BASE_URL = getPlaywrightBaseUrl();
 const useExternalWpEnv = process.env.E2E_WPENV_EXTERNAL === '1';
+const isCi = isCiEnvironment();
 
 const artifactsPath =
 	process.env.WP_ARTIFACTS_PATH ?? path.join( process.cwd(), 'artifacts' );
@@ -39,7 +41,7 @@ const config = {
 	testDir: './tests/e2e',
 	timeout: isLambdaTestRun() ? 180_000 : baseConfig.timeout,
 	workers: 1,
-	reporter: process.env.CI
+	reporter: isCi
 		? [
 				[ 'list' ],
 				[ 'junit', { outputFile: junitOutputFile } ],
@@ -50,7 +52,7 @@ const config = {
 		: {
 				command: 'node tests/e2e/scripts/start-wp-env-e2e.mjs',
 				stdout: 'pipe',
-				reuseExistingServer: ! process.env.CI,
+				reuseExistingServer: ! isCi,
 				timeout: 300_000,
 				wait: {
 					stdout: new RegExp(
@@ -61,7 +63,7 @@ const config = {
 	use: {
 		...baseConfig.use,
 		baseURL: E2E_BASE_URL,
-		...( isLambdaTestRun() || process.env.CI ? {} : { channel: 'chrome' } ),
+		...( isLambdaTestRun() || isCi ? {} : { channel: 'chrome' } ),
 	},
 	projects: [ ...VIEWPORT_PROJECTS ],
 };

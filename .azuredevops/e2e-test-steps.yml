@@ -14,6 +14,7 @@ steps:
   - script: npm run test:e2e:functional:external
     displayName: Functional e2e tests
     env:
+      CI: 'true'
       GITHUB_PAT: $(GITHUB_PAT)
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
       BUILD_ID: $(Build.BuildId)
@@ -27,6 +28,7 @@ steps:
   - script: npm run test:e2e:visual
     displayName: Visual e2e tests on LambdaTest
     env:
+      CI: 'true'
       E2E_WPENV_EXTERNAL: '1'
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
