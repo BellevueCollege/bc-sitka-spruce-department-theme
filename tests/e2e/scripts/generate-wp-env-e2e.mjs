@@ -84,6 +84,9 @@ function buildWpEnvConfig( resolvedPlugins ) {
 		...buildPluginActivationCommands( resolvedPlugins, 'main' ),
 		...buildPluginActivationCommands( resolvedPlugins, 'subsite' ),
 		wpEnvCli(
+			`wp theme activate ${ THEME_SLUG } --url=${ MAIN_SITE_URL }`
+		),
+		wpEnvCli(
 			`wp theme activate ${ THEME_SLUG } --url=${ SUBSITE_URL }`
 		),
 		wpEnvCli(

@@ -45,7 +45,7 @@
   - text: Date
   - combobox "Date":
     - option "Select Month" [selected]
-    - option /October \d+ \(5\)/
+    - option /October 20\d+ \(5\)/
     - option /January \d+ \(1\)/
   - button "Filter by Date"
   - text: Category
@@ -62,7 +62,7 @@
   - paragraph: Summary for E2E List Post 4.
   - separator
   - paragraph:
-    - strong: /Posted October 7, \d+/
+    - strong: /Posted October \d+, 20\d+/
   - img "E2E Posts Feature fixture image"
   - separator
   - heading "E2E List Post 1" [level=3]:
@@ -71,7 +71,7 @@
   - paragraph: Summary for E2E List Post 1.
   - separator
   - paragraph:
-    - strong: /Posted October 7, \d+/
+    - strong: /Posted October \d+, 20\d+/
   - img "E2E Posts Feature fixture image"
   - separator
   - heading "E2E List Post 2" [level=3]:
@@ -80,7 +80,7 @@
   - paragraph: Summary for E2E List Post 2.
   - separator
   - paragraph:
-    - strong: /Posted October 7, \d+/
+    - strong: /Posted October \d+, 20\d+/
   - img "E2E Posts Feature fixture image"
   - separator
   - heading "E2E List Post 3" [level=3]:
@@ -89,7 +89,7 @@
   - paragraph: Summary for E2E List Post 3.
   - separator
   - paragraph:
-    - strong: /Posted October 7, \d+/
+    - strong: /Posted October \d+, 20\d+/
   - img "E2E Posts Feature fixture image"
   - separator
   - heading "E2E Featured Post" [level=3]:
@@ -98,7 +98,7 @@
   - paragraph: Summary for E2E Featured Post.
   - separator
   - paragraph:
-    - strong: /Posted October 7, \d+/
+    - strong: /Posted October \d+, 20\d+/
   - img "E2E Posts Feature fixture image"
   - separator
   - heading "Hello world!" [level=3]:

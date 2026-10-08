@@ -79,12 +79,13 @@ update_post_meta(
 );
 
 $post_ids = array();
+// Fixed dates keep blog index aria snapshots stable across CI runners and time zones.
 $dates    = array(
-	'-4 hours',
-	'-1 hour',
-	'-2 hours',
-	'-3 hours',
-	'-30 minutes',
+	'2026-10-07 16:00:00',
+	'2026-10-07 19:00:00',
+	'2026-10-07 18:00:00',
+	'2026-10-07 17:00:00',
+	'2026-10-07 19:30:00',
 );
 
 foreach ( $post_titles as $index => $title ) {
@@ -94,7 +95,8 @@ foreach ( $post_titles as $index => $title ) {
 			'post_status'  => 'publish',
 			'post_type'    => 'post',
 			'post_content' => 'E2E fixture content for Posts Feature tests.',
-			'post_date'    => gmdate( 'Y-m-d H:i:s', strtotime( $dates[ $index ] ) ),
+			'post_date'    => $dates[ $index ],
+			'post_date_gmt' => get_gmt_from_date( $dates[ $index ] ),
 		),
 		true
 	);
@@ -118,6 +120,7 @@ if ( $hello_world ) {
 	wp_update_post(
 		array(
 			'ID'            => $hello_world->ID,
+			'post_content'  => 'Welcome to bc-sitka-spruce-department-theme Sites. This is your first post. Edit or delete it, then start writing!',
 			'post_date'     => '2020-01-15 12:00:00',
 			'post_date_gmt' => '2020-01-15 12:00:00',
 		)

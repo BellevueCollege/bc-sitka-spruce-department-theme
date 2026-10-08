@@ -9,7 +9,20 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+/** Theme directory slug mounted in wp-env (stable across local and CI checkouts). */
+const E2E_THEME_SLUG = 'bc-sitka-spruce-department-theme';
+
 require_once __DIR__ . '/e2e-query-helpers.php';
+
+/**
+ * Absolute path to a file under this theme directory in wp-content/themes.
+ *
+ * @param string $relative_path Path relative to the theme root.
+ * @return string
+ */
+function e2e_theme_path( string $relative_path ): string {
+	return WP_CONTENT_DIR . '/themes/' . E2E_THEME_SLUG . '/' . ltrim( $relative_path, '/' );
+}
 
 /**
  * Ensure a taxonomy term exists and return its ID.
@@ -170,8 +183,7 @@ function e2e_set_attachment_alt_text( int $attachment_id, string $alt_text ): vo
  * @return int Attachment ID.
  */
 function e2e_import_hero_attachment(): int {
-	$theme_path = get_stylesheet_directory();
-	$file       = $theme_path . '/tests/fixtures/test-image-760x400.png';
+	$file = e2e_theme_path( 'tests/fixtures/test-image-760x400.png' );
 
 	if ( ! file_exists( $file ) ) {
 		return 0;

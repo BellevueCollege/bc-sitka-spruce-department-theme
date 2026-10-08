@@ -49,6 +49,11 @@ test.describe( 'Application guide integration', () => {
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
 		skipDuplicateBlockViewport( testInfo );
+
+		if ( testInfo.project.name === 'desktop' ) {
+			await expect( page.getByRole( 'tab', { name: 'Student Type 1' } ) ).toBeVisible();
+		}
+
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'application-guide-frontend.yml',
 		} );
