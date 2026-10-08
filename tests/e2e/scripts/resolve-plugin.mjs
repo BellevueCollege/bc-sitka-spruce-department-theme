@@ -1,5 +1,6 @@
 import { createWriteStream, existsSync, mkdirSync, readFileSync, readdirSync, rmSync } from 'fs';
 import { execSync } from 'child_process';
+import { createHash } from 'crypto';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { pipeline } from 'stream/promises';
@@ -15,6 +16,7 @@ const localPluginsPath = path.join( e2eRoot, 'plugins.local.json' );
 const MAX_REDIRECTS = 5;
 const GITHUB_USER_AGENT = 'bc-sitka-spruce-e2e';
 const GITHUB_API_VERSION = '2022-11-28';
+const TOKEN_FINGERPRINT_LENGTH = 8;
 const GITHUB_RELEASE_DOWNLOAD_PATTERN =
 	/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/releases\/download\/([^/]+)\/([^/?#]+)$/;
 const PLACEHOLDER_RELEASE_FRAGMENT = 'v0.0.0-placeholder';
@@ -237,7 +239,8 @@ function describeGitHubToken( token ) {
 		return 'set to an unexpanded $(variable)';
 	}
 
-	return `present (${ githubTokenKind( token ) }, ${ token.length } characters)`;
+	const fingerprint = createHash( 'sha256' ).update( token ).digest( 'hex' ).slice( 0, TOKEN_FINGERPRINT_LENGTH );
+	return `present (${ githubTokenKind( token ) }, ${ token.length } characters, sha256 ${ fingerprint })`;
 }
 
 /**
