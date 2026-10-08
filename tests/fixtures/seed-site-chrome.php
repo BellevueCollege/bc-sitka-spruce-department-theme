@@ -3,7 +3,8 @@
  * Seed menus, ACF Site Options, and a test page for header/footer e2e tests.
  *
  * Idempotent: deletes and recreates fixture data on each run so Playwright
- * tests start from a known state. Invoked via POST /wp-json/e2e/v1/seed.
+ * tests start from a known state. Run with `wp eval-file` from
+ * `seedSiteChromeData()` in tests/e2e/helpers/wp-cli.js.
  *
  * @package BcSitkaSpruce
  */

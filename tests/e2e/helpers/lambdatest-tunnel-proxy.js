@@ -3,7 +3,6 @@ import { setTimeout as delay } from 'node:timers/promises';
 import {
 	E2E_SUBSITE_SLUG,
 	getE2ePort,
-	getHostE2eBaseUrl,
 	getMainSiteBaseUrl,
 } from './e2e-env.js';
 import { getLambdaTestPlaygroundBaseUrl } from './lambdatest.js';
@@ -20,14 +19,6 @@ const RESPONSE_HEADER_SKIP = new Set( [
 	'connection',
 ] );
 
-/**
- * Proxy LambdaTest browser requests to wp-env on the host loopback address.
- *
- * The tunnel often fails to reach host.docker.internal reliably; local HTTP works.
- *
- * @param {import('@playwright/test').Page | import('@playwright/test').BrowserContext} routingTarget
- * @return {Promise<void>}
- */
 /**
  * Match wp-env HTTP(S) on the e2e port (subsite root and nested paths).
  *
@@ -52,6 +43,14 @@ function shouldProxyE2eRequest( url ) {
 	}
 }
 
+/**
+ * Proxy LambdaTest browser requests to wp-env on the host loopback address.
+ *
+ * The tunnel often fails to reach host.docker.internal reliably; local HTTP works.
+ *
+ * @param {import('@playwright/test').Page | import('@playwright/test').BrowserContext} routingTarget
+ * @return {Promise<void>}
+ */
 export async function installLambdaTestTunnelProxy( routingTarget ) {
 	const tunnelOrigin = getLambdaTestPlaygroundBaseUrl();
 
@@ -69,15 +68,6 @@ async function fulfillFromHostWordPress( route, tunnelOrigin ) {
 	const request = route.request();
 	const target = new URL( request.url() );
 	const tunnelHost = new URL( tunnelOrigin ).host;
-
-	if ( target.searchParams.get( 'meta-box-loader' ) === '1' ) {
-		await route.fulfill( {
-			status: 200,
-			contentType: 'text/html; charset=UTF-8',
-			body: '',
-		} );
-		return;
-	}
 
 	const faviconUpstreamPath = resolveFaviconUpstreamPath( target.pathname );
 	const upstreamPath = faviconUpstreamPath
@@ -118,7 +108,7 @@ async function fulfillFromHostWordPress( route, tunnelOrigin ) {
 			headers: responseHeaders,
 			body: responseBody,
 		} );
-	} catch ( error ) {
+	} catch {
 		await route.abort();
 	}
 }

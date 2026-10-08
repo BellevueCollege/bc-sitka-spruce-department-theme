@@ -208,10 +208,14 @@ One WordPress database; parallel workers race on posts and editor state.
 |--------|------|------|
 | Docker tunnel `e2e-tunnel` | [`lambdatest.js`](e2e/helpers/lambdatest.js), [`lambdatest-tunnel.mjs`](e2e/scripts/lambdatest-tunnel.mjs) | Remote browsers reach host wp-env via `host.docker.internal:8889` |
 | Playwright `connect` | `playwright.config.js` when `E2E_LAMBDATEST=1` | Linux Chrome on LambdaTest |
-| Request proxy | [`lambdatest-tunnel-proxy.js`](e2e/helpers/lambdatest-tunnel-proxy.js) | Routes remote requests to loopback wp-env when the tunnel path is flaky |
-| URL rewrite + allowlist | [`e2e-seed-endpoint.php`](e2e/mu-plugins/e2e-seed-endpoint.php) | `X-E2E-Public-Origin`, asset URLs, block allowlist, front-end admin bar off, a11y-warnings script dequeued on frontend |
+| Request proxy | [`lambdatest-tunnel-proxy.js`](e2e/helpers/lambdatest-tunnel-proxy.js) | Routes remote requests to loopback wp-env when the tunnel path is flaky; stubs editor taxonomy prefetch 403s and maps root favicon requests |
+| URL rewrite + allowlist | [`e2e-seed-endpoint.php`](e2e/mu-plugins/e2e-seed-endpoint.php) | `X-E2E-Public-Origin`, asset URLs, canonical-redirect guard, block allowlist, classic meta-box loader removed, front-end admin bar off, a11y-warnings script dequeued on frontend |
 | Admin cookies | [`global-setup.js`](e2e/global-setup.js) | Host login, then remap storage state for tunnel host |
 | Navigation | [`e2e-navigation.js`](e2e/helpers/e2e-navigation.js) | Rewrite seed permalinks for visual runs |
+
+Each workaround lives in exactly one layer. Fix WordPress-side behavior (URLs, redirects, enqueued scripts) in the mu-plugin; keep the proxy limited to transport issues the browser cannot avoid. Do not duplicate a fix in both places.
+
+The LambdaTest plan is **Web Automation on Desktop — Linux**. Keep capabilities in [`lambdatest.js`](e2e/helpers/lambdatest.js) on Linux + Chrome; Windows/macOS or `pw-chromium` use a different minute pool and fail with `422 Lifetime Minutes Exhausted for desktop-automation`.
 
 Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:visual:update`). Refresh all snapshot types with `npm run test:e2e:update`; after a failing run, `npm run test:e2e:update:last-failed` re-runs only failed snapshot tests.
 
@@ -230,6 +234,8 @@ Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:vi
 | `E2E_LAMBDATEST` | `1` | LambdaTest browser + tunnel base URL |
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | `0` / unset | `0` = do not auto-start tunnel |
 | `E2E_LAMBDATEST_PLAYGROUND_URL` | optional | Default `http://host.docker.internal:8889/e2e-dept` |
+| `E2E_LAMBDATEST_CHROME_VERSION` | optional | Pin LambdaTest Linux Chrome version (default `latest`) |
+| `E2E_DEBUG` | `1` / unset | Verbose plugin-resolution logs in `resolve-plugin.mjs` |
 | `LT_USERNAME`, `LT_ACCESS_KEY` | secrets | Required for `@visual` |
 | `GITHUB_PAT`, `ACF_DOWNLOAD_URL` | CI / local | Private GitHub zips; ACF Pro zip download URL |
 

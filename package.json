@@ -27,6 +27,7 @@
     "test:e2e:aria:update": "playwright test --grep @aria --update-snapshots=changed",
     "test:e2e:aria:update:last-failed": "playwright test --grep @aria --last-failed --update-snapshots=changed",
     "test:e2e:visual": "cross-env E2E_LAMBDATEST=1 playwright test --grep @visual",
+    "test:e2e:visual:local": "playwright test --grep @visual",
     "test:e2e:visual:external": "cross-env E2E_WPENV_EXTERNAL=1 E2E_LAMBDATEST=1 playwright test --grep @visual",
     "test:e2e:visual:update": "cross-env E2E_LAMBDATEST=1 playwright test --grep @visual --update-snapshots=changed",
     "test:e2e:visual:update:last-failed": "cross-env E2E_LAMBDATEST=1 playwright test --grep @visual --last-failed --update-snapshots=changed",

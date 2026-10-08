@@ -28,6 +28,7 @@ const TOKEN_FINGERPRINT_LENGTH = 8;
 const GITHUB_RELEASE_DOWNLOAD_PATTERN =
 	/^https:\/\/github\.com\/([^/]+)\/([^/]+)\/releases\/download\/([^/]+)\/([^/?#]+)$/;
 const PLACEHOLDER_RELEASE_FRAGMENT = 'v0.0.0-placeholder';
+const isDebugLoggingEnabled = process.env.E2E_DEBUG === '1';
 
 /**
  * @typedef {object} ResolvedE2ePlugin
@@ -453,7 +454,9 @@ async function downloadFile( url, destinationPath ) {
 		return;
 	}
 
-	console.log( `[e2e] GitHub token for ${ parsedRelease.repo }: ${ describeGitHubToken( token ) }` );
+	if ( isDebugLoggingEnabled ) {
+		console.log( `[e2e] GitHub token for ${ parsedRelease.repo }: ${ describeGitHubToken( token ) }` );
+	}
 
 	try {
 		await saveDownloadToFile( url, destinationPath, '', url );
@@ -462,7 +465,9 @@ async function downloadFile( url, destinationPath ) {
 		if ( error.statusCode !== 404 || ! token ) {
 			throw error;
 		}
-		console.log( `[e2e] ${ parsedRelease.repo }: public download returned 404; retrying with GitHub API` );
+		if ( isDebugLoggingEnabled ) {
+			console.log( `[e2e] ${ parsedRelease.repo }: public download returned 404; retrying with GitHub API` );
+		}
 	}
 
 	const assetUrl = await resolveGitHubReleaseAssetUrl( parsedRelease, token );

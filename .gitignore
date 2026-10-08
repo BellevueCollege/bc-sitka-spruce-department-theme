@@ -72,6 +72,8 @@ yarn-error.log
 /artifacts/test-results/
 /artifacts/e2e-plugins/
 /artifacts/e2e-seed-token
+/artifacts/e2e-seed-cookies.txt
+/artifacts/playground-ready
 /artifacts/e2e-seeds/
 /.wp-env.e2e.json
 

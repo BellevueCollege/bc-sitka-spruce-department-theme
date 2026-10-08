@@ -47,118 +47,184 @@ Once these requirements are installed, you can install project dependencies via 
 
 ## End-to-end tests
 
-Block editor and frontend tests use [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) (Docker) and Playwright via `@wordpress/scripts`. E2e uses **multisite** on port **8889**; the Sitka department subsite is **`http://127.0.0.1:8889/e2e-dept/`** (Playwright default `baseURL`). The network main site is `http://127.0.0.1:8889` for Bellevue 2022 CPT data.
+The e2e suite runs [Playwright](https://playwright.dev) against a disposable WordPress multisite started by [wp-env](https://developer.wordpress.org/block-editor/reference-guides/packages/packages-env/) in containers.
 
-Agent-oriented details: [`tests/AGENTS.md`](tests/AGENTS.md).
+- **Department subsite (tests run here):** `http://127.0.0.1:8889/e2e-dept/`
+- **Network main site** (holds Bellevue 2022 programs, news, etc.): `http://127.0.0.1:8889`
+- **Login:** `admin` / `password`
 
-Run `npm run build` before tests. Docker (or Podman with `docker` on your PATH) must be running.
+There are three kinds of tests:
 
-**Local browser:** functional tests use the Google Chrome already installed on your computer (`channel: 'chrome'`). Azure Devops installs Playwright's Chromium in the pipeline.
+| Kind | Tag | Runs in | Compares against |
+|------|-----|---------|------------------|
+| Functional | (none) | Google Chrome on your computer | Assertions in the spec |
+| Accessibility tree | `@aria` | Google Chrome on your computer | `__snapshots__/*.yml` |
+| Visual | `@visual` | LambdaTest Linux Chrome (remote) | `__snapshots__/*.png` |
 
-**How tests run:** `playwright test` (not `wp-scripts test-playwright`). Config and admin REST auth still come from `@wordpress/scripts`; only the CLI entrypoint differs so `@wordpress/scripts` does not re-run `playwright install` on every invocation. Use **Playwright ≥1.61** with Node 22+.
+Visual tests run remotely so every developer and CI produce identical screenshots regardless of operating system or installed fonts.
 
-**Recommended local workflow (two terminals):**
+Desktop runs every test. Tablet and mobile run only tests tagged `@viewport` plus all `@visual` screenshots.
+
+### One-time setup
+
+1. **Install a container runtime:** [Rancher Desktop](https://rancherdesktop.io) is the recommended option (enable the Docker CLI / `dockerd` engine so `docker` is on your PATH). [Podman](https://podman.io) with `docker` aliased to `podman` also works. The runtime must be running whenever you test.
+2. **Install Google Chrome.** Local tests use your installed Chrome, not a Playwright-downloaded browser.
+3. **Install and build the theme:** `npm install` then `npm run build`. Re-run `npm run build` whenever you change theme source; tests use `assets/dist/`.
+4. **Point the suite at the plugins.** ACF Pro and several Bellevue plugins are required. Pick one:
+   - **Local checkouts (recommended):** copy [`tests/e2e/plugins.local.example.json`](tests/e2e/plugins.local.example.json) to `tests/e2e/plugins.local.json` and adjust each `path` (relative to this theme folder). This file is gitignored.
+   - **Downloads:** set `ACF_DOWNLOAD_URL` (your ACF Pro license download link) and `GITHUB_PAT` (a GitHub token that can read the private BellevueCollege plugin repos).
+5. **For visual tests only:** add your LambdaTest credentials to your shell profile:
+
+   ```bash
+   export LT_USERNAME="your-username"
+   export LT_ACCESS_KEY="your-access-key"
+   ```
+
+### Running tests
+
+Keep WordPress running in one terminal and run tests in another. This avoids restarting WordPress for every run.
 
 ```bash
-# Terminal 1 — leave wp-env running
+# Terminal 1: start WordPress (first start downloads images and can take several minutes)
 npm run env:e2e:start
 
-# Terminal 2 — does not start a second WordPress
+# Terminal 2: run tests against the running WordPress
 npm run test:e2e:functional:external
 ```
 
-Use `test:e2e:functional:external` whenever wp-env is already up. Set `E2E_WPENV_EXTERNAL=1` so Playwright skips its `webServer` (same subsite URL as above).
+When you're finished, stop WordPress with `npm run env:e2e:stop`.
 
-**Single-command runs:** `npm run test:e2e:functional` generates `.wp-env.e2e.json`, starts wp-env, then runs tests. The first boot can take several minutes while images download. Playwright waits for `[e2e] wp-env e2e ready` in the webServer log (not merely an open port), so global setup does not run before `wp-env start` finishes.
+| Command | What it runs |
+|---------|--------------|
+| `npm run test:e2e:functional:external` | Functional and `@aria` tests (WordPress already running) |
+| `npm run test:e2e:functional` | Same, but starts WordPress first if needed |
+| `npm run test:e2e:aria` | Only `@aria` tests |
+| `npm run test:e2e:visual` | Only `@visual` tests, on LambdaTest |
+| `npm run test:e2e:visual:local` | Only `@visual` tests, on your local Chrome (see below) |
+| `npm run test:e2e` | Functional, then visual — the full suite |
+| `npm run test:e2e:ui` | Functional tests in Playwright's interactive UI |
+| `npm run test:e2e:debug` | Functional tests with the Playwright inspector |
 
-**If a run seems stuck:** run `npm run env:e2e:stop`, confirm port 8889 is free, and try one spec: `npm run test:e2e:functional -- --project=desktop tests/e2e/blocks/AnnouncementBanner.spec.js -g "inserts block"`.
-
-### Plugins
-
-E2e plugins are defined in [`tests/e2e/plugins.json`](tests/e2e/plugins.json) (committed). `npm run env:e2e:generate` resolves them into `.wp-env.e2e.json`. Remote zips are cached under `artifacts/e2e-plugins/`; use `GITHUB_PAT` or `GITHUB_TOKEN` for private GitHub release assets. In CI, set `ACF_DOWNLOAD_URL` to your ACF Pro license URL — the resolver downloads and mounts the plugin (wp-env requires a local path or a URL ending in `.zip`, not the raw license link).
-
-To use local checkouts instead, copy [`tests/e2e/plugins.local.example.json`](tests/e2e/plugins.local.example.json) to `tests/e2e/plugins.local.json` (gitignored) and set `source: "local"` with a `path` relative to the theme root. Only plugins listed in that file use local paths; everything else stays remote.
-
-Env path overrides still work: `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, and `ACF_PATH` take precedence over `plugins.local.json`. Add new plugins by extending `plugins.json`; use `plugins.local.json` only when you need a machine-specific local path.
-
-### Browsers
-
-- **Functional and `@aria` tests** use Playwright Chromium on the host (macOS, Windows, or CI VM).
-- **`@visual` screenshot tests** always use LambdaTest Linux Chrome. They require `LT_USERNAME` and `LT_ACCESS_KEY`. The tunnel named `e2e-tunnel` **starts automatically** during Playwright global setup unless you set `E2E_LAMBDATEST_TUNNEL_AUTO=0` (Azure sets that when the pipeline starts the tunnel itself).
-
-Manual tunnel commands (debugging or when auto-start is off; export `LT_USERNAME` and `LT_ACCESS_KEY` first; Podman aliased to `docker` is fine):
+Narrow a run by appending Playwright arguments after `--`:
 
 ```bash
+# One spec file, desktop only
+npm run test:e2e:functional:external -- --project=desktop tests/e2e/blocks/PostsFeature.spec.js
+
+# Tests whose name matches some text
+npm run test:e2e:functional:external -- -g "inserts block"
+```
+
+### Running visual tests on local Chrome
+
+`npm run test:e2e:visual:local` runs the `@visual` tests in your own Chrome instead of on LambdaTest. Use it to debug a layout without spending LambdaTest minutes, or when LambdaTest is unavailable. It needs no tunnel or LambdaTest credentials.
+
+Some screenshots may **fail** this way even when nothing is wrong. The committed baselines come from LambdaTest Linux Chrome, and your computer can render fonts and spacing slightly differently. When a test fails, Playwright writes the expected, actual, and diff images to `artifacts/test-results/`.
+
+**Never commit baselines produced locally.** Don't pass `--update-snapshots` to this command. If you do by accident, discard the changes:
+
+```bash
+git checkout -- 'tests/e2e/**/__snapshots__/*.png'
+```
+
+### Updating snapshots
+
+When a change to the theme intentionally alters a page, update the baselines and commit the changed files in `__snapshots__/`.
+
+| Command | What it updates |
+|---------|-----------------|
+| `npm run test:e2e:aria:update` | `@aria` `*.yml` baselines |
+| `npm run test:e2e:visual:update` | `@visual` `*.png` baselines, on LambdaTest |
+| `npm run test:e2e:update` | Both of the above |
+| `npm run test:e2e:update:last-failed` | Only tests that failed on your previous run |
+
+Update commands only rewrite files that actually changed. To update a single spec, append it: `npm run test:e2e:aria:update -- tests/e2e/pages/Blog.spec.js`.
+
+A typical loop is to run the tests, review the failures, then run `npm run test:e2e:update:last-failed` to accept only those.
+
+### Changing which plugins are used
+
+Plugins are listed in [`tests/e2e/plugins.json`](tests/e2e/plugins.json). Your `tests/e2e/plugins.local.json` overrides any plugin with a local folder. You can also point a single plugin at a folder with `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, or `ACF_PATH`, which win over both files.
+
+WordPress only picks up plugin changes on a fresh start. After editing either file:
+
+```bash
+npm run env:e2e:stop
+npm run env:e2e:start
+```
+
+### Troubleshooting
+
+When a test fails, open `artifacts/test-results/<test-name>/error-context.md` for the full error, plus screenshots and traces in the same folder.
+
+**Tests fail instantly (0 ms) without running.** The browser never started. Read the `error-context.md` for that test. It usually points to one of the LambdaTest or container-runtime problems below.
+
+**Changes to plugins, `plugins.local.json`, or the e2e mu-plugin have no effect.** `env:e2e:start` reuses a running WordPress. Stop and start it again (see above).
+
+**WordPress is broken, seeding fails, or errors mention a missing plugin function** (for example `Call to undefined function update_field()`, meaning ACF didn't load). Rebuild WordPress from scratch. This deletes the test database and containers. Everything is re-created and re-seeded on start.
+
+```bash
+npm run env:e2e:stop
+npx wp-env destroy --config=.wp-env.e2e.json --force
+rm -rf artifacts/e2e-plugins   # optional: force plugin zips to download again
+npm run env:e2e:start
+```
+
+If the destroy command complains that `.wp-env.e2e.json` is missing, run `npm run env:e2e:generate` first.
+
+**Rancher Desktop or Podman itself is stuck** (wp-env hangs on start, containers won't stop, "port 8889 already in use" with nothing running, disk full). Recreate the container VM. This removes **all** containers and images on your machine, so the next start takes several minutes.
+
+- **Rancher Desktop:** open the app → **Troubleshooting** (or Preferences → Troubleshooting) → **Factory Reset**, then start Rancher Desktop again and wait until Kubernetes/containers are ready.
+- **Podman:**
+
+  ```bash
+  podman machine stop
+  podman machine rm
+  podman machine init --cpus 4 --memory 8192
+  podman machine start
+  ```
+
+Then rebuild WordPress with the commands in the previous item.
+
+**Visual tests fail with `422 ... Lifetime Minutes Exhausted for desktop-automation`.** LambdaTest refused the session. Our subscription is **Web Automation on Desktop — Linux**, so tests must request Linux Chrome. Requesting Windows, macOS, or Playwright's bundled `pw-chromium` uses a different pool with no minutes. The settings live in [`tests/e2e/helpers/lambdatest.js`](tests/e2e/helpers/lambdatest.js). If those are still Linux Chrome, the Linux minutes are used up. Check usage in the LambdaTest dashboard, and use `npm run test:e2e:visual:local` to keep working in the meantime.
+
+**Visual tests show `503` or `dial tcp [::1]:8889`, or hang connecting to LambdaTest.** The LambdaTest tunnel can't reach WordPress. Visual tests start the tunnel automatically, but a stale tunnel container can linger. Restart it and check it responds:
+
+```bash
+npm run tunnel:e2e:stop
 npm run tunnel:e2e:start
 curl http://127.0.0.1:8000/api/v1.0/info
-npm run tunnel:e2e:stop
 ```
 
-Equivalent `docker run` (built from the same flags as `npm run tunnel:e2e:start` in [`tests/e2e/helpers/lambdatest.js`](tests/e2e/helpers/lambdatest.js)):
+If it still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that terminal, and that your network allows HTTPS to `*.lambdatest.com`.
 
-```bash
-docker run --rm -d --name e2e-tunnel -p 8000:8000 --add-host=host.docker.internal:host-gateway -e LT_USERNAME -e LT_ACCESS_KEY lambdatest/tunnel:latest --tunnelName e2e-tunnel --infoAPIPort 8000
-```
+**A screenshot fails by a pixel or two in height** (for example `Expected 1265×643, received 1265×644`). Re-run the test once; small layout timing differences happen. If it fails consistently, the page really changed. Update the baseline with `npm run test:e2e:visual:update`.
 
-**503 / `dial tcp [::1]:8889` on `@visual` tests:** LambdaTest browsers use `http://host.docker.internal:8889/e2e-dept` (not `127.0.0.1`) so the tunnel reaches wp-env on the host. Restart wp-env after mu-plugin changes. Override with `E2E_LAMBDATEST_PLAYGROUND_URL` if needed.
+**A private plugin download fails with 404.** Your `GITHUB_PAT` can't read that repository. Check that the token has access, and that it's authorized for the BellevueCollege organization's SSO. Set `E2E_DEBUG=1` to print details about the token used.
 
-**Slow LambdaTest editor loads:** E2e unregisters `bc-sitka-spruce/*` blocks not listed in `BC_SITKA_E2E_ALLOWED_THEME_BLOCKS` in the e2e mu-plugin (see [`tests/AGENTS.md`](tests/AGENTS.md)). Only tag tests with `@visual` when they call `toHaveScreenshot`. Run `npm run build` so dist assets exist.
+### Environment variables
 
-**Mayflower Blocks in CI:** [`tests/e2e/plugins.json`](tests/e2e/plugins.json) downloads release **v3.11** from GitHub. Locally you can still use `plugins.local.json` or `MAYFLOWER_BLOCKS_PATH`.
+| Variable | Purpose |
+|----------|---------|
+| `LT_USERNAME`, `LT_ACCESS_KEY` | LambdaTest credentials (required for LambdaTest visual runs) |
+| `ACF_DOWNLOAD_URL` | ACF Pro license download link, when not using a local ACF folder |
+| `GITHUB_PAT` | GitHub token for private plugin downloads |
+| `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, `ACF_PATH` | Use a local folder for that plugin |
+| `E2E_LAMBDATEST_CHROME_VERSION` | Pin the LambdaTest Chrome version (default: latest) |
+| `E2E_LAMBDATEST_TUNNEL_AUTO` | Set to `0` to stop visual tests from starting the tunnel themselves |
+| `E2E_DEBUG` | Set to `1` for verbose plugin-download logging |
 
-**Visual / snapshot runs stall or fail with `api.lambdatest.com` / `ConnectTimeoutError`:** `@visual` tests need outbound HTTPS to LambdaTest. If the tunnel is not running, start it with the commands above. See [LambdaTest docker tunnel docs](https://www.lambdatest.com/support/docs/docker-tunnel/).
+### Continuous integration
 
-### Commands
+Azure DevOps runs the full suite in the **Test** stage of the theme pipeline, before **Build**. If any test fails, the build and every deployment are skipped. Results appear on the pipeline run's **Tests** tab. Screenshots and traces for failures are attached as the `e2e-artifacts` pipeline artifact.
 
-```bash
-npm run test:e2e
-npm run test:e2e -- --project=desktop tests/e2e/blocks/PostsFeature.spec.js
-```
+The pipeline needs these variables set in Azure DevOps: `LT_USERNAME`, `LT_ACCESS_KEY`, `GITHUB_PAT`, and `ACF_DOWNLOAD_URL`. The steps live in [`.azuredevops/e2e-test-steps.yml`](.azuredevops/e2e-test-steps.yml).
 
-`npm run test:e2e` runs functional tests on the host, then `@visual` tests on LambdaTest. **Desktop** runs the full functional suite; **tablet and mobile** run only `@viewport` breakpoint tests plus all `@visual` screenshots (see `tests/AGENTS.md`).
+To re-run only the tests, queue the pipeline manually and select the **Test** stage.
 
-| Command | Purpose |
-|---------|---------|
-| `npm run test:e2e:functional` | Non-visual tests (includes `@aria`) |
-| `npm run test:e2e:functional:external` | Same when wp-env is already running |
-| `npm run test:e2e:aria` | `@aria` accessibility-tree snapshots only (host) |
-| `npm run test:e2e:visual` | `@visual` screenshot tests (LambdaTest) |
-| `npm run test:e2e` | Functional, then visual (full suite) |
+### Writing new tests
 
-**Update snapshot baselines** (uses `--update-snapshots=changed` — only writes files that differ):
-
-| Command | Purpose |
-|---------|---------|
-| `npm run test:e2e:aria:update` | Refresh `*.yml` ARIA baselines on the host |
-| `npm run test:e2e:visual:update` | Refresh `*.png` baselines on LambdaTest |
-| `npm run test:e2e:update` | ARIA update, then visual update (needs LambdaTest for the second step) |
-| `npm run test:e2e:update:last-failed` | Update only tests that **failed** on the previous run (see workflow below) |
-| `npm run test:e2e:aria:update:last-failed` / `test:e2e:visual:update:last-failed` | Same, scoped to `@aria` or `@visual` |
-
-`npm run test:e2e:update-snapshots` is a deprecated alias for `test:e2e:visual:update`.
-
-**Incremental snapshot workflow:** run `test:e2e:functional`, `test:e2e:aria`, or `test:e2e:visual` first; then `npm run test:e2e:update:last-failed` to re-run and accept baselines for failed tests only. To update one spec: `npm run test:e2e:aria:update -- tests/e2e/pages/Foo.spec.js`.
-
-- `npm run test:e2e:ui` / `test:e2e:debug` — functional tests only (interactive)
-
-Optional environment variables: `ACF_DOWNLOAD_URL`, `GITHUB_PAT`, `BUILD_ID` (LambdaTest build label), `E2E_LAMBDATEST_TUNNEL_AUTO` (`0` disables auto-starting the tunnel in global setup).
-
-Commit updated `__snapshots__/*.png` files when visual baselines change. Commit updated `__snapshots__/*.yml` files when ARIA tree baselines change.
-
-### Coverage (legacy Nightwatch → Playwright)
-
-Nightwatch VRT against Kinsta QA has been removed. Equivalent coverage on wp-env:
-
-| Former Nightwatch target | Playwright replacement |
-|--------------------------|-------------------------|
-| Homepage header/footer/menu | [`tests/e2e/layout/HeaderFooter.spec.js`](tests/e2e/layout/HeaderFooter.spec.js) — `@visual`, `@aria`, axe |
-| Homepage sock | Same file — functional + **sock `@visual`** |
-| Division homepage sections | [`tests/e2e/pages/DivisionHomepage.spec.js`](tests/e2e/pages/DivisionHomepage.spec.js) — section order, full-page `@visual`, `@aria` |
-| Flexible page full page | [`tests/e2e/pages/FlexiblePage.spec.js`](tests/e2e/pages/FlexiblePage.spec.js) — full-page `@visual` |
-| Flexible page per-block VRT (~40 tests) | Same file — targeted sectional `@visual` (tabs, narrow content, Mayflower row/panel) + functional assertions; seed markup in [`tests/fixtures/e2e-flexible-page-content.php`](tests/fixtures/e2e-flexible-page-content.php) |
-| Announcement banner | [`tests/e2e/blocks/AnnouncementBanner.spec.js`](tests/e2e/blocks/AnnouncementBanner.spec.js) (tier 2; see block tiers in [`tests/AGENTS.md`](tests/AGENTS.md)) |
-| Block editor / posts | [`tests/e2e/blocks/PostsFeature.spec.js`](tests/e2e/blocks/PostsFeature.spec.js) |
-| Other templates | [`tests/e2e/pages/*.spec.js`](tests/e2e/pages/) |
+Conventions for specs, seed data, tags, and viewports are in [`tests/AGENTS.md`](tests/AGENTS.md).
 
 ## Documentation
 
@@ -193,12 +259,3 @@ Some Block Editor blocks are bundled as part of the theme. These blocks are loca
 Each block folder should include a `block.json` that defines the block and calls any stylesheets, render files, and scripts. 
 
 Once the block has been created, ensure that it is registered in `functions.php`
-
-### Running visual regression tests
-
-| Stack | Target | Command |
-|-------|--------|---------|
-| **Playwright (full suite)** | Functional on host + visual on LambdaTest | `npm run test:e2e` |
-| **Playwright visual** | Screenshot baselines on LambdaTest | `npm run test:e2e:visual` |
-| **Refresh all snapshots** | ARIA on host + PNG on LambdaTest | `npm run test:e2e:update` |
-| **CI (Azure)** | Same as full suite with external wp-env | See [`.azuredevops/e2e-test-steps.yml`](.azuredevops/e2e-test-steps.yml) |
