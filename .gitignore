@@ -68,6 +68,7 @@ yarn-error.log
 
 # Playwright / E2E generated artifacts (do not commit)
 /artifacts/storage-states/
+/artifacts/junit/
 /artifacts/test-results/
 /artifacts/e2e-plugins/
 /artifacts/e2e-seed-token

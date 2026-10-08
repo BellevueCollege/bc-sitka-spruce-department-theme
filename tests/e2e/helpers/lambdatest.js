@@ -111,9 +111,14 @@ export function getLambdaTestWsEndpoint() {
 		);
 	}
 
+	// Web Automation on Desktop — Linux (org plan). Windows/macOS or pw-chromium
+	// routes to a different desktop-automation pool and can 422 with exhausted minutes.
+	const chromeVersion =
+		process.env.E2E_LAMBDATEST_CHROME_VERSION?.trim() || 'latest';
+
 	const capabilities = {
 		browserName: 'Chrome',
-		browserVersion: 'latest',
+		browserVersion: chromeVersion,
 		'LT:Options': {
 			platform: 'Linux',
 			build: process.env.BUILD_ID || 'sitka-e2e-local',

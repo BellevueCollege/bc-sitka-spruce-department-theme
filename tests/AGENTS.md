@@ -247,7 +247,9 @@ E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`), which run
 2. Playwright Chromium, `env:e2e:start` once.
 3. `test:e2e:functional:external`.
 4. `tunnel:e2e:start` + `test:e2e:visual` with `E2E_WPENV_EXTERNAL=1` and `E2E_LAMBDATEST_TUNNEL_AUTO=0`.
-5. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/test-results/*.xml` (`functional-junit.xml`, `visual-junit.xml`). Playwright writes these only when `CI` or Azure `TF_BUILD` is set.
+5. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/junit/*.xml`
+   (`functional-junit.xml`, `visual-junit.xml`). JUnit is kept outside Playwright's disposable
+   `artifacts/test-results/` directory and is written only when `CI` or Azure `TF_BUILD` is set.
 
 **Re-run e2e only:** Queue the CI pipeline manually and run the **Test** stage only.
 

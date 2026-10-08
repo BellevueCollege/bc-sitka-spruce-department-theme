@@ -50,7 +50,7 @@ steps:
     condition: always()
     inputs:
       testResultsFormat: JUnit
-      testResultsFiles: artifacts/test-results/*.xml
+      testResultsFiles: artifacts/junit/*.xml
       mergeTestResults: true
 
   - task: PublishPipelineArtifact@1

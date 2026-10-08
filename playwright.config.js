@@ -30,9 +30,10 @@ const isCi = isCiEnvironment();
 const artifactsPath =
 	process.env.WP_ARTIFACTS_PATH ?? path.join( process.cwd(), 'artifacts' );
 
+// Playwright clears its test-results output directory before each invocation.
 const junitOutputFile = isLambdaTestRun()
-	? path.join( artifactsPath, 'test-results', 'visual-junit.xml' )
-	: path.join( artifactsPath, 'test-results', 'functional-junit.xml' );
+	? path.join( artifactsPath, 'junit', 'visual-junit.xml' )
+	: path.join( artifactsPath, 'junit', 'functional-junit.xml' );
 
 /** @type {import('@playwright/test').PlaywrightTestConfig} */
 const config = {
@@ -41,6 +42,15 @@ const config = {
 	testDir: './tests/e2e',
 	timeout: isLambdaTestRun() ? 180_000 : baseConfig.timeout,
 	workers: 1,
+	expect: {
+		...baseConfig.expect,
+		toHaveScreenshot: {
+			...baseConfig.expect?.toHaveScreenshot,
+			animations: 'disabled',
+			maxDiffPixelRatio: 0.02,
+			scale: 'css',
+		},
+	},
 	reporter: isCi
 		? [
 				[ 'list' ],
@@ -63,6 +73,7 @@ const config = {
 	use: {
 		...baseConfig.use,
 		baseURL: E2E_BASE_URL,
+		deviceScaleFactor: 1,
 		...( isLambdaTestRun() || isCi ? {} : { channel: 'chrome' } ),
 	},
 	projects: [ ...VIEWPORT_PROJECTS ],
