@@ -110,9 +110,9 @@
 		"required": false,
 		"activateOn": [ "main", "subsite" ],
 		"envPathVar": "ACF_PATH",
-		"blueprintInstallOnly": true,
 		"remote": {
-			"urlEnv": "ACF_DOWNLOAD_URL"
+			"urlEnv": "ACF_DOWNLOAD_URL",
+			"directoryName": "advanced-custom-fields-pro"
 		},
 		"activate": "advanced-custom-fields-pro/acf.php"
 	}

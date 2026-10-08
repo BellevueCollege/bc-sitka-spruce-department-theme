@@ -231,15 +231,15 @@ Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:vi
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | `0` / unset | `0` = do not auto-start tunnel |
 | `E2E_LAMBDATEST_PLAYGROUND_URL` | optional | Default `http://host.docker.internal:8889/e2e-dept` |
 | `LT_USERNAME`, `LT_ACCESS_KEY` | secrets | Required for `@visual` |
-| `GITHUB_PAT`, `ACF_DOWNLOAD_URL` | CI / local | Plugin downloads |
+| `GITHUB_PAT`, `ACF_DOWNLOAD_URL` | CI / local | Private GitHub zips; ACF Pro zip download URL |
 
 ---
 
 ## CI (Azure DevOps — `azure-pipelines.yml` Test stage)
 
-E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`). **DeployTest_*** Kinsta stages wait for Test to pass.
+E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`), which runs **before** **Build**. A failed Test stage skips Build and all **DeployTest_*** Kinsta stages.
 
-**One-time ADO setup:** On the theme CI pipeline in ADO, configure **pipeline variables** `LT_USERNAME`, `LT_ACCESS_KEY`, `GITHUB_PAT`, `ACF_DOWNLOAD_URL` (optional). Do not add a root-level `variables:` block in `azure-pipelines.yml` when using `extends`.
+**One-time ADO setup:** On the theme CI pipeline in ADO, configure **pipeline variables** `LT_USERNAME`, `LT_ACCESS_KEY`, `GITHUB_PAT` (private GitHub release zips), and `ACF_DOWNLOAD_URL` (ACF Pro license download URL; resolved to a mounted plugin directory). Do not add a root-level `variables:` block in `azure-pipelines.yml` when using `extends`.
 
 **Test job flow** (see [`.azuredevops/e2e-test-steps.yml`](../.azuredevops/e2e-test-steps.yml)):
 

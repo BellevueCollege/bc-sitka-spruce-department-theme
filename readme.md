@@ -75,7 +75,7 @@ Use `test:e2e:functional:external` whenever wp-env is already up. Set `E2E_WPENV
 
 ### Plugins
 
-E2e plugins are defined in [`tests/e2e/plugins.json`](tests/e2e/plugins.json) (committed). `npm run env:e2e:generate` resolves them into `.wp-env.e2e.json`. Remote zips are cached under `artifacts/e2e-plugins/`; use `GITHUB_PAT` or `GITHUB_TOKEN` for private GitHub assets.
+E2e plugins are defined in [`tests/e2e/plugins.json`](tests/e2e/plugins.json) (committed). `npm run env:e2e:generate` resolves them into `.wp-env.e2e.json`. Remote zips are cached under `artifacts/e2e-plugins/`; use `GITHUB_PAT` or `GITHUB_TOKEN` for private GitHub release assets. In CI, set `ACF_DOWNLOAD_URL` to your ACF Pro license URL — the resolver downloads and mounts the plugin (wp-env requires a local path or a URL ending in `.zip`, not the raw license link).
 
 To use local checkouts instead, copy [`tests/e2e/plugins.local.example.json`](tests/e2e/plugins.local.example.json) to `tests/e2e/plugins.local.json` (gitignored) and set `source: "local"` with a `path` relative to the theme root. Only plugins listed in that file use local paths; everything else stays remote.
 

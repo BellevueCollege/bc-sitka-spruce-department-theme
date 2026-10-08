@@ -55,5 +55,5 @@ steps:
     displayName: Publish failure artifacts
     condition: failed()
     inputs:
-      targetPath: artifacts
+      targetPath: artifacts/test-results
       artifact: e2e-artifacts
