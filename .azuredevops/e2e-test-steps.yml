@@ -1,0 +1,63 @@
+# Playwright + wp-env + LambdaTest steps for theme-ci Test stage.
+# Requires pipeline variables in ADO (LT_USERNAME, LT_ACCESS_KEY, GITHUB_PAT, ACF_DOWNLOAD_URL).
+
+steps:
+  - script: npx playwright install --with-deps chromium
+    displayName: Install Playwright Chromium
+
+  - script: npm run env:e2e:start
+    displayName: Start wp-env e2e WordPress
+    retryCountOnTaskFailure: 2
+    env:
+      CI: 'true'
+      GITHUB_PAT: $(GITHUB_PAT)
+      ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
+
+  - script: npm run test:e2e:functional:external
+    displayName: Functional e2e tests
+    env:
+      CI: 'true'
+      GITHUB_PAT: $(GITHUB_PAT)
+      ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
+      BUILD_ID: $(Build.BuildId)
+
+  - script: npm run tunnel:e2e:start
+    displayName: Start LambdaTest tunnel
+    env:
+      LT_USERNAME: $(LT_USERNAME)
+      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+
+  - script: npm run test:e2e:visual
+    displayName: Visual e2e tests on LambdaTest
+    env:
+      CI: 'true'
+      E2E_WPENV_EXTERNAL: '1'
+      LT_USERNAME: $(LT_USERNAME)
+      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+      GITHUB_PAT: $(GITHUB_PAT)
+      ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
+      BUILD_ID: $(Build.BuildId)
+      E2E_LAMBDATEST_TUNNEL_AUTO: '0'
+
+  - script: npm run tunnel:e2e:stop
+    displayName: Stop LambdaTest tunnel
+    condition: always()
+
+  - script: npm run env:e2e:stop
+    displayName: Stop wp-env e2e WordPress
+    condition: always()
+
+  - task: PublishTestResults@2
+    displayName: Publish JUnit results
+    condition: always()
+    inputs:
+      testResultsFormat: JUnit
+      testResultsFiles: artifacts/junit/*.xml
+      mergeTestResults: true
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish failure artifacts
+    condition: failed()
+    inputs:
+      targetPath: artifacts/test-results
+      artifact: e2e-artifacts

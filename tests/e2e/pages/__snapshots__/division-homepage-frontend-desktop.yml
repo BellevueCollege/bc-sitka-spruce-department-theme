@@ -1,0 +1,195 @@
+- link "Skip to content":
+  - /url: "#main-content"
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://127.0.0.1:8889/e2e-dept
+  - navigation "Main Menu":
+    - list:
+      - listitem:
+        - link "Programs":
+          - /url: https://example.com/programs
+        - button "Toggle the Programs menu": 
+      - listitem:
+        - link "About":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact":
+          - /url: https://example.com/contact
+    - list:
+      - listitem:
+        - link "Apply Now":
+          - /url: https://example.com/apply
+      - listitem:
+        - link "Request Info":
+          - /url: https://example.com/request-info
+  - navigation:
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+      - listitem:
+        - link "Search":
+          - /url: "#"
+- main:
+  - img "E2E hero fixture image"
+  - heading "Division Name" [level=1]
+  - paragraph: Mission statement/service provision overview for this Division. Curabitur fringilla sapien a mauris cursus efficitur. Quisque vel neque vitae tortor congue malesuada. Duis faucibus molestie lacus id gravida. Nunc sed lacus molestie, vel laoreet risus malesuada doler ipsum lorem sed nullam.
+  - text: Optional Button Optional Button
+  - article:
+    - heading "Announcement Banner" [level=2]
+    - paragraph: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Turpis magna aliquam in leo pretium viverra.
+  - heading "Our Departments/Sub-units" [level=2]
+  - img "E2E hero fixture image"
+  - heading "E2E Division Card One" [level=3]
+  - paragraph: E2E division card one body.
+  - img "E2E hero fixture image"
+  - heading "E2E Division Card Two" [level=3]
+  - paragraph: E2E division card two body.
+  - heading "Our Services/Facilities" [level=2]
+  - heading "E2E Listing Item One" [level=3]
+  - paragraph: E2E listing body copy for E2E Listing Item One.
+  - paragraph
+  - img "E2E hero fixture image"
+  - heading "E2E Listing Item Two" [level=3]
+  - paragraph: E2E listing body copy for E2E Listing Item Two.
+  - paragraph
+  - img "E2E hero fixture image"
+  - region "Stats about BC":
+    - heading "Stats about BC" [level=2]
+  - heading "Checkerboard Section" [level=2]
+  - text: E2E checkerboard section supporting copy.
+  - figure "E2E checkerboard row body copy.":
+    - img "E2E hero fixture image"
+    - text: ""
+  - heading "E2E Checkerboard One" [level=3]
+  - paragraph: Velit laoreet id donec ultrices tincidunt arcu non sodales neque. Eu facilisis sed odio morbi quis commodo odio. Massa sed elementum.
+  - figure "E2E checkerboard row body copy.":
+    - img "E2E hero fixture image"
+    - text: ""
+  - heading "E2E Checkerboard Two" [level=3]
+  - paragraph: Velit laoreet id donec ultrices tincidunt arcu non sodales neque. Eu facilisis sed odio morbi quis commodo odio. Massa sed elementum.
+  - heading "Division Staff" [level=2]
+  - text: E2E profiles section supporting copy.
+  - link "Meet the team":
+    - /url: https://example.com/e2e-profiles
+  - heading "Leadership" [level=3]
+  - link "E2E profile fixture image":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+    - img "E2E profile fixture image"
+  - paragraph:
+    - link "Ada Lovelace":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+  - paragraph: she/her
+  - paragraph: E2E Faculty
+  - heading "Full-Time Faculty" [level=3]
+  - link "E2E profile fixture image":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+    - img "E2E profile fixture image"
+  - paragraph:
+    - link "Ada Lovelace":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+  - paragraph: she/her
+  - paragraph: E2E Faculty
+  - heading "General Content Section" [level=2]
+  - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
+  - complementary:
+    - heading "Optional Callout" [level=3]
+    - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
+  - separator
+  - heading "News Section Title" [level=2]
+  - text: E2E news section supporting copy.
+  - link "View all E2E news":
+    - /url: https://example.com/e2e-news
+  - figure:
+    - img "E2E hero fixture image"
+  - text: Featured Story
+  - heading "E2E Core News Story" [level=3]:
+    - link "E2E Core News Story":
+      - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story/
+  - text: E2E featured news summary.
+  - article:
+    - heading "E2E Core News Story Two" [level=3]:
+      - link "E2E Core News Story Two":
+        - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story-two/
+    - text: E2E secondary featured news summary.
+- complementary:
+  - heading "For questions about this site, contact our site manager" [level=2]
+  - paragraph:
+    - strong: E2E Manager
+    - text: Web Coordinator
+    - link "e2e-manager@example.com":
+      - /url: mailto:e2e-manager@example.com
+- contentinfo:
+  - link "Bellevue College (links to college homepage)":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College (links to college homepage)"
+  - heading "E2E Department Site" [level=2]
+  - separator
+  - text: Phone Number
+  - paragraph:
+    - link /\+1 \d+-\d+-\d+/:
+      - /url: tel:+14255641000
+  - text: Address
+  - paragraph: /Bellevue College \d+ Landerholm Circle SE Bellevue, WA \d+-\d+/
+  - list:
+    - listitem:
+      - link "Facebook":
+        - /url: https://www.facebook.com/bellevuecollege
+    - listitem:
+      - link "LinkedIn":
+        - /url: https://www.linkedin.com/school/bellevue-college
+    - listitem:
+      - link "YouTube":
+        - /url: https://www.youtube.com/bellevuecollege
+  - navigation "Major Site Sections":
+    - list:
+      - listitem:
+        - link "Programs ":
+          - /url: https://example.com/programs
+      - listitem:
+        - link "About ":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact ":
+          - /url: https://example.com/contact
+  - navigation "Footer Utility Links":
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+  - navigation "Global Links":
+    - list:
+      - listitem:
+        - link "Accessibility ":
+          - /url: https://www.bellevuecollege.edu/accessibility/
+      - listitem:
+        - link "Emergency Alerts ":
+          - /url: https://www.bellevuecollege.edu/emergency-alerts/
+      - listitem:
+        - link "Equal Opportunity ":
+          - /url: https://www.bellevuecollege.edu/equal-opportunity/
+      - listitem:
+        - link "Public Disclosure ":
+          - /url: https://www.bellevuecollege.edu/legal-information/public-disclosure/
+      - listitem:
+        - link "Website Info ":
+          - /url: https://www.bellevuecollege.edu/website-information/
+  - paragraph:
+    - text: /© \d+ Bellevue College\. All Rights Reserved\./
+    - link "Privacy Notice":
+      - /url: https://www.bellevuecollege.edu/accessibility/

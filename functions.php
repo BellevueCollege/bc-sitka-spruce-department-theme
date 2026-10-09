@@ -179,14 +179,16 @@ $enqueuer->addBlockStyle(
 		'core/table',
 		'mayflower-blocks/tablepress',
 		'tablepress/table',
-	)
+	),
+	shortcodes: array( 'table' ),
 );
 $enqueuer->addBlockStyle(
 	handle: 'tablepress',
 	blocks: array(
 		'mayflower-blocks/tablepress',
 		'tablepress/table',
-	)
+	),
+	shortcodes: array( 'table' ),
 );
 $enqueuer->addBlockStyle(
 	handle: 'alert',

@@ -1,0 +1,159 @@
+- link "Skip to content":
+  - /url: "#main-content"
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://127.0.0.1:8889/e2e-dept
+  - navigation "Main Menu":
+    - list:
+      - listitem:
+        - link "Programs":
+          - /url: https://example.com/programs
+        - button "Toggle the Programs menu": 
+      - listitem:
+        - link "About":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact":
+          - /url: https://example.com/contact
+    - list:
+      - listitem:
+        - link "Apply Now":
+          - /url: https://example.com/apply
+      - listitem:
+        - link "Request Info":
+          - /url: https://example.com/request-info
+  - navigation:
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+      - listitem:
+        - link "Search":
+          - /url: "#"
+- main:
+  - heading "E2E Profile Listing" [level=1]
+  - heading "Search and Filter Directory" [level=2]
+  - text: Search by Name
+  - textbox "Search by Name":
+    - /placeholder: Search All...
+  - text: Office or Department
+  - combobox "Office or Department":
+    - option "All Offices and Departments" [selected]
+    - option "E2E Department"
+  - group "Profile Type":
+    - text: Profile Type
+    - list:
+      - listitem:
+        - checkbox "E2E Faculty"
+        - text: E2E Faculty
+  - button "Submit Search"
+  - link "Clear All Filters":
+    - /url: http://127.0.0.1:8889/e2e-dept/e2e-profile-listing/
+  - paragraph: Showing 1 of 1 profiles that match your search (4 total profiles)
+  - link "E2E profile fixture image":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+    - img "E2E profile fixture image"
+  - heading "Ada Lovelace" [level=3]:
+    - link "Ada Lovelace":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+  - paragraph: she/her
+  - list:
+    - listitem: E2E Faculty
+    - listitem:
+      - text: E2E Faculty /
+      - strong: E2E Department
+  - list:
+    - listitem:
+      - text: "Email:"
+      - link "ada.lovelace@example.com":
+        - /url: mailto:ada.lovelace@example.com
+    - listitem:
+      - text: "Phone:"
+      - link "425-564-0001":
+        - /url: tel:425-564-0001
+    - listitem:
+      - link "Book E2E Appointment":
+        - /url: https://example.com/e2e-appointment
+  - separator
+  - paragraph: E2E profile listing intro paragraph.
+- complementary:
+  - heading "For questions about this site, contact our site manager" [level=2]
+  - paragraph:
+    - strong: E2E Manager
+    - text: Web Coordinator
+    - link "e2e-manager@example.com":
+      - /url: mailto:e2e-manager@example.com
+- contentinfo:
+  - link "Bellevue College (links to college homepage)":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College (links to college homepage)"
+  - heading "E2E Department Site" [level=2]
+  - separator
+  - text: Phone Number
+  - paragraph:
+    - link "+1 425-564-1000":
+      - /url: tel:+14255641000
+  - text: Address
+  - paragraph: Bellevue College 3000 Landerholm Circle SE Bellevue, WA 98007-6406
+  - list:
+    - listitem:
+      - link "Facebook":
+        - /url: https://www.facebook.com/bellevuecollege
+    - listitem:
+      - link "LinkedIn":
+        - /url: https://www.linkedin.com/school/bellevue-college
+    - listitem:
+      - link "YouTube":
+        - /url: https://www.youtube.com/bellevuecollege
+  - navigation "Major Site Sections":
+    - list:
+      - listitem:
+        - link "Programs ":
+          - /url: https://example.com/programs
+      - listitem:
+        - link "About ":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact ":
+          - /url: https://example.com/contact
+  - navigation "Footer Utility Links":
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+  - navigation "Global Links":
+    - list:
+      - listitem:
+        - link "Accessibility ":
+          - /url: https://www.bellevuecollege.edu/accessibility/
+      - listitem:
+        - link "Emergency Alerts ":
+          - /url: https://www.bellevuecollege.edu/emergency-alerts/
+      - listitem:
+        - link "Equal Opportunity ":
+          - /url: https://www.bellevuecollege.edu/equal-opportunity/
+      - listitem:
+        - link "Public Disclosure ":
+          - /url: https://www.bellevuecollege.edu/legal-information/public-disclosure/
+      - listitem:
+        - link "Website Info ":
+          - /url: https://www.bellevuecollege.edu/website-information/
+  - paragraph:
+    - text: © 2026 Bellevue College. All Rights Reserved.
+    - link "Privacy Notice":
+      - /url: https://www.bellevuecollege.edu/accessibility/
