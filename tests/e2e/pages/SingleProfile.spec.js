@@ -8,21 +8,30 @@ import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedIntegrationData, seedSiteChromeData } from '../helpers/wp-cli.js';
 
 let pageUrl;
+let profileNoPhotoUrl;
 
 test.describe( 'Single profile integration', () => {
 	test.beforeAll( () => {
 		seedSiteChromeData();
 		const seed = seedIntegrationData();
 		pageUrl = seed.profileUrl;
+		profileNoPhotoUrl = seed.profileNoPhotoUrl;
 	} );
 
 	test.beforeEach( async ( { page } ) => {
 		await visitIntegrationPage( page, pageUrl );
 	} );
 
-	test( 'renders bio and listing sections', async ( { page } ) => {
+	test( 'renders bio, demographics, and listing sections', async ( { page } ) => {
 		await expect( page.getByRole( 'heading', { name: 'About Me' } ) ).toBeVisible();
 		await expect( page.getByText( 'Optional Callout' ) ).toBeVisible();
+		await expect( page.getByText( 'she/her' ) ).toBeVisible();
+		await expect( page.getByRole( 'link', { name: 'ada.lovelace@example.com' } ) ).toBeVisible();
+		await expect( page.locator( '.profile-overview img' ) ).toBeVisible();
+		await expect( page.locator( '.profile-overview img' ) ).not.toHaveAttribute(
+			'src',
+			/basic-img\.svg/
+		);
 		await expect( page.getByRole( 'heading', { name: 'Support Services' } ) ).toBeVisible();
 		await expect( page.getByRole( 'heading', { name: 'In the News' } ) ).toBeVisible();
 	} );
@@ -42,6 +51,27 @@ test.describe( 'Single profile integration', () => {
 	test( 'full page snapshot @visual', async ( { page } ) => {
 		await expect( page ).toHaveScreenshot(
 			'single-profile-full.png',
+			FULL_PAGE_SCREENSHOT_OPTIONS
+		);
+	} );
+} );
+
+test.describe( 'Single profile without photo', () => {
+	test.beforeAll( () => {
+		seedSiteChromeData();
+		const seed = seedIntegrationData();
+		profileNoPhotoUrl = seed.profileNoPhotoUrl;
+	} );
+
+	test( 'uses placeholder image in overview', async ( { page } ) => {
+		await visitIntegrationPage( page, profileNoPhotoUrl );
+		await expect( page.locator( '.profile-overview img[src*="basic-img.svg"]' ) ).toBeVisible();
+	} );
+
+	test( 'full page snapshot @visual', async ( { page } ) => {
+		await visitIntegrationPage( page, profileNoPhotoUrl );
+		await expect( page ).toHaveScreenshot(
+			'single-profile-no-photo-full.png',
 			FULL_PAGE_SCREENSHOT_OPTIONS
 		);
 	} );

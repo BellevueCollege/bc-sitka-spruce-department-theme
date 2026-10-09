@@ -68,6 +68,27 @@ export async function runAxeOnSelector( page, selector ) {
 }
 
 /**
+ * Disable sticky site header for tall element screenshots.
+ *
+ * Playwright stitches element screenshots by scrolling; a sticky
+ * `#header-wrapper` is re-painted on each slice and appears mid-capture.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<void>}
+ */
+export async function prepareAdjacencyScreenshot( page ) {
+	await page.addStyleTag( {
+		content: `
+			#header-wrapper {
+				position: relative !important;
+				top: auto !important;
+			}
+		`,
+	} );
+	await page.evaluate( () => window.scrollTo( 0, 0 ) );
+}
+
+/**
  * Assert headings appear in document order.
  *
  * @param {import('@playwright/test').Page} page

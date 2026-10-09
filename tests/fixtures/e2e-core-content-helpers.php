@@ -73,12 +73,19 @@ function e2e_wire_core_site_blocks_in_content( string $content, array $map ): st
 		);
 	}
 
+	$support_post_ids = array();
 	if ( ! empty( $map['identitySupportId'] ) ) {
+		$support_post_ids[] = (int) $map['identitySupportId'];
+	}
+	if ( ! empty( $map['identitySupportTwoId'] ) ) {
+		$support_post_ids[] = (int) $map['identitySupportTwoId'];
+	}
+	if ( $support_post_ids !== array() ) {
 		$content = e2e_set_block_attribute(
 			$content,
 			'bc-sitka-spruce/support-feature',
 			'supportPosts',
-			array( (int) $map['identitySupportId'] )
+			$support_post_ids
 		);
 	}
 
@@ -87,13 +94,14 @@ function e2e_wire_core_site_blocks_in_content( string $content, array $map ): st
 		$content = preg_replace_callback(
 			'#<!-- wp:bc-sitka-spruce/differentiator(?:\s+\{.*?\})?\s*/-->#s',
 			static function ( $matches ) use ( $map, &$index ) {
-				$ids = $map['differentiatorIds'];
-				if ( ! isset( $ids[ $index ] ) ) {
+				$ids = array_values( $map['differentiatorIds'] );
+				if ( $ids === array() ) {
 					return $matches[0];
 				}
-				$post_id = (int) $ids[ $index ];
+				// Cycle when pages need more differentiator blocks than core seed rows.
+				$post_id = (string) (int) $ids[ $index % count( $ids ) ];
 				$index++;
-				return '<!-- wp:bc-sitka-spruce/differentiator {"differentiatorPostId":' . $post_id . '} /-->';
+				return '<!-- wp:bc-sitka-spruce/differentiator {"differentiatorPostId":"' . $post_id . '"} /-->';
 			},
 			$content
 		) ?? $content;
@@ -233,4 +241,50 @@ function e2e_wire_profiles_sections_node_select( string $content, int $profile_i
 	) ?? $content;
 
 	return $content;
+}
+
+/**
+ * Wire hero_image into bc-sitka-spruce/hero-image block ACF data JSON.
+ *
+ * @param string $content         Block markup.
+ * @param int    $attachment_id   Hero attachment post ID.
+ * @return string
+ */
+function e2e_wire_hero_image_in_content( string $content, int $attachment_id ): string {
+	if ( $attachment_id <= 0 ) {
+		return $content;
+	}
+
+	$pattern = '#<!-- wp:bc-sitka-spruce/hero-image(?:\s+(\{.*?\}))?\s*/-->#s';
+
+	return preg_replace_callback(
+		$pattern,
+		static function ( $matches ) use ( $attachment_id ) {
+			$attributes = array(
+				'name' => 'bc-sitka-spruce/hero-image',
+				'mode' => 'preview',
+				'data' => array(
+					'hero_image'  => $attachment_id,
+					'_hero_image' => 'field_66a037a5b53bb',
+				),
+			);
+
+			if ( ! empty( $matches[1] ) ) {
+				$decoded = json_decode( $matches[1], true );
+				if ( is_array( $decoded ) ) {
+					$attributes = array_merge( $decoded, $attributes );
+					if ( isset( $decoded['data'] ) && is_array( $decoded['data'] ) ) {
+						$attributes['data'] = array_merge(
+							$decoded['data'],
+							$attributes['data']
+						);
+					}
+				}
+			}
+
+			return '<!-- wp:bc-sitka-spruce/hero-image ' . wp_json_encode( $attributes ) . ' /-->';
+		},
+		$content,
+		1
+	) ?? $content;
 }

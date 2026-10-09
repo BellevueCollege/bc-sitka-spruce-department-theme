@@ -102,6 +102,15 @@ Otherwise rely on **tier 0** (page integration + seeds) and/or **tier 1** (`Core
 
 Block specs own **field variants and publish contract** (href/target, repeaters, optional media). Page specs own **template composition** (section order, chrome, multisite context). Example: Announcement Banner appears in division/department/support homepage `@aria` YAML; [`AnnouncementBanner.spec.js`](e2e/blocks/AnnouncementBanner.spec.js) covers ACF variants and axe without mirroring every homepage layout.
 
+### Section adjacency (CSS transitions)
+
+Canonical home for **section background / arch / divider** regressions is [`SectionAdjacency.spec.js`](e2e/pages/SectionAdjacency.spec.js), seeded by [`e2e-section-adjacency.php`](../fixtures/e2e-section-adjacency.php) onto the **E2E Section Adjacency** no-sidebar page (`sectionAdjacencyPageUrl`).
+
+- Scenarios are **CSS-rule pairs** from [`src/scss/components/_section.scss`](../src/scss/components/_section.scss) (white divider hide, same-color borders, arch overlap/suppression, curved stacks)—not a full Chromatic-style color matrix.
+- One **representative block per section signature** (body, listing, contact, degrees, tabs, media gallery, differentiator, support-feature). Blocks that share a signature are covered on homepage/program templates instead of duplicating here.
+- Keep [`FlexiblePage.spec.js`](e2e/pages/FlexiblePage.spec.js) focused on template composition (intro, sidebar, WYSIWYG); do not append adjacency stacks to that page.
+- **Sticky-header screenshot pitfall:** `#header-wrapper` is `position: sticky`. Playwright stitches tall element screenshots by scrolling, which re-paints the header mid-capture. Use [`prepareAdjacencyScreenshot()`](e2e/helpers/page-integration.js) and screenshot **per-scenario** wrappers (`#e2e-adj-scenario-*`), never one megapage locator.
+
 ---
 
 ## Design decisions (preserve unless intentionally changing product/infra)

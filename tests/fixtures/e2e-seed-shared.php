@@ -217,6 +217,133 @@ function e2e_import_hero_attachment(): int {
 }
 
 /**
+ * Import a square profile image attachment (≥460×460 for profile ACF minimums).
+ *
+ * @return int Attachment ID, or 0 when the fixture is missing.
+ */
+function e2e_import_profile_attachment(): int {
+	$file = e2e_theme_path( 'tests/fixtures/test-image-460x460.png' );
+	if ( ! file_exists( $file ) ) {
+		$file = e2e_theme_path( 'tests/fixtures/test-image-760x400.png' );
+	}
+
+	if ( ! file_exists( $file ) ) {
+		return 0;
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+
+	$tmp = wp_tempnam( 'e2e-profile.png' );
+	if ( ! $tmp || ! copy( $file, $tmp ) ) {
+		return 0;
+	}
+
+	$attachment_id = media_handle_sideload(
+		array(
+			'name'     => 'e2e-profile.png',
+			'tmp_name' => $tmp,
+		),
+		0
+	);
+
+	if ( is_wp_error( $attachment_id ) ) {
+		return 0;
+	}
+
+	$attachment_id = (int) $attachment_id;
+	e2e_set_attachment_alt_text( $attachment_id, 'E2E profile fixture image' );
+
+	return $attachment_id;
+}
+
+/**
+ * Set page-level flexible intro ACF on a page post.
+ *
+ * @param int    $page_id            Page post ID.
+ * @param string $intro_text         Intro copy (empty to omit).
+ * @param int    $header_image_id    Attachment ID for header image (0 to omit).
+ */
+function e2e_set_page_flexible_intro( int $page_id, string $intro_text, int $header_image_id ): void {
+	if ( ! function_exists( 'update_field' ) || $page_id <= 0 ) {
+		return;
+	}
+
+	if ( $intro_text !== '' ) {
+		update_field( 'intro_text', $intro_text, $page_id );
+	}
+
+	if ( $header_image_id > 0 ) {
+		update_field( 'header_image', $header_image_id, $page_id );
+	}
+}
+
+/**
+ * Seed slim no-sidebar pages for intro/image matrix tests.
+ *
+ * @param int $hero_attachment_id Hero/header image attachment ID.
+ * @return array{introOnlyUrl: string, imageOnlyUrl: string, neitherUrl: string}
+ */
+function e2e_seed_no_sidebar_intro_matrix_pages( int $hero_attachment_id ): array {
+	$minimal_content = '<!-- wp:paragraph --><p>E2E no-sidebar intro matrix placeholder.</p><!-- /wp:paragraph -->';
+
+	$intro_only_id = e2e_upsert_post(
+		'E2E No-Sidebar Intro Only',
+		'page',
+		array( 'post_content' => $minimal_content )
+	);
+	update_post_meta( $intro_only_id, '_wp_page_template', 'template--no-sidebar.php' );
+	e2e_set_page_flexible_intro( $intro_only_id, 'E2E intro matrix intro only.', 0 );
+
+	$image_only_id = e2e_upsert_post(
+		'E2E No-Sidebar Image Only',
+		'page',
+		array( 'post_content' => $minimal_content )
+	);
+	update_post_meta( $image_only_id, '_wp_page_template', 'template--no-sidebar.php' );
+	e2e_set_page_flexible_intro( $image_only_id, '', $hero_attachment_id );
+
+	$neither_id = e2e_upsert_post(
+		'E2E No-Sidebar Intro Neither',
+		'page',
+		array( 'post_content' => $minimal_content )
+	);
+	update_post_meta( $neither_id, '_wp_page_template', 'template--no-sidebar.php' );
+
+	return array(
+		'introOnlyUrl' => (string) get_permalink( $intro_only_id ),
+		'imageOnlyUrl' => (string) get_permalink( $image_only_id ),
+		'neitherUrl'   => (string) get_permalink( $neither_id ),
+	);
+}
+
+/**
+ * Toggle location and hours site options for homepage integration tests.
+ *
+ * @param bool $enabled            Whether the location card is shown.
+ * @param int  $location_image_id  Optional attachment ID for the location image.
+ */
+function e2e_apply_location_and_hours( bool $enabled, int $location_image_id = 0 ): void {
+	if ( ! function_exists( 'update_field' ) ) {
+		return;
+	}
+
+	update_field( 'display_location_card', $enabled ? 1 : 0, 'option' );
+
+	if ( ! $enabled ) {
+		return;
+	}
+
+	update_field( 'location', 'E2E Location<br>123 Test Street', 'option' );
+	update_field( 'hours', 'Monday–Friday: 9 a.m.–5 p.m.', 'option' );
+
+	if ( $location_image_id > 0 ) {
+		update_field( 'location_image', e2e_acf_image_value( $location_image_id ), 'option' );
+	}
+}
+
+/**
  * Set ACF site type and which page is the static front page.
  *
  * @param string $site_type dept|div|suppt.

@@ -40,9 +40,16 @@
         - link "Search":
           - /url: "#"
 - main:
+  - img "E2E hero fixture image"
   - heading "Department Homepage" [level=1]
   - paragraph: Mission statement/service provision overview for this department. Curabitur fringilla sapien a mauris cursus efficitur. Quisque vel neque vitae tortor congue malesuada. Duis faucibus molestie lacus id gravida. Nunc sed lacus molestie, vel laoreet risus malesuada doler ipsum lorem sed nullam.
   - text: Optional Button Optional Button
+  - complementary:
+    - img "E2E hero fixture image"
+    - heading "Location" [level=2]
+    - paragraph: /E2E Location \d+ Test Street/
+    - heading "Hours" [level=2]
+    - paragraph: "/Monday–Friday: 9 a[\\d,.]+[bkmBKM]+\\.–5 p[\\d,.]+[bkmBKM]+\\./"
   - heading "Why [X] at Bellevue College" [level=2]
   - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
   - complementary:
@@ -51,7 +58,9 @@
   - region "Stats about BC":
     - heading "Stats about BC" [level=2]
   - heading "Degrees and Certificates" [level=2]
+  - text: E2E degrees and certificates section intro.
   - heading "Degree Options" [level=3]
+  - paragraph: E2E segment supporting copy.
   - heading "E2E Alpha" [level=4]:
     - link "E2E Alpha":
       - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-alpha/
@@ -66,8 +75,37 @@
   - term: Focus Area(s)
   - definition:
     - list
+  - heading "E2E Beta" [level=4]:
+    - link "E2E Beta":
+      - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-beta/
+  - text: E2E secondary core program overview.
+  - term: Degree
+  - definition: E2E Degree
+  - term: Duration
+  - definition: 1 year
+  - term: Pathway(s)
+  - definition:
+    - list
+  - term: Focus Area(s)
+  - definition:
+    - list
   - separator
   - heading "Certificate Options" [level=3]
+  - paragraph: E2E segment supporting copy.
+  - heading "E2E Alpha" [level=4]:
+    - link "E2E Alpha":
+      - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-alpha/
+  - text: E2E core program overview.
+  - term: Degree
+  - definition: E2E Degree
+  - term: Duration
+  - definition: 2 years
+  - term: Pathway(s)
+  - definition:
+    - list
+  - term: Focus Area(s)
+  - definition:
+    - list
   - heading "E2E Beta" [level=4]:
     - link "E2E Beta":
       - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-beta/
@@ -86,38 +124,94 @@
     - heading "Announcement Banner" [level=2]
     - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
   - heading "Listing Section" [level=2]
+  - heading "E2E Listing Item One" [level=3]
+  - paragraph: E2E listing body copy for E2E Listing Item One.
+  - paragraph
+  - img "E2E hero fixture image"
+  - heading "E2E Listing Item Two" [level=3]
+  - paragraph: E2E listing body copy for E2E Listing Item Two.
+  - paragraph
+  - img "E2E hero fixture image"
   - heading "Accordion Section" [level=2]
-  - heading [level=3]:
-    - button
-  - heading [level=3]:
-    - button
+  - heading "E2E Dept FAQ One" [level=3]:
+    - button "E2E Dept FAQ One" [expanded]
+  - paragraph: E2E department accordion panel one.
+  - heading "E2E Dept FAQ Two" [level=3]:
+    - button "E2E Dept FAQ Two"
   - heading "Media Gallery" [level=2]
+  - text: E2E media gallery section intro.
+  - img "E2E hero fixture image"
   - paragraph
   - heading "Profiles Section" [level=2]
+  - text: E2E profiles section supporting copy.
+  - link "Meet the team":
+    - /url: https://example.com/e2e-profiles
   - heading "Leadership" [level=3]
-  - link "Ada Lovelace's Profile":
+  - link "E2E profile fixture image":
     - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
-    - img "Ada Lovelace's Profile"
+    - img "E2E profile fixture image"
   - paragraph:
     - link "Ada Lovelace":
       - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+  - paragraph: she/her
+  - paragraph: E2E Faculty
+  - link "Grace Hopper's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-grace-hopper/
+    - img "Grace Hopper's Profile"
+  - paragraph:
+    - link "Grace Hopper":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-grace-hopper/
+  - paragraph: E2E Faculty
+  - link "Marie Curie's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-marie-curie/
+    - img "Marie Curie's Profile"
+  - paragraph:
+    - link "Marie Curie":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-marie-curie/
   - paragraph: E2E Faculty
   - heading "Checkerboards Headline" [level=2]
+  - text: E2E checkerboard section supporting copy.
+  - figure "E2E checkerboard row body copy.":
+    - img "E2E hero fixture image"
+    - text: ""
+  - heading "E2E Checkerboard One" [level=3]
+  - figure "E2E checkerboard row body copy.":
+    - img "E2E hero fixture image"
+    - text: ""
+  - heading "E2E Checkerboard Two" [level=3]
   - heading "Support Section" [level=2]
   - tablist:
     - tab "E2E Core Identity Support" [selected]
+    - tab "E2E Core Identity Support Two"
   - tabpanel "E2E Core Identity Support":
     - heading "E2E Core Identity Support" [level=3]
+    - img "E2E hero fixture image"
     - heading "E2E Support Tab" [level=4]
     - text: E2E support tab summary content.
+    - link "E2E Support Resource":
+      - /url: https://example.com/e2e-support-resource
   - heading "News Section" [level=2]
-  - figure
+  - text: E2E news section supporting copy.
+  - link "View all E2E news":
+    - /url: https://example.com/e2e-news
+  - figure:
+    - img "E2E hero fixture image"
   - text: Featured Story
   - heading "E2E Core News Story" [level=3]:
     - link "E2E Core News Story":
       - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story/
   - text: E2E featured news summary.
+  - article:
+    - heading "E2E Core News Story Two" [level=3]:
+      - link "E2E Core News Story Two":
+        - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story-two/
+    - text: E2E secondary featured news summary.
 - complementary:
+  - heading "Location" [level=2]
+  - paragraph: /E2E Location \d+ Test Street/
+  - img "E2E hero fixture image"
+  - heading "Hours" [level=2]
+  - paragraph: "/Monday–Friday: 9 a[\\d,.]+[bkmBKM]+\\.–5 p[\\d,.]+[bkmBKM]+\\./"
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:
     - strong: E2E Manager

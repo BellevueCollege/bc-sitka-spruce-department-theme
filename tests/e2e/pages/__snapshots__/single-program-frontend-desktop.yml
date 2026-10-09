@@ -42,12 +42,12 @@
 - main:
   - heading "E2E Program Alpha" [level=1]
   - text: E2E core program overview.
-  - heading [level=2]
+  - heading "Learning Areas" [level=2]
   - list:
-    - listitem
-  - heading [level=2]
+    - listitem: E2E learning list item one.
+  - heading "Learning Outcomes" [level=2]
   - list:
-    - listitem
+    - listitem: E2E learning list item two.
   - complementary:
     - term: Program Type
     - definition: E2E Program Type
@@ -71,6 +71,15 @@
   - paragraph
   - paragraph
   - heading "Program Highlights" [level=2]
+  - text: E2E program highlights description.
+  - figure:
+    - img "E2E hero fixture image"
+  - heading "Highlight 1" [level=3]
+  - paragraph: Velit laoreet id donec ultrices tincidunt arcu non sodales neque. Eu facilisis sed odio morbi quis commodo odio. Massa sed elementum.
+  - figure:
+    - img "E2E hero fixture image"
+  - heading "Highlight 2" [level=3]
+  - paragraph: Velit laoreet id donec ultrices tincidunt arcu non sodales neque. Eu facilisis sed odio morbi quis commodo odio. Massa sed elementum.
   - heading "Courses & Credit Requirements" [level=2]
   - paragraph: Full program requirements, including entry requirements, degree requirements, and credit requirements can be found in our course catalog.
   - paragraph:
@@ -87,20 +96,32 @@
     - paragraph: Highlight upcoming deadlines or other announcements relevant to this degree
   - region "Stats Relevant to this Program":
     - heading "Stats Relevant to this Program" [level=2]
+    - article:
+      - heading "E2E Stat 1" [level=3]
+      - paragraph: E2E differentiator supporting text 1.
+    - article:
+      - heading "E2E Stat 2" [level=3]
+      - paragraph: E2E differentiator supporting text 2.
+    - article:
+      - heading "E2E Stat 3" [level=3]
+      - paragraph: E2E differentiator supporting text 3.
   - heading "Our Faculty" [level=2]
   - text: Highlight relevant faculty, or other people from your Profiles section
-  - link "Ada Lovelace's Profile":
+  - link "E2E profile fixture image":
     - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
-    - img "Ada Lovelace's Profile"
+    - img "E2E profile fixture image"
   - paragraph:
     - link "Ada Lovelace":
       - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+  - paragraph: she/her
   - paragraph: E2E Faculty
   - heading "Featured Experience" [level=2]
+  - text: E2E testimonial section description.
+  - img "E2E hero fixture image"
   - blockquote: “This is a quote from a student, faculty, alumni, or visitor that demonstrates the quality of Bellevue College”
   - separator
   - paragraph: Student Name
-  - paragraph
+  - paragraph: E2E testimonial attribution line.
   - heading "Programs in this Department" [level=2]
   - link "Explore our Department":
     - /url: http://127.0.0.1:8889/e2e-dept
@@ -122,6 +143,7 @@
   - paragraph:
     - link "Apply":
       - /url: https://example.com/apply
+  - img "E2E hero fixture image"
   - heading "E2E Admissions Contact" [level=3]
   - paragraph: E2E admissions contact description.
   - link "Contact":

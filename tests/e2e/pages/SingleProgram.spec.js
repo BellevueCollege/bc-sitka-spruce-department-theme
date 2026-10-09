@@ -25,6 +25,19 @@ test.describe( 'Single program integration', () => {
 		await expect( page.locator( 'main, .site-content, #content' ).first() ).toBeVisible();
 	} );
 
+	test( 'shows enriched program body sections from seed', async ( { page } ) => {
+		await expect( page.getByText( 'E2E core program overview.' ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: 'Learning Areas' } ) ).toBeVisible();
+		await expect( page.getByText( 'E2E learning list item one.' ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: 'Program Highlights' } ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: 'Highlight 1' } ) ).toBeVisible();
+		await expect(
+			page.getByRole( 'region', { name: 'Stats Relevant to this Program' } )
+		).toContainText( 'E2E Stat 1' );
+		await expect( page.getByRole( 'heading', { name: 'Featured Experience' } ) ).toBeVisible();
+		await expect( page.locator( '.testimonial-section img' ) ).toBeVisible();
+	} );
+
 	test( 'shows related programs region', async ( { page } ) => {
 		const main = page.locator( 'main, .site-content, #content' ).first();
 		await expect(
@@ -52,7 +65,7 @@ test.describe( 'Single program integration', () => {
 	} );
 
 	test( 'main content passes axe', async ( { page } ) => {
-		const results = await runAxeOnSelector( page, '.related-programs-wrapper' );
+		const results = await runAxeOnSelector( page, '.flexible-page, main' );
 		expect( results.violations ).toEqual( [] );
 	} );
 } );

@@ -4,6 +4,7 @@ import {
 	runAxeOnSelector,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
+import { settleLocatorForScreenshot } from '../helpers/editor.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	seedChromeVariant,
@@ -32,11 +33,24 @@ test.describe( 'Flexible page integration', () => {
 		await expect( current ).toContainText( 'E2E Flexible Page' );
 	} );
 
+	test( 'shows flexible page intro text and header image', async ( { page } ) => {
+		await expect( page.getByText( 'E2E flexible page intro summary.' ) ).toBeVisible();
+		await expect( page.locator( '.flexible-page-header-image img' ) ).toBeVisible();
+	} );
+
 	test( 'renders narrow content, tabs, and WYSIWYG blocks', async ( {
 		page,
 	}, testInfo ) => {
 		await expect( page.getByText( 'E2E Flexible lead paragraph.' ) ).toBeVisible();
+		await expect( page.getByText( 'E2E narrow column warning alert.' ) ).toBeVisible();
+		await expect(
+			page.getByRole( 'link', { name: 'E2E Narrow Button' } )
+		).toBeVisible();
 		await expect( page.getByRole( 'heading', { name: 'E2E Tabs Section' } ) ).toBeVisible();
+		await expect( page.getByText( 'E2E tabs section intro copy.' ) ).toBeVisible();
+		await expect(
+			page.getByRole( 'link', { name: 'E2E tabs section link' } )
+		).toHaveAttribute( 'href', 'https://example.com/e2e-tabs' );
 
 		// Below 769px the first panel stays collapsed until its accordion button is opened.
 		if ( testInfo.project.name !== 'desktop' ) {
@@ -47,6 +61,11 @@ test.describe( 'Flexible page integration', () => {
 		await expect( page.getByRole( 'heading', { name: 'E2E Flexible Heading' } ) ).toBeVisible();
 		await expect( page.getByText( 'E2E shortcode output' ) ).toBeVisible();
 		await expect( page.getByText( 'E2E Mayflower alert.' ) ).toBeVisible();
+		await expect( page.getByText( 'E2E Mayflower danger alert.' ) ).toBeVisible();
+		await expect(
+			page.getByRole( 'link', { name: 'E2E Group Button One' } )
+		).toBeVisible();
+		await expect( page.getByText( 'E2E flexible collapsible panel one.' ) ).toBeVisible();
 	} );
 
 	test( 'switches tabcordion panels on desktop', async ( { page }, testInfo ) => {
@@ -93,8 +112,11 @@ test.describe( 'Flexible page integration', () => {
 			await page.getByRole( 'button', { name: 'E2E Tab One' } ).click();
 		}
 
-		const tabsSection = page.locator( '.tabs-section-component' );
+		const tabsSection = page.locator(
+			'section#e2e-flex-tabs-section.tabs-section-component'
+		);
 		await expect( tabsSection ).toBeVisible();
+		await settleLocatorForScreenshot( tabsSection );
 		await expect( tabsSection ).toHaveScreenshot( 'flexible-page-tabs-section.png', {
 			maxDiffPixelRatio: 0.02,
 		} );

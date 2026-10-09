@@ -20,7 +20,14 @@ if ( ! post_type_exists( 'agendas' ) ) {
 require_once __DIR__ . '/e2e-content-strip.php';
 require_once __DIR__ . '/e2e-seed-shared.php';
 require_once __DIR__ . '/e2e-flexible-page-content.php';
+require_once __DIR__ . '/e2e-application-guide-content.php';
+require_once __DIR__ . '/e2e-homepage-content.php';
 require_once __DIR__ . '/e2e-core-content-helpers.php';
+require_once __DIR__ . '/e2e-governance-seed.php';
+require_once __DIR__ . '/e2e-profiles-integration.php';
+require_once __DIR__ . '/e2e-program-content.php';
+require_once __DIR__ . '/e2e-full-width-content.php';
+require_once __DIR__ . '/e2e-section-adjacency.php';
 
 $core_map = e2e_get_core_seed_map();
 
@@ -30,40 +37,25 @@ $profile_seed          = array();
 $profile_department_id = e2e_ensure_term( 'department', 'E2E Department' );
 $profile_type_id       = e2e_ensure_term( 'profile_type', 'E2E Faculty' );
 
-$profile_content = e2e_load_pattern_markup( 'profile-content-v0.php' );
-$profile_content = e2e_wire_core_site_blocks_in_content( $profile_content, $core_map );
-
-$profile_post_id = e2e_upsert_post(
-	'E2E Profile Ada Lovelace',
-	'profile',
-	array( 'post_content' => $profile_content )
+$profile_image_id   = e2e_import_profile_attachment();
+$profile_pages      = e2e_seed_profile_integration_pages(
+	$profile_department_id,
+	$profile_type_id,
+	$profile_image_id
 );
-
-wp_set_object_terms(
-	$profile_post_id,
-	array( $profile_department_id ),
-	'department'
-);
-wp_set_object_terms(
-	$profile_post_id,
-	array( $profile_type_id ),
-	'profile_type'
-);
-
-if ( function_exists( 'update_field' ) ) {
-	update_field( 'first_name', 'Ada', $profile_post_id );
-	update_field( 'last_name', 'Lovelace', $profile_post_id );
-	update_field( 'position_role', 'E2E Faculty', $profile_post_id );
-}
+$profile_post_id    = $profile_pages['profileIds'][0];
+$homepage_profile_ids = array_slice( $profile_pages['profileIds'], 0, 3 );
 
 $profile_seed = array(
-	'profileId'  => (int) $profile_post_id,
-	'profileUrl' => (string) get_permalink( $profile_post_id ),
+	'profileId'         => (int) $profile_post_id,
+	'profileUrl'        => $profile_pages['profileUrl'],
+	'profileNoPhotoUrl' => $profile_pages['profileNoPhotoUrl'],
 );
 
-$program_pattern_content = e2e_wire_profiles_sections_node_select(
-	e2e_load_pattern_markup( 'program-content-v1.php' ),
-	$profile_post_id
+$program_pattern_content = e2e_build_program_post_content(
+	$core_map,
+	$profile_post_id,
+	$hero_attachment_id
 );
 
 $program_alpha_id = e2e_upsert_post(
@@ -82,6 +74,11 @@ $program_beta_id = e2e_upsert_post(
 	)
 );
 
+if ( function_exists( 'update_field' ) ) {
+	update_field( 'intro_text', 'E2E program page intro lead.', $program_alpha_id );
+	update_field( 'header_image', $hero_attachment_id, $program_alpha_id );
+}
+
 $homepage_titles = array(
 	'dept'  => 'E2E Homepage Department',
 	'div'   => 'E2E Homepage Division',
@@ -96,29 +93,45 @@ $homepage_patterns = array(
 
 $homepage_urls = array();
 
-foreach ( $homepage_titles as $site_type => $title ) {
-	$content = e2e_homepage_pattern_for_seed( $homepage_patterns[ $site_type ] );
-	$content = e2e_wire_core_site_blocks_in_content( $content, $core_map );
-	$content = e2e_wire_profiles_sections_node_select( $content, $profile_post_id );
+$homepage_enrichment_context = array(
+	'profile_ids'  => $homepage_profile_ids,
+	'program_ids'  => array( (int) $program_alpha_id, (int) $program_beta_id ),
+);
 
-	if ( $site_type === 'dept' ) {
-		$content = e2e_wire_degrees_block_programs(
-			$content,
-			array( $program_alpha_id, $program_beta_id )
-		);
-	}
+foreach ( $homepage_titles as $site_type => $title ) {
+	$pattern_content = e2e_homepage_pattern_for_seed( $homepage_patterns[ $site_type ] );
+	$pattern_content = e2e_wire_core_site_blocks_in_content( $pattern_content, $core_map );
+
+	$content_with_hero = e2e_enrich_homepage_content(
+		$pattern_content,
+		$site_type,
+		$hero_attachment_id,
+		$homepage_enrichment_context
+	);
+
+	$content_without_hero = e2e_enrich_homepage_content(
+		$pattern_content,
+		$site_type,
+		0,
+		$homepage_enrichment_context
+	);
 
 	$page_id = e2e_upsert_post(
 		$title,
 		'page',
-		array( 'post_content' => $content )
+		array( 'post_content' => $content_with_hero )
 	);
 
-	if ( $hero_attachment_id && function_exists( 'update_field' ) ) {
-		update_post_meta( $page_id, '_e2e_hero_image', $hero_attachment_id );
-	}
+	$no_hero_page_id = e2e_upsert_post(
+		$title . ' (No Hero)',
+		'page',
+		array( 'post_content' => $content_without_hero )
+	);
 
-	$homepage_urls[ $site_type ] = get_permalink( $page_id );
+	$homepage_urls[ $site_type ] = array(
+		'withHero'    => (string) get_permalink( $page_id ),
+		'withoutHero' => (string) get_permalink( $no_hero_page_id ),
+	);
 }
 
 e2e_configure_front_page( 'dept', $homepage_titles['dept'] );
@@ -131,17 +144,41 @@ $flexible_parent_id = e2e_upsert_post(
 	)
 );
 
+$flexible_page_content = e2e_flexible_page_block_markup( $tablepress_id );
+
 $flexible_page_id = e2e_upsert_post(
 	'E2E Flexible Page',
 	'page',
 	array(
 		'post_parent'  => $flexible_parent_id,
-		'post_content' => e2e_flexible_page_block_markup( $tablepress_id ),
+		'post_content' => $flexible_page_content,
 	)
 );
+e2e_set_page_flexible_intro(
+	$flexible_page_id,
+	'E2E flexible page intro summary.',
+	$hero_attachment_id
+);
 
-$application_content = e2e_load_pattern_markup( 'page-application-guide-v0.php' );
-$application_content = e2e_strip_editor_setup_alert( $application_content );
+$section_adjacency_content = e2e_section_adjacency_page_markup(
+	$core_map,
+	array( (int) $program_alpha_id, (int) $program_beta_id ),
+	(int) $profile_post_id,
+	(int) $hero_attachment_id
+);
+$section_adjacency_page_id = e2e_upsert_post(
+	'E2E Section Adjacency',
+	'page',
+	array( 'post_content' => $section_adjacency_content )
+);
+update_post_meta( $section_adjacency_page_id, '_wp_page_template', 'template--no-sidebar.php' );
+e2e_set_page_flexible_intro(
+	$section_adjacency_page_id,
+	'E2E section adjacency intro summary.',
+	0
+);
+
+$application_content = e2e_application_guide_block_markup( $hero_attachment_id );
 $application_content = e2e_wire_core_site_blocks_in_content( $application_content, $core_map );
 $application_page_id = e2e_upsert_post(
 	'E2E Application Guide',
@@ -149,20 +186,27 @@ $application_page_id = e2e_upsert_post(
 	array( 'post_content' => $application_content )
 );
 update_post_meta( $application_page_id, '_wp_page_template', 'template--no-sidebar.php' );
-
-$listing_content = e2e_strip_editor_setup_alert(
-	e2e_load_pattern_markup( 'page-flexible-directory-v0.php' )
+e2e_set_page_flexible_intro(
+	$application_page_id,
+	'E2E application guide intro summary.',
+	$hero_attachment_id
 );
-$listing_content = e2e_wire_profiles_sections_node_select( $listing_content, $profile_post_id );
 
-$listing_page_id = e2e_upsert_post(
-	'E2E Profile Listing',
+$application_guide_intro_matrix = e2e_seed_no_sidebar_intro_matrix_pages( $hero_attachment_id );
+
+$listing_page_id = $profile_pages['listingPageId'];
+
+$full_width_page_id = e2e_upsert_post(
+	'E2E Full Width Page',
 	'page',
-	array(
-		'post_content' => $listing_content,
-	)
+	array( 'post_content' => e2e_full_width_page_block_markup() )
 );
-update_post_meta( $listing_page_id, '_wp_page_template', 'template--profile-listing.php' );
+update_post_meta( $full_width_page_id, '_wp_page_template', 'template--no-sidebar.php' );
+e2e_set_page_flexible_intro(
+	$full_width_page_id,
+	'E2E full width page intro summary.',
+	$hero_attachment_id
+);
 
 $blog_page_id = e2e_upsert_post(
 	'E2E Blog Index',
@@ -172,64 +216,29 @@ $blog_page_id = e2e_upsert_post(
 	)
 );
 update_option( 'page_for_posts', $blog_page_id );
-
-$governance = array(
-	'agendaUrl'        => '',
-	'actionItemUrl'    => '',
-	'resolutionUrl'    => '',
-	'agendaArchiveUrl' => '',
+e2e_set_page_flexible_intro(
+	$blog_page_id,
+	'E2E blog index intro summary.',
+	$hero_attachment_id
 );
 
-if ( post_type_exists( 'agendas' ) ) {
-	$agenda_id = e2e_upsert_post(
-		'E2E Board Agenda',
-		'agendas',
-		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E agenda body content.</p><!-- /wp:paragraph -->',
-		)
-	);
-	if ( function_exists( 'update_field' ) ) {
-		update_field( 'meeting_date', '20260115', $agenda_id );
-		update_field( 'special_meeting', 0, $agenda_id );
-	}
-
-	$action_id = e2e_upsert_post(
-		'E2E Action Item',
-		'action-item',
-		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E action item body.</p><!-- /wp:paragraph -->',
-		)
-	);
-	if ( function_exists( 'update_field' ) ) {
-		update_field( 'meeting_date', '20260115', $action_id );
-	}
-
-	$resolution_id = e2e_upsert_post(
-		'E2E Resolution',
-		'resolution',
-		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E resolution body.</p><!-- /wp:paragraph -->',
-		)
-	);
-	if ( function_exists( 'update_field' ) ) {
-		update_field( 'meeting_date', '20260115', $resolution_id );
-		update_field( 'related_action_items', array( $action_id ), $agenda_id );
-	}
-
-	$governance['agendaUrl']        = get_permalink( $agenda_id );
-	$governance['actionItemUrl']    = get_permalink( $action_id );
-	$governance['resolutionUrl']    = get_permalink( $resolution_id );
-	$governance['agendaArchiveUrl'] = get_post_type_archive_link( 'agendas' );
-}
+$governance = e2e_seed_governance_data();
 
 echo wp_json_encode(
 	array(
 		'homepages'           => $homepage_urls,
-		'flexiblePageUrl'     => get_permalink( $flexible_page_id ),
+		'flexiblePageUrl'          => get_permalink( $flexible_page_id ),
+		'sectionAdjacencyPageUrl'  => get_permalink( $section_adjacency_page_id ),
 		'applicationGuideUrl' => get_permalink( $application_page_id ),
-		'profileListingUrl'   => get_permalink( $listing_page_id ),
-		'profileUrl'          => get_permalink( $profile_post_id ),
+		'applicationGuideIntroMatrix' => $application_guide_intro_matrix,
+		'profileListingUrl'      => get_permalink( $listing_page_id ),
+		'profilesBlockPageUrl'   => $profile_pages['profilesBlockPageUrl'],
+		'profileUrl'             => $profile_pages['profileUrl'],
+		'profileNoPhotoUrl'      => $profile_pages['profileNoPhotoUrl'],
+		'fullWidthPageUrl'       => get_permalink( $full_width_page_id ),
+		'fullWidthIntroMatrix'   => $application_guide_intro_matrix,
 		'blogIndexUrl'        => get_permalink( $blog_page_id ),
+		'blogIntroMatrix'     => $application_guide_intro_matrix,
 		'programUrl'          => get_permalink( $program_alpha_id ),
 		'programBetaUrl'      => get_permalink( $program_beta_id ),
 		'governance'          => $governance,

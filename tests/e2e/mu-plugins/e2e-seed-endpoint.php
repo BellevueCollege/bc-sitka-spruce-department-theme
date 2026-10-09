@@ -12,6 +12,11 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** Must match tests/e2e/helpers/e2e-env.js E2E_WP_PORT. */
 const BC_SITKA_E2E_WP_PORT = 8889;
 
+$e2e_differentiator_acf = dirname( __DIR__, 2 ) . '/fixtures/e2e-differentiator-acf.php';
+if ( is_readable( $e2e_differentiator_acf ) ) {
+	require_once $e2e_differentiator_acf;
+}
+
 // Front-end snapshots should match a visitor view; wp-admin still shows the toolbar for editor tests.
 add_filter( 'show_admin_bar', '__return_false' );
 

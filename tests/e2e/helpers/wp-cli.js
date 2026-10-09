@@ -284,6 +284,17 @@ export function applyHomepageVariant( variant ) {
 }
 
 /**
+ * Toggle location and hours site options for homepage integration tests.
+ *
+ * @param {boolean} enabled Whether the location card is shown.
+ */
+export function applyLocationAndHours( enabled ) {
+	runE2eCli(
+		`wp eval "require '${ THEME_PATH }/tests/fixtures/e2e-seed-shared.php'; e2e_apply_location_and_hours( ${ enabled ? 'true' : 'false' }, (int) e2e_import_hero_attachment() ); echo wp_json_encode( array( 'enabled' => ${ enabled ? 'true' : 'false' } ) );"`
+	);
+}
+
+/**
  * Configure header/footer ACF options for a chrome variant test.
  *
  * @param {'default'|'notice'|'sock'|'emailFooter'} variant

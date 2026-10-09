@@ -7,17 +7,21 @@ import {
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	applyHomepageVariant,
+	applyLocationAndHours,
 	seedIntegrationData,
 	seedSiteChromeData,
 } from '../helpers/wp-cli.js';
 
 let pageUrl;
+let noHeroUrl;
 
 test.describe( 'Division homepage integration', () => {
 	test.beforeAll( () => {
 		seedSiteChromeData();
-		seedIntegrationData();
+		const integration = seedIntegrationData();
+		applyLocationAndHours( false );
 		pageUrl = applyHomepageVariant( 'div' ).pageUrl;
+		noHeroUrl = integration.homepages.div.withoutHero;
 	} );
 
 	test.beforeEach( async ( { page } ) => {
@@ -35,14 +39,37 @@ test.describe( 'Division homepage integration', () => {
 		await expect( main.getByText( 'Division Staff' ) ).toBeVisible();
 	} );
 
-	test( 'card section renders cards', async ( { page } ) => {
-		await expect( page.locator( '.card-section .cards' ) ).toBeVisible();
+	test( 'shows hero and hides location sidebar when location is off', async ( { page } ) => {
+		const main = page.locator( 'main, .site-content, #content' ).first();
+		await expect( main.locator( '.hero img' ).first() ).toBeVisible();
+		await expect( page.locator( '.location-and-hours' ) ).toHaveCount( 0 );
 	} );
 
-	test( 'renders seeded dynamic block content', async ( { page } ) => {
+	test( 'no-hero sibling page omits hero image', async ( { page } ) => {
+		await visitIntegrationPage( page, noHeroUrl );
+		await expect( page.locator( 'main .hero img' ) ).toHaveCount( 0 );
+	} );
+
+	test( 'card section renders populated cards', async ( { page } ) => {
+		await expect( page.locator( '.card-section .cards' ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: 'E2E Division Card One' } ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: 'E2E Division Card Two' } ) ).toBeVisible();
+	} );
+
+	test( 'renders seeded dynamic block content', async ( { page }, testInfo ) => {
 		const main = page.locator( 'main, .site-content, #content' ).first();
+		await expect( main.getByRole( 'region', { name: 'Stats about BC' } ) ).toContainText(
+			'E2E Stat 1'
+		);
+		await expect( main.getByRole( 'heading', { name: 'E2E Listing Item One' } ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'E2E Checkerboard One' } ) ).toBeVisible();
 		await expect( main.getByRole( 'link', { name: /Ada Lovelace/i } ).first() ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'Full-Time Faculty' } ) ).toBeVisible();
 		await expect( main.getByText( 'No employees found!' ) ).toHaveCount( 0 );
+
+		if ( testInfo.project.name === 'desktop' ) {
+			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Two' } ) ).toBeVisible();
+		}
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {

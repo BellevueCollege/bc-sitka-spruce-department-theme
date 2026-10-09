@@ -16,17 +16,33 @@ test.describe( 'Governance templates integration', () => {
 		governance = seed.governance;
 	} );
 
-	test( 'renders agenda single with related action item', async ( { page } ) => {
+	test( 'renders agenda single with related action item and resolution', async ( { page } ) => {
 		test.skip( ! governance.agendaUrl, 'Trustees Agenda plugin not available.' );
 		await visitIntegrationPage( page, governance.agendaUrl );
 		await expect( page.getByRole( 'heading', { name: 'E2E Board Agenda' } ) ).toBeVisible();
 		await expect( page.getByRole( 'link', { name: 'E2E Action Item' } ) ).toBeVisible();
+		await expect( page.getByRole( 'link', { name: 'E2E Resolution' } ) ).toBeVisible();
 	} );
 
-	test( 'renders agendas archive', async ( { page } ) => {
+	test( 'renders special meeting agenda subtitle', async ( { page } ) => {
+		test.skip( ! governance.specialAgendaUrl, 'Trustees Agenda plugin not available.' );
+		await visitIntegrationPage( page, governance.specialAgendaUrl );
+		await expect( page.getByText( '(Special Meeting)' ) ).toBeVisible();
+	} );
+
+	test( 'renders agendas archive with multiple years and special badge', async ( { page } ) => {
 		test.skip( ! governance.agendaArchiveUrl, 'Trustees Agenda plugin not available.' );
 		await visitIntegrationPage( page, governance.agendaArchiveUrl );
+		await expect( page.getByRole( 'heading', { name: '2026' } ) ).toBeVisible();
+		await expect( page.getByRole( 'heading', { name: '2025' } ) ).toBeVisible();
 		await expect( page.getByRole( 'link', { name: /January 15, 2026/i } ) ).toBeVisible();
+		await expect( page.getByText( '(Special Meeting)' ) ).toBeVisible();
+	} );
+
+	test( 'renders resolution single with associated agenda', async ( { page } ) => {
+		test.skip( ! governance.resolutionUrl, 'Trustees Agenda plugin not available.' );
+		await visitIntegrationPage( page, governance.resolutionUrl );
+		await expect( page.getByRole( 'link', { name: 'E2E Board Agenda' } ) ).toBeVisible();
 	} );
 
 	test( 'agenda archive aria snapshot @aria', async ( { page }, testInfo ) => {

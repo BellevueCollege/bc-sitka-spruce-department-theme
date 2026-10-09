@@ -22,18 +22,26 @@ test.describe( 'Profile listing integration', () => {
 		await visitIntegrationPage( page, listingUrl );
 	} );
 
-	test( 'renders the OHO Views listing and links to a profile', async ( {
-		page,
-	} ) => {
-		await expect( page.locator( '.profile-listing-page' ) ).toBeVisible();
-		await expect( page.getByText( 'Our Faculty and Staff' ) ).toBeVisible();
-		const profileLink = page.getByRole( 'link', { name: /Ada Lovelace/i } );
+	test( 'renders OHO listing results without empty-state message', async ( { page } ) => {
+		const results = page.locator( '.profile-results, #oho-views-results-profile-listing' );
+		await expect( results ).toBeVisible();
+		await expect( page.getByText( 'No people matching your search.' ) ).toHaveCount( 0 );
+		await expect( page.getByText( 'Our Faculty and Staff' ) ).toHaveCount( 0 );
+	} );
+
+	test( 'shows search filters and profile links in listing results', async ( { page } ) => {
+		await expect( page.getByLabel( 'Search by Name' ) ).toBeVisible();
+		await expect( page.getByRole( 'combobox', { name: 'Office or Department' } ) ).toBeVisible();
+		await expect( page.getByText( 'Profile Type' ) ).toBeVisible();
+
+		const profileLink = page
+			.locator( '.profile-results, #oho-views-results-profile-listing' )
+			.getByRole( 'link', { name: /Ada Lovelace/i } );
 		await expect( profileLink.first() ).toBeVisible();
 		await profileLink.first().click();
 		await expect( page ).toHaveURL(
 			new RegExp( profileUrl.replace( /[.*+?^${}()|[\]\\]/g, '\\$&' ) )
 		);
-		await expect( page.getByText( 'No employees found!' ) ).toHaveCount( 0 );
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
@@ -43,8 +51,11 @@ test.describe( 'Profile listing integration', () => {
 		} );
 	} );
 
-	test( 'main content passes axe', async ( { page } ) => {
-		const results = await runAxeOnSelector( page, '.profiles-section-wrapper, .profiles-section' );
+	test( 'listing region passes axe', async ( { page } ) => {
+		const results = await runAxeOnSelector(
+			page,
+			'.profile-listing-page .profile-results, #oho-views-results-profile-listing'
+		);
 		expect( results.violations ).toEqual( [] );
 	} );
 

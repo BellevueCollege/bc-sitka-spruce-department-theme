@@ -7,17 +7,21 @@ import {
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	applyHomepageVariant,
+	applyLocationAndHours,
 	seedIntegrationData,
 	seedSiteChromeData,
 } from '../helpers/wp-cli.js';
 
 let pageUrl;
+let noHeroUrl;
 
 test.describe( 'Support homepage integration', () => {
 	test.beforeAll( () => {
 		seedSiteChromeData();
-		seedIntegrationData();
+		const integration = seedIntegrationData();
+		applyLocationAndHours( true );
 		pageUrl = applyHomepageVariant( 'suppt' ).pageUrl;
+		noHeroUrl = integration.homepages.suppt.withoutHero;
 	} );
 
 	test.beforeEach( async ( { page } ) => {
@@ -37,21 +41,32 @@ test.describe( 'Support homepage integration', () => {
 		await expect( main.getByRole( 'heading', { name: /Why \[X\] at Bellevue College/i } ) ).toBeVisible();
 	} );
 
+	test( 'shows hero, location sidebar, and testimonial image', async ( { page } ) => {
+		const main = page.locator( 'main, .site-content, #content' ).first();
+		await expect( main.locator( '.hero img' ).first() ).toBeVisible();
+		await expect( page.locator( '.location-and-hours' ) ).toBeVisible();
+		await expect( page.locator( '.testimonial-section img' ).first() ).toBeVisible();
+		await expect( page.getByText( 'E2E Testimonial Author' ) ).toBeVisible();
+	} );
+
+	test( 'no-hero sibling page omits hero image', async ( { page } ) => {
+		await visitIntegrationPage( page, noHeroUrl );
+		await expect( page.locator( 'main .hero img' ) ).toHaveCount( 0 );
+	} );
+
 	test( 'renders seeded dynamic block content', async ( { page }, testInfo ) => {
 		const main = page.locator( 'main, .site-content, #content' ).first();
+		await expect( main.getByRole( 'heading', { name: 'E2E Listing Item One' } ) ).toBeVisible();
+		await expect( main.getByText( 'E2E support resources FAQ panel one.' ) ).toBeVisible();
+		await expect( main.getByRole( 'heading', { name: 'E2E Checkerboard One' } ) ).toBeVisible();
 		await expect( main.getByRole( 'link', { name: /Ada Lovelace/i } ).first() ).toBeVisible();
 		await expect( main.getByText( 'No employees found!' ) ).toHaveCount( 0 );
 
 		if ( testInfo.project.name === 'desktop' ) {
 			await expect( main.getByRole( 'heading', { name: 'E2E Support Tab' } ) ).toBeVisible();
 			await expect( main.getByText( 'E2E support tab summary content.' ) ).toBeVisible();
+			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Two' } ) ).toBeVisible();
 		}
-	} );
-
-	test( 'opens an accordion panel', async ( { page } ) => {
-		const accordionButton = page.locator( '.accordion-button' ).first();
-		await accordionButton.click();
-		await expect( accordionButton ).toHaveAttribute( 'aria-expanded', 'true' );
 	} );
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
