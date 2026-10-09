@@ -5,7 +5,7 @@ export const E2E_WP_PORT = 8889;
 
 export const WP_ENV_E2E_CONFIG = '.wp-env.e2e.json';
 
-/** Generated WP-CLI steps for wp-env `afterStart` (see run-wp-env-after-start.mjs). */
+/** Generated WP-CLI steps for host after-start seeding (see run-wp-env-after-start.mjs). */
 export const WP_ENV_E2E_AFTER_START_PLAN = '.wp-env.e2e.after-start.json';
 
 /** Playwright webServer waits for this line in start-wp-env-e2e.mjs stdout. */
@@ -118,6 +118,9 @@ export function isCiEnvironment() {
 
 	return Boolean( process.env.CI ) || process.env.TF_BUILD === 'True';
 }
+
+/** MariaDB image pulled by @wordpress/env Docker compose (see build-docker-compose-config.js). */
+export const WP_ENV_MARIADB_IMAGE = 'mariadb:lts';
 
 /**
  * Absolute path to the wp-env CLI entry script (Node, not the `.bin` shim).

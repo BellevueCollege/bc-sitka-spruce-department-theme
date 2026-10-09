@@ -7,7 +7,9 @@ steps:
 
   - script: npm run env:e2e:start
     displayName: Start wp-env e2e WordPress
+    retryCountOnTaskFailure: 2
     env:
+      CI: 'true'
       GITHUB_PAT: $(GITHUB_PAT)
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
 

@@ -111,10 +111,8 @@ function buildWpEnvConfig( resolvedPlugins ) {
 			// ADO checks out to …/s; map a stable theme slug instead of themes: ['.'].
 			[ `wp-content/themes/${ THEME_SLUG }` ]: projectRoot,
 		},
-		lifecycleScripts: {
-			// Node runner avoids Windows cmd.exe breaking chained `wp-env run` calls.
-			afterStart: 'node tests/e2e/scripts/run-wp-env-after-start.mjs',
-		},
+		// Seeding runs from start-wp-env-e2e.mjs after `wp-env start` (not lifecycleScripts).
+		// Lifecycle afterStart nested `wp-env run` inside `wp-env start` and breaks on macOS/Windows.
 		afterStartWpCliCommands,
 	};
 }

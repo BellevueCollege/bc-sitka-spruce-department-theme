@@ -55,6 +55,17 @@ function loadAfterStartPlan() {
 
 ensureE2eSubsiteExists();
 
-for ( const wpCliCommand of loadAfterStartPlan() ) {
+const afterStartCommands = loadAfterStartPlan();
+console.log(
+	`[e2e] After-start: running ${ afterStartCommands.length } WP-CLI steps…`
+);
+
+for ( let index = 0; index < afterStartCommands.length; index++ ) {
+	const stepNumber = index + 1;
+	const wpCliCommand = afterStartCommands[ index ];
+	const stepLabel = wpCliCommand.split( ' ' ).slice( 0, 3 ).join( ' ' );
+	console.log(
+		`[e2e] After-start (${ stepNumber }/${ afterStartCommands.length }): ${ stepLabel }…`
+	);
 	runE2eCli( wpCliCommand );
 }

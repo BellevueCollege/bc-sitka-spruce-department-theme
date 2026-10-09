@@ -192,7 +192,8 @@ One WordPress database; parallel workers race on posts and editor state.
 ### wp-env runtime (speed)
 
 - Generated `.wp-env.e2e.json` sets `SCRIPT_DEBUG: false` and `DISABLE_WP_CRON: true` (debug logging stays on). After changing these constants, restart wp-env; refresh committed PNG baselines on LambdaTest if frontend assets shift (`npm run test:e2e:visual:update`).
-- First `wp-env start` after plugin/config changes can take several minutes while `afterStart` seeds multisite data; the CLI spinner may sit on “Starting WordPress” or “Executing afterStart Script” during that work.
+- First `wp-env start` after plugin/config changes can take several minutes; host after-start seeding (`run-wp-env-after-start.mjs` from `start-wp-env-e2e.mjs`) runs multisite + fixture setup after containers are up (not wp-env `lifecycleScripts`, which nested `wp-env run` and broke on macOS/Windows).
+- On CI, `start-wp-env-e2e.mjs` pre-pulls `mariadb:lts` and retries `wp-env start` when Docker Hub is slow; Azure also sets `retryCountOnTaskFailure` on the start step.
 
 ### Block frontend fixtures (no editor boot)
 
