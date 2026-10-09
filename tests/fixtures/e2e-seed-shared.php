@@ -135,6 +135,26 @@ function e2e_delete_post_by_title( string $title, string $post_type ): void {
 }
 
 /**
+ * Remove every post of a type so integration seeds stay deterministic across wp-env runs.
+ *
+ * @param string $post_type Post type slug.
+ */
+function e2e_delete_all_posts_of_type( string $post_type ): void {
+	$post_ids = get_posts(
+		array(
+			'post_type'      => $post_type,
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'fields'         => 'ids',
+		)
+	);
+
+	foreach ( $post_ids as $post_id ) {
+		wp_delete_post( (int) $post_id, true );
+	}
+}
+
+/**
  * Publish or update a post by title.
  *
  * @param string               $title     Post title.

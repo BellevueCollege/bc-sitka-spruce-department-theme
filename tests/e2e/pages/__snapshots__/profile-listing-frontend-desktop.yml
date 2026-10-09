@@ -50,7 +50,7 @@
     - option "All Offices and Departments" [selected]
     - option "E2E Department"
   - group "Profile Type":
-    - text: ""
+    - text: Profile Type
     - list:
       - listitem:
         - checkbox "E2E Faculty"
@@ -58,7 +58,7 @@
   - button "Submit Search"
   - link "Clear All Filters":
     - /url: http://127.0.0.1:8889/e2e-dept/e2e-profile-listing/
-  - paragraph: Showing 1 of 1 profiles that match your search (5 total profiles)
+  - paragraph: Showing 1 of 1 profiles that match your search (4 total profiles)
   - link "E2E profile fixture image":
     - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
     - img "E2E profile fixture image"
@@ -78,7 +78,7 @@
         - /url: mailto:ada.lovelace@example.com
     - listitem:
       - text: "Phone:"
-      - link /\d+-\d+-\d+/:
+      - link "425-564-0001":
         - /url: tel:425-564-0001
     - listitem:
       - link "Book E2E Appointment":
@@ -100,10 +100,10 @@
   - separator
   - text: Phone Number
   - paragraph:
-    - link /\+1 \d+-\d+-\d+/:
+    - link "+1 425-564-1000":
       - /url: tel:+14255641000
   - text: Address
-  - paragraph: /Bellevue College \d+ Landerholm Circle SE Bellevue, WA \d+-\d+/
+  - paragraph: Bellevue College 3000 Landerholm Circle SE Bellevue, WA 98007-6406
   - list:
     - listitem:
       - link "Facebook":
@@ -154,6 +154,6 @@
         - link "Website Info ":
           - /url: https://www.bellevuecollege.edu/website-information/
   - paragraph:
-    - text: /© \d+ Bellevue College\. All Rights Reserved\./
+    - text: © 2026 Bellevue College. All Rights Reserved.
     - link "Privacy Notice":
       - /url: https://www.bellevuecollege.edu/accessibility/

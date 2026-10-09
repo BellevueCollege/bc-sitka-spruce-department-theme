@@ -74,6 +74,9 @@ function e2e_seed_profile_integration_pages(
 	$profile_department_id = $department_term_id;
 	$profile_type_term_id  = $profile_type_id;
 
+	// Drop stray profile CPT rows so listing totals match the four seeded fixtures.
+	e2e_delete_all_posts_of_type( 'profile' );
+
 	$profile_content = e2e_load_pattern_markup( 'profile-content-v0.php' );
 	$profile_content = e2e_wire_core_site_blocks_in_content(
 		$profile_content,
