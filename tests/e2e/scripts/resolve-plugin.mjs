@@ -92,7 +92,14 @@ function resolveWordPressPluginBootstrapPath( mountHostPath, catalogActivatePath
 
 	const pluginMainFile = path.basename( catalogActivatePath );
 	const pluginDirectory = path.basename( mountHostPath );
-	return `${ pluginDirectory }/${ pluginMainFile }`;
+	const bootstrapOnDisk = path.join( mountHostPath, pluginMainFile );
+
+	if ( existsSync( bootstrapOnDisk ) ) {
+		return `${ pluginDirectory }/${ pluginMainFile }`;
+	}
+
+	// Local checkouts may use a different bootstrap file than release zips.
+	return pluginDirectory;
 }
 
 /**

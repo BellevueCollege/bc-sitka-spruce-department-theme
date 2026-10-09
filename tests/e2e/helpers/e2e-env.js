@@ -1,7 +1,12 @@
+import path from 'path';
+
 /** WordPress wp-env e2e port (must match `.wp-env.e2e.json` and the e2e mu-plugin). */
 export const E2E_WP_PORT = 8889;
 
 export const WP_ENV_E2E_CONFIG = '.wp-env.e2e.json';
+
+/** Generated WP-CLI steps for wp-env `afterStart` (see run-wp-env-after-start.mjs). */
+export const WP_ENV_E2E_AFTER_START_PLAN = '.wp-env.e2e.after-start.json';
 
 /** Playwright webServer waits for this line in start-wp-env-e2e.mjs stdout. */
 export const WP_ENV_E2E_READY_LOG = '[e2e] wp-env e2e ready';
@@ -112,4 +117,34 @@ export function isCiEnvironment() {
 	}
 
 	return Boolean( process.env.CI ) || process.env.TF_BUILD === 'True';
+}
+
+/**
+ * Absolute path to the wp-env CLI entry script (Node, not the `.bin` shim).
+ *
+ * @param {string} projectRoot Repository root containing `node_modules`.
+ * @return {string}
+ */
+export function resolveWpEnvNodeEntryPath( projectRoot ) {
+	return path.join(
+		projectRoot,
+		'node_modules',
+		'@wordpress',
+		'env',
+		'bin',
+		'wp-env'
+	);
+}
+
+/**
+ * Absolute path to the wp-env `.bin` shim for shell-based `execSync` calls.
+ *
+ * @param {string} projectRoot Repository root containing `node_modules`.
+ * @return {string}
+ */
+export function resolveWpEnvCliPath( projectRoot ) {
+	const binaryName =
+		process.platform === 'win32' ? 'wp-env.cmd' : 'wp-env';
+
+	return path.join( projectRoot, 'node_modules', '.bin', binaryName );
 }

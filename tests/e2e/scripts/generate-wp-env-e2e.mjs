@@ -2,8 +2,8 @@ import { writeFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
-	E2E_SUBSITE_SLUG,
 	E2E_WP_PORT,
+	WP_ENV_E2E_AFTER_START_PLAN,
 	WP_ENV_E2E_CONFIG,
 	getMainSiteBaseUrl,
 	getSubsiteBaseUrl,
@@ -23,14 +23,6 @@ const MAIN_SITE_URL = getMainSiteBaseUrl();
 const SUBSITE_URL = getSubsiteBaseUrl();
 
 /**
- * @param {string} wpCliCommand
- * @return {string}
- */
-function wpEnvCli( wpCliCommand ) {
-	return `wp-env run --config=${ WP_ENV_E2E_CONFIG } cli ${ wpCliCommand }`;
-}
-
-/**
  * @param {import('./resolve-plugin.mjs').ResolvedE2ePlugin[]} resolvedPlugins
  * @param {'main'|'subsite'} site
  * @return {string[]}
@@ -46,10 +38,32 @@ function buildPluginActivationCommands( resolvedPlugins, site ) {
 		)
 		.map(
 			( plugin ) =>
-				`${ wpEnvCli(
-					`wp plugin activate ${ plugin.activateBootstrapPath } --url=${ siteUrl }`
-				) }`
+				`wp plugin activate ${ plugin.activateBootstrapPath } --url=${ siteUrl }`
 		);
+}
+
+/**
+ * WP-CLI commands executed by run-wp-env-after-start.mjs after subsite creation.
+ *
+ * @param {import('./resolve-plugin.mjs').ResolvedE2ePlugin[]} resolvedPlugins
+ * @return {string[]}
+ */
+function buildAfterStartWpCliCommands( resolvedPlugins ) {
+	const themePath = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
+
+	return [
+		...buildPluginActivationCommands( resolvedPlugins, 'main' ),
+		...buildPluginActivationCommands( resolvedPlugins, 'subsite' ),
+		`wp theme activate ${ THEME_SLUG } --url=${ MAIN_SITE_URL }`,
+		`wp theme activate ${ THEME_SLUG } --url=${ SUBSITE_URL }`,
+		`wp rewrite structure '/%postname%/' --hard --url=${ MAIN_SITE_URL }`,
+		`wp rewrite structure '/%postname%/' --hard --url=${ SUBSITE_URL }`,
+		`wp rewrite flush --url=${ MAIN_SITE_URL }`,
+		`wp rewrite flush --url=${ SUBSITE_URL }`,
+		`wp eval-file ${ themePath }/tests/fixtures/seed-e2e-core-site.php --url=${ MAIN_SITE_URL }`,
+		`wp eval-file ${ themePath }/tests/fixtures/seed-e2e-integration.php --url=${ SUBSITE_URL }`,
+		`wp eval-file ${ themePath }/tests/fixtures/seed-editor-preferences.php --url=${ SUBSITE_URL }`,
+	];
 }
 
 /**
@@ -73,42 +87,8 @@ function buildWpEnvConfig( resolvedPlugins ) {
 		}
 	}
 
-	const themePath = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
-
-	const createSubsiteCommand = wpEnvCli(
-		`sh -c "wp site list --field=url --url=${ MAIN_SITE_URL } | grep -q '${ SUBSITE_URL }' || wp site create --slug=${ E2E_SUBSITE_SLUG } --title='E2E Department' --url=${ MAIN_SITE_URL }"`
-	);
-
-	const afterStartSteps = [
-		createSubsiteCommand,
-		...buildPluginActivationCommands( resolvedPlugins, 'main' ),
-		...buildPluginActivationCommands( resolvedPlugins, 'subsite' ),
-		wpEnvCli(
-			`wp theme activate ${ THEME_SLUG } --url=${ MAIN_SITE_URL }`
-		),
-		wpEnvCli(
-			`wp theme activate ${ THEME_SLUG } --url=${ SUBSITE_URL }`
-		),
-		wpEnvCli(
-			`wp rewrite structure '/%postname%/' --hard --url=${ MAIN_SITE_URL }`
-		),
-		wpEnvCli(
-			`wp rewrite structure '/%postname%/' --hard --url=${ SUBSITE_URL }`
-		),
-		wpEnvCli( `wp rewrite flush --url=${ MAIN_SITE_URL }` ),
-		wpEnvCli( `wp rewrite flush --url=${ SUBSITE_URL }` ),
-		wpEnvCli(
-			`wp eval-file ${ themePath }/tests/fixtures/seed-e2e-core-site.php --url=${ MAIN_SITE_URL }`
-		),
-		wpEnvCli(
-			`wp eval-file ${ themePath }/tests/fixtures/seed-e2e-integration.php --url=${ SUBSITE_URL }`
-		),
-		wpEnvCli(
-			`wp eval-file ${ themePath }/tests/fixtures/seed-editor-preferences.php --url=${ SUBSITE_URL }`
-		),
-	];
-
-	const afterStart = afterStartSteps.join( '; ' );
+	const afterStartWpCliCommands =
+		buildAfterStartWpCliCommands( resolvedPlugins );
 
 	return {
 		$schema: 'https://schemas.wp.org/trunk/wp-env.json',
@@ -132,8 +112,10 @@ function buildWpEnvConfig( resolvedPlugins ) {
 			[ `wp-content/themes/${ THEME_SLUG }` ]: projectRoot,
 		},
 		lifecycleScripts: {
-			afterStart,
+			// Node runner avoids Windows cmd.exe breaking chained `wp-env run` calls.
+			afterStart: 'node tests/e2e/scripts/run-wp-env-after-start.mjs',
 		},
+		afterStartWpCliCommands,
 	};
 }
 
@@ -157,10 +139,27 @@ export async function generateWpEnvE2eConfig() {
 		);
 	}
 
+	const wpEnvConfig = buildWpEnvConfig( resolvedPlugins );
+	const { afterStartWpCliCommands, ...wpEnvConfigForFile } = wpEnvConfig;
+
 	const configPath = path.join( projectRoot, WP_ENV_E2E_CONFIG );
 	writeFileSync(
 		configPath,
-		`${ JSON.stringify( buildWpEnvConfig( resolvedPlugins ), null, '\t' ) }\n`,
+		`${ JSON.stringify( wpEnvConfigForFile, null, '\t' ) }\n`,
+		'utf8'
+	);
+
+	const afterStartPlanPath = path.join(
+		projectRoot,
+		WP_ENV_E2E_AFTER_START_PLAN
+	);
+	writeFileSync(
+		afterStartPlanPath,
+		`${ JSON.stringify(
+			{ wpCliCommands: afterStartWpCliCommands },
+			null,
+			'\t'
+		) }\n`,
 		'utf8'
 	);
 

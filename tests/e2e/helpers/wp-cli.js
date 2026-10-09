@@ -4,6 +4,7 @@ import path from 'path';
 import {
 	getMainSiteBaseUrl,
 	getSubsiteBaseUrl,
+	resolveWpEnvNodeEntryPath,
 	WP_ENV_E2E_CONFIG,
 } from './e2e-env.js';
 
@@ -11,7 +12,7 @@ export const THEME_SLUG = 'bc-sitka-spruce-department-theme';
 export const THEME_PATH = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
 
 const projectRoot = process.cwd();
-const wpEnvBin = path.join( projectRoot, 'node_modules', '.bin', 'wp-env' );
+const wpEnvNodeEntry = resolveWpEnvNodeEntryPath( projectRoot );
 
 const DEFAULT_CLI_SITE_URL = getSubsiteBaseUrl();
 
@@ -72,7 +73,7 @@ export function runE2eCli( command, options = {} ) {
 		? command
 		: `${ command } --url=${ siteUrl }`;
 
-	const shellCommand = `"${ wpEnvBin }" run --config=${ WP_ENV_E2E_CONFIG } cli ${ wpCommand }`;
+	const shellCommand = `"${ process.execPath }" "${ wpEnvNodeEntry }" run --config=${ WP_ENV_E2E_CONFIG } cli ${ wpCommand }`;
 
 	for ( let attempt = 1; attempt <= WP_ENV_BOOT_RETRY_LIMIT; attempt++ ) {
 		try {

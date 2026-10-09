@@ -76,6 +76,7 @@ yarn-error.log
 /artifacts/playground-ready
 /artifacts/e2e-seeds/
 /.wp-env.e2e.json
+/.wp-env.e2e.after-start.json
 
 # Per-developer e2e plugin paths (see tests/e2e/plugins.local.example.json)
 /tests/e2e/plugins.local.json
