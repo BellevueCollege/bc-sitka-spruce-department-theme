@@ -111,31 +111,39 @@ export async function prepareEditorCanvasForScreenshot( page, testInfo ) {
 	}
 }
 
+const DEFAULT_IMAGE_SETTLE_TIMEOUT_MS = 5_000;
+
 /**
  * Wait until images inside a screenshot target have finished loading.
  *
  * @param {import('@playwright/test').Locator} locator
+ * @param {{ perImageTimeoutMs?: number }} [options]
  * @return {Promise<void>}
  */
-export async function settleLocatorForScreenshot( locator ) {
-	await locator.evaluate( async ( element ) => {
-		const images = [ ...element.querySelectorAll( 'img' ) ];
-		await Promise.all(
-			images.map(
-				( image ) =>
-					new Promise( ( resolve ) => {
-						if ( image.complete ) {
-							resolve( undefined );
-							return;
-						}
-						image.addEventListener( 'load', () => resolve( undefined ), {
-							once: true,
-						} );
-						image.addEventListener( 'error', () => resolve( undefined ), {
-							once: true,
-						} );
-					} )
-			)
-		);
-	} );
+export async function settleLocatorForScreenshot( locator, options = {} ) {
+	const perImageTimeoutMs =
+		options.perImageTimeoutMs ?? DEFAULT_IMAGE_SETTLE_TIMEOUT_MS;
+
+	await locator.evaluate(
+		async ( element, timeoutMs ) => {
+			const images = [ ...element.querySelectorAll( 'img' ) ];
+			await Promise.all(
+				images.map(
+					( image ) =>
+						new Promise( ( resolve ) => {
+							if ( image.complete ) {
+								resolve( undefined );
+								return;
+							}
+
+							const done = () => resolve( undefined );
+							image.addEventListener( 'load', done, { once: true } );
+							image.addEventListener( 'error', done, { once: true } );
+							window.setTimeout( done, timeoutMs );
+						} )
+				)
+			);
+		},
+		perImageTimeoutMs
+	);
 }

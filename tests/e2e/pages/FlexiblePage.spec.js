@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
-	FULL_PAGE_SCREENSHOT_OPTIONS,
+	expectFullPageScreenshot,
 	runAxeOnSelector,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
@@ -99,10 +99,7 @@ test.describe( 'Flexible page integration', () => {
 	} );
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
-		await expect( page ).toHaveScreenshot(
-			'flexible-page-full.png',
-			FULL_PAGE_SCREENSHOT_OPTIONS
-		);
+		await expectFullPageScreenshot( page, 'flexible-page-full.png' );
 	} );
 
 	test( 'tabs section snapshot @visual', async ( { page }, testInfo ) => {

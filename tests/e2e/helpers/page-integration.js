@@ -20,10 +20,87 @@ export const WCAG_TAGS = [
  *
  * `toHaveScreenshot` on a page captures only the viewport unless `fullPage` is set.
  */
+/** Remote LambdaTest full-page captures need longer stability polling than the default 5s. */
+const FULL_PAGE_SCREENSHOT_TIMEOUT_MS = 60_000;
+
 export const FULL_PAGE_SCREENSHOT_OPTIONS = {
 	fullPage: true,
 	maxDiffPixelRatio: 0.02,
+	timeout: FULL_PAGE_SCREENSHOT_TIMEOUT_MS,
 };
+
+/**
+ * Wait for load, images, and non-sticky header before full-page visual baselines.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<void>}
+ */
+const FULL_PAGE_IMAGE_SETTLE_TIMEOUT_MS = 3_000;
+const FULL_PAGE_LAZY_LOAD_SCROLL_STEP_PX = 800;
+
+/**
+ * Scroll the page and wait for images (including lazy-loaded) before full-page capture.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<void>}
+ */
+async function settleFullPageImages( page ) {
+	await page.evaluate(
+		async ( { scrollStepPx, perImageTimeoutMs } ) => {
+			const delay = ( ms ) =>
+				new Promise( ( resolve ) => {
+					window.setTimeout( resolve, ms );
+				} );
+
+			const maxScroll = Math.max(
+				document.body.scrollHeight,
+				document.documentElement.scrollHeight
+			);
+			for ( let y = 0; y <= maxScroll; y += scrollStepPx ) {
+				window.scrollTo( 0, y );
+				await delay( 50 );
+			}
+
+			const images = [ ...document.querySelectorAll( 'img' ) ];
+			await Promise.all(
+				images.map(
+					( image ) =>
+						new Promise( ( resolve ) => {
+							if ( image.complete ) {
+								resolve( undefined );
+								return;
+							}
+
+							const done = () => resolve( undefined );
+							image.addEventListener( 'load', done, { once: true } );
+							image.addEventListener( 'error', done, { once: true } );
+							window.setTimeout( done, perImageTimeoutMs );
+						} )
+				)
+			);
+
+			window.scrollTo( 0, 0 );
+		},
+		{
+			scrollStepPx: FULL_PAGE_LAZY_LOAD_SCROLL_STEP_PX,
+			perImageTimeoutMs: FULL_PAGE_IMAGE_SETTLE_TIMEOUT_MS,
+		}
+	);
+}
+
+export async function prepareFullPageScreenshot( page ) {
+	await settleFullPageImages( page );
+}
+
+/**
+ * @param {import('@playwright/test').Page} page
+ * @param {string} snapshotName
+ * @return {Promise<void>}
+ */
+export async function expectFullPageScreenshot( page, snapshotName ) {
+	await prepareFullPageScreenshot( page );
+	await expect( page ).toHaveScreenshot( snapshotName, FULL_PAGE_SCREENSHOT_OPTIONS );
+}
 
 /**
  * @param {import('@playwright/test').Page} page

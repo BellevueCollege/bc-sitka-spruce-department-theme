@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
-	FULL_PAGE_SCREENSHOT_OPTIONS,
+	expectFullPageScreenshot,
 	runAxeOnSelector,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
@@ -36,9 +36,6 @@ test.describe( '404 page integration', () => {
 	} );
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
-		await expect( page ).toHaveScreenshot(
-			'not-found-full.png',
-			FULL_PAGE_SCREENSHOT_OPTIONS
-		);
+		await expectFullPageScreenshot( page, 'not-found-full.png' );
 	} );
 } );

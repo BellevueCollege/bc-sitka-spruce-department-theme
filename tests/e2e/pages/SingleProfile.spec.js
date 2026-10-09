@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
-	FULL_PAGE_SCREENSHOT_OPTIONS,
+	expectFullPageScreenshot,
 	runAxeOnSelector,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
@@ -49,10 +49,7 @@ test.describe( 'Single profile integration', () => {
 	} );
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
-		await expect( page ).toHaveScreenshot(
-			'single-profile-full.png',
-			FULL_PAGE_SCREENSHOT_OPTIONS
-		);
+		await expectFullPageScreenshot( page, 'single-profile-full.png' );
 	} );
 } );
 
@@ -70,9 +67,6 @@ test.describe( 'Single profile without photo', () => {
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
 		await visitIntegrationPage( page, profileNoPhotoUrl );
-		await expect( page ).toHaveScreenshot(
-			'single-profile-no-photo-full.png',
-			FULL_PAGE_SCREENSHOT_OPTIONS
-		);
+		await expectFullPageScreenshot( page, 'single-profile-no-photo-full.png' );
 	} );
 } );

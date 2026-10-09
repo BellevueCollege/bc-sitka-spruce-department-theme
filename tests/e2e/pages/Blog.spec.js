@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
-	FULL_PAGE_SCREENSHOT_OPTIONS,
+	expectFullPageScreenshot,
 	runAxeOnSelector,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
@@ -113,10 +113,7 @@ test.describe( 'Blog templates integration', () => {
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
 		await visitIntegrationPage( page, blogIndexUrl );
-		await expect( page ).toHaveScreenshot(
-			'blog-index-full.png',
-			FULL_PAGE_SCREENSHOT_OPTIONS
-		);
+		await expectFullPageScreenshot( page, 'blog-index-full.png' );
 	} );
 } );
 

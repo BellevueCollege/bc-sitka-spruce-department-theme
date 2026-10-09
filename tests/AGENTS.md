@@ -110,6 +110,7 @@ Canonical home for **section background / arch / divider** regressions is [`Sect
 - One **representative block per section signature** (body, listing, contact, degrees, tabs, media gallery, differentiator, support-feature). Blocks that share a signature are covered on homepage/program templates instead of duplicating here.
 - Keep [`FlexiblePage.spec.js`](e2e/pages/FlexiblePage.spec.js) focused on template composition (intro, sidebar, WYSIWYG); do not append adjacency stacks to that page.
 - **Sticky-header screenshot pitfall:** `#header-wrapper` is `position: sticky`. Playwright stitches tall element screenshots by scrolling, which re-paints the header mid-capture. Use [`prepareAdjacencyScreenshot()`](e2e/helpers/page-integration.js) and screenshot **per-scenario** wrappers (`#e2e-adj-scenario-*`), never one megapage locator.
+- **Full-page `@visual`:** Use [`expectFullPageScreenshot()`](e2e/helpers/page-integration.js) (lazy-load scroll + image settle + 60s stability timeout). LambdaTest remote captures often exceed Playwright’s default 5s “two consecutive stable screenshots” window on long homepages.
 
 ---
 

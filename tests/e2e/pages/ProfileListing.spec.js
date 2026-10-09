@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
-	FULL_PAGE_SCREENSHOT_OPTIONS,
+	expectFullPageScreenshot,
 	runAxeOnSelector,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
@@ -60,9 +60,6 @@ test.describe( 'Profile listing integration', () => {
 	} );
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
-		await expect( page ).toHaveScreenshot(
-			'profile-listing-full.png',
-			FULL_PAGE_SCREENSHOT_OPTIONS
-		);
+		await expectFullPageScreenshot( page, 'profile-listing-full.png' );
 	} );
 } );

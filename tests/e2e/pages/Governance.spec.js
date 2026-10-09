@@ -1,6 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
-	FULL_PAGE_SCREENSHOT_OPTIONS,
+	expectFullPageScreenshot,
 	runAxeOnSelector,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
@@ -64,10 +64,7 @@ test.describe( 'Governance templates integration', () => {
 	test( 'agenda archive full page snapshot @visual', async ( { page } ) => {
 		test.skip( ! governance.agendaArchiveUrl, 'Trustees Agenda plugin not available.' );
 		await visitIntegrationPage( page, governance.agendaArchiveUrl );
-		await expect( page ).toHaveScreenshot(
-			'governance-agenda-archive-full.png',
-			FULL_PAGE_SCREENSHOT_OPTIONS
-		);
+		await expectFullPageScreenshot( page, 'governance-agenda-archive-full.png' );
 	} );
 
 	test( 'agenda aria snapshot @aria', async ( { page }, testInfo ) => {
@@ -89,9 +86,6 @@ test.describe( 'Governance templates integration', () => {
 	test( 'agenda full page snapshot @visual', async ( { page } ) => {
 		test.skip( ! governance.agendaUrl, 'Trustees Agenda plugin not available.' );
 		await visitIntegrationPage( page, governance.agendaUrl );
-		await expect( page ).toHaveScreenshot(
-			'governance-agenda-full.png',
-			FULL_PAGE_SCREENSHOT_OPTIONS
-		);
+		await expectFullPageScreenshot( page, 'governance-agenda-full.png' );
 	} );
 } );
