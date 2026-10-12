@@ -6,6 +6,22 @@ import { normalizeE2eUrlForPlaywright } from './e2e-navigation.js';
 const VISIT_INTEGRATION_MAX_ATTEMPTS = 6;
 const VISIT_INTEGRATION_BASE_RETRY_DELAY_MS = 1_000;
 
+/**
+ * @param {unknown} error
+ * @return {boolean}
+ */
+function isRetryableNavigationError( error ) {
+	if ( ! ( error instanceof Error ) ) {
+		return false;
+	}
+
+	return (
+		error.name === 'TimeoutError' ||
+		error.message.includes( 'page.goto: Timeout' ) ||
+		error.message.includes( 'net::ERR_' )
+	);
+}
+
 /** WCAG tags for scoped page integration axe runs. */
 export const WCAG_TAGS = [
 	'wcag2a',
@@ -110,9 +126,23 @@ export async function visitIntegrationPage( page, url ) {
 	const normalized = normalizeE2eUrlForPlaywright( url );
 
 	for ( let attempt = 1; attempt <= VISIT_INTEGRATION_MAX_ATTEMPTS; attempt++ ) {
-		const response = await page.goto( normalized, {
-			waitUntil: 'domcontentloaded',
-		} );
+		let response;
+		try {
+			response = await page.goto( normalized, {
+				waitUntil: 'domcontentloaded',
+			} );
+		} catch ( gotoError ) {
+			if (
+				isRetryableNavigationError( gotoError ) &&
+				attempt < VISIT_INTEGRATION_MAX_ATTEMPTS
+			) {
+				await delay( VISIT_INTEGRATION_BASE_RETRY_DELAY_MS * attempt );
+				continue;
+			}
+
+			throw gotoError;
+		}
+
 		const status = response?.status() ?? 0;
 
 		if ( status > 0 && status < 500 ) {
