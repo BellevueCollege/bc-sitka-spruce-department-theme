@@ -14,6 +14,7 @@ import {
 } from '../helpers/header.js';
 import { settleLocatorForScreenshot } from '../helpers/editor.js';
 import { normalizeE2eUrlForPlaywright } from '../helpers/e2e-navigation.js';
+import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedChromeVariant, seedSiteChromeData } from '../helpers/wp-cli.js';
 
 /** WCAG 2.x tags passed to axe-core scoped audits. */
@@ -153,7 +154,8 @@ test.describe( 'Header and Footer', () => {
 			await visitDefaultChromePage( page, seed.pageUrl );
 		} );
 
-		test( 'header — default state @aria', async ( { page } ) => {
+		test( 'header — default state @aria', async ( { page }, testInfo ) => {
+			skipDuplicateBlockViewport( testInfo );
 			const header = page.locator( '#header-wrapper' );
 			await expect( header ).toBeVisible();
 			await expect( header ).toMatchAriaSnapshot( {
@@ -161,7 +163,8 @@ test.describe( 'Header and Footer', () => {
 			} );
 		} );
 
-		test( 'footer — default state @aria', async ( { page } ) => {
+		test( 'footer — default state @aria', async ( { page }, testInfo ) => {
+			skipDuplicateBlockViewport( testInfo );
 			const footer = page.locator( 'footer.footer' );
 			await expect( footer ).toBeVisible();
 			await expect( footer ).toMatchAriaSnapshot( {

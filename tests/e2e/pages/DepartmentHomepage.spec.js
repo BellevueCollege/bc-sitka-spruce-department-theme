@@ -81,6 +81,7 @@ test.describe( 'Department homepage integration', () => {
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
 		skipDuplicateBlockViewport( testInfo );
+		await visitIntegrationPage( page, applyHomepageVariant( 'dept' ).pageUrl );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'department-homepage-frontend.yml',
 		} );

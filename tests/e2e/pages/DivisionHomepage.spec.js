@@ -74,6 +74,7 @@ test.describe( 'Division homepage integration', () => {
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
 		skipDuplicateBlockViewport( testInfo );
+		await visitIntegrationPage( page, applyHomepageVariant( 'div' ).pageUrl );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'division-homepage-frontend.yml',
 		} );

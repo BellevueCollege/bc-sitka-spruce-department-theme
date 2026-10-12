@@ -14,7 +14,7 @@ steps:
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
 
   - script: npm run test:e2e:functional:external
-    displayName: Functional e2e tests
+    displayName: Functional e2e tests (includes 20 desktop @aria snapshots; excludes @visual)
     env:
       CI: 'true'
       GITHUB_PAT: $(GITHUB_PAT)

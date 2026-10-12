@@ -71,6 +71,7 @@ test.describe( 'Support homepage integration', () => {
 
 	test( 'frontend aria snapshot @aria', async ( { page }, testInfo ) => {
 		skipDuplicateBlockViewport( testInfo );
+		await visitIntegrationPage( page, applyHomepageVariant( 'suppt' ).pageUrl );
 		await expect( page.locator( 'body' ) ).toMatchAriaSnapshot( {
 			name: 'support-homepage-frontend.yml',
 		} );
