@@ -10,6 +10,7 @@ steps:
     retryCountOnTaskFailure: 2
     env:
       CI: 'true'
+      E2E_STRICT_PLUGINS: '1'
       GITHUB_PAT: $(GITHUB_PAT)
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
 
@@ -17,6 +18,7 @@ steps:
     displayName: Functional e2e tests (includes 20 desktop @aria snapshots; excludes @visual)
     env:
       CI: 'true'
+      E2E_STRICT_PLUGINS: '1'
       GITHUB_PAT: $(GITHUB_PAT)
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
       BUILD_ID: $(Build.BuildId)
@@ -31,7 +33,7 @@ steps:
     displayName: Visual e2e tests on LambdaTest
     env:
       CI: 'true'
-      E2E_WPENV_EXTERNAL: '1'
+      E2E_STRICT_PLUGINS: '1'
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
       GITHUB_PAT: $(GITHUB_PAT)

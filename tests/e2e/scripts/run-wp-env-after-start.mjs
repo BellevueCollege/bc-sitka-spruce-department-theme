@@ -38,7 +38,7 @@ function ensureE2eSubsiteExists() {
 }
 
 /**
- * @return {string[]}
+ * @return {{ wpCliCommands: string[], idempotentWpCliCommands: string[] }}
  */
 function loadAfterStartPlan() {
 	const planPath = path.join( projectRoot, WP_ENV_E2E_AFTER_START_PLAN );
@@ -50,22 +50,52 @@ function loadAfterStartPlan() {
 		);
 	}
 
-	return plan.wpCliCommands;
+	return {
+		wpCliCommands: plan.wpCliCommands,
+		idempotentWpCliCommands: Array.isArray( plan.idempotentWpCliCommands )
+			? plan.idempotentWpCliCommands
+			: [],
+	};
 }
+
+/**
+ * @param {string[]} wpCliCommands
+ * @param {string} phaseLabel
+ */
+function runWpCliCommandList( wpCliCommands, phaseLabel ) {
+	if ( wpCliCommands.length === 0 ) {
+		return;
+	}
+
+	console.log(
+		`[e2e] After-start (${ phaseLabel }): running ${ wpCliCommands.length } WP-CLI steps…`
+	);
+
+	for ( let index = 0; index < wpCliCommands.length; index++ ) {
+		const stepNumber = index + 1;
+		const wpCliCommand = wpCliCommands[ index ];
+		const stepLabel = wpCliCommand.split( ' ' ).slice( 0, 3 ).join( ' ' );
+		console.log(
+			`[e2e] After-start (${ phaseLabel } ${ stepNumber }/${ wpCliCommands.length }): ${ stepLabel }…`
+		);
+		runE2eCli( wpCliCommand );
+	}
+}
+
+const runMode = process.argv.includes( '--idempotent-only' )
+	? 'idempotent'
+	: process.argv.includes( '--integration-only' )
+	? 'integration'
+	: 'all';
 
 ensureE2eSubsiteExists();
 
-const afterStartCommands = loadAfterStartPlan();
-console.log(
-	`[e2e] After-start: running ${ afterStartCommands.length } WP-CLI steps…`
-);
+const { wpCliCommands, idempotentWpCliCommands } = loadAfterStartPlan();
 
-for ( let index = 0; index < afterStartCommands.length; index++ ) {
-	const stepNumber = index + 1;
-	const wpCliCommand = afterStartCommands[ index ];
-	const stepLabel = wpCliCommand.split( ' ' ).slice( 0, 3 ).join( ' ' );
-	console.log(
-		`[e2e] After-start (${ stepNumber }/${ afterStartCommands.length }): ${ stepLabel }…`
-	);
-	runE2eCli( wpCliCommand );
+if ( runMode === 'idempotent' || runMode === 'all' ) {
+	runWpCliCommandList( idempotentWpCliCommands, 'idempotent' );
+}
+
+if ( runMode === 'integration' || runMode === 'all' ) {
+	runWpCliCommandList( wpCliCommands, 'integration' );
 }

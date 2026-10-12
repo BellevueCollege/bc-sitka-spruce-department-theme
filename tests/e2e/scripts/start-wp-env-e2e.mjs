@@ -191,14 +191,18 @@ function startWpEnvE2e() {
 }
 
 /**
- * Idempotent multisite + plugin + fixture seeding (host-side, after containers are up).
+ * @param {string[]} [extraArgs]
  */
-function runAfterStartSeeding() {
-	const seedResult = spawnSync( process.execPath, [ afterStartScriptPath ], {
-		cwd: projectRoot,
-		env: process.env,
-		stdio: 'inherit',
-	} );
+function runAfterStartSeeding( extraArgs = [] ) {
+	const seedResult = spawnSync(
+		process.execPath,
+		[ afterStartScriptPath, ...extraArgs ],
+		{
+			cwd: projectRoot,
+			env: process.env,
+			stdio: 'inherit',
+		}
+	);
 
 	if ( seedResult.status !== 0 ) {
 		process.exit( seedResult.status ?? 1 );
@@ -228,12 +232,15 @@ if ( ! cliReachable ) {
 	console.log( '[e2e] wp-env containers already running.' );
 }
 
+console.log( '[e2e] Running idempotent after-start seeds (editor preferences)…' );
+runAfterStartSeeding( [ '--idempotent-only' ] );
+
 if ( ! integrationSeeded ) {
-	console.log( '[e2e] Running after-start seeding…' );
-	runAfterStartSeeding();
+	console.log( '[e2e] Running integration after-start seeding…' );
+	runAfterStartSeeding( [ '--integration-only' ] );
 } else {
 	console.log(
-		'[e2e] Integration fixtures already present; skipping after-start seeding.'
+		'[e2e] Integration fixtures already present; skipping integration after-start seeding.'
 	);
 }
 

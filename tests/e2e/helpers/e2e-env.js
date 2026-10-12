@@ -119,6 +119,16 @@ export function isCiEnvironment() {
 	return Boolean( process.env.CI ) || process.env.TF_BUILD === 'True';
 }
 
+/**
+ * When true, e2e plugin resolution ignores local path overrides (env path vars and
+ * plugins.local.json) so CI and baseline-update runs match catalog release zips.
+ *
+ * @return {boolean}
+ */
+export function isStrictE2ePluginResolution() {
+	return isCiEnvironment() || process.env.E2E_STRICT_PLUGINS === '1';
+}
+
 /** MariaDB image pulled by @wordpress/env Docker compose (see build-docker-compose-config.js). */
 export const WP_ENV_MARIADB_IMAGE = 'mariadb:lts';
 

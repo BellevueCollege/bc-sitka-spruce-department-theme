@@ -18,6 +18,9 @@ import {
 	WP_ENV_E2E_READY_LOG,
 } from './tests/e2e/helpers/e2e-env.js';
 import { VIEWPORT_PROJECTS } from './tests/e2e/helpers/viewports.js';
+import { assertVisualBaselineUpdateAllowed } from './tests/e2e/scripts/guard-visual-baseline-update.mjs';
+
+assertVisualBaselineUpdateAllowed();
 
 if ( ! process.env.WP_BASE_URL ) {
 	process.env.WP_BASE_URL = getPlaywrightBaseUrl();

@@ -99,8 +99,9 @@ When you're finished, stop WordPress with `npm run env:e2e:stop`.
 | `npm run test:e2e:functional:external` | Functional and `@aria` tests (WordPress already running) |
 | `npm run test:e2e:functional` | Same, but starts WordPress first if needed |
 | `npm run test:e2e:aria` | Only `@aria` tests |
-| `npm run test:e2e:visual` | Only `@visual` tests, on LambdaTest |
+| `npm run test:e2e:visual` | Only `@visual` tests on LambdaTest (expects wp-env already running; same as CI) |
 | `npm run test:e2e:visual:local` | Only `@visual` tests, on your local Chrome (see below) |
+| `npm run test:e2e:visual:with-webserver` | `@visual` on LambdaTest while Playwright starts wp-env (legacy; prefer external wp-env + `test:e2e:visual`) |
 | `npm run test:e2e` | Functional, then visual — the full suite |
 | `npm run test:e2e:ui` | Functional tests in Playwright's interactive UI |
 | `npm run test:e2e:debug` | Functional tests with the Playwright inspector |
@@ -134,7 +135,8 @@ When a change to the theme intentionally alters a page, update the baselines and
 | Command | What it updates |
 |---------|-----------------|
 | `npm run test:e2e:aria:update` | `@aria` `*.yml` baselines |
-| `npm run test:e2e:visual:update` | `@visual` `*.png` baselines, on LambdaTest |
+| `npm run test:e2e:visual:update` | `@visual` `*.png` baselines on LambdaTest (allowed in CI; blocked locally unless you opt in) |
+| `npm run test:e2e:visual:update:ci-match` | Local baseline refresh with `E2E_STRICT_PLUGINS=1` + explicit allow flag (tunnel + credentials required) |
 | `npm run test:e2e:update` | Both of the above |
 | `npm run test:e2e:update:last-failed` | Only tests that failed on your previous run |
 
@@ -142,9 +144,52 @@ Update commands only rewrite files that actually changed. To update a single spe
 
 A typical loop is to run the tests, review the failures, then run `npm run test:e2e:update:last-failed` to accept only those.
 
+### Pull request checklist (visual / e2e)
+
+Copy into the PR description when the change can affect screenshots, seeds, plugins, or Playwright config.
+
+- [ ] **Azure Test stage** (or local `npm run test:e2e:ci` with tunnel + secrets) is green, or the failure is explained and unrelated.
+- [ ] Any new or changed `tests/e2e/**/__snapshots__/*.png` were produced on **LambdaTest Linux Chrome** (`test:e2e:visual:update` in CI, or `test:e2e:visual:update:ci-match` locally)—not `test:e2e:visual:local`.
+- [ ] Baseline updates used **catalog plugin zips** (`E2E_STRICT_PLUGINS=1` in CI; same for `test:e2e:visual:update:ci-match`). No accidental commits from `plugins.local.json` or `MAYFLOWER_BLOCKS_PATH`-style mounts.
+- [ ] PR describes **why** pixels changed (theme, block, plugin version in `plugins.json`, seed content, editor prefs, etc.).
+- [ ] Partial PNG updates are intentional; if many unrelated snapshots changed, prefer a dedicated baseline-refresh PR or the pipeline template in [`.azuredevops/e2e-visual-baseline-update-steps.yml`](.azuredevops/e2e-visual-baseline-update-steps.yml).
+- [ ] Did **not** loosen `maxDiffPixelRatio` or edit [`tests/e2e/helpers/screenshot-stability.css`](tests/e2e/helpers/screenshot-stability.css) to hide real layout regressions (scrollbar hiding only).
+- [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update`).
+- [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know how to re-seed (`env:e2e:stop` + `env:e2e:start`, or destroy when schema requires it—see Troubleshooting).
+
+### Bumping the pinned LambdaTest Chrome version
+
+Bump the pin only when LambdaTest’s default Linux Chrome moves and you are ready to **refresh all PNG baselines** in the same PR (or immediately after).
+
+1. **Discover the session version** (tunnel + `LT_*` credentials):
+
+   ```bash
+   npm run tunnel:e2e:start
+   node tests/e2e/scripts/print-lambdatest-chrome-version.mjs
+   ```
+
+   Use the major.minor segment LambdaTest reports (for example `154.0.6367.60` → pin `154.0`).
+
+2. **Update the pin in three places** (keep them identical):
+
+   | Location | Field |
+   |----------|--------|
+   | [`tests/e2e/helpers/lambdatest.js`](tests/e2e/helpers/lambdatest.js) | `DEFAULT_LAMBDATEST_CHROME_VERSION` |
+   | [`.azuredevops/e2e-test-steps.yml`](.azuredevops/e2e-test-steps.yml) | `E2E_LAMBDATEST_CHROME_VERSION` on the visual step |
+   | [`.azuredevops/e2e-visual-baseline-update-steps.yml`](.azuredevops/e2e-visual-baseline-update-steps.yml) | same |
+
+3. **Regenerate every `@visual` PNG** on LambdaTest with strict plugins:
+
+   - **CI:** run a pipeline using `e2e-visual-baseline-update-steps.yml`, download artifact `e2e-visual-baselines`, commit `__snapshots__`.
+   - **Local:** `npm run env:e2e:start` with `E2E_STRICT_PLUGINS=1`, tunnel up, then `npm run test:e2e:visual:update:ci-match` (full suite; expect a large diff).
+
+4. **Verify stability:** run `npm run test:e2e:visual` twice back-to-back (wp-env already running + tunnel); both runs should pass with no snapshot writes.
+
+5. **PR:** use the checklist above; call out Chrome bump + baseline refresh in the summary. Do not merge a pin change without the matching PNG commit.
+
 ### Changing which plugins are used
 
-Plugins are listed in [`tests/e2e/plugins.json`](tests/e2e/plugins.json). Your `tests/e2e/plugins.local.json` overrides any plugin with a local folder. You can also point a single plugin at a folder with `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, or `ACF_PATH`, which win over both files.
+Plugins are listed in [`tests/e2e/plugins.json`](tests/e2e/plugins.json). Your `tests/e2e/plugins.local.json` overrides any plugin with a local folder. You can also point a single plugin at a folder with `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, or `ACF_PATH`, which win over both files. CI and `npm run test:e2e:visual:update:ci-match` set `E2E_STRICT_PLUGINS=1` so only catalog release zips are used (local overrides are ignored).
 
 WordPress only picks up plugin changes on a fresh start. After editing either file:
 
@@ -209,7 +254,10 @@ If it still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that ter
 | `LT_USERNAME`, `LT_ACCESS_KEY` | LambdaTest credentials (required for LambdaTest visual runs) |
 | `ACF_DOWNLOAD_URL` | ACF Pro license download link, when not using a local ACF folder |
 | `GITHUB_PAT` | GitHub token for private plugin downloads |
-| `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, `ACF_PATH` | Use a local folder for that plugin |
+| `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, `ACF_PATH` | Use a local folder for that plugin (ignored when `E2E_STRICT_PLUGINS=1`) |
+| `E2E_STRICT_PLUGINS` | Set to `1` to match CI plugin zips (no local path overrides) |
+| `E2E_WPENV_EXTERNAL` | Set to `1` when wp-env is already running (`test:e2e:visual` sets this) |
+| `E2E_ALLOW_VISUAL_BASELINE_UPDATE` | Set to `1` to allow local LambdaTest `--update-snapshots` (see `test:e2e:visual:update:ci-match`) |
 | `E2E_LAMBDATEST_CHROME_VERSION` | Override the pinned LambdaTest Chrome version (repo default in `tests/e2e/helpers/lambdatest.js`) |
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | Set to `0` to stop visual tests from starting the tunnel themselves |
 | `E2E_DEBUG` | Set to `1` for verbose plugin-download logging |
@@ -224,7 +272,7 @@ To re-run only the tests, queue the pipeline manually and select the **Test** st
 
 ### Writing new tests
 
-Conventions for specs, seed data, tags, and viewports are in [`tests/AGENTS.md`](tests/AGENTS.md).
+Specs live under `tests/e2e/` (pages, blocks, layout). Reuse helpers in `tests/e2e/helpers/`. Tag screenshot tests with `@visual` (LambdaTest PNG baselines) or `@aria` (accessibility snapshots on host Chromium). Use `@viewport` only when behavior differs by breakpoint. Block-level `@visual` runs on desktop only; page-level visual tests run desktop, tablet, and mobile. Seed data and WP-CLI fixtures are under `tests/fixtures/`.
 
 ## Documentation
 

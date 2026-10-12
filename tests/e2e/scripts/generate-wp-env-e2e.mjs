@@ -64,6 +64,18 @@ function buildAfterStartWpCliCommands( resolvedPlugins ) {
 		`wp rewrite flush --url=${ SUBSITE_URL }`,
 		`wp eval-file ${ themePath }/tests/fixtures/seed-e2e-core-site.php --url=${ MAIN_SITE_URL }`,
 		`wp eval-file ${ themePath }/tests/fixtures/seed-e2e-integration.php --url=${ SUBSITE_URL }`,
+	];
+}
+
+/**
+ * WP-CLI commands that must run on every e2e start (even when integration fixtures exist).
+ *
+ * @return {string[]}
+ */
+function buildIdempotentAfterStartWpCliCommands() {
+	const themePath = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
+
+	return [
 		`wp eval-file ${ themePath }/tests/fixtures/seed-editor-preferences.php --url=${ SUBSITE_URL }`,
 	];
 }
@@ -141,6 +153,7 @@ export async function generateWpEnvE2eConfig() {
 
 	const wpEnvConfig = buildWpEnvConfig( resolvedPlugins );
 	const { afterStartWpCliCommands, ...wpEnvConfigForFile } = wpEnvConfig;
+	const idempotentWpCliCommands = buildIdempotentAfterStartWpCliCommands();
 
 	const configPath = path.join( projectRoot, WP_ENV_E2E_CONFIG );
 	writeFileSync(
@@ -156,7 +169,10 @@ export async function generateWpEnvE2eConfig() {
 	writeFileSync(
 		afterStartPlanPath,
 		`${ JSON.stringify(
-			{ wpCliCommands: afterStartWpCliCommands },
+			{
+				wpCliCommands: afterStartWpCliCommands,
+				idempotentWpCliCommands,
+			},
 			null,
 			'\t'
 		) }\n`,

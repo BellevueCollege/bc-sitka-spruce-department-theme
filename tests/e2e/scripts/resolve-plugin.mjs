@@ -12,6 +12,7 @@ import { createHash } from 'crypto';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { pipeline } from 'stream/promises';
+import { isStrictE2ePluginResolution } from '../helpers/e2e-env.js';
 import pluginCatalog from '../plugins.json' with { type: 'json' };
 
 const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
@@ -148,7 +149,7 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
 		activateOn,
 	};
 
-	if ( envPathVar ) {
+	if ( envPathVar && ! isStrictE2ePluginResolution() ) {
 		const envPath = process.env[ envPathVar ];
 		if ( envPath && existsSync( envPath ) ) {
 			console.log( `[e2e] ${ pluginKey }: using ${ envPathVar }=${ envPath }` );
@@ -156,7 +157,11 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
 		}
 	}
 
-	if ( localEntry?.source === 'local' && localEntry.path ) {
+	if (
+		! isStrictE2ePluginResolution() &&
+		localEntry?.source === 'local' &&
+		localEntry.path
+	) {
 		const localPath = path.resolve( projectRoot, localEntry.path );
 		if ( existsSync( localPath ) ) {
 			console.log( `[e2e] ${ pluginKey }: using local ${ localPath }` );
@@ -218,7 +223,15 @@ async function resolveCatalogEntry( pluginKey, catalogEntry, localEntry ) {
  * @return {Promise<ResolvedE2ePlugin[]>}
  */
 export async function resolveE2ePlugins() {
-	const localOverlay = loadLocalPluginOverlay();
+	const localOverlay = isStrictE2ePluginResolution()
+		? {}
+		: loadLocalPluginOverlay();
+
+	if ( isStrictE2ePluginResolution() ) {
+		console.log(
+			'[e2e] Strict plugin resolution: ignoring plugins.local.json and env path overrides.'
+		);
+	}
 	const resolved = [];
 
 	for ( const pluginKey of Object.keys( pluginCatalog ) ) {
