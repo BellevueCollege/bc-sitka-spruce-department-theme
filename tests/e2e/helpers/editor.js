@@ -48,28 +48,108 @@ export async function visitPublishedFrontend( page, url ) {
 }
 
 /**
+ * Dismiss the "Choose a pattern" starter modal if it appears.
+ *
+ * Preferences should prevent it; this is a defensive fallback when multisite
+ * preference meta was not seeded for the current blog.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<boolean>} Whether a modal was dismissed.
+ */
+export async function dismissStarterPatternModal( page ) {
+	const dialog = page.getByRole( 'dialog', { name: /choose a pattern/i } );
+	if ( ! ( await dialog.isVisible().catch( () => false ) ) ) {
+		return false;
+	}
+
+	const closeButton = dialog.getByRole( 'button', { name: /close/i } );
+	if ( await closeButton.isVisible().catch( () => false ) ) {
+		await closeButton.click();
+	} else {
+		await page.keyboard.press( 'Escape' );
+	}
+
+	await dialog.waitFor( { state: 'hidden', timeout: 5_000 } ).catch( () => {} );
+	return true;
+}
+
+/**
  * Prepare a new page in the block editor.
  */
 export async function prepareEditorPage( { admin, editor, page } ) {
 	await admin.createNewPost( { postType: 'page' } );
 	await exitCodeEditor( page );
+	await dismissStarterPatternModal( page );
 	await editor.canvas.locator( 'body' ).waitFor( { state: 'visible' } );
+}
+
+const EDITOR_SETTINGS_SIDEBAR_SELECTORS = [
+	'.interface-complementary-area',
+	'.editor-sidebar',
+	'.edit-post-sidebar',
+].join( ', ' );
+
+/**
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<boolean>}
+ */
+async function isEditorSettingsSidebarOpen( page ) {
+	return page
+		.locator( EDITOR_SETTINGS_SIDEBAR_SELECTORS )
+		.first()
+		.isVisible()
+		.catch( () => false );
 }
 
 /**
  * Close the block inspector so editor screenshots use the full canvas width.
  *
+ * WordPress versions differ: some expose "Close Settings", others only a pressed
+ * Settings toolbar toggle or a generic Close control inside the sidebar.
+ *
  * @param {import('@playwright/test').Page} page
  * @return {Promise<void>}
  */
 export async function closeEditorSettingsSidebar( page ) {
-	const closeButton = page.getByRole( 'button', { name: 'Close Settings' } );
-	if ( await closeButton.isVisible() ) {
-		await closeButton.click();
-		await closeButton.waitFor( { state: 'hidden', timeout: 5_000 } ).catch(
-			() => {}
-		);
+	if ( ! ( await isEditorSettingsSidebarOpen( page ) ) ) {
+		return;
 	}
+
+	const closeSettingsButton = page.getByRole( 'button', {
+		name: 'Close Settings',
+	} );
+	const closeSettingsVisible =
+		( await closeSettingsButton.count() ) > 0 &&
+		( await closeSettingsButton.first().isVisible() );
+
+	if ( closeSettingsVisible ) {
+		await closeSettingsButton.first().click();
+	} else {
+		const pressedSettingsToggle = page.getByRole( 'button', {
+			name: /settings/i,
+			pressed: true,
+		} );
+		if (
+			( await pressedSettingsToggle.count() ) > 0 &&
+			( await pressedSettingsToggle.first().isVisible() )
+		) {
+			await pressedSettingsToggle.first().click();
+		} else {
+			const sidebarCloseButton = page
+				.locator( EDITOR_SETTINGS_SIDEBAR_SELECTORS )
+				.getByRole( 'button', { name: /^Close$/i } )
+				.first();
+			if ( await sidebarCloseButton.isVisible().catch( () => false ) ) {
+				await sidebarCloseButton.click();
+			}
+		}
+	}
+
+	await page
+		.locator( EDITOR_SETTINGS_SIDEBAR_SELECTORS )
+		.first()
+		.waitFor( { state: 'hidden', timeout: 5_000 } )
+		.catch( () => {} );
 }
 
 /**
@@ -104,6 +184,7 @@ export async function hideEditorMetaBoxesForScreenshot( page ) {
  * @return {Promise<void>}
  */
 export async function prepareEditorCanvasForScreenshot( page, testInfo ) {
+	await dismissStarterPatternModal( page );
 	await closeEditorSettingsSidebar( page );
 
 	if ( testInfo?.project?.name === 'mobile' ) {

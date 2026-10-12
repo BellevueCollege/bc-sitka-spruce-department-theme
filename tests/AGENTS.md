@@ -230,6 +230,12 @@ The LambdaTest plan is **Web Automation on Desktop — Linux**. Keep capabilitie
 
 Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:visual:update`). Refresh all snapshot types with `npm run test:e2e:update`; after a failing run, `npm run test:e2e:update:last-failed` re-runs only failed snapshot tests.
 
+**Screenshot stability (`stylePath`).** [`playwright.config.js`](../playwright.config.js) applies [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css) only while `toHaveScreenshot` runs. It hides scrollbars so Linux Chrome does not flip layout width (for example `1280` vs `1265`) between stability retries on long full-page captures. Do **not** add layout, spacing, or font overrides there—those would mask real regressions.
+
+**Pinned Chrome.** [`lambdatest.js`](e2e/helpers/lambdatest.js) defaults to a fixed Linux Chrome version (override with `E2E_LAMBDATEST_CHROME_VERSION`). Azure sets the same variable in the visual job. Bump the pin only when intentionally refreshing all PNG baselines; discover the current version with `node tests/e2e/scripts/print-lambdatest-chrome-version.mjs` (tunnel + credentials required).
+
+**Visual failure triage:** Width oscillating within one assertion → scrollbar `stylePath` missing or broken. Stable width but pixel diff → real layout/content change or stale baseline—re-run once, then `npm run test:e2e:visual:update` on LambdaTest if the UI is correct. Do not raise `maxDiffPixelRatio` for dimension mismatches (Playwright fails on size before ratio).
+
 ### Editor preferences seed
 
 `seed-editor-preferences.php` runs in wp-env `afterStart` only (not in Playwright global setup).
@@ -245,7 +251,7 @@ Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:vi
 | `E2E_LAMBDATEST` | `1` | LambdaTest browser + tunnel base URL |
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | `0` / unset | `0` = do not auto-start tunnel |
 | `E2E_LAMBDATEST_PLAYGROUND_URL` | optional | Default `http://host.docker.internal:8889/e2e-dept` |
-| `E2E_LAMBDATEST_CHROME_VERSION` | optional | Pin LambdaTest Linux Chrome version (default `latest`) |
+| `E2E_LAMBDATEST_CHROME_VERSION` | optional | Override pinned LambdaTest Linux Chrome (see `DEFAULT_LAMBDATEST_CHROME_VERSION` in `lambdatest.js`) |
 | `E2E_DEBUG` | `1` / unset | Verbose plugin-resolution logs in `resolve-plugin.mjs` |
 | `LT_USERNAME`, `LT_ACCESS_KEY` | secrets | Required for `@visual` |
 | `GITHUB_PAT`, `ACF_DOWNLOAD_URL` | CI / local | Private GitHub zips; ACF Pro zip download URL |

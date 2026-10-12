@@ -1,0 +1,18 @@
+/*
+ * Applied only while Playwright takes a screenshot (stylePath).
+ * Linux Chrome reserves a classic scrollbar that appears and disappears
+ * during full-page stitching, so the layout width flips by about 15px
+ * between stability retries. Hiding the bar keeps the content box equal
+ * to the viewport for every capture.
+ */
+html,
+body,
+* {
+	scrollbar-width: none !important;
+}
+
+*::-webkit-scrollbar {
+	display: none !important;
+	width: 0 !important;
+	height: 0 !important;
+}

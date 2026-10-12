@@ -38,6 +38,7 @@ steps:
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
       BUILD_ID: $(Build.BuildId)
       E2E_LAMBDATEST_TUNNEL_AUTO: '0'
+      E2E_LAMBDATEST_CHROME_VERSION: '154.0'
 
   - script: npm run tunnel:e2e:stop
     displayName: Stop LambdaTest tunnel

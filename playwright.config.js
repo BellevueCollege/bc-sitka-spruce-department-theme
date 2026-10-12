@@ -47,8 +47,13 @@ const config = {
 		toHaveScreenshot: {
 			...baseConfig.expect?.toHaveScreenshot,
 			animations: 'disabled',
+			caret: 'hide',
 			maxDiffPixelRatio: 0.02,
 			scale: 'css',
+			stylePath: path.join(
+				process.cwd(),
+				'tests/e2e/helpers/screenshot-stability.css'
+			),
 		},
 	},
 	reporter: isCi
@@ -84,6 +89,11 @@ if ( isLambdaTestRun() ) {
 		...config.use,
 		baseURL: getLambdaTestPlaygroundBaseUrl(),
 		actionTimeout: 60_000,
+		// goto otherwise waits until the test timeout, so one stalled tunnel
+		// navigation burns the whole test and never reaches the retry loop.
+		navigationTimeout: 30_000,
+		// LT workers lack Playwright's ffmpeg binary; baseConfig uses on-first-retry.
+		video: 'off',
 		connectOptions: {
 			wsEndpoint: getLambdaTestWsEndpoint(),
 		},

@@ -2,6 +2,12 @@ import { spawnSync } from 'node:child_process';
 import { getE2ePort, getSubsiteBaseUrl } from './e2e-env.js';
 
 const LAMBDATEST_TUNNEL_NAME = 'e2e-tunnel';
+
+/**
+ * Pinned LambdaTest Linux Chrome. Bump only when intentionally refreshing all @visual PNGs.
+ * Discover via: node tests/e2e/scripts/print-lambdatest-chrome-version.mjs
+ */
+export const DEFAULT_LAMBDATEST_CHROME_VERSION = '154.0';
 const DEFAULT_TUNNEL_INFO_PORT = 8000;
 const TUNNEL_FETCH_TIMEOUT_MS = 5_000;
 const TUNNEL_POLL_INTERVAL_MS = 1_000;
@@ -114,7 +120,8 @@ export function getLambdaTestWsEndpoint() {
 	// Web Automation on Desktop — Linux (org plan). Windows/macOS or pw-chromium
 	// routes to a different desktop-automation pool and can 422 with exhausted minutes.
 	const chromeVersion =
-		process.env.E2E_LAMBDATEST_CHROME_VERSION?.trim() || 'latest';
+		process.env.E2E_LAMBDATEST_CHROME_VERSION?.trim() ||
+		DEFAULT_LAMBDATEST_CHROME_VERSION;
 
 	const capabilities = {
 		browserName: 'Chrome',

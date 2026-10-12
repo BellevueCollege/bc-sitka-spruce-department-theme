@@ -198,7 +198,7 @@ curl http://127.0.0.1:8000/api/v1.0/info
 
 If it still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that terminal, and that your network allows HTTPS to `*.lambdatest.com`.
 
-**A screenshot fails by a pixel or two in height** (for example `Expected 1265×643, received 1265×644`). Re-run the test once; small layout timing differences happen. If it fails consistently, the page really changed. Update the baseline with `npm run test:e2e:visual:update`.
+**A screenshot fails on size or pixels.** Visual tests use LambdaTest Linux Chrome with a pinned version (`E2E_LAMBDATEST_CHROME_VERSION`) and a screenshot-only stylesheet that hides scrollbars so width does not flip mid-capture (for example `1280` vs `1265`). If the log shows that width flip within one test, the stability stylesheet is not applied. If width is stable but pixels differ, re-run once; when the failure is consistent and the page looks correct on LambdaTest, update baselines with `npm run test:e2e:visual:update` (not `test:e2e:visual:local`). Do not loosen `maxDiffPixelRatio` for height-only mismatches on full pages.
 
 **A private plugin download fails with 404.** Your `GITHUB_PAT` can't read that repository. Check that the token has access, and that it's authorized for the BellevueCollege organization's SSO. Set `E2E_DEBUG=1` to print details about the token used.
 
@@ -210,7 +210,7 @@ If it still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that ter
 | `ACF_DOWNLOAD_URL` | ACF Pro license download link, when not using a local ACF folder |
 | `GITHUB_PAT` | GitHub token for private plugin downloads |
 | `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, `ACF_PATH` | Use a local folder for that plugin |
-| `E2E_LAMBDATEST_CHROME_VERSION` | Pin the LambdaTest Chrome version (default: latest) |
+| `E2E_LAMBDATEST_CHROME_VERSION` | Override the pinned LambdaTest Chrome version (repo default in `tests/e2e/helpers/lambdatest.js`) |
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | Set to `0` to stop visual tests from starting the tunnel themselves |
 | `E2E_DEBUG` | Set to `1` for verbose plugin-download logging |
 
