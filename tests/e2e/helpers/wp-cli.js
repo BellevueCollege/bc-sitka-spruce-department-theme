@@ -2,6 +2,7 @@ import { execSync, spawnSync } from 'child_process';
 import { existsSync, unlinkSync, writeFileSync } from 'fs';
 import path from 'path';
 import {
+	formatWpCliShellArgument,
 	getMainSiteBaseUrl,
 	getSubsiteBaseUrl,
 	resolveWpEnvNodeEntryPath,
@@ -147,9 +148,10 @@ function setAnnouncementBannerTestImageAlt( attachmentId ) {
 		return;
 	}
 
-	const escapedAlt = ANNOUNCEMENT_BANNER_TEST_IMAGE_ALT.replace( /'/g, "'\\''" );
 	runE2eCli(
-		`wp post meta update ${ attachmentId } _wp_attachment_image_alt '${ escapedAlt }'`
+		`wp post meta update ${ attachmentId } _wp_attachment_image_alt ${ formatWpCliShellArgument(
+			ANNOUNCEMENT_BANNER_TEST_IMAGE_ALT
+		) }`
 	);
 }
 

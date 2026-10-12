@@ -48,8 +48,10 @@ function e2e_load_pattern_markup( string $pattern_basename ): string {
 
 	$raw = file_get_contents( $path );
 	$parts = explode( '?>', $raw, 2 );
+	$markup  = isset( $parts[1] ) ? trim( $parts[1] ) : '';
 
-	return isset( $parts[1] ) ? trim( $parts[1] ) : '';
+	// Host checkouts on Windows may use CRLF; seed needles assume LF.
+	return str_replace( array( "\r\n", "\r" ), "\n", $markup );
 }
 
 /**

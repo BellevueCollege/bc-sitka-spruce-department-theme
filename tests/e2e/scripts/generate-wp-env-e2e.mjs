@@ -5,6 +5,7 @@ import {
 	E2E_WP_PORT,
 	WP_ENV_E2E_AFTER_START_PLAN,
 	WP_ENV_E2E_CONFIG,
+	formatPostnameRewriteStructureForHostShell,
 	getMainSiteBaseUrl,
 	getSubsiteBaseUrl,
 } from '../helpers/e2e-env.js';
@@ -50,14 +51,15 @@ function buildPluginActivationCommands( resolvedPlugins, site ) {
  */
 function buildAfterStartWpCliCommands( resolvedPlugins ) {
 	const themePath = `/var/www/html/wp-content/themes/${ THEME_SLUG }`;
+	const rewriteStructure = formatPostnameRewriteStructureForHostShell();
 
 	return [
 		...buildPluginActivationCommands( resolvedPlugins, 'main' ),
 		...buildPluginActivationCommands( resolvedPlugins, 'subsite' ),
 		`wp theme activate ${ THEME_SLUG } --url=${ MAIN_SITE_URL }`,
 		`wp theme activate ${ THEME_SLUG } --url=${ SUBSITE_URL }`,
-		`wp rewrite structure '/%postname%/' --hard --url=${ MAIN_SITE_URL }`,
-		`wp rewrite structure '/%postname%/' --hard --url=${ SUBSITE_URL }`,
+		`wp rewrite structure ${ rewriteStructure } --hard --url=${ MAIN_SITE_URL }`,
+		`wp rewrite structure ${ rewriteStructure } --hard --url=${ SUBSITE_URL }`,
 		`wp rewrite flush --url=${ MAIN_SITE_URL }`,
 		`wp rewrite flush --url=${ SUBSITE_URL }`,
 		`wp eval-file ${ themePath }/tests/fixtures/seed-e2e-core-site.php --url=${ MAIN_SITE_URL }`,

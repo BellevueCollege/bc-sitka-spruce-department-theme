@@ -345,17 +345,14 @@ function e2e_homepage_wire_testimonial_section( string $content, int $attachment
  * @return string
  */
 function e2e_homepage_populate_department_accordion( string $content ): string {
-	$pattern = <<<'MARKUP'
-<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7"><button class="accordion-button bg-default text-bg-default
-		 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" aria-expanded="false" aria-controls="collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7"></button></h3><div id="collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" class="accordion-collapse collapse " aria-labelledby="heading_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" data-parent="#accordion_9b8ee078-96ae-495b-b248-663ae2765f70" data-bs-parent="#accordion_9b8ee078-96ae-495b-b248-663ae2765f70"><div class="accordion-body bg-default text-bg-default
-		"></div></div></div>
-MARKUP;
+	$faq_one_replacement = '<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7"><button class="accordion-button bg-default text-bg-default" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" aria-expanded="true" aria-controls="collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7">E2E Dept FAQ One</button></h3><div id="collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" class="accordion-collapse collapse show" aria-labelledby="heading_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" data-parent="#accordion_9b8ee078-96ae-495b-b248-663ae2765f70" data-bs-parent="#accordion_9b8ee078-96ae-495b-b248-663ae2765f70"><div class="accordion-body bg-default text-bg-default"><p>E2E department accordion panel one.</p></div></div></div>';
 
-	$replacement = <<<'MARKUP'
-<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7"><button class="accordion-button bg-default text-bg-default" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" aria-expanded="true" aria-controls="collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7">E2E Dept FAQ One</button></h3><div id="collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" class="accordion-collapse collapse show" aria-labelledby="heading_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" data-parent="#accordion_9b8ee078-96ae-495b-b248-663ae2765f70" data-bs-parent="#accordion_9b8ee078-96ae-495b-b248-663ae2765f70"><div class="accordion-body bg-default text-bg-default"><p>E2E department accordion panel one.</p></div></div></div>
-MARKUP;
-
-	$content = str_replace( $pattern, $replacement, $content );
+	$content = preg_replace(
+		'~<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7"><button class="accordion-button bg-default text-bg-default\s+collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" aria-expanded="false" aria-controls="collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7"></button></h3><div id="collapse_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" class="accordion-collapse collapse\s*" aria-labelledby="heading_b9cd1bce-ca8e-4087-bdb7-ced01d6498a7" data-parent="#accordion_9b8ee078-96ae-495b-b248-663ae2765f70" data-bs-parent="#accordion_9b8ee078-96ae-495b-b248-663ae2765f70"><div class="accordion-body bg-default text-bg-default\s*">\s*</div></div></div>~s',
+		$faq_one_replacement,
+		$content,
+		1
+	) ?? $content;
 
 	$content = preg_replace(
 		'~(<button class="accordion-button bg-default text-bg-default\s+collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_645d9624[^"]+"[^>]*></button>)~',
@@ -377,17 +374,14 @@ MARKUP;
  * @return string
  */
 function e2e_homepage_populate_support_accordion( string $content ): string {
-	$pattern = <<<'MARKUP'
-<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_a61d3b5e-d8be-4f2f-9001-fcaa57854b83"><button class="accordion-button bg-default text-bg-default
-		 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" aria-expanded="false" aria-controls="collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83"></button></h3><div id="collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" class="accordion-collapse collapse " aria-labelledby="heading_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" data-parent="#accordion_aa2a0840-c4d7-4082-b997-189b97be0aa4" data-bs-parent="#accordion_aa2a0840-c4d7-4082-b997-189b97be0aa4"><div class="accordion-body bg-default text-bg-default
-		"></div></div></div>
-MARKUP;
+	$faq_one_replacement = '<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_a61d3b5e-d8be-4f2f-9001-fcaa57854b83"><button class="accordion-button bg-default text-bg-default" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" aria-expanded="true" aria-controls="collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83">E2E Support FAQ One</button></h3><div id="collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" class="accordion-collapse collapse show" aria-labelledby="heading_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" data-parent="#accordion_aa2a0840-c4d7-4082-b997-189b97be0aa4" data-bs-parent="#accordion_aa2a0840-c4d7-4082-b997-189b97be0aa4"><div class="accordion-body bg-default text-bg-default"><p>E2E support resources FAQ panel one.</p></div></div></div>';
 
-	$replacement = <<<'MARKUP'
-<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_a61d3b5e-d8be-4f2f-9001-fcaa57854b83"><button class="accordion-button bg-default text-bg-default" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" aria-expanded="true" aria-controls="collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83">E2E Support FAQ One</button></h3><div id="collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" class="accordion-collapse collapse show" aria-labelledby="heading_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" data-parent="#accordion_aa2a0840-c4d7-4082-b997-189b97be0aa4" data-bs-parent="#accordion_aa2a0840-c4d7-4082-b997-189b97be0aa4"><div class="accordion-body bg-default text-bg-default"><p>E2E support resources FAQ panel one.</p></div></div></div>
-MARKUP;
-
-	$content = str_replace( $pattern, $replacement, $content );
+	$content = preg_replace(
+		'~<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_a61d3b5e-d8be-4f2f-9001-fcaa57854b83"><button class="accordion-button bg-default text-bg-default\s+collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" aria-expanded="false" aria-controls="collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83"></button></h3><div id="collapse_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" class="accordion-collapse collapse\s*" aria-labelledby="heading_a61d3b5e-d8be-4f2f-9001-fcaa57854b83" data-parent="#accordion_aa2a0840-c4d7-4082-b997-189b97be0aa4" data-bs-parent="#accordion_aa2a0840-c4d7-4082-b997-189b97be0aa4"><div class="accordion-body bg-default text-bg-default\s*">\s*</div></div></div>~s',
+		$faq_one_replacement,
+		$content,
+		1
+	) ?? $content;
 
 	$content = preg_replace(
 		'~(<button class="accordion-button bg-default text-bg-default\s+collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_47ad1881[^"]+"[^>]*></button>)~',

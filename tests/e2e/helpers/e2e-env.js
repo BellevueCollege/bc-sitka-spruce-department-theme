@@ -151,3 +151,37 @@ export function resolveWpEnvCliPath( projectRoot ) {
 
 	return path.join( projectRoot, 'node_modules', '.bin', binaryName );
 }
+
+/**
+ * `wp rewrite structure` argument for `/%postname%/`, quoted for the host shell.
+ *
+ * Bash treats single quotes literally around the value; cmd.exe does not, so quotes
+ * would be stored inside WordPress `permalink_structure` on Windows.
+ *
+ * @return {string}
+ */
+/**
+ * Quote a WP-CLI argument for the host shell (`cmd.exe` on Windows, POSIX sh elsewhere).
+ *
+ * @param {string} value
+ * @return {string}
+ */
+export function formatWpCliShellArgument( value ) {
+	const stringValue = String( value );
+
+	if ( process.platform === 'win32' ) {
+		return `"${ stringValue.replace( /"/g, '""' ) }"`;
+	}
+
+	return `'${ stringValue.replace( /'/g, "'\\''" ) }'`;
+}
+
+export function formatPostnameRewriteStructureForHostShell() {
+	const structure = '/%postname%/';
+
+	if ( process.platform === 'win32' ) {
+		return structure;
+	}
+
+	return `'${ structure }'`;
+}

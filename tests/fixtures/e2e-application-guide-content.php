@@ -104,21 +104,18 @@ function e2e_application_guide_populate_step_bodies( string $content ): string {
  * @return string
  */
 function e2e_application_guide_populate_accordion( string $content ): string {
-	$pattern_collapsibles = <<<'MARKUP'
-<!-- wp:mayflower-blocks/collapsibles {"currentBlockClientId":"3eeb8244-33b7-4cd9-88d9-2313bc38afe2","isBootstrap5":true,"lock":{"move":false,"remove":false}} -->
-<div class="wp-block-mayflower-blocks-collapsibles accordion" id="accordion_3eeb8244-33b7-4cd9-88d9-2313bc38afe2"><!-- wp:mayflower-blocks/collapse {"currentBlockClientId":"ffc42db3-fe3e-40a3-98ec-c70b41cf572d","parentBlockClientId":"3eeb8244-33b7-4cd9-88d9-2313bc38afe2","isBootstrap5":true} -->
-<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_ffc42db3-fe3e-40a3-98ec-c70b41cf572d"><button class="accordion-button bg-default text-bg-default
-		 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_ffc42db3-fe3e-40a3-98ec-c70b41cf572d" aria-expanded="false" aria-controls="collapse_ffc42db3-fe3e-40a3-98ec-c70b41cf572d"></button></h3><div id="collapse_ffc42db3-fe3e-40a3-98ec-c70b41cf572d" class="accordion-collapse collapse " aria-labelledby="heading_ffc42db3-fe3e-40a3-98ec-c70b41cf572d" data-parent="#accordion_3eeb8244-33b7-4cd9-88d9-2313bc38afe2" data-bs-parent="#accordion_3eeb8244-33b7-4cd9-88d9-2313bc38afe2"><div class="accordion-body bg-default text-bg-default
-		"></div></div></div>
-<!-- /wp:mayflower-blocks/collapse -->
+	$pattern_markup = e2e_load_pattern_markup( 'page-application-guide-v0.php' );
+	if (
+		! preg_match(
+			'/<!-- wp:mayflower-blocks\/collapsibles\b.*?<!-- \/wp:mayflower-blocks\/collapsibles -->/s',
+			$pattern_markup,
+			$pattern_match
+		)
+	) {
+		return $content;
+	}
 
-<!-- wp:mayflower-blocks/collapse {"currentBlockClientId":"a518b84b-55e2-459b-9ebb-0199beecac81","parentBlockClientId":"3eeb8244-33b7-4cd9-88d9-2313bc38afe2","isBootstrap5":true} -->
-<div class="wp-block-mayflower-blocks-collapse accordion-item"><h3 class="accordion-header mb-0" id="heading_a518b84b-55e2-459b-9ebb-0199beecac81"><button class="accordion-button bg-default text-bg-default
-		 collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse_a518b84b-55e2-459b-9ebb-0199beecac81" aria-expanded="false" aria-controls="collapse_a518b84b-55e2-459b-9ebb-0199beecac81"></button></h3><div id="collapse_a518b84b-55e2-459b-9ebb-0199beecac81" class="accordion-collapse collapse " aria-labelledby="heading_a518b84b-55e2-459b-9ebb-0199beecac81" data-parent="#accordion_3eeb8244-33b7-4cd9-88d9-2313bc38afe2" data-bs-parent="#accordion_3eeb8244-33b7-4cd9-88d9-2313bc38afe2"><div class="accordion-body bg-default text-bg-default
-		"></div></div></div>
-<!-- /wp:mayflower-blocks/collapse --></div>
-<!-- /wp:mayflower-blocks/collapsibles -->
-MARKUP;
+	$pattern_collapsibles = $pattern_match[0];
 
 	$replacement_collapsibles = <<<'MARKUP'
 <!-- wp:mayflower-blocks/collapsibles {"currentBlockClientId":"3eeb8244-33b7-4cd9-88d9-2313bc38afe2","isBootstrap5":true,"lock":{"move":false,"remove":false}} -->
