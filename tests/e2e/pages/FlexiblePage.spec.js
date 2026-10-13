@@ -123,6 +123,7 @@ test.describe( 'Flexible page integration', () => {
 		skipDuplicateBlockViewport( testInfo );
 		const narrowContent = page.locator( '.narrow-content' );
 		await expect( narrowContent ).toBeVisible();
+		await settleLocatorForScreenshot( narrowContent );
 		await expect( narrowContent ).toHaveScreenshot(
 			'flexible-page-narrow-content.png',
 			{ maxDiffPixelRatio: 0.02 }
@@ -133,6 +134,7 @@ test.describe( 'Flexible page integration', () => {
 		skipDuplicateBlockViewport( testInfo );
 		const row = page.locator( '.wp-block-mayflower-blocks-row' ).first();
 		await expect( row ).toBeVisible();
+		await settleLocatorForScreenshot( row );
 		await expect( row ).toHaveScreenshot( 'flexible-page-mayflower-row.png', {
 			maxDiffPixelRatio: 0.02,
 		} );
@@ -142,6 +144,7 @@ test.describe( 'Flexible page integration', () => {
 		skipDuplicateBlockViewport( testInfo );
 		const panel = page.locator( '.wp-block-mayflower-blocks-panel' ).first();
 		await expect( panel ).toBeVisible();
+		await settleLocatorForScreenshot( panel );
 		await expect( panel ).toHaveScreenshot( 'flexible-page-mayflower-panel.png', {
 			maxDiffPixelRatio: 0.02,
 		} );

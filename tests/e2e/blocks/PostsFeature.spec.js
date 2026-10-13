@@ -2,6 +2,7 @@
 import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
 import {
+	logScreenshotGeometry,
 	prepareEditorCanvasForScreenshot,
 	prepareEditorPage,
 	settleLocatorForScreenshot,
@@ -237,6 +238,10 @@ test.describe( 'Posts Feature Block', () => {
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
 			await settleLocatorForScreenshot( section );
+			await logScreenshotGeometry(
+				section,
+				'posts-feature-frontend-full'
+			);
 			await expect( section ).toHaveScreenshot(
 				'posts-feature-frontend-full.png',
 				{ maxDiffPixelRatio: 0.02 }

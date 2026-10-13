@@ -1,9 +1,17 @@
 /*
  * Applied only while Playwright takes a screenshot (stylePath).
- * Linux Chrome reserves a classic scrollbar that appears and disappears
- * during full-page stitching, so the layout width flips by about 15px
- * between stability retries. Hiding the bar keeps the content box equal
- * to the viewport for every capture.
+ * Not shipped to site visitors.
+ *
+ * 1) Scrollbars — Linux Chrome can show/hide a classic scrollbar during
+ *    full-page stitching, flipping layout width by about 15px between
+ *    stability retries. Hiding the bar keeps the content box equal to the
+ *    viewport for every capture.
+ *
+ * 2) Element-box subpixels (allowlisted selectors only) — fractional
+ *    Bootstrap column widths + img-fluid / padding-bottom aspect frames can
+ *    round locator height to N vs N+1 px across hosts. Pin those boxes during
+ *    capture so Azure and local LambdaTest runs match committed baselines.
+ *    Do not add generic layout overrides here.
  */
 html,
 body,
@@ -16,4 +24,27 @@ body,
 	display: none !important;
 	width: 0 !important;
 	height: 0 !important;
+}
+
+/*
+ * Announcement Banner — remove inline-image descender gap only.
+ * Do not pin width/height: columns are often < 260px wide; a fixed 174px
+ * height then inflates the element box vs fluid baselines.
+ */
+.announcement__image img {
+	display: block !important;
+}
+
+/*
+ * Posts Feature featured frame — theme sets --aspect-ratio as height/width
+ * (used by padding-bottom). CSS aspect-ratio wants width/height.
+ */
+.news-feature--featured-item .aspect-ratio-frame {
+	aspect-ratio: calc(1 / var(--aspect-ratio)) !important;
+}
+
+.news-feature--featured-item .aspect-ratio-frame::before {
+	display: none !important;
+	padding-bottom: 0 !important;
+	content: none !important;
 }

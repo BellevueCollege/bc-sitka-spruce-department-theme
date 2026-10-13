@@ -135,6 +135,7 @@ When a change to the theme intentionally alters a page, update the baselines and
 | Command | What it updates |
 |---------|-----------------|
 | `npm run test:e2e:aria:update` | `@aria` `*.yml` baselines |
+| `npm run test:e2e:visual:ci-match` | Run `@visual` against LambdaTest with `E2E_STRICT_PLUGINS=1` + pinned Chrome (no snapshot write; use after a fresh strict `env:e2e:start`) |
 | `npm run test:e2e:visual:update` | `@visual` `*.png` baselines on LambdaTest (allowed in CI; blocked locally unless you opt in) |
 | `npm run test:e2e:visual:update:ci-match` | Local baseline refresh with `E2E_STRICT_PLUGINS=1` + explicit allow flag (tunnel + credentials required) |
 | `npm run test:e2e:update` | Both of the above |
@@ -153,7 +154,7 @@ Copy into the PR description when the change can affect screenshots, seeds, plug
 - [ ] Baseline updates used **catalog plugin zips** (`E2E_STRICT_PLUGINS=1` in CI; same for `test:e2e:visual:update:ci-match`). No accidental commits from `plugins.local.json` or `MAYFLOWER_BLOCKS_PATH`-style mounts.
 - [ ] PR describes **why** pixels changed (theme, block, plugin version in `plugins.json`, seed content, editor prefs, etc.).
 - [ ] Partial PNG updates are intentional; if many unrelated snapshots changed, prefer a dedicated baseline-refresh PR or the pipeline template in [`.azuredevops/e2e-visual-baseline-update-steps.yml`](.azuredevops/e2e-visual-baseline-update-steps.yml).
-- [ ] Did **not** loosen `maxDiffPixelRatio` or edit [`tests/e2e/helpers/screenshot-stability.css`](tests/e2e/helpers/screenshot-stability.css) to hide real layout regressions (scrollbar hiding only).
+- [ ] Did **not** loosen `maxDiffPixelRatio`. [`tests/e2e/helpers/screenshot-stability.css`](tests/e2e/helpers/screenshot-stability.css) changes are limited to scrollbar hiding or documented subpixel allowlist pins (not generic layout masks).
 - [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update`).
 - [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know how to re-seed (`env:e2e:stop` + `env:e2e:start`, or destroy when schema requires it—see Troubleshooting).
 
@@ -267,6 +268,7 @@ If it still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that ter
 | `E2E_LAMBDATEST_CHROME_VERSION` | Override the pinned LambdaTest Chrome version (repo default in `tests/e2e/helpers/lambdatest.js`) |
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | Set to `0` to stop visual tests from starting the tunnel themselves |
 | `E2E_DEBUG` | Set to `1` for verbose plugin-download logging |
+| `E2E_DEBUG_SCREENSHOT_GEOMETRY` | Set to `1` to log element/image boxes before certain `@visual` captures (Announcement Banner / Posts Feature) |
 
 ### Continuous integration
 

@@ -195,7 +195,8 @@ export async function prepareEditorCanvasForScreenshot( page, testInfo ) {
 const DEFAULT_IMAGE_SETTLE_TIMEOUT_MS = 5_000;
 
 /**
- * Wait until images inside a screenshot target have finished loading.
+ * Scroll a screenshot target into view and wait for descendant `<img>` elements
+ * to finish loading and decode. Does not wait for CSS background images.
  *
  * @param {import('@playwright/test').Locator} locator
  * @param {{ perImageTimeoutMs?: number }} [options]
@@ -205,26 +206,146 @@ export async function settleLocatorForScreenshot( locator, options = {} ) {
 	const perImageTimeoutMs =
 		options.perImageTimeoutMs ?? DEFAULT_IMAGE_SETTLE_TIMEOUT_MS;
 
+	await locator.scrollIntoViewIfNeeded();
+
 	await locator.evaluate(
 		async ( element, timeoutMs ) => {
 			const images = [ ...element.querySelectorAll( 'img' ) ];
+
 			await Promise.all(
 				images.map(
 					( image ) =>
 						new Promise( ( resolve ) => {
-							if ( image.complete ) {
+							let hasSettled = false;
+							const finish = () => {
+								if ( hasSettled ) {
+									return;
+								}
+								hasSettled = true;
 								resolve( undefined );
+							};
+							const deadline = Date.now() + timeoutMs;
+
+							const isImageReady = () =>
+								image.complete && image.naturalWidth > 0;
+
+							const waitForDecode = () => {
+								if ( typeof image.decode !== 'function' ) {
+									finish();
+									return;
+								}
+
+								image.decode().then( finish ).catch( finish );
+							};
+
+							if ( isImageReady() ) {
+								waitForDecode();
 								return;
 							}
 
-							const done = () => resolve( undefined );
-							image.addEventListener( 'load', done, { once: true } );
-							image.addEventListener( 'error', done, { once: true } );
-							window.setTimeout( done, timeoutMs );
+							const onLoadOrError = () => {
+								if ( isImageReady() ) {
+									waitForDecode();
+									return;
+								}
+
+								finish();
+							};
+
+							image.addEventListener( 'load', onLoadOrError, {
+								once: true,
+							} );
+							image.addEventListener( 'error', onLoadOrError, {
+								once: true,
+							} );
+
+							const pollForNaturalWidth = () => {
+								if ( hasSettled ) {
+									return;
+								}
+
+								if ( isImageReady() ) {
+									waitForDecode();
+									return;
+								}
+
+								if ( Date.now() >= deadline ) {
+									finish();
+									return;
+								}
+
+								window.requestAnimationFrame( pollForNaturalWidth );
+							};
+
+							window.requestAnimationFrame( pollForNaturalWidth );
+							window.setTimeout( finish, timeoutMs );
 						} )
 				)
 			);
 		},
 		perImageTimeoutMs
+	);
+}
+
+/**
+ * Collect layout metrics for ±1px screenshot-dimension triage.
+ *
+ * Enable with `E2E_DEBUG_SCREENSHOT_GEOMETRY=1`. Logs target box, images, and
+ * key computed styles without changing capture behavior.
+ *
+ * @param {import('@playwright/test').Locator} locator
+ * @param {string} label
+ * @return {Promise<void>}
+ */
+export async function logScreenshotGeometry( locator, label ) {
+	if ( process.env.E2E_DEBUG_SCREENSHOT_GEOMETRY !== '1' ) {
+		return;
+	}
+
+	const geometry = await locator.evaluate( ( element ) => {
+		const targetStyles = window.getComputedStyle( element );
+		const targetRect = element.getBoundingClientRect();
+
+		const images = [ ...element.querySelectorAll( 'img' ) ].map(
+			( image ) => {
+				const imageRect = image.getBoundingClientRect();
+				return {
+					currentSrc: image.currentSrc,
+					complete: image.complete,
+					naturalWidth: image.naturalWidth,
+					naturalHeight: image.naturalHeight,
+					rect: {
+						x: imageRect.x,
+						y: imageRect.y,
+						width: imageRect.width,
+						height: imageRect.height,
+					},
+				};
+			}
+		);
+
+		return {
+			tagName: element.tagName,
+			className: element.className,
+			rect: {
+				x: targetRect.x,
+				y: targetRect.y,
+				width: targetRect.width,
+				height: targetRect.height,
+				bottom: targetRect.bottom,
+			},
+			styles: {
+				fontFamily: targetStyles.fontFamily,
+				fontSize: targetStyles.fontSize,
+				lineHeight: targetStyles.lineHeight,
+				padding: targetStyles.padding,
+				margin: targetStyles.margin,
+			},
+			images,
+		};
+	} );
+
+	console.log(
+		`[e2e] screenshot geometry (${ label }): ${ JSON.stringify( geometry ) }`
 	);
 }

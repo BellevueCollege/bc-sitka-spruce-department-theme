@@ -15,4 +15,4 @@ See also [readme — Pull request checklist (visual / e2e)](../readme.md#pull-re
 - [ ] PNG baselines from LambdaTest (`test:e2e:visual:update` / `test:e2e:visual:update:ci-match`), not `test:e2e:visual:local`
 - [ ] Strict plugin resolution for baseline commits (`E2E_STRICT_PLUGINS=1`)
 - [ ] PR explains why pixels or `@aria` snapshots changed
-- [ ] No `maxDiffPixelRatio` or `screenshot-stability.css` workarounds for real regressions
+- [ ] No `maxDiffPixelRatio` looseness; `screenshot-stability.css` only for scrollbars / documented subpixel pins

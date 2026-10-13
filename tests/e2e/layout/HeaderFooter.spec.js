@@ -94,6 +94,7 @@ test.describe( 'Header and Footer', () => {
 		test( 'header snapshot — default state @visual', async ( { page } ) => {
 			const header = page.locator( '#header-wrapper' );
 			await expect( header ).toBeVisible();
+			await settleLocatorForScreenshot( header );
 			await expect( header ).toHaveScreenshot(
 				'header-default.png',
 				SCREENSHOT_OPTIONS
@@ -186,6 +187,8 @@ test.describe( 'Header and Footer', () => {
 			await openHeaderMenuIfCollapsed( page );
 			await expandMainNavSubmenu( page, 'Programs' );
 			const header = page.locator( '#header-wrapper' );
+			await expect( header ).toBeVisible();
+			await settleLocatorForScreenshot( header );
 			await expect( header ).toHaveScreenshot(
 				'header-menu-expanded.png',
 				SCREENSHOT_OPTIONS
@@ -218,6 +221,7 @@ test.describe( 'Header and Footer', () => {
 			await page.goto( normalizeE2eUrlForPlaywright( chrome.pageUrl ) );
 			const sock = page.locator( 'aside.sock' );
 			await expect( sock ).toBeVisible();
+			await settleLocatorForScreenshot( sock );
 			await expect( sock ).toHaveScreenshot(
 				'sock-standard.png',
 				SCREENSHOT_OPTIONS

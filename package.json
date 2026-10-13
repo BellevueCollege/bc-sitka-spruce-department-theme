@@ -27,6 +27,7 @@
     "test:e2e:aria:update": "playwright test --grep @aria --update-snapshots=changed",
     "test:e2e:aria:update:last-failed": "playwright test --grep @aria --last-failed --update-snapshots=changed",
     "test:e2e:visual": "cross-env E2E_WPENV_EXTERNAL=1 E2E_LAMBDATEST=1 playwright test --grep @visual",
+    "test:e2e:visual:ci-match": "cross-env E2E_WPENV_EXTERNAL=1 E2E_STRICT_PLUGINS=1 E2E_LAMBDATEST=1 E2E_LAMBDATEST_CHROME_VERSION=154.0 playwright test --grep @visual",
     "test:e2e:visual:local": "playwright test --grep @visual",
     "test:e2e:visual:with-webserver": "cross-env E2E_LAMBDATEST=1 playwright test --grep @visual",
     "test:e2e:visual:external": "npm run test:e2e:visual",

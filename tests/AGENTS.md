@@ -232,11 +232,33 @@ Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:vi
 
 **Optional ADO baseline refresh:** [`.azuredevops/e2e-visual-baseline-update-steps.yml`](../.azuredevops/e2e-visual-baseline-update-steps.yml) runs `test:e2e:visual:update` and publishes `tests/e2e` as artifact `e2e-visual-baselines` for a follow-up commit.
 
-**Screenshot stability (`stylePath`).** [`playwright.config.js`](../playwright.config.js) applies [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css) only while `toHaveScreenshot` runs. It hides scrollbars so Linux Chrome does not flip layout width (for example `1280` vs `1265`) between stability retries on long full-page captures. Do **not** add layout, spacing, or font overrides there—those would mask real regressions.
+**Screenshot stability (`stylePath`).** [`playwright.config.js`](../playwright.config.js) applies [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css) **only while** `toHaveScreenshot` runs (not on the live site). Allowed contents:
+
+1. **Scrollbar hiding** — prevents Linux Chrome width flips (`1280` vs `1265`) on full-page captures.
+2. **Allowlisted subpixel pins** — currently Announcement Banner image `display: block` (no fixed size; columns are often &lt; 260px) and Posts Feature featured `.aspect-ratio-frame` (CSS `aspect-ratio` instead of padding-bottom `%`). These reduce ±1px locator-height flips without changing production theme CSS.
+
+Do **not** add generic spacing/font/layout overrides or loosen `maxDiffPixelRatio` to hide real regressions. New selectors need a short comment naming the failing snapshot.
+
+**Element vs full-page settle.** Before every **locator** `toHaveScreenshot`, call `await settleLocatorForScreenshot( locator )` after the target is visible. The helper scrolls into view and waits for descendant `<img>` load/decode (`naturalWidth > 0`). Full-page shots must use `expectFullPageScreenshot` only (it settles internally). CSS background images (for example sock texture SVG) are not covered by settle.
 
 **Pinned Chrome.** [`lambdatest.js`](e2e/helpers/lambdatest.js) defaults to a fixed Linux Chrome version (override with `E2E_LAMBDATEST_CHROME_VERSION`). Azure sets the same variable in the visual job. Bump the pin only when intentionally refreshing all PNG baselines; discover the current version with `node tests/e2e/scripts/print-lambdatest-chrome-version.mjs` (tunnel + credentials required).
 
-**Visual failure triage:** Width oscillating within one assertion → scrollbar `stylePath` missing or broken. Stable width but pixel diff → real layout/content change or stale baseline—re-run once, then `npm run test:e2e:visual:update` on LambdaTest if the UI is correct. Do not raise `maxDiffPixelRatio` for dimension mismatches (Playwright fails on size before ratio).
+**Visual failure triage:**
+
+| Symptom | Likely cause | What to do |
+|---------|--------------|------------|
+| Width oscillating within one assertion | Scrollbar `stylePath` missing/broken | Fix scrollbar rules in [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css); do not loosen ratios |
+| Large height drop / washed-out region on element shot | Missing settle; below-fold `<img>` not loaded | Add `settleLocatorForScreenshot`; do not re-baseline a broken capture |
+| Stable **±1px** screenshot **size** (Playwright fails before `maxDiffPixelRatio`) | Local env drift, or fractional image/aspect boxes | First reproduce with CI-matched inputs (below). If it still fails, set `E2E_DEBUG_SCREENSHOT_GEOMETRY=1`, then extend the **allowlisted** capture pins in `screenshot-stability.css` (test-only). Do **not** change production theme CSS for screenshot jitter, and do not chase the last run with PNG updates alone |
+| Stable width, many pixel diffs | Real layout/content change or stale baseline | Re-run once; if UI is correct on LambdaTest, `npm run test:e2e:visual:update` (CI) or `test:e2e:visual:update:ci-match` |
+
+**CI-matched local visual verify (no snapshot write):** after `npm ci`, `npm run build`, and `E2E_STRICT_PLUGINS=1 npm run env:e2e:start` (plus tunnel + `LT_*` / `GITHUB_PAT` / `ACF_DOWNLOAD_URL`):
+
+```bash
+npm run test:e2e:visual:ci-match -- tests/e2e/blocks/AnnouncementBanner.spec.js tests/e2e/blocks/PostsFeature.spec.js tests/e2e/layout/HeaderFooter.spec.js
+```
+
+Plain `npm run test:e2e:visual` reuses whatever wp-env and `assets/dist/` are already present and can falsely report ±1px dimension mismatches against CI baselines.
 
 ### Pull request checklist (e2e / visual)
 
@@ -247,7 +269,7 @@ Human-facing copy lives in [readme.md — Pull request checklist](../readme.md#p
 - [ ] Baseline updates used **catalog plugin zips** (`E2E_STRICT_PLUGINS=1` in CI; same for `test:e2e:visual:update:ci-match`). No accidental commits from `plugins.local.json` or `MAYFLOWER_BLOCKS_PATH`-style mounts.
 - [ ] PR describes **why** pixels changed (theme, block, plugin version in `plugins.json`, seed content, editor prefs, etc.).
 - [ ] Partial PNG updates are intentional; if many unrelated snapshots changed, prefer a dedicated baseline-refresh PR or the [visual baseline update ADO template](../.azuredevops/e2e-visual-baseline-update-steps.yml).
-- [ ] Did **not** loosen `maxDiffPixelRatio` or edit [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css) to hide real layout regressions (scrollbar hiding only).
+- [ ] Did **not** loosen `maxDiffPixelRatio`. [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css) changes are limited to scrollbar hiding or documented subpixel allowlist pins (not generic layout masks).
 - [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update`).
 - [ ] No `@visual` tag on tests that do not call `toHaveScreenshot`.
 - [ ] Plugin catalog / mu-plugin / seed PHP changes: wp-env re-seed path documented for reviewers (`env:e2e:stop` + `env:e2e:start`, or destroy when schema requires it).
@@ -303,6 +325,7 @@ Bump the pin only when LambdaTest’s default Linux Chrome moves and you are rea
 | `E2E_LAMBDATEST_PLAYGROUND_URL` | optional | Default `http://host.docker.internal:8889/e2e-dept` |
 | `E2E_LAMBDATEST_CHROME_VERSION` | optional | Override pinned LambdaTest Linux Chrome (see `DEFAULT_LAMBDATEST_CHROME_VERSION` in `lambdatest.js`) |
 | `E2E_DEBUG` | `1` / unset | Verbose plugin-resolution logs in `resolve-plugin.mjs` |
+| `E2E_DEBUG_SCREENSHOT_GEOMETRY` | `1` / unset | Log locator/image boxes before Announcement Banner and Posts Feature frontend `@visual` shots |
 | `LT_USERNAME`, `LT_ACCESS_KEY` | secrets | Required for `@visual` |
 | `GITHUB_PAT`, `ACF_DOWNLOAD_URL` | CI / local | Private GitHub zips; ACF Pro zip download URL |
 
@@ -350,7 +373,8 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | Concern | File |
 |---------|------|
 | Playwright projects, webServer, LambdaTest `use` | `playwright.config.js` |
-| Tunnel + WS endpoint | `tests/e2e/helpers/lambdatest.js` |
+| Element screenshot settle / geometry debug | `tests/e2e/helpers/editor.js` (`settleLocatorForScreenshot`, `logScreenshotGeometry`) |
+| Tunnel + WS endpoint | `tests/e2e/helpers/lambdatest.js`
 | Port / host URL | `tests/e2e/helpers/e2e-env.js` |
 | Publish / editor flows | `tests/e2e/helpers/editor.js` |
 | Seed WP-CLI | `tests/e2e/helpers/wp-cli.js` |

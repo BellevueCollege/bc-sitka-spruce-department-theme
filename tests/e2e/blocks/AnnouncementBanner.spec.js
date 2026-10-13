@@ -2,6 +2,7 @@
 import { test, expect } from '../fixtures/test.js';
 import AxeBuilder from '@axe-core/playwright';
 import {
+	logScreenshotGeometry,
 	prepareEditorCanvasForScreenshot,
 	prepareEditorPage,
 	settleLocatorForScreenshot,
@@ -160,6 +161,7 @@ test.describe( 'Announcement Banner Block', () => {
 			);
 			await expect( banner ).toBeVisible();
 			await settleLocatorForScreenshot( banner );
+			await logScreenshotGeometry( banner, 'announcement-frontend-with-button' );
 			await expect( banner ).toHaveScreenshot(
 				'frontend-with-button.png',
 				{
