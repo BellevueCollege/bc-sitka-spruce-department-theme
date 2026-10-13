@@ -21,6 +21,7 @@ const afterStartScriptPath = path.join(
 );
 
 const WP_ENV_START_MAX_ATTEMPTS = isCiEnvironment() ? 3 : 1;
+const DOCKER_PULL_MAX_ATTEMPTS = 3;
 const DOCKER_PULL_RETRY_DELAY_MS = 10_000;
 const WP_ENV_CLI_READY_ATTEMPTS = 30;
 const WP_ENV_CLI_READY_DELAY_MS = 2_000;
@@ -127,16 +128,45 @@ function waitForWpEnvCliReady() {
 }
 
 /**
- * Pre-pull MariaDB on CI so wp-env start is less likely to hit Docker Hub timeouts.
+ * @param {string} imageRef
+ * @return {boolean}
  */
-function warmWpEnvDockerImagesOnCi() {
-	if ( ! isCiEnvironment() ) {
-		return;
+function hasLocalDockerImage( imageRef ) {
+	const inspect = spawnSync( 'docker', [ 'image', 'inspect', imageRef ], {
+		cwd: projectRoot,
+		stdio: 'ignore',
+	} );
+
+	return inspect.status === 0;
+}
+
+function printDockerRegistryPullHelp() {
+	console.error(
+		'[e2e] Could not pull required Docker images (often DNS or VPN blocking Docker Hub / CloudFront).\n' +
+			`[e2e] Missing image: ${ WP_ENV_MARIADB_IMAGE } (and wp-env will also need WordPress images).\n` +
+			'[e2e] Fixes:\n' +
+			'  - Restore internet DNS (corporate DNS timeouts break production.cloudfront.docker.com).\n' +
+			'  - Rancher Desktop / Docker Desktop: retry on a stable network; set engine DNS to 1.1.1.1 or 8.8.8.8 if needed.\n' +
+			`  - When online: docker pull ${ WP_ENV_MARIADB_IMAGE }\n` +
+			'  - Avoid `wp-env destroy` unless necessary; it removes images and forces a full re-pull.\n' +
+			'  - Use `npm run env:e2e:stop` + `npm run env:e2e:start` to reuse cached images.'
+	);
+}
+
+/**
+ * Ensure MariaDB is present locally before wp-env compose tries to pull (CI + fresh destroy).
+ *
+ * @return {boolean} True when the image exists locally or was pulled successfully.
+ */
+function warmWpEnvDockerImages() {
+	if ( hasLocalDockerImage( WP_ENV_MARIADB_IMAGE ) ) {
+		console.log( `[e2e] ${ WP_ENV_MARIADB_IMAGE } already present locally.` );
+		return true;
 	}
 
-	for ( let attempt = 1; attempt <= WP_ENV_START_MAX_ATTEMPTS; attempt++ ) {
+	for ( let attempt = 1; attempt <= DOCKER_PULL_MAX_ATTEMPTS; attempt++ ) {
 		console.log(
-			`[e2e] Pulling ${ WP_ENV_MARIADB_IMAGE } (attempt ${ attempt }/${ WP_ENV_START_MAX_ATTEMPTS })…`
+			`[e2e] Pulling ${ WP_ENV_MARIADB_IMAGE } (attempt ${ attempt }/${ DOCKER_PULL_MAX_ATTEMPTS })…`
 		);
 
 		const pullResult = spawnSync( 'docker', [ 'pull', WP_ENV_MARIADB_IMAGE ], {
@@ -146,17 +176,15 @@ function warmWpEnvDockerImagesOnCi() {
 		} );
 
 		if ( pullResult.status === 0 ) {
-			return;
+			return true;
 		}
 
-		if ( attempt < WP_ENV_START_MAX_ATTEMPTS ) {
+		if ( attempt < DOCKER_PULL_MAX_ATTEMPTS ) {
 			pauseBeforeRetry( DOCKER_PULL_RETRY_DELAY_MS );
 		}
 	}
 
-	console.warn(
-		`[e2e] Could not pre-pull ${ WP_ENV_MARIADB_IMAGE }; wp-env start will retry.`
-	);
+	return false;
 }
 
 /**
@@ -216,9 +244,15 @@ const cliReachable = isWpEnvCliReachable();
 const integrationSeeded = cliReachable && isE2eIntegrationSeeded();
 
 if ( ! cliReachable ) {
-	warmWpEnvDockerImagesOnCi();
+	if ( ! warmWpEnvDockerImages() ) {
+		printDockerRegistryPullHelp();
+		process.exit( 1 );
+	}
 
 	if ( ! startWpEnvE2e() ) {
+		if ( ! hasLocalDockerImage( WP_ENV_MARIADB_IMAGE ) ) {
+			printDockerRegistryPullHelp();
+		}
 		process.exit( 1 );
 	}
 

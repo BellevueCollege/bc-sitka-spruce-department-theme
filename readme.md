@@ -217,6 +217,10 @@ npm run env:e2e:start
 
 If the destroy command complains that `.wp-env.e2e.json` is missing, run `npm run env:e2e:generate` first.
 
+On Windows PowerShell, remove the plugin cache with `Remove-Item -Recurse -Force artifacts/e2e-plugins` (not `rm -rf`).
+
+**`mariadb:lts` pull fails / `production.cloudfront.docker.com: no such host` after destroy.** `wp-env destroy` deletes local WordPress and MariaDB images; the next start must download them from Docker Hub. That error is almost always **DNS or VPN** (Docker or Rancher Desktop cannot resolve CloudFront). Confirm the host resolves names (`nslookup production.cloudfront.docker.com`). Fix network DNS, disconnect VPN briefly, or pull on a working connection: `docker pull mariadb:lts`, then `npm run env:e2e:start`. Prefer `env:e2e:stop` + `env:e2e:start` over destroy when you only need a restart.
+
 **Rancher Desktop or Podman itself is stuck** (wp-env hangs on start, containers won't stop, "port 8889 already in use" with nothing running, disk full). Recreate the container VM. This removes **all** containers and images on your machine, so the next start takes several minutes.
 
 - **Rancher Desktop:** open the app → **Troubleshooting** (or Preferences → Troubleshooting) → **Factory Reset**, then start Rancher Desktop again and wait until Kubernetes/containers are ready.
