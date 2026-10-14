@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
+	expectFullPageScreenshot,
 	prepareAdjacencyScreenshot,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
@@ -126,12 +127,19 @@ test.describe( 'Section adjacency integration', () => {
 		await expect( toDiff.locator( '.diffs.curved-top' ) ).toHaveCount( 2 );
 	} );
 
+	test( 'full page snapshot @visual', async ( { page } ) => {
+		await expectFullPageScreenshot( page, 'section-adjacency-full.png' );
+	} );
+
 	for ( const scenarioId of VISUAL_SCENARIOS ) {
 		test( `scenario ${ scenarioId } snapshot @visual`, async ( {
 			page,
 		}, testInfo ) => {
 			if ( testInfo.project.name !== 'desktop' ) {
-				testInfo.skip( true, 'Section adjacency visuals are desktop-only.' );
+				testInfo.skip(
+					true,
+					'Per-scenario adjacency visuals are desktop-only; full-page covers tablet/mobile.'
+				);
 			}
 
 			await prepareAdjacencyScreenshot( page );

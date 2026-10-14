@@ -79,6 +79,13 @@ function e2e_section_adjacency_page_markup(
 }
 
 /**
+ * Wrap a scenario pair in a full-width Group for stable Playwright locators.
+ *
+ * E2E-only harness — production pages stack root bc-sitka-spruce sections
+ * without a Group. Both attrs are required for edge-to-edge backgrounds:
+ * - align:full → theme block-wrapper.alignfull with no container gutters
+ * - layout.type:default → WP flow layout (not constrained content width)
+ *
  * @param string $scenario_id   Stable HTML id for the scenario wrapper.
  * @param string $inner_markup  Block markup for the pair/stack.
  * @return string
@@ -87,8 +94,8 @@ function e2e_wrap_adjacency_scenario( string $scenario_id, string $inner_markup 
 	$escaped_id = esc_attr( $scenario_id );
 
 	return <<<MARKUP
-<!-- wp:group {"anchor":"{$escaped_id}"} -->
-<div class="wp-block-group" id="{$escaped_id}">
+<!-- wp:group {"anchor":"{$escaped_id}","align":"full","layout":{"type":"default"}} -->
+<div class="wp-block-group alignfull" id="{$escaped_id}">
 {$inner_markup}
 </div>
 <!-- /wp:group -->
