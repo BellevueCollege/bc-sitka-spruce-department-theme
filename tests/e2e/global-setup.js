@@ -60,7 +60,7 @@ async function ensureLambdaTestAdminSession( config ) {
 		if ( bodyText.includes( '[::1]' ) || bodyText.includes( 'connection refused' ) ) {
 			throw new Error(
 				'LambdaTest tunnel could not reach WordPress. On macOS/Podman, base URL must be ' +
-					`${ tunnelBaseUrl } (not 127.0.0.1). Restart wp-env and the e2e-tunnel container.`
+					`${ tunnelBaseUrl } (not 127.0.0.1). Restart wp-env and the LambdaTest tunnel container.`
 			);
 		}
 

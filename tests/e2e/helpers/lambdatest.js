@@ -1,7 +1,9 @@
 import { spawnSync } from 'node:child_process';
 import { getE2ePort, getSubsiteBaseUrl } from './e2e-env.js';
 
-const LAMBDATEST_TUNNEL_NAME = 'e2e-tunnel';
+/** Default local tunnel name; CI overrides via E2E_LAMBDATEST_TUNNEL_NAME. */
+const DEFAULT_LAMBDATEST_TUNNEL_NAME = 'e2e-tunnel-dev';
+const MAX_TUNNEL_NAME_LENGTH = 64;
 
 /**
  * Pinned LambdaTest Linux Chrome. Bump only when intentionally refreshing all @visual PNGs.
@@ -16,6 +18,38 @@ const LAMBDATEST_TUNNEL_IMAGE = 'lambdatest/tunnel:latest';
 
 /** Podman/Docker on macOS/Windows: tunnel must reach the host without IPv6 loopback. */
 const LAMBDATEST_TUNNEL_HOST_ALIAS = 'host.docker.internal';
+
+/**
+ * Docker / LambdaTest-safe tunnel name (alphanumeric, underscore, period, hyphen).
+ *
+ * @param {string} rawName
+ * @return {string}
+ */
+function sanitizeTunnelName( rawName ) {
+	const sanitized = rawName
+		.trim()
+		.replace( /[^a-zA-Z0-9_.-]+/g, '-' )
+		.replace( /^[^a-zA-Z0-9]+/, '' )
+		.slice( 0, MAX_TUNNEL_NAME_LENGTH )
+		.replace( /[^a-zA-Z0-9]+$/, '' );
+
+	return sanitized || DEFAULT_LAMBDATEST_TUNNEL_NAME;
+}
+
+/**
+ * Tunnel name for Docker container and LambdaTest capabilities.
+ * Set E2E_LAMBDATEST_TUNNEL_NAME in CI (e.g. e2e-tunnel-ado-$(Build.BuildId)).
+ *
+ * @return {string}
+ */
+export function getLambdaTestTunnelName() {
+	const fromEnv = process.env.E2E_LAMBDATEST_TUNNEL_NAME?.trim();
+	if ( fromEnv ) {
+		return sanitizeTunnelName( fromEnv );
+	}
+
+	return DEFAULT_LAMBDATEST_TUNNEL_NAME;
+}
 
 /**
  * Whether Playwright global setup should start the tunnel when it is missing.
@@ -35,13 +69,14 @@ function getLambdaTestTunnelDockerRunArguments() {
 	const infoPort = String(
 		process.env.E2E_LAMBDATEST_TUNNEL_INFO_PORT || DEFAULT_TUNNEL_INFO_PORT
 	);
+	const tunnelName = getLambdaTestTunnelName();
 
 	return [
 		'run',
 		'--rm',
 		'-d',
 		'--name',
-		LAMBDATEST_TUNNEL_NAME,
+		tunnelName,
 		'-p',
 		`${ infoPort }:${ infoPort }`,
 		'--add-host',
@@ -52,7 +87,7 @@ function getLambdaTestTunnelDockerRunArguments() {
 		'LT_ACCESS_KEY',
 		LAMBDATEST_TUNNEL_IMAGE,
 		'--tunnelName',
-		LAMBDATEST_TUNNEL_NAME,
+		tunnelName,
 		'--infoAPIPort',
 		infoPort,
 	];
@@ -133,7 +168,7 @@ export function getLambdaTestWsEndpoint() {
 			user: username,
 			accessKey,
 			tunnel: true,
-			tunnelName: LAMBDATEST_TUNNEL_NAME,
+			tunnelName: getLambdaTestTunnelName(),
 			video: false,
 			console: true,
 		},
@@ -142,13 +177,6 @@ export function getLambdaTestWsEndpoint() {
 	return `wss://cdp.lambdatest.com/playwright?capabilities=${ encodeURIComponent(
 		JSON.stringify( capabilities )
 	) }`;
-}
-
-/**
- * @return {string}
- */
-export function getLambdaTestTunnelName() {
-	return LAMBDATEST_TUNNEL_NAME;
 }
 
 /**
@@ -260,9 +288,10 @@ export async function waitForTunnelInfoApi( timeoutMs = TUNNEL_START_TIMEOUT_MS 
 		);
 	}
 
+	const tunnelName = getLambdaTestTunnelName();
 	throw new Error(
 		`LambdaTest tunnel did not become ready within ${ timeoutMs }ms. ` +
-			`Check container logs: docker logs ${ LAMBDATEST_TUNNEL_NAME }`
+			`Check container logs: docker logs ${ tunnelName }`
 	);
 }
 
@@ -274,7 +303,9 @@ export async function waitForTunnelInfoApi( timeoutMs = TUNNEL_START_TIMEOUT_MS 
 export function startLambdaTestTunnelContainer() {
 	assertLambdaTestCredentials();
 
-	spawnSync( 'docker', [ 'rm', '-f', LAMBDATEST_TUNNEL_NAME ], {
+	const tunnelName = getLambdaTestTunnelName();
+
+	spawnSync( 'docker', [ 'rm', '-f', tunnelName ], {
 		stdio: 'ignore',
 	} );
 
@@ -289,7 +320,7 @@ export function startLambdaTestTunnelContainer() {
 
 	if ( startResult.status !== 0 ) {
 		throw new Error(
-			`Failed to start LambdaTest tunnel container "${ LAMBDATEST_TUNNEL_NAME }". ` +
+			`Failed to start LambdaTest tunnel container "${ tunnelName }". ` +
 				`Ensure Docker or Podman is running and LT_USERNAME/LT_ACCESS_KEY are set.`
 		);
 	}
@@ -301,7 +332,7 @@ export function startLambdaTestTunnelContainer() {
  * @return {void}
  */
 export function stopLambdaTestTunnelContainer() {
-	spawnSync( 'docker', [ 'rm', '-f', LAMBDATEST_TUNNEL_NAME ], {
+	spawnSync( 'docker', [ 'rm', '-f', getLambdaTestTunnelName() ], {
 		stdio: 'inherit',
 	} );
 }

@@ -248,9 +248,11 @@ curl http://127.0.0.1:8000/api/v1.0/info
 
 If it still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that terminal, and that your network allows HTTPS to `*.lambdatest.com`.
 
+**Tunnel name conflicts (CI timeout or “tunnel already in use”).** Locally the default name is `e2e-tunnel-dev`. Azure uses a unique `E2E_LAMBDATEST_TUNNEL_NAME` per build (`e2e-tunnel-ado-<BuildId>`). If another local session holds `e2e-tunnel-dev`, run `npm run tunnel:e2e:stop`, or set a personal name for both start and the visual run, for example `E2E_LAMBDATEST_TUNNEL_NAME=e2e-tunnel-$USER`.
+
 **A screenshot fails on size or pixels.** Visual tests use LambdaTest Linux Chrome with a pinned version (`E2E_LAMBDATEST_CHROME_VERSION`) and a screenshot-only stylesheet that hides scrollbars so width does not flip mid-capture (for example `1280` vs `1265`). If the log shows that width flip within one test, the stability stylesheet is not applied. If width is stable but pixels differ, re-run once; when the failure is consistent and the page looks correct on LambdaTest, update baselines with `npm run test:e2e:visual:update` (not `test:e2e:visual:local`). Do not loosen `maxDiffPixelRatio` for height-only mismatches on full pages.
 
-**Visual test fails with `page.goto: Timeout … host.docker.internal:8889` (often on Windows).** LambdaTest reaches WordPress through the `e2e-tunnel` Docker container and `host.docker.internal`. Confirm wp-env responds on the host (`curl http://127.0.0.1:8889/e2e-dept/`) and the tunnel info API works (`curl http://127.0.0.1:8000/api/v1.0/info`). Use **Docker Desktop** (not only WSL) for the tunnel if wp-env runs on Windows. `visitIntegrationPage` retries transient navigation timeouts automatically; re-run the failing spec if needed.
+**Visual test fails with `page.goto: Timeout … host.docker.internal:8889` (often on Windows).** LambdaTest reaches WordPress through the tunnel Docker container and `host.docker.internal`. Confirm wp-env responds on the host (`curl http://127.0.0.1:8889/e2e-dept/`) and the tunnel info API works (`curl http://127.0.0.1:8000/api/v1.0/info`). Use **Docker Desktop** (not only WSL) for the tunnel if wp-env runs on Windows. `visitIntegrationPage` retries transient navigation timeouts automatically; re-run the failing spec if needed.
 
 **A private plugin download fails with 404.** Your `GITHUB_PAT` can't read that repository. Check that the token has access, and that it's authorized for the BellevueCollege organization's SSO. Set `E2E_DEBUG=1` to print details about the token used.
 
@@ -267,6 +269,7 @@ If it still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that ter
 | `E2E_ALLOW_VISUAL_BASELINE_UPDATE` | Set to `1` to allow local LambdaTest `--update-snapshots` (see `test:e2e:visual:update:ci-match`) |
 | `E2E_LAMBDATEST_CHROME_VERSION` | Override the pinned LambdaTest Chrome version (repo default in `tests/e2e/helpers/lambdatest.js`) |
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | Set to `0` to stop visual tests from starting the tunnel themselves |
+| `E2E_LAMBDATEST_TUNNEL_NAME` | Docker + LambdaTest tunnel name (default `e2e-tunnel-dev`; CI uses `e2e-tunnel-ado-<BuildId>`) |
 | `E2E_DEBUG` | Set to `1` for verbose plugin-download logging |
 | `E2E_DEBUG_SCREENSHOT_GEOMETRY` | Set to `1` to log element/image boxes before certain `@visual` captures (Announcement Banner / Posts Feature) |
 

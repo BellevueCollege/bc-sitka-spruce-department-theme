@@ -22,7 +22,7 @@ flowchart LR
     WP --> CLI
     GS --> CLI
     PW -->|functional and aria| WP
-    TUN[e2e-tunnel container]
+    TUN[tunnel container]
     TUN -->|host.docker.internal:8889| WP
     PW -->|visual E2E_LAMBDATEST=1| LTB
   end
@@ -211,14 +211,15 @@ One WordPress database; parallel workers race on posts and editor state.
 
 ### LambdaTest tunnel
 
-- Container **e2e-tunnel**; auto-start in `global-setup.js` unless `E2E_LAMBDATEST_TUNNEL_AUTO=0`.
-- CI starts the tunnel with `npm run tunnel:e2e:start` and sets `E2E_LAMBDATEST_TUNNEL_AUTO=0` for the visual run.
+- Local default tunnel / container name is **`e2e-tunnel-dev`**; auto-start in `global-setup.js` unless `E2E_LAMBDATEST_TUNNEL_AUTO=0`.
+- CI sets a unique `E2E_LAMBDATEST_TUNNEL_NAME` (`e2e-tunnel-ado-$(Build.BuildId)`) on start, visual, and stop so parallel jobs and local tunnels do not collide on the shared LambdaTest account.
+- CI starts the tunnel with `npm run tunnel:e2e:start` (with retries) and sets `E2E_LAMBDATEST_TUNNEL_AUTO=0` for the visual run.
 
 ### Visual testing pipeline (LambdaTest)
 
 | Layer | File | Role |
 |--------|------|------|
-| Docker tunnel `e2e-tunnel` | [`lambdatest.js`](e2e/helpers/lambdatest.js), [`lambdatest-tunnel.mjs`](e2e/scripts/lambdatest-tunnel.mjs) | Remote browsers reach host wp-env via `host.docker.internal:8889` |
+| Docker tunnel (`e2e-tunnel-dev` / CI `e2e-tunnel-ado-*`) | [`lambdatest.js`](e2e/helpers/lambdatest.js), [`lambdatest-tunnel.mjs`](e2e/scripts/lambdatest-tunnel.mjs) | Remote browsers reach host wp-env via `host.docker.internal:8889` |
 | Playwright `connect` | `playwright.config.js` when `E2E_LAMBDATEST=1` | Linux Chrome on LambdaTest |
 | Request proxy | [`lambdatest-tunnel-proxy.js`](e2e/helpers/lambdatest-tunnel-proxy.js) | Routes remote requests to loopback wp-env when the tunnel path is flaky; stubs editor taxonomy prefetch 403s and maps root favicon requests |
 | URL rewrite + allowlist | [`e2e-seed-endpoint.php`](e2e/mu-plugins/e2e-seed-endpoint.php) | `X-E2E-Public-Origin`, asset URLs, canonical-redirect guard, block allowlist, classic meta-box loader removed, front-end admin bar off, a11y-warnings script dequeued on frontend |
@@ -323,6 +324,7 @@ Bump the pin only when LambdaTest’s default Linux Chrome moves and you are rea
 | `E2E_ALLOW_VISUAL_BASELINE_UPDATE` | `1` | Allow local LambdaTest `--update-snapshots` when not in CI |
 | `E2E_LAMBDATEST` | `1` | LambdaTest browser + tunnel base URL |
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | `0` / unset | `0` = do not auto-start tunnel |
+| `E2E_LAMBDATEST_TUNNEL_NAME` | optional / CI `e2e-tunnel-ado-<BuildId>` | Docker + LambdaTest tunnel name (default `e2e-tunnel-dev`) |
 | `E2E_LAMBDATEST_PLAYGROUND_URL` | optional | Default `http://host.docker.internal:8889/e2e-dept` |
 | `E2E_LAMBDATEST_CHROME_VERSION` | optional | Override pinned LambdaTest Linux Chrome (see `DEFAULT_LAMBDATEST_CHROME_VERSION` in `lambdatest.js`) |
 | `E2E_DEBUG` | `1` / unset | Verbose plugin-resolution logs in `resolve-plugin.mjs` |

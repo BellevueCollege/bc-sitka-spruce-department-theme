@@ -25,9 +25,11 @@ steps:
 
   - script: npm run tunnel:e2e:start
     displayName: Start LambdaTest tunnel
+    retryCountOnTaskFailure: 2
     env:
       LT_USERNAME: $(LT_USERNAME)
       LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+      E2E_LAMBDATEST_TUNNEL_NAME: e2e-tunnel-ado-$(Build.BuildId)
 
   - script: npm run test:e2e:visual
     displayName: Visual e2e tests on LambdaTest
@@ -41,10 +43,13 @@ steps:
       BUILD_ID: $(Build.BuildId)
       E2E_LAMBDATEST_TUNNEL_AUTO: '0'
       E2E_LAMBDATEST_CHROME_VERSION: '154.0'
+      E2E_LAMBDATEST_TUNNEL_NAME: e2e-tunnel-ado-$(Build.BuildId)
 
   - script: npm run tunnel:e2e:stop
     displayName: Stop LambdaTest tunnel
     condition: always()
+    env:
+      E2E_LAMBDATEST_TUNNEL_NAME: e2e-tunnel-ado-$(Build.BuildId)
 
   - script: npm run env:e2e:stop
     displayName: Stop wp-env e2e WordPress
