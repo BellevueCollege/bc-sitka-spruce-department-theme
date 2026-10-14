@@ -193,20 +193,23 @@ export async function prepareEditorCanvasForScreenshot( page, testInfo ) {
 }
 
 const DEFAULT_IMAGE_SETTLE_TIMEOUT_MS = 5_000;
+const DEFAULT_SCROLL_INTO_VIEW_TIMEOUT_MS = 30_000;
 
 /**
  * Scroll a screenshot target into view and wait for descendant `<img>` elements
  * to finish loading and decode. Does not wait for CSS background images.
  *
  * @param {import('@playwright/test').Locator} locator
- * @param {{ perImageTimeoutMs?: number }} [options]
+ * @param {{ perImageTimeoutMs?: number, scrollTimeoutMs?: number }} [options]
  * @return {Promise<void>}
  */
 export async function settleLocatorForScreenshot( locator, options = {} ) {
 	const perImageTimeoutMs =
 		options.perImageTimeoutMs ?? DEFAULT_IMAGE_SETTLE_TIMEOUT_MS;
+	const scrollTimeoutMs =
+		options.scrollTimeoutMs ?? DEFAULT_SCROLL_INTO_VIEW_TIMEOUT_MS;
 
-	await locator.scrollIntoViewIfNeeded();
+	await locator.scrollIntoViewIfNeeded( { timeout: scrollTimeoutMs } );
 
 	await locator.evaluate(
 		async ( element, timeoutMs ) => {
@@ -235,7 +238,13 @@ export async function settleLocatorForScreenshot( locator, options = {} ) {
 									return;
 								}
 
-								image.decode().then( finish ).catch( finish );
+								// decode() can hang on remote browsers; cap wait per image.
+								Promise.race( [
+									image.decode().catch( () => undefined ),
+									new Promise( ( resolve ) => {
+										window.setTimeout( resolve, timeoutMs );
+									} ),
+								] ).then( finish );
 							};
 
 							if ( isImageReady() ) {

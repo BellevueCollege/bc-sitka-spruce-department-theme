@@ -2,7 +2,6 @@
  * Playwright global setup: verify LambdaTest tunnel, seed e2e state, authenticate.
  */
 import { chromium } from '@playwright/test';
-import defaultGlobalSetup from '@wordpress/scripts/config/playwright/global-setup.js';
 import {
 	ensureTunnelRunning,
 	getLambdaTestPlaygroundBaseUrl,
@@ -11,6 +10,7 @@ import {
 	stopLambdaTestTunnelContainer,
 } from './helpers/lambdatest.js';
 import { getPlaywrightBaseUrl } from './helpers/e2e-env.js';
+import { runWordPressPlaywrightGlobalSetup } from './helpers/wp-playwright-auth.js';
 
 /**
  * @param {import('@playwright/test').FullConfig} config
@@ -106,7 +106,7 @@ export default async function globalSetup( config ) {
 	}
 
 	console.log( '[e2e] Authenticating admin (wp-scripts global setup)…' );
-	await defaultGlobalSetup( configWithHostE2eBaseUrl( config ) );
+	await runWordPressPlaywrightGlobalSetup( config, configWithHostE2eBaseUrl );
 
 	if ( isLambdaTestRun() ) {
 		console.log(
