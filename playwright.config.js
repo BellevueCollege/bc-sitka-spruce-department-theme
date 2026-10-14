@@ -64,7 +64,7 @@ const config = {
 				[ 'list' ],
 				[ 'junit', { outputFile: junitOutputFile } ],
 		  ]
-		: baseConfig.reporter,
+		: [ [ 'list' ], [ 'html' ] ],
 	webServer: useExternalWpEnv
 		? undefined
 		: {
