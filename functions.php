@@ -383,8 +383,13 @@ add_filter( 'document_title_separator', function( $sep ) {
 	return ' - ';
 }, 10, 1 );
 
-// Use Summary or Intro as description by default
-// Inspired by https://gist.github.com/sybrew/299ad19597f974c89b1564316297c1ed
+/**
+ * Use Summary or Intro as the generated meta description.
+
+ * @param string $description Generated description.
+ * @param array  $context     SEO Framework context. Includes the post id.
+ * @return string
+ */
 add_filter( 'the_seo_framework_generated_description', function( $description, $context ) {
 	$post_id = $context['id'] ?? null;
 
@@ -707,7 +712,14 @@ const PROFILE_AUTO_DRAFT_SLUG_PREFIX = 'auto-draft';
 /** Slug used until ACF delivers the name, unique per profile. */
 const PROFILE_PLACEHOLDER_SLUG_PREFIX = 'profile-';
 
-//Build profile title and slug from name fields.
+/**
+ * Build profile title and slug from name fields.
+ *
+ * @param string $first_name First name.
+ * @param string $last_name  Last name.
+ * @param string $role       Optional position or role.
+ * @return array{title: string, slug: string}|null Null when either name is empty.
+ */
 function build_profile_title_and_slug( string $first_name, string $last_name, string $role = '' ): ?array {
 	$first_name = trim( $first_name );
 	$last_name  = trim( $last_name );
@@ -724,8 +736,12 @@ function build_profile_title_and_slug( string $first_name, string $last_name, st
 	);
 }
 
-//Read first name, last name, and role from a profile REST request.
-
+/**
+ * Read first name, last name, and role from a profile REST request.
+ *
+ * @param WP_REST_Request $request REST request.
+ * @return array{first_name: string, last_name: string, role: string}
+ */
 function get_profile_name_fields_from_rest_request( $request ): array {
 	$acf = $request->get_param( 'acf' );
 
@@ -747,7 +763,13 @@ function get_profile_name_fields_from_rest_request( $request ): array {
 	);
 }
 
-//Set profile title and slug before Gutenberg REST insert/update.
+/**
+ * Set profile title and slug before Gutenberg REST insert or update.
+ *
+ * @param \stdClass       $prepared_post Post data being inserted.
+ * @param WP_REST_Request $request       REST request.
+ * @return \stdClass
+ */
 function set_profile_title_and_slug_for_rest( $prepared_post, $request ) {
 	$name_fields = get_profile_name_fields_from_rest_request( $request );
 	$built       = build_profile_title_and_slug(
@@ -765,7 +787,11 @@ function set_profile_title_and_slug_for_rest( $prepared_post, $request ) {
 }
 add_filter( 'rest_pre_insert_profile', __NAMESPACE__ . '\set_profile_title_and_slug_for_rest', 10, 2 );
 
-//Read first name, last name, and role from a submitted ACF form.
+/**
+ * Read first name, last name, and role from a submitted ACF form.
+ *
+ * @return array{first_name: string, last_name: string, role: string}
+ */
 function get_profile_name_fields_from_post_data(): array {
 	$acf = ( isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) ? $_POST['acf'] : array();
 
@@ -775,12 +801,24 @@ function get_profile_name_fields_from_post_data(): array {
 		'role'       => (string) ( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '' ),
 	);
 }
+
+/**
+ * Whether a slug is empty or still an auto-draft slug.
+ *
+ * @param string $slug Profile slug.
+ * @return bool
+ */
 function is_generic_profile_slug( string $slug ): bool {
 	return $slug === '' || strpos( $slug, PROFILE_AUTO_DRAFT_SLUG_PREFIX ) === 0;
 }
 
-//Set profile title and slug for any save, including the ACF metabox request.
-
+/**
+ * Set profile title and slug for any save, including the ACF metabox request.
+ *
+ * @param array $data    Sanitized post data.
+ * @param array $postarr Raw post data.
+ * @return array
+ */
 function filter_profile_insert_post_data( array $data, array $postarr ): array {
 	if ( ( $data['post_type'] ?? '' ) !== 'profile' ) {
 		return $data;
@@ -825,8 +863,12 @@ function filter_profile_insert_post_data( array $data, array $postarr ): array {
 }
 add_filter( 'wp_insert_post_data', __NAMESPACE__ . '\filter_profile_insert_post_data', 10, 2 );
 
-//Sync profile title and slug after ACF fields are saved.
-
+/**
+ * Sync profile title and slug after ACF fields are saved.
+ *
+ * @param int|string $post_id Post ID, or an ACF options page key.
+ * @return void
+ */
 function sync_profile_title_and_slug( $post_id ): void {
 	if ( ! is_numeric( $post_id ) ) {
 		return;
