@@ -15,6 +15,7 @@
  * | rainy + swiper                    | media-gallery-section          |
  * | rainy + arch + curved-top + diffs | differentiator-section         |
  * | rainy + arch + curved-top         | support-feature                |
+ * | announcement (margin-based)       | announcement-banner            |
  *
  * Covered elsewhere (homepage / program / listing specs), same signatures:
  * card-section, checkerboard-section, bio-section, department-feature,
@@ -71,6 +72,10 @@ function e2e_section_adjacency_page_markup(
 		e2e_build_adjacency_differentiator_to_differentiator( $context ),
 		// Support-feature arch path (non-diffs).
 		e2e_build_adjacency_white_to_support_feature( $context ),
+		// Announcement margin rules (colored inset + follower spacing).
+		e2e_build_adjacency_brutus_to_announcement( $context ),
+		e2e_build_adjacency_announcement_to_xlight( $context ),
+		e2e_build_adjacency_brutus_announcement_listing( $context ),
 	);
 
 	$markup = implode( "\n", $scenarios );
@@ -315,6 +320,79 @@ function e2e_build_adjacency_white_to_support_feature( array $context ): string 
 		. "\n"
 		. e2e_adjacency_support_feature_section( 'E2E adj white to support' )
 	);
+}
+
+/**
+ * Brutus degrees → announcement: colored band inset + white gap before banner.
+ *
+ * @param array<string, mixed> $context Shared seed context.
+ * @return string
+ */
+function e2e_build_adjacency_brutus_to_announcement( array $context ): string {
+	return e2e_wrap_adjacency_scenario(
+		'e2e-adj-scenario-brutus-to-announcement',
+		e2e_adjacency_degrees_section(
+			'E2E adj brutus to announcement (from)',
+			$context['program_ids']
+		)
+		. "\n"
+		. e2e_adjacency_announcement_banner( 'E2E adj brutus to announcement' )
+	);
+}
+
+/**
+ * Announcement → xlight listing: homepage-shaped follower spacing.
+ *
+ * @param array<string, mixed> $context Shared seed context.
+ * @return string
+ */
+function e2e_build_adjacency_announcement_to_xlight( array $context ): string {
+	return e2e_wrap_adjacency_scenario(
+		'e2e-adj-scenario-announcement-to-xlight',
+		e2e_adjacency_announcement_banner( 'E2E adj announcement to xlight (from)' )
+		. "\n"
+		. e2e_adjacency_listing_section(
+			'e2e-adj-announcement-to-xlight',
+			'E2E adj announcement to xlight'
+		)
+	);
+}
+
+/**
+ * Degrees → announcement → listing: department homepage stack.
+ *
+ * @param array<string, mixed> $context Shared seed context.
+ * @return string
+ */
+function e2e_build_adjacency_brutus_announcement_listing( array $context ): string {
+	return e2e_wrap_adjacency_scenario(
+		'e2e-adj-scenario-brutus-announcement-listing',
+		e2e_adjacency_degrees_section(
+			'E2E adj brutus announcement listing (degrees)',
+			$context['program_ids']
+		)
+		. "\n"
+		. e2e_adjacency_announcement_banner( 'E2E adj brutus announcement listing (banner)' )
+		. "\n"
+		. e2e_adjacency_listing_section(
+			'e2e-adj-brutus-announcement-listing',
+			'E2E adj brutus announcement listing (listing)'
+		)
+	);
+}
+
+/**
+ * Minimal announcement-banner block (no image) for adjacency spacing.
+ *
+ * @param string $title Visible banner title.
+ * @return string
+ */
+function e2e_adjacency_announcement_banner( string $title ): string {
+	$escaped_title = esc_html( $title );
+
+	return <<<MARKUP
+<!-- wp:bc-sitka-spruce/announcement-banner {"name":"bc-sitka-spruce/announcement-banner","data":{"field_66e4c35bcf5ea":"{$escaped_title}","field_66e4c38bcf5eb":"E2E announcement adjacency description.","field_66e4c50d2ef34":"","field_66e4c39ecf5ec":{"title":"","url":"","target":""},"field_66e4c40bcf5ed":""},"mode":"auto"} /-->
+MARKUP;
 }
 
 /**

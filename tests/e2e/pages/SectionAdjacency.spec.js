@@ -21,6 +21,9 @@ const VISUAL_SCENARIOS = [
 	'differentiator-to-rainy',
 	'differentiator-to-differentiator',
 	'white-to-support-feature',
+	'brutus-to-announcement',
+	'announcement-to-xlight',
+	'brutus-announcement-listing',
 ];
 
 let pageUrl;
@@ -112,6 +115,36 @@ test.describe( 'Section adjacency integration', () => {
 		);
 		await expect( suppressedArch ).toBeAttached();
 		await expect( suppressedArch ).toBeHidden();
+	} );
+
+	test( 'announcement adjacency keeps degrees, banner, and listing structure', async ( {
+		page,
+	} ) => {
+		const brutusToAnnouncement = page.locator(
+			'#e2e-adj-scenario-brutus-to-announcement'
+		);
+		await expect(
+			brutusToAnnouncement.locator( '.section-brutus-blue + .announcement' )
+		).toBeVisible();
+
+		const announcementToXlight = page.locator(
+			'#e2e-adj-scenario-announcement-to-xlight'
+		);
+		await expect(
+			announcementToXlight.locator( '.announcement + .section-xlight' )
+		).toBeVisible();
+		await expect(
+			announcementToXlight.locator( '#e2e-adj-announcement-to-xlight' )
+		).toBeVisible();
+
+		const homepageStack = page.locator(
+			'#e2e-adj-scenario-brutus-announcement-listing'
+		);
+		await expect(
+			homepageStack.locator(
+				'.section-brutus-blue + .announcement + .section-xlight'
+			)
+		).toBeVisible();
 	} );
 
 	test( 'curved differentiator stacks keep rainy neighbors', async ( { page } ) => {
