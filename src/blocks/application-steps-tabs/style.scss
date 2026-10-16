@@ -9,13 +9,17 @@
 
 	background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 10rem);
 
+	@include media-breakpoint-down('xl') {
+		padding-bottom: 0 !important; // remove padding on smaller elements to improve section interactions
+	}
+
 	@include media-breakpoint-up('lg') {
 		background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 25rem);
 	}
 
 	.accordion-body > .application-step-single {
 		& :last-child {
-			margin-bottom: 0;
+			padding-bottom: 0;
 		}
 		&:nth-child(even) > .container-xl  {
 			background-color: var(--gray--xxlight);
