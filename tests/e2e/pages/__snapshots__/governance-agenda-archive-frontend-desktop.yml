@@ -1,0 +1,120 @@
+- link "Skip to content":
+  - /url: "#main-content"
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://127.0.0.1:8889/e2e-dept
+  - navigation "Main Menu":
+    - list:
+      - listitem:
+        - link "Programs":
+          - /url: https://example.com/programs
+        - button "Toggle the Programs menu": 
+      - listitem:
+        - link "About":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact":
+          - /url: https://example.com/contact
+    - list:
+      - listitem:
+        - link "Apply Now":
+          - /url: https://example.com/apply
+      - listitem:
+        - link "Request Info":
+          - /url: https://example.com/request-info
+  - navigation:
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+      - listitem:
+        - link "Search":
+          - /url: "#"
+- main:
+  - heading "Board of Trustees Agendas" [level=1]
+  - heading /\d+/ [level=2]
+  - list:
+    - listitem:
+      - link /January \d+, \d+/:
+        - /url: http://127.0.0.1:8889/e2e-dept/agendas/e2e-board-agenda/
+- complementary:
+  - heading "For questions about this site, contact our site manager" [level=2]
+  - paragraph:
+    - strong: E2E Manager
+    - text: Web Coordinator
+    - link "e2e-manager@example.com":
+      - /url: mailto:e2e-manager@example.com
+- contentinfo:
+  - link "Bellevue College (links to college homepage)":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College (links to college homepage)"
+  - heading "E2E Department Site" [level=2]
+  - separator
+  - text: Phone Number
+  - paragraph:
+    - link /\+1 \d+-\d+-\d+/:
+      - /url: tel:+14255641000
+  - text: Address
+  - paragraph: /Bellevue College \d+ Landerholm Circle SE Bellevue, WA \d+-\d+/
+  - list:
+    - listitem:
+      - link "Facebook":
+        - /url: https://www.facebook.com/bellevuecollege
+    - listitem:
+      - link "LinkedIn":
+        - /url: https://www.linkedin.com/school/bellevue-college
+    - listitem:
+      - link "YouTube":
+        - /url: https://www.youtube.com/bellevuecollege
+  - navigation "Major Site Sections":
+    - list:
+      - listitem:
+        - link "Programs ":
+          - /url: https://example.com/programs
+      - listitem:
+        - link "About ":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact ":
+          - /url: https://example.com/contact
+  - navigation "Footer Utility Links":
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+  - navigation "Global Links":
+    - list:
+      - listitem:
+        - link "Accessibility ":
+          - /url: https://www.bellevuecollege.edu/accessibility/
+      - listitem:
+        - link "Emergency Alerts ":
+          - /url: https://www.bellevuecollege.edu/emergency-alerts/
+      - listitem:
+        - link "Equal Opportunity ":
+          - /url: https://www.bellevuecollege.edu/equal-opportunity/
+      - listitem:
+        - link "Public Disclosure ":
+          - /url: https://www.bellevuecollege.edu/legal-information/public-disclosure/
+      - listitem:
+        - link "Website Info ":
+          - /url: https://www.bellevuecollege.edu/website-information/
+  - paragraph:
+    - text: /© \d+ Bellevue College\. All Rights Reserved\./
+    - link "Privacy Notice":
+      - /url: https://www.bellevuecollege.edu/accessibility/

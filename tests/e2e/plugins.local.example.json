@@ -1,0 +1,34 @@
+{
+	"mayflowerBlocks": {
+		"source": "local",
+		"path": "../mayflower-blocks"
+	},
+	"ohoViews": {
+		"source": "local",
+		"path": "../bellevue-2022-theme-plugins/oho-views"
+	},
+	"bellevue2022Organization": {
+		"source": "local",
+		"path": "../bellevue-2022-theme-plugins/bellevue-2022-organization"
+	},
+	"bellevue2022News": {
+		"source": "local",
+		"path": "../bellevue-2022-theme-plugins/bellevue-2022-news"
+	},
+	"bellevue2022Program": {
+		"source": "local",
+		"path": "../bellevue-2022-theme-plugins/bellevue-2022-program"
+	},
+	"bellevue2022Components": {
+		"source": "local",
+		"path": "../bellevue-2022-theme-plugins/bellevue-2022-components"
+	},
+	"trusteesAgenda": {
+		"source": "local",
+		"path": "../trustees-agenda"
+	},
+	"acf": {
+		"source": "local",
+		"path": "../third-party-plugins/advanced-custom-fields-pro"
+	}
+}

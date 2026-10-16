@@ -1,0 +1,215 @@
+- link "Skip to content":
+  - /url: "#main-content"
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://127.0.0.1:8889/e2e-dept
+  - navigation "Main Menu":
+    - list:
+      - listitem:
+        - link "Programs":
+          - /url: https://example.com/programs
+        - button "Toggle the Programs menu": 
+      - listitem:
+        - link "About":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact":
+          - /url: https://example.com/contact
+    - list:
+      - listitem:
+        - link "Apply Now":
+          - /url: https://example.com/apply
+      - listitem:
+        - link "Request Info":
+          - /url: https://example.com/request-info
+  - navigation:
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+      - listitem:
+        - link "Search":
+          - /url: "#"
+- main:
+  - heading "E2E Program Alpha" [level=1]
+  - text: E2E core program overview.
+  - heading "Learning Areas" [level=2]
+  - list:
+    - listitem: E2E learning list item one.
+  - heading "Learning Outcomes" [level=2]
+  - list:
+    - listitem: E2E learning list item two.
+  - complementary:
+    - term: Program Type
+    - definition: E2E Program Type
+    - term: Degree
+    - definition: E2E Degree
+    - term: Duration
+    - definition: 2 years
+    - term: Prerequisites
+    - definition
+    - heading "This program is part of our BC Pathway(s)" [level=3]
+    - paragraph: Our BC Pathways provide guidance and structure that will help you land the career of your dreams.
+    - list
+    - heading "Focus Areas" [level=3]
+    - paragraph: Explore ways you can narrow your learning focus within a pathway.
+    - list
+  - heading "Concentrations" [level=2]
+  - heading "Option 1" [level=3]
+  - paragraph
+  - paragraph
+  - heading "Option 2" [level=3]
+  - paragraph
+  - paragraph
+  - heading "Program Highlights" [level=2]
+  - text: E2E program highlights description.
+  - figure:
+    - img "E2E hero fixture image"
+  - heading "Highlight 1" [level=3]
+  - paragraph: Velit laoreet id donec ultrices tincidunt arcu non sodales neque. Eu facilisis sed odio morbi quis commodo odio. Massa sed elementum.
+  - figure:
+    - img "E2E hero fixture image"
+  - heading "Highlight 2" [level=3]
+  - paragraph: Velit laoreet id donec ultrices tincidunt arcu non sodales neque. Eu facilisis sed odio morbi quis commodo odio. Massa sed elementum.
+  - heading "Courses & Credit Requirements" [level=2]
+  - paragraph: Full program requirements, including entry requirements, degree requirements, and credit requirements can be found in our course catalog.
+  - paragraph:
+    - strong: Sample Courses
+  - list:
+    - listitem: Course 1
+    - listitem: Course 2
+    - listitem: Course 3
+  - complementary:
+    - heading "Optional Callout" [level=3]
+    - paragraph: Velit laoreet id donec ultrices tincidunt arcu non sodales neque. Eu facilisis sed odio morbi quis commodo odio. Massa sed elementum.
+  - article:
+    - heading "Register for Classes" [level=2]
+    - paragraph: Highlight upcoming deadlines or other announcements relevant to this degree
+  - region "Stats Relevant to this Program":
+    - heading "Stats Relevant to this Program" [level=2]
+    - article:
+      - heading "E2E Stat 1" [level=3]
+      - paragraph: E2E differentiator supporting text 1.
+    - article:
+      - heading "E2E Stat 2" [level=3]
+      - paragraph: E2E differentiator supporting text 2.
+    - article:
+      - heading "E2E Stat 3" [level=3]
+      - paragraph: E2E differentiator supporting text 3.
+  - heading "Our Faculty" [level=2]
+  - text: Highlight relevant faculty, or other people from your Profiles section
+  - link "E2E profile fixture image":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+    - img "E2E profile fixture image"
+  - paragraph:
+    - link "Ada Lovelace":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+  - paragraph: she/her
+  - paragraph: E2E Faculty
+  - heading "Featured Experience" [level=2]
+  - text: E2E testimonial section description.
+  - img "E2E hero fixture image"
+  - blockquote: “This is a quote from a student, faculty, alumni, or visitor that demonstrates the quality of Bellevue College”
+  - separator
+  - paragraph: Student Name
+  - paragraph: E2E testimonial attribution line.
+  - heading "Programs in this Department" [level=2]
+  - link "Explore our Department":
+    - /url: http://127.0.0.1:8889/e2e-dept
+  - button "Go to the previous program."
+  - button "Go to the next program."
+  - article:
+    - text: Pathways
+    - heading "E2E Beta" [level=3]:
+      - link "E2E Beta":
+        - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-beta/
+    - paragraph:
+      - strong: E2E Program Type
+    - paragraph: E2E secondary core program overview.
+- complementary:
+  - heading "E2E Degree Support" [level=2]
+  - paragraph: E2E degree sock supporting text.
+  - heading "E2E Admissions" [level=3]
+  - paragraph: E2E segment description.
+  - paragraph:
+    - link "Apply":
+      - /url: https://example.com/apply
+  - img "E2E hero fixture image"
+  - heading "E2E Admissions Contact" [level=3]
+  - paragraph: E2E admissions contact description.
+  - link "Contact":
+    - /url: https://example.com/contact
+- contentinfo:
+  - link "Bellevue College (links to college homepage)":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College (links to college homepage)"
+  - heading "E2E Department Site" [level=2]
+  - separator
+  - text: Phone Number
+  - paragraph:
+    - link /\+1 \d+-\d+-\d+/:
+      - /url: tel:+14255641000
+  - text: Address
+  - paragraph: /Bellevue College \d+ Landerholm Circle SE Bellevue, WA \d+-\d+/
+  - list:
+    - listitem:
+      - link "Facebook":
+        - /url: https://www.facebook.com/bellevuecollege
+    - listitem:
+      - link "LinkedIn":
+        - /url: https://www.linkedin.com/school/bellevue-college
+    - listitem:
+      - link "YouTube":
+        - /url: https://www.youtube.com/bellevuecollege
+  - navigation "Major Site Sections":
+    - list:
+      - listitem:
+        - link "Programs ":
+          - /url: https://example.com/programs
+      - listitem:
+        - link "About ":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact ":
+          - /url: https://example.com/contact
+  - navigation "Footer Utility Links":
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+  - navigation "Global Links":
+    - list:
+      - listitem:
+        - link "Accessibility ":
+          - /url: https://www.bellevuecollege.edu/accessibility/
+      - listitem:
+        - link "Emergency Alerts ":
+          - /url: https://www.bellevuecollege.edu/emergency-alerts/
+      - listitem:
+        - link "Equal Opportunity ":
+          - /url: https://www.bellevuecollege.edu/equal-opportunity/
+      - listitem:
+        - link "Public Disclosure ":
+          - /url: https://www.bellevuecollege.edu/legal-information/public-disclosure/
+      - listitem:
+        - link "Website Info ":
+          - /url: https://www.bellevuecollege.edu/website-information/
+  - paragraph:
+    - text: /© \d+ Bellevue College\. All Rights Reserved\./
+    - link "Privacy Notice":
+      - /url: https://www.bellevuecollege.edu/accessibility/

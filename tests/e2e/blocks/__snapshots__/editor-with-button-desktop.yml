@@ -1,0 +1,7 @@
+- 'document "Block: Announcement Banner"':
+  - article:
+    - figure
+    - heading "Test Announcement" [level=2]
+    - paragraph: This is a test announcement description for visual regression.
+    - link "Learn More Opens in a new tab":
+      - /url: https://example.com

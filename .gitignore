@@ -66,12 +66,19 @@ yarn-error.log
 /storybook-static/
 *storybook.log
 
-#Nightwatch - don't commit 
-/vrt/diff
-/vrt/latest
-/vrt-report
-/reports/*
-/DivisionHomepage
-/FlexiblePage
-/homepage
+# Playwright / E2E generated artifacts (do not commit)
+/artifacts/storage-states/
+/artifacts/junit/
+/artifacts/test-results/
+/artifacts/e2e-plugins/
+/artifacts/e2e-seed-token
+/artifacts/e2e-seed-cookies.txt
+/artifacts/playground-ready
+/artifacts/e2e-seeds/
+/.wp-env.e2e.json
+/.wp-env.e2e.after-start.json
+
+# Per-developer e2e plugin paths (see tests/e2e/plugins.local.example.json)
+/tests/e2e/plugins.local.json
+/tests/fixtures/.e2e-block-seed-request.json
 

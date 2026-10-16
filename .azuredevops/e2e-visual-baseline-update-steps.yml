@@ -1,0 +1,57 @@
+# Optional manual pipeline job: refresh committed @visual PNG baselines on LambdaTest.
+# Wire this template into theme-ci with a boolean parameter (e.g. updateVisualBaselines).
+# Download the published artifact and commit tests/e2e/**/__snapshots__/*.png in a follow-up PR.
+#
+# Requires the same secrets as e2e-test-steps.yml (LT_*, GITHUB_PAT, ACF_DOWNLOAD_URL).
+
+steps:
+  - script: npx playwright install --with-deps chromium
+    displayName: Install Playwright Chromium
+
+  - script: npm run env:e2e:start
+    displayName: Start wp-env e2e WordPress
+    retryCountOnTaskFailure: 2
+    env:
+      CI: 'true'
+      E2E_STRICT_PLUGINS: '1'
+      GITHUB_PAT: $(GITHUB_PAT)
+      ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
+
+  - script: npm run tunnel:e2e:start
+    displayName: Start LambdaTest tunnel
+    retryCountOnTaskFailure: 2
+    env:
+      LT_USERNAME: $(LT_USERNAME)
+      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+      E2E_LAMBDATEST_TUNNEL_NAME: e2e-tunnel-ado-$(Build.BuildId)
+
+  - script: npm run test:e2e:visual:update
+    displayName: Update @visual PNG baselines on LambdaTest
+    env:
+      CI: 'true'
+      E2E_STRICT_PLUGINS: '1'
+      LT_USERNAME: $(LT_USERNAME)
+      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+      GITHUB_PAT: $(GITHUB_PAT)
+      ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
+      BUILD_ID: $(Build.BuildId)
+      E2E_LAMBDATEST_TUNNEL_AUTO: '0'
+      E2E_LAMBDATEST_CHROME_VERSION: '154.0'
+      E2E_LAMBDATEST_TUNNEL_NAME: e2e-tunnel-ado-$(Build.BuildId)
+
+  - script: npm run tunnel:e2e:stop
+    displayName: Stop LambdaTest tunnel
+    condition: always()
+    env:
+      E2E_LAMBDATEST_TUNNEL_NAME: e2e-tunnel-ado-$(Build.BuildId)
+
+  - script: npm run env:e2e:stop
+    displayName: Stop wp-env e2e WordPress
+    condition: always()
+
+  - task: PublishPipelineArtifact@1
+    displayName: Publish updated visual baselines
+    condition: succeeded()
+    inputs:
+      targetPath: tests/e2e
+      artifact: e2e-visual-baselines

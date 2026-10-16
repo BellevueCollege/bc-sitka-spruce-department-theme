@@ -1,6 +1,10 @@
 # ============================================================
 # azure-pipelines.yml — CI Pipeline
 # Extends shared templates from bc-wordpress-devops-templates.
+#
+# E2e secrets: set on this pipeline in ADO (Edit → Variables), not in YAML — LT_USERNAME,
+# LT_ACCESS_KEY, GITHUB_PAT, ACF_DOWNLOAD_URL (optional). Same pattern as other BC projects.
+# Do not add a root-level variables: block here — theme-ci.yml already defines cache variables.
 # ============================================================
 
 trigger:
@@ -35,6 +39,8 @@ extends:
   template: templates/ci/theme-ci.yml@templates
   parameters:
     themeName: 'bc-sitka-spruce-department-theme'
+    runTests: true
+    # testJobTimeoutInMinutes: 120
     testEnvironments:
       - name: KinstaCstage
         displayName: 'Kinsta: CStage'
@@ -62,3 +68,22 @@ extends:
           sources: 'style.css'
           addBOM: true
         displayName: 'Inject Version into style.css'
+    testSetupSteps:
+      - template: templates/steps/build-base.yml@templates
+        parameters:
+          phpVersion: '8.2'
+          nodeVersion: '24.x'
+          runComposer: true
+          runNpm: true
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          customCommand: 'run build'
+        displayName: 'NPM Build (test job)'
+      - task: replacetokens@6
+        inputs:
+          sources: 'style.css'
+          addBOM: true
+        displayName: 'Inject Version into style.css (test job)'
+    testSteps:
+      - template: .azuredevops/e2e-test-steps.yml@self
