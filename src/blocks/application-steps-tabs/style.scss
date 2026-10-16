@@ -2,6 +2,11 @@
 
 .application-steps-component {
 
+	// Pills tabcordion is not `.container-xl`, so it does not get `.section-heading + .container-xl` spacing.
+	.section-heading + .tabcordion {
+		margin-top: var(--sitka-container-spacing);
+	}
+
 	background: linear-gradient(180deg, css_color('gray--xlight') 0, css_color('white') 10rem);
 
 	@include media-breakpoint-up('lg') {

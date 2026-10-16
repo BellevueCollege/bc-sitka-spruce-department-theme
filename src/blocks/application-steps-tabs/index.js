@@ -40,17 +40,17 @@ registerBlockType( 'bc-sitka-spruce/application-steps-tabs', {
 
 		return (
 			<div { ...blockProps }>
-				<div
-					className="application-steps-header"
-				>
+				<div className="section-heading container-xl">
 					<RichText
 						tagName="h2"
+						className="section-heading__heading"
 						value={ title }
 						onChange={ ( title ) => setAttributes( { title } ) }
 						placeholder={ __( 'Enter section title (required)...', 'bc-sitka-spruce' ) }
 					/>
 					<RichText
 						tagName="p"
+						className="section-heading__subheading"
 						value={ description }
 						onChange={ ( description ) => setAttributes( { description } ) }
 						placeholder={ __( 'Enter description (optional)...', 'bc-sitka-spruce' ) }
