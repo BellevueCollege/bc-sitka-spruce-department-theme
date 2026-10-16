@@ -157,6 +157,7 @@
 .section.section-white:has(+ .section.section-xlight),
 .section.section-white:has(+ .section.section-accent-blue-extralight),
 .section.section-white:has(+ .arch-shape),
+.section.section-white:has(+ .announcement),
 .section.section-white:last-child {
 	.section-divider {
 		display: none;
