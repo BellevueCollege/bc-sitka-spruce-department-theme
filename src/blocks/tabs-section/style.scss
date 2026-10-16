@@ -9,10 +9,16 @@
 		--text-color: var(--white);
 	}
 
+	// Pills tabcordion is not `.container-xl`, so it does not get `.section-heading + .container-xl` spacing.
+	.section-heading + .tabcordion {
+		margin-top: var(--sitka-container-spacing);
+	}
 
-	// Not a container-xl, so it cannot inherit the shared heading-to-body gap.
-	.tab-wrapper {
-		padding-top: var(--sitka-container-spacing);
+	// List format wraps tabcordion in `.tab-wrapper` (also not `.container-xl`).
+	// Zero the dark wrapper's vertical padding so only the heading gap remains.
+	.section-heading + .tab-wrapper {
+		margin-top: var(--sitka-container-spacing);
+		padding-top: 0;
 		padding-bottom: 0;
 	}
 }
