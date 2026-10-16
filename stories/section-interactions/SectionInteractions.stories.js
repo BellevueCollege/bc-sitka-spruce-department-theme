@@ -23,7 +23,7 @@ export default {
 					'Acceptance checklist:',
 					'1. Adjacent colored sections meet with no white strip.',
 					'2. White sections: spacing above content; divider + spacing below content.',
-					'3. White before colored / arch: divider hidden; white section still has bottom spacing.',
+					'3. White before colored: divider hidden; white section still has bottom spacing. White before arch: divider hidden; container bottom margin removed (arch clip-path lead-in supplies one spacing unit).',
 					'4. Arch is a transition atom: valid cases are predecessor → arch → rainy-night curved-top with real section-heading. Crescent + dark body read as one transition.',
 					'5. rainy-arch-hidden: arch must not display.',
 					'6. Same-color stacks: 2px separator without extra gap.',
