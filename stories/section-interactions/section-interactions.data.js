@@ -271,6 +271,23 @@ export const specialNeighborCases = [
 		],
 	},
 	{
+		id: 'announcement-to-xlight',
+		label: 'Announcement → X-Light listing',
+		segments: [
+			announcementSegment('Announcement (first)'),
+			sectionSegment(
+				SECTION_BACKGROUNDS.find((background) => background.id === 'xlight'),
+				' (second)',
+				{
+					withSectionHeading: true,
+					heading: 'Listing section',
+					showContentStub: true,
+					contentLabel: 'Listing items',
+				}
+			),
+		],
+	},
+	{
 		id: 'section-to-block',
 		label: 'White → Block wrapper',
 		segments: [
