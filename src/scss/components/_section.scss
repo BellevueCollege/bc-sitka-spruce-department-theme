@@ -20,6 +20,11 @@
 		.container-xl:has(+ hr) {
 			margin-bottom: var( --sitka-container-spacing );
 		}
+
+		// Prevent Arch Shape from Adding Extra Spacing
+		&:has(+ .arch-shape) .container-xl:has(+ hr) {
+			margin-bottom: 0;
+		}
 	}
 
 	&.section-xlight {
@@ -142,7 +147,8 @@
 }
 
 // Hide divider if next section has a colored background, arch shape, or is the last section.
-// Keep the container margin because it owns the white section's bottom spacing.
+// Keep the container margin because it owns the white section's bottom spacing
+// (arch zeros that margin in `.section-white` above).
 .section.section-white:has(+ .section.section-rainy-night-blue),
 .section.section-white:has(+ .section.section-brutus-blue),
 .section.section-white:has(+ .section.section-xlight),
