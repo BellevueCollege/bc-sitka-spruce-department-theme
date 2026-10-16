@@ -117,16 +117,14 @@
 	margin-bottom: 0;
 }
 
-// Announcement uses margins outside the .section system. Colored sections followed
-// by announcement keep announcement margin-top (white gap); section padding-bottom
-// is redundant and reads as more colored background, not separation.
+// Colored section before an announcement: keep content inset on .container-xl; the
+// white gap before the banner comes from the announcement’s own margin-top.
 .section:not(.section-white):has(+ .announcement) {
 	padding-bottom: 0;
-}
 
-.announcement:has(+ .section),
-.announcement:has(+ .arch-shape) {
-	margin-bottom: 0;
+	> .container-xl {
+		padding-bottom: var( --sitka-container-spacing );
+	}
 }
 
 // Collapse margins around announcement when it abuts a white section.
