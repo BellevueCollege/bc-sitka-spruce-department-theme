@@ -11,7 +11,21 @@
 }
 
 .wp-block-mayflower-blocks-button .btn {
-	margin-bottom: var(--sitka-container-spacing);
+	margin-bottom: 2rem;
+
+	&:last-child {
+		margin-bottom: 0;
+	}
+}
+
+.btn-group {
+	margin-bottom: 2rem;
+	.wp-block-mayflower-blocks-button .btn {
+		margin-bottom: 0;
+	}
+	&:last-child {
+		margin-bottom: 0;
+	}
 }
 
 // Hide empty paragraph blocks on the front-end (direct child only;
