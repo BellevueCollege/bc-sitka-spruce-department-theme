@@ -111,6 +111,21 @@ export function tabcordionTabsSegment() {
  * @param {string} [label] Visible case label and banner heading.
  * @returns {object}
  */
+/**
+ * Listing section segment (section-heading + `.listing-section.container-xl`), matching WP markup.
+ *
+ * @param {string} [label]
+ * @returns {object}
+ */
+export function listingSectionSegment(label = 'Listing section') {
+	return {
+		type: 'listingSection',
+		label,
+		heading: label,
+		contentLabel: 'Listing items stub',
+	};
+}
+
 export function announcementSegment(label = 'Announcement') {
 	return {
 		type: 'announcement',
@@ -197,6 +212,18 @@ export const archAndStructuralCases = [
 		label: 'X-Light → Arch → Diffs rainy-night curved-top',
 		segments: [
 			sectionSegment(xlight, ' (first)'),
+			archSegment(),
+			sectionSegment(diffsRainyNight, ' (second)', {
+				...CURVED_SECTION_HEADING,
+				wrapInnerClass: 'diffs--container',
+			}),
+		],
+	},
+	{
+		id: 'xlight-listing-arch-diffs',
+		label: 'X-Light listing → Arch → Diffs (division homepage-shaped)',
+		segments: [
+			listingSectionSegment('Listing section (first)'),
 			archSegment(),
 			sectionSegment(diffsRainyNight, ' (second)', {
 				...CURVED_SECTION_HEADING,

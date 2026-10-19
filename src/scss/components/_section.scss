@@ -82,12 +82,12 @@
 .section.section-accent-blue-extralight + .arch-shape,
 .section.section-brutus-blue + .arch-shape,
 .section.section-xlight + .arch-shape {
-	margin-top: -10vw;
+	margin-top: -10vw; // arch shape is 10vw tall
 }
 .section.section-accent-blue-extralight:has(+ .arch-shape),
 .section.section-brutus-blue:has(+ .arch-shape),
 .section.section-xlight:has(+ .arch-shape) {
-	padding-bottom: calc( var( --sitka-container-spacing ) + 10vw );
+	padding-bottom: 10vw; // match the above rule to avoid double spacing
 }
 
 .section.section-xlight + .section.section-xlight {
