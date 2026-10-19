@@ -472,9 +472,10 @@ function e2e_adjacency_tabs_section( string $anchor, string $heading ): string {
 	$escaped_heading = esc_html( $heading );
 	$escaped_anchor  = esc_attr( $anchor );
 
+	// Match tabs-section/index.js BLOCK_TEMPLATE: list format (vertical side tabs) is forced; pills is not selectable.
 	return <<<MARKUP
 <!-- wp:bc-sitka-spruce/tabs-section {"title":"{$escaped_heading}","anchor":"{$escaped_anchor}"} -->
-<!-- wp:bc-sitka-spruce/tabcordion {"blockId":"{$escaped_anchor}","headingLevel":"h3"} -->
+<!-- wp:bc-sitka-spruce/tabcordion {"blockId":"{$escaped_anchor}","format":"list","headingLevel":"h3","displayHeadingsVisually":true,"_hideFormats":true} -->
 <!-- wp:bc-sitka-spruce/tabcordion-list -->
 <!-- wp:bc-sitka-spruce/tabcordion-list-tab {"tabActive":true,"tabId":"{$escaped_anchor}-tab","tabTitle":"E2E Tab","tabDefault":true} /-->
 <!-- /wp:bc-sitka-spruce/tabcordion-list -->

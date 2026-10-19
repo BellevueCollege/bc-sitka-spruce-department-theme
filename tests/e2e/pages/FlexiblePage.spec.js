@@ -51,6 +51,9 @@ test.describe( 'Flexible page integration', () => {
 		await expect(
 			page.getByRole( 'link', { name: 'E2E tabs section link' } )
 		).toHaveAttribute( 'href', 'https://example.com/e2e-tabs' );
+		await expect(
+			page.locator( '#e2e-flex-tabs-section .tabcordion.tabcordion-list' )
+		).toBeVisible();
 
 		// Below 769px the first panel stays collapsed until its accordion button is opened.
 		if ( testInfo.project.name !== 'desktop' ) {

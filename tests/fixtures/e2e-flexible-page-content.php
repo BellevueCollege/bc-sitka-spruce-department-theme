@@ -34,7 +34,8 @@ function e2e_flexible_page_block_markup( string $tablepress_id ): string {
 <!-- /wp:bc-sitka-spruce/narrow-content -->
 
 <!-- wp:bc-sitka-spruce/tabs-section {"title":"E2E Tabs Section","description":"E2E tabs section intro copy.","linkTitle":"E2E tabs section link","linkUrl":"https://example.com/e2e-tabs","anchor":"e2e-flex-tabs-section"} -->
-<!-- wp:bc-sitka-spruce/tabcordion {"blockId":"e2e-flex-tabcordion","headingLevel":"h3"} -->
+<!-- Match tabs-section/index.js BLOCK_TEMPLATE: list format (vertical side tabs) is forced; pills is not selectable. -->
+<!-- wp:bc-sitka-spruce/tabcordion {"blockId":"e2e-flex-tabcordion","format":"list","headingLevel":"h3","displayHeadingsVisually":true,"_hideFormats":true} -->
 <!-- wp:bc-sitka-spruce/tabcordion-list -->
 <!-- wp:bc-sitka-spruce/tabcordion-list-tab {"tabActive":true,"tabId":"e2e-tab-one","tabTitle":"E2E Tab One","tabDefault":true} /-->
 <!-- wp:bc-sitka-spruce/tabcordion-list-tab {"tabId":"e2e-tab-two","tabTitle":"E2E Tab Two"} /-->
