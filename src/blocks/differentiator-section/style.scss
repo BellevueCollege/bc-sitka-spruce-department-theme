@@ -11,7 +11,7 @@
 	&--container {
 		width: 100%;
 		overflow: visible;
-		padding-bottom: var(--sitka-container-spacing);
+		padding-bottom: 2rem;
 
 		.section-heading {
 			margin-top: 0;
@@ -84,7 +84,7 @@
 			display: inline-block;
 		}
 
-		padding-bottom: var(--sitka-container-spacing);
+		padding-bottom: 2rem;
 	}
 
 	&--hero {
