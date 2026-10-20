@@ -139,6 +139,22 @@
     - paragraph:
       - strong: E2E Program Type
     - paragraph: E2E secondary core program overview.
+  - article:
+    - text: Pathways
+    - heading "E2E Delta" [level=3]:
+      - link "E2E Delta":
+        - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-delta/
+    - paragraph:
+      - strong: E2E Program Type
+    - paragraph: E2E quaternary core program overview.
+  - article:
+    - text: Pathways
+    - heading "E2E Epsilon" [level=3]:
+      - link "E2E Epsilon":
+        - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-epsilon/
+    - paragraph:
+      - strong: E2E Program Type
+    - paragraph: E2E fifth core program overview.
 - complementary:
   - heading "E2E Degree Support" [level=2]
   - paragraph: E2E degree sock supporting text.

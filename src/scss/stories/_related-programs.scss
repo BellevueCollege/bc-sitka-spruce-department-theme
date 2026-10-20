@@ -1,4 +1,24 @@
 .related-programs-wrapper {
+	.swiper-container {
+		position: relative;
+	}
+
+	.slider-navigation {
+		position: absolute;
+		top: calc(50% - 22px);
+		justify-content: space-between;
+		width: calc(100% + var( --bs-gutter-x ));
+
+		@include media-breakpoint-down(xl) {
+			width: 97vw;
+		}
+
+		&__prev,
+		&__next {
+			top: 0;
+		}
+	}
+
 	.swiper-initialized .swiper-slide {
 		opacity: .3;
 
