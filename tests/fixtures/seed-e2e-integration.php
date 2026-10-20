@@ -33,14 +33,28 @@ $core_map = e2e_get_core_seed_map();
 
 $hero_attachment_id    = e2e_import_hero_attachment();
 $tablepress_id         = e2e_seed_tablepress_table();
-$profile_seed          = array();
-$profile_department_id = e2e_ensure_term( 'department', 'E2E Department' );
-$profile_type_id       = e2e_ensure_term( 'profile_type', 'E2E Faculty' );
+$profile_seed           = array();
+$profile_department_ids = array(
+	'primary'   => e2e_ensure_term( 'department', 'E2E Department' ),
+	'secondary' => e2e_ensure_term( 'department', 'E2E Advising Office' ),
+);
+$profile_type_ids       = array(
+	'administration' => e2e_ensure_term( 'profile_type', 'Administration' ),
+	'faculty'        => e2e_ensure_term( 'profile_type', 'Faculty' ),
+	'staff'          => e2e_ensure_term( 'profile_type', 'Staff' ),
+);
+$profile_department_id  = $profile_department_ids['primary'];
+$profile_type_id        = $profile_type_ids['faculty'];
 
-$profile_image_id   = e2e_import_profile_attachment();
-$profile_pages      = e2e_seed_profile_integration_pages(
-	$profile_department_id,
-	$profile_type_id,
+$legacy_profile_type = get_term_by( 'name', 'E2E Faculty', 'profile_type' );
+if ( $legacy_profile_type instanceof WP_Term ) {
+	wp_delete_term( (int) $legacy_profile_type->term_id, 'profile_type' );
+}
+
+$profile_image_id = e2e_import_profile_attachment();
+$profile_pages    = e2e_seed_profile_integration_pages(
+	$profile_department_ids,
+	$profile_type_ids,
 	$profile_image_id
 );
 $profile_post_id    = $profile_pages['profileIds'][0];
@@ -243,8 +257,10 @@ echo wp_json_encode(
 		'programBetaUrl'      => get_permalink( $program_beta_id ),
 		'governance'          => $governance,
 		'tablepressId'        => $tablepress_id,
-		'profileSeed'         => $profile_seed,
-		'profileDepartmentId' => $profile_department_id,
-		'profileTypeId'       => $profile_type_id,
+		'profileSeed'          => $profile_seed,
+		'profileDepartmentId'  => $profile_department_id,
+		'profileDepartmentIds' => $profile_department_ids,
+		'profileTypeId'        => $profile_type_id,
+		'profileTypeIds'       => $profile_type_ids,
 	)
 );
