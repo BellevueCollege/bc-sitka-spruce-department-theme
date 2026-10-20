@@ -127,6 +127,11 @@
 	}
 }
 
+// Collapse padding-top on `section-white` when it follows a `flexible-page-intro-wrapper`
+.flexible-page-intro-wrapper + .section.section-white {
+	padding-top: 0;
+}
+
 // Collapse margins around announcement when it abuts a white section.
 .section.section-white + .announcement {
 	margin-top: 0;
