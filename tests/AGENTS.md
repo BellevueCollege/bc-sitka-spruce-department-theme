@@ -114,7 +114,7 @@ Canonical home for **section background / arch / divider** regressions is [`Sect
 - **Scenario Group wrappers** (`#e2e-adj-scenario-*`) are an e2e harness for focused locators/screenshots. Use **`align: full`** (theme `block-wrapper.alignfull` — no `make-container()` gutters) and **`layout: { type: default }`** (WP flow layout). Do not omit either attribute.
 - **Separators between scenario groups** (`e2e_adjacency_scenario_separator()`) intentionally break cross-scenario adjacency on the megapage so full-page visuals do not mix neighboring cases. Do not remove them when tweaking seeds.
 - **Sticky-header screenshot pitfall:** `#header-wrapper` is `position: sticky`. Playwright stitches tall element screenshots by scrolling, which re-paints the header mid-capture. Use [`prepareAdjacencyScreenshot()`](e2e/helpers/page-integration.js) and screenshot **per-scenario** wrappers (`#e2e-adj-scenario-*`), never one megapage locator for element shots.
-- **Viewport budget:** Per-scenario `@visual` PNGs are **desktop-only**. Full-page `section-adjacency-full.png` runs on **desktop, tablet, and mobile** via [`expectFullPageScreenshot()`](e2e/helpers/page-integration.js) (lazy-load scroll + image settle + 60s stability timeout) so breakpoint overview is covered without 12×3 scenario baselines. LambdaTest remote captures often exceed Playwright’s default 5s “two consecutive stable screenshots” window on long pages.
+- **Viewport budget:** Per-scenario `@visual` PNGs are **desktop-only** (`@desktop-only`, so tablet/mobile projects never schedule them). Full-page `section-adjacency-full.png` runs on **desktop, tablet, and mobile** via [`expectFullPageScreenshot()`](e2e/helpers/page-integration.js) (lazy-load scroll + image settle + 60s stability timeout) so breakpoint overview is covered without 12×3 scenario baselines. LambdaTest remote captures often exceed Playwright’s default 5s “two consecutive stable screenshots” window on long pages.
 
 ---
 
@@ -229,9 +229,9 @@ One WordPress database; parallel workers race on posts and editor state.
 
 ### Viewport projects and `@visual` budget
 
-- `desktop` runs the full functional suite; **tablet** and **mobile** projects use Playwright `grep: /@viewport|@visual/` so narrow viewports only run breakpoint-specific functional tests plus all `@visual` screenshots.
-- Tag breakpoint-only functional tests with **`@viewport`** (tabcordion accordion, application-guide accordion step, header offcanvas/submenu/CTA). Do not tag desktop-only tab tests, axe, `@aria`, or generic layout assertions.
-- `skipDuplicateBlockViewport` limits block-editor `@visual` to **desktop** (tablet/mobile still schedule those tests and skip in the hook). `@aria` stays desktop-only via the narrow project grep.
+- `desktop` runs the functional suite except `@narrow-only`; **tablet** and **mobile** projects use Playwright `grep: /@viewport|@visual/` and `grepInvert: /@desktop-only/` so narrow viewports run breakpoint-specific functional tests plus `@visual` screenshots that are not desktop-only.
+- Tag breakpoint-only functional tests with **`@viewport`** (application-guide accordion step, header offcanvas/submenu/CTA). Add **`@narrow-only`** when the test must not run on desktop (tabcordion accordion). Do not tag desktop-only tab tests, axe, `@aria`, or generic layout assertions.
+- Tag snapshots that must not run on tablet/mobile with **`@desktop-only`** (section-adjacency scenarios, block-editor `@visual`). `skipDuplicateBlockViewport` still skips block-editor `@aria` on narrow viewports when those tests are scheduled. `@aria` stays desktop-only via the narrow project grep.
 - **`@visual` is only for tests that call `toHaveScreenshot`.** Attribute or DOM assertions belong in functional tests (host), not LambdaTest.
 
 ### wp-env runtime (speed)
@@ -249,9 +249,11 @@ One WordPress database; parallel workers race on posts and editor state.
 | Tag | Runner | Snapshots |
 |-----|--------|-----------|
 | (none) | Functional on host (desktop: all; tablet/mobile: none unless combined with `@viewport`) | — |
-| `@viewport` | Functional on tablet/mobile (and desktop) | — |
+| `@viewport` | Functional on tablet/mobile (and desktop, unless also `@narrow-only`) | — |
+| `@narrow-only` | Excluded from the desktop project (`grepInvert`); still needs `@viewport` to run on tablet/mobile | — |
 | `@aria` | Host (desktop project) | `*.yml` (`toMatchAriaSnapshot`) |
 | `@visual` | LambdaTest | `*.png` (`toHaveScreenshot`) |
+| `@desktop-only` | Excluded from tablet/mobile projects (`grepInvert`) | Desktop `@visual` only |
 
 `@aria` YAML baselines are normalized to **LF** in Git ([`.gitattributes`](../.gitattributes)). Playwright compares file bytes, not just tree semantics—CRLF on Windows checkouts causes opaque failures. See [readme Troubleshooting — `@aria` line endings](../readme.md).
 
@@ -395,8 +397,12 @@ E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`), which run
 4. `env:e2e:reseed`, wait for the tunnel (`lambdatest-tunnel.mjs wait`), then `test:e2e:visual` with `E2E_LAMBDATEST_TUNNEL_AUTO=0` and `E2E_STRICT_PLUGINS=1`.
 5. Rank slowest cases from `artifacts/junit/functional-junit.xml` and `visual-junit.xml`. Do not drop or retune tests from that list until a human reviews it.
 6. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/junit/*.xml`
-   (`functional-junit.xml`, `visual-junit.xml`). JUnit is kept outside Playwright's disposable
-   `artifacts/test-results/` directory and is written only when `CI` or Azure `TF_BUILD` is set.
+   (`functional-junit.xml`, `visual-junit.xml`). Viewport tests that do not apply to a project
+   are excluded with Playwright `grep` / `grepInvert` (`@desktop-only`, `@narrow-only`), so they
+   are not collected and do not lower the Azure pass percentage. Governance `test.skip()` still
+   reports a skip when the Trustees Agenda plugin did not seed URLs. JUnit is kept outside
+   Playwright's disposable `artifacts/test-results/` directory and is written only when `CI` or
+   Azure `TF_BUILD` is set.
 
 **Re-run e2e only:** Queue the CI pipeline manually and run the **Test** stage only.
 

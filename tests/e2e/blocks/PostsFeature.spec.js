@@ -131,7 +131,7 @@ test.describe( 'Posts Feature Block', () => {
 			await waitForListPostsInEditor( editor, seed.listPostTitles );
 		} );
 
-		test( 'editor snapshot — full configuration @visual', async ( {
+		test( 'editor snapshot — full configuration @visual @desktop-only', async ( {
 			editor,
 			page,
 		}, testInfo ) => {

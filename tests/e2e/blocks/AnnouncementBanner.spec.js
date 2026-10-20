@@ -110,7 +110,7 @@ test.describe( 'Announcement Banner Block', () => {
 			).toBeVisible();
 		} );
 
-		test( 'editor snapshot — with button and image @visual', async ( {
+		test( 'editor snapshot — with button and image @visual @desktop-only', async ( {
 			editor,
 			page,
 		}, testInfo ) => {

@@ -71,20 +71,14 @@ test.describe( 'Flexible page integration', () => {
 		await expect( page.getByText( 'E2E flexible collapsible panel one.' ) ).toBeVisible();
 	} );
 
-	test( 'switches tabcordion panels on desktop', async ( { page }, testInfo ) => {
-		if ( testInfo.project.name !== 'desktop' ) {
-			testInfo.skip( true, 'Tab list is hidden below the theme md breakpoint (769px).' );
-		}
-
+	test( 'switches tabcordion panels on desktop', async ( { page } ) => {
 		await page.getByRole( 'tab', { name: 'E2E Tab Two' } ).click();
 		await expect( page.getByText( 'E2E tab panel two content.' ) ).toBeVisible();
 	} );
 
-	test( 'opens tabcordion section below the tab breakpoint @viewport', async ( { page }, testInfo ) => {
-		if ( testInfo.project.name === 'desktop' ) {
-			testInfo.skip( true, 'Accordion behavior is validated on tablet and mobile.' );
-		}
-
+	test( 'opens tabcordion section below the tab breakpoint @viewport @narrow-only', async ( {
+		page,
+	} ) => {
 		await page.getByRole( 'button', { name: 'E2E Tab Two' } ).click();
 		await expect( page.getByText( 'E2E tab panel two content.' ) ).toBeVisible();
 	} );
