@@ -33,6 +33,41 @@ function e2e_register_differentiator_acf_field_group(): void {
 					'type'       => 'flexible_content',
 					'required'   => 1,
 					'layouts'    => array(
+						'layout_630611b01ed19' => array(
+							'key'        => 'layout_630611b01ed19',
+							'name'       => 'icon',
+							'label'      => 'Icon',
+							'display'    => 'row',
+							'sub_fields' => array(
+								array(
+									'key'      => 'field_630611c1830cc',
+									'label'    => 'Icon',
+									'name'     => 'icon',
+									// Text stores the JSON string Differentiator::get_single() decodes.
+									// The Font Awesome field plugin is not part of the e2e plugin stack.
+									'type'     => 'text',
+									'required' => 1,
+								),
+							),
+						),
+						'layout_630611ed830ce' => array(
+							'key'        => 'layout_630611ed830ce',
+							'name'       => 'image',
+							'label'      => 'Image',
+							'display'    => 'row',
+							'sub_fields' => array(
+								array(
+									'key'           => 'field_630611f4830cf',
+									'label'         => 'Image',
+									'name'          => 'image',
+									'type'          => 'image',
+									'required'      => 1,
+									'return_format' => 'array',
+									'preview_size'  => 'medium',
+									'library'       => 'all',
+								),
+							),
+						),
 						'layout_630611e8830cd' => array(
 							'key'        => 'layout_630611e8830cd',
 							'name'       => 'text',
