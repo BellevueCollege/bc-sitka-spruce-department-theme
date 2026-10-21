@@ -163,17 +163,35 @@ function e2e_delete_all_posts_of_type( string $post_type ): void {
  * @return int Post ID.
  */
 function e2e_upsert_post( string $title, string $post_type, array $args ): int {
-	e2e_delete_post_by_title( $title, $post_type );
+	$existing = e2e_get_post_by_title( $title, $post_type );
+	$base     = array(
+		'post_title'  => $title,
+		'post_status' => 'publish',
+		'post_type'   => $post_type,
+	);
+
+	if ( $existing instanceof WP_Post ) {
+		$post_id = wp_update_post(
+			array_merge(
+				$base,
+				$args,
+				array(
+					'ID' => (int) $existing->ID,
+				)
+			),
+			true
+		);
+
+		if ( is_wp_error( $post_id ) ) {
+			echo wp_json_encode( array( 'error' => $post_id->get_error_message() ) );
+			exit( 1 );
+		}
+
+		return (int) $existing->ID;
+	}
 
 	$post_id = wp_insert_post(
-		array_merge(
-			array(
-				'post_title'  => $title,
-				'post_status' => 'publish',
-				'post_type'   => $post_type,
-			),
-			$args
-		),
+		array_merge( $base, $args ),
 		true
 	);
 

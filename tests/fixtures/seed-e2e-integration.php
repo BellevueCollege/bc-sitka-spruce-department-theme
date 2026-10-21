@@ -114,6 +114,9 @@ $homepage_enrichment_context = array(
 
 foreach ( $homepage_titles as $site_type => $title ) {
 	$pattern_content = e2e_homepage_pattern_for_seed( $homepage_patterns[ $site_type ] );
+	if ( $site_type === 'div' ) {
+		$pattern_content = e2e_append_differentiator_block( $pattern_content );
+	}
 	$pattern_content = e2e_wire_core_site_blocks_in_content( $pattern_content, $core_map );
 
 	$content_with_hero = e2e_enrich_homepage_content(
@@ -238,8 +241,7 @@ e2e_set_page_flexible_intro(
 
 $governance = e2e_seed_governance_data();
 
-echo wp_json_encode(
-	array(
+$integration_payload = array(
 		'homepages'           => $homepage_urls,
 		'flexiblePageUrl'          => get_permalink( $flexible_page_id ),
 		'sectionAdjacencyPageUrl'  => get_permalink( $section_adjacency_page_id ),
@@ -262,5 +264,8 @@ echo wp_json_encode(
 		'profileDepartmentIds' => $profile_department_ids,
 		'profileTypeId'        => $profile_type_id,
 		'profileTypeIds'       => $profile_type_ids,
-	)
 );
+
+update_option( 'bc_sitka_e2e_integration_seed', $integration_payload, false );
+
+echo wp_json_encode( $integration_payload );

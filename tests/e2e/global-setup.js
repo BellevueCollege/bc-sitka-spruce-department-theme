@@ -10,6 +10,7 @@ import {
 	stopLambdaTestTunnelContainer,
 } from './helpers/lambdatest.js';
 import { getPlaywrightBaseUrl } from './helpers/e2e-env.js';
+import { warmE2eSeedCachesFromDatabase } from './helpers/wp-cli.js';
 import { runWordPressPlaywrightGlobalSetup } from './helpers/wp-playwright-auth.js';
 
 /**
@@ -103,6 +104,11 @@ export default async function globalSetup( config ) {
 			autoStart: isTunnelAutoStartEnabled(),
 		} );
 		startedTunnelInThisRun = tunnelResult.startedTunnelInThisRun;
+	}
+
+	if ( process.env.E2E_WPENV_EXTERNAL === '1' ) {
+		console.log( '[e2e] Warming seed URL caches from database…' );
+		warmE2eSeedCachesFromDatabase();
 	}
 
 	console.log( '[e2e] Authenticating admin (wp-scripts global setup)…' );
