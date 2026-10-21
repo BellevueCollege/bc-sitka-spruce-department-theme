@@ -50,8 +50,9 @@ flowchart LR
 | `fixtures/test.js` | Extends `@wordpress/e2e-test-utils-playwright` `test` / `expect` — **import from here** |
 | `helpers/` | Shared flows (`editor.js`, `header.js`, `e2e-env.js`, `lambdatest.js`, `wp-cli.js`, `viewports.js`) |
 | `scripts/` | wp-env boot (`start-wp-env-e2e.mjs`, `generate-wp-env-e2e.mjs`), plugin resolve (`resolve-plugin.mjs`), tunnel (`lambdatest-tunnel.mjs`) |
-| `mu-plugins/e2e-seed-endpoint.php` | LambdaTest URL rewriting + block allowlist |
+| `mu-plugins/e2e-seed-endpoint.php` | LambdaTest URL rewriting, block allowlist, e2e-only ACF `pathways` / `focus_areas` ID→`WP_Post` normalization for core program reads |
 | `plugins.json` | Committed plugin catalog |
+| `themes.json` | Bellevue 2022 main-site theme release zip (resolved like plugins) |
 | `**/__snapshots__/` | PNG and YAML baselines next to specs |
 
 Config: repo root [`playwright.config.js`](../playwright.config.js).
@@ -132,12 +133,45 @@ Canonical home for **section background / arch / divider** regressions is [`Sect
 
 | Site | URL | Role |
 |------|-----|------|
-| Main (blog 1) | `http://127.0.0.1:8889` | Bellevue 2022 CPT plugins + [`seed-e2e-core-site.php`](../fixtures/seed-e2e-core-site.php) (organization, news, programs, etc.). Default theme only — **no** Bellevue 2022 theme. |
-| Department subsite | `http://127.0.0.1:8889/e2e-dept` | Sitka theme + full e2e plugin stack + [`seed-e2e-integration.php`](../fixtures/seed-e2e-integration.php). |
+| Main (blog 1) | `http://127.0.0.1:8889` | **Bellevue 2022** theme (release zip or local checkout via [`themes.json`](e2e/themes.json)) + Bellevue 2022 CPT plugins + [`seed-e2e-core-site.php`](../fixtures/seed-e2e-core-site.php) (organization, news, programs, pathways, etc.). ACF field groups load from Bellevue `acf-json/`. |
+| Department subsite | `http://127.0.0.1:8889/e2e-dept` | **Sitka** theme + Sitka readme plugins (breadcrumb, Mayflower, OHO Views, ACF, plus e2e-only TablePress and Trustees Agenda) + [`seed-e2e-integration.php`](../fixtures/seed-e2e-integration.php). |
 
-CPT plugins from `bellevue-2022-theme-plugins` are **activated on both sites** (not network-activated), matching production.
+Core CPT plugins (`bellevue-2022-organization`, `news`, `program`, `pathway`, `components`) are **activated on the main site only**. Sitka registers `program` itself and reads the other core types from the main site, so those plugins stay inactive on the department subsite.
 
-After switching from single-site e2e to multisite, run `npm run env:e2e:stop` then `wp-env destroy --config=.wp-env.e2e.json` before the next `env:e2e:start`.
+After switching from single-site e2e to multisite, or after changing main-site theme mappings / Bellevue checkout, run `npm run env:e2e:stop` then `wp-env destroy --config=.wp-env.e2e.json` before the next `env:e2e:start`. A running wp-env **skips** full after-start seeding when integration fixtures already exist, so theme or core-seed changes need destroy (or manual `wp theme activate` on main + core re-seed).
+
+**Bellevue 2022 theme for main site:** [`themes.json`](e2e/themes.json) lists the GitHub release zip (same `GITHUB_PAT` download path as [`plugins.json`](e2e/plugins.json)). [`generate-wp-env-e2e.mjs`](e2e/scripts/generate-wp-env-e2e.mjs) resolves and maps `wp-content/themes/bellevue-2022`. Local dev may use `themes.local.json` (see [`themes.local.example.json`](e2e/themes.local.example.json)), `BELLEVUE_2022_THEME_PATH`, or a sibling `../bellevue-2022` checkout. CI sets `E2E_STRICT_PLUGINS=1` and downloads the catalog zip only.
+
+After `env:e2e:start`, run `npm run env:e2e:verify` to confirm main-site theme/CPT/ACF and subsite program smoke checks (see [`verify-e2e-stack.mjs`](e2e/scripts/verify-e2e-stack.mjs)).
+
+### E2e vs production (accepted deltas)
+
+Production department multisite is the target behavior; wp-env intentionally differs in a few places. **Do not change theme production PHP** to match these unless the same defect is reproduced on staging.
+
+| Behavior | Production expectation | E2e shim / difference | Remove shim when |
+|----------|------------------------|------------------------|------------------|
+| Program `pathways` / `focus_areas` ACF shape on main | `WP_Post` objects after normal admin saves | [`e2e-seed-endpoint.php`](e2e/mu-plugins/e2e-seed-endpoint.php) `acf/load_value` normalizes IDs → posts | Staging multisite reproduces ID-only values and product agrees on a shared fix |
+| Main-site ACF repeaters (e.g. `links`, `services_resources`) | Formatted row arrays | Mu-plugin `acf/load_value/type=repeater` rebuilds rows when ACF returns a row-count string | Same as pathways |
+| Core CPT `image` ACF field | Theme expects array with `id` | Mu-plugin `acf/format_value/name=image` reshapes attachment ID | Same as above |
+| Differentiator ACF (icon field) | Bellevue `acf-json` + Font Awesome field type | [`e2e-differentiator-acf.php`](../fixtures/e2e-differentiator-acf.php) registers a text icon field on main | Font Awesome ACF plugin added to main-only catalog |
+| Theme block registration | All `bc-sitka-spruce/*` blocks | Mu-plugin allowlist unregisters unused blocks (LambdaTest editor perf) | Never on production; expand allowlist when seeds need a block |
+| Public frontend | Visitor (no admin bar) | `show_admin_bar` false; dequeue a11y-warnings script on frontend | N/A (test-only) |
+| LambdaTest / tunnel URLs | Real hostnames | Mu-plugin + tunnel proxy rewrite `127.0.0.1` ↔ `host.docker.internal` | N/A (test-only) |
+| Subsite plugins | Sitka readme stack | **E2e-only:** TablePress, Trustees Agenda (governance seeds) | Only if production dept sites adopt the same plugins |
+| Main-site plugins | Full college stack | **Subset:** Bellevue CPT plugins in [`plugins.json`](e2e/plugins.json) only on main | Add plugins when a seed or verify step proves a missing CPT |
+
+Functional page specs may run with **admin cookies** (Playwright storage state for editor tests). The mu-plugin hides the admin bar on the frontend; `@aria` body trees may still include `logged-in` on `body`—that is expected for this suite.
+
+### Catalog bump checklist
+
+When bumping release URLs in [`plugins.json`](e2e/plugins.json) or [`themes.json`](e2e/themes.json):
+
+1. Prefer bumping **Bellevue plugin zip set and theme zip** in the same PR when they ship together.
+2. `npm run env:e2e:generate` then `wp-env destroy --config=.wp-env.e2e.json` (or full destroy) before `env:e2e:start` so after-start re-seeds core content.
+3. Run `npm run env:e2e:verify`.
+4. Run `E2E_WPENV_EXTERNAL=1 npx playwright test tests/e2e/pages/SingleProgram.spec.js tests/e2e/pages/DepartmentHomepage.spec.js --grep-invert @visual`.
+5. Grep `field_` under `tests/fixtures/` for ACF key drift after Bellevue `acf-json` changes.
+6. Note versions in the PR; refresh `@visual` PNGs on LambdaTest only when UI actually changed.
 
 ### webServer readiness
 
@@ -157,6 +191,8 @@ Avoids macOS IPv6/`::1` mismatches between Playwright and wp-env.
 
 The mu-plugin unregisters every `bc-sitka-spruce/*` block **not** listed in `BC_SITKA_E2E_ALLOWED_THEME_BLOCKS` ([`e2e-seed-endpoint.php`](e2e/mu-plugins/e2e-seed-endpoint.php)). The list covers blocks used by integration seeds and editor specs (homepages, flexible page, tabs, cards, etc.), not only block-focused specs. Loading every block’s `editorScript` through the tunnel slows LambdaTest editor screenshots. **Add the block name when seeds or a new spec need that block on the frontend or in the editor.**
 
+To check allowlist drift: `rg -o "bc-sitka-spruce/[a-z0-9-]+" tests/fixtures | sort -u` and compare to `BC_SITKA_E2E_ALLOWED_THEME_BLOCKS` in the mu-plugin.
+
 ### Bellevue 2022 / core-site blocks
 
 These blocks read main-site CPTs via `switch_to_blog()` / `network_site_url()` REST. **Tier 0** frontend coverage lives in `pages/*.spec.js` after [`seed-e2e-core-site.php`](../fixtures/seed-e2e-core-site.php) + [`e2e-core-content-helpers.php`](../fixtures/e2e-core-content-helpers.php). **Tier 1** editor insert/load is in [`CoreSiteBlocks.spec.js`](e2e/blocks/CoreSiteBlocks.spec.js)—no dedicated tier-2 block spec unless the checklist above applies.
@@ -173,10 +209,12 @@ These blocks read main-site CPTs via `switch_to_blog()` / `network_site_url()` R
 
 - `tests/e2e/helpers/wp-cli.js` runs `wp-env run --config=.wp-env.e2e.json cli wp eval-file …`.
 - Seed helpers cache results per process; do not seed in `beforeEach`.
+- When the database already has `bc_sitka_e2e_core_seed` / `bc_sitka_e2e_integration_seed`, Playwright helpers **read cached maps** instead of re-running heavy seed PHP (faster, stable post IDs). After changing seed fixtures, run `wp-env destroy` and `env:e2e:start`, or delete those options and re-seed manually.
+- `global-setup.js` calls `warmE2eSeedCachesFromDatabase()` when `E2E_WPENV_EXTERNAL=1` so external wp-env runs avoid redundant CLI work before the first spec file.
 
 ### Plugin resolution
 
-- **Catalog:** `tests/e2e/plugins.json` — remote URLs, `envPathVar`, `plugins.local.json` overlay.
+- **Catalog:** `tests/e2e/plugins.json` — remote URLs, `envPathVar`, `plugins.local.json` overlay. Main-site Bellevue theme: `tests/e2e/themes.json` + optional `themes.local.json`.
 - **Generated config:** `npm run env:e2e:generate` writes `.wp-env.e2e.json` (gitignored).
 
 ### Workers = **1**
@@ -320,6 +358,7 @@ Bump the pin only when LambdaTest’s default Linux Chrome moves and you are rea
 |----------|----------------|---------|
 | `WP_BASE_URL` | `http://127.0.0.1:8889/e2e-dept/` | Override Playwright default (department subsite) |
 | `E2E_WPENV_EXTERNAL` | `1` | Skip Playwright `webServer`; use existing wp-env (`test:e2e:visual` sets this by default) |
+| `BELLEVUE_2022_THEME_PATH` | optional local checkout | Override Bellevue 2022 theme path (ignored when `E2E_STRICT_PLUGINS=1`) |
 | `E2E_STRICT_PLUGINS` | `1` | Ignore `plugins.local.json` and catalog `envPathVar` mounts (CI sets this) |
 | `E2E_ALLOW_VISUAL_BASELINE_UPDATE` | `1` | Allow local LambdaTest `--update-snapshots` when not in CI |
 | `E2E_LAMBDATEST` | `1` | LambdaTest browser + tunnel base URL |
