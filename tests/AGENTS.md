@@ -160,6 +160,8 @@ Production department multisite is the target behavior; wp-env intentionally dif
 | LambdaTest / tunnel URLs | Real hostnames | Mu-plugin + tunnel proxy rewrite `127.0.0.1` ↔ `host.docker.internal` | N/A (test-only) |
 | Subsite plugins | Sitka readme stack | **E2e-only:** TablePress, Trustees Agenda (governance seeds) | Only if production dept sites adopt the same plugins |
 | Main-site plugins | Full college stack | **Subset:** Bellevue CPT plugins in [`plugins.json`](e2e/plugins.json) only on main | Add plugins when a seed or verify step proves a missing CPT |
+| Pathway permalinks from dept subsite | Main-site `bellevue-2022-pathway` registers `pathway` | Mu-plugin registers `pathway` with slug `academics/bc-pathways` when the CPT is missing on the request | Dept subsite loads the same pathway plugin as production, or core fixes multisite `get_permalink` after `switch_to_blog` |
+| Footer copyright year | `date( 'Y' )` in theme | Mu-plugin `timber/context` sets `current_year` to **2026** | Never on production; bump constant when refreshing aria snapshots after a year change |
 
 Functional page specs may run with **admin cookies** (Playwright storage state for editor tests). The mu-plugin hides the admin bar on the frontend; `@aria` body trees may still include `logged-in` on `body`—that is expected for this suite.
 

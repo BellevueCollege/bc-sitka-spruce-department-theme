@@ -62,13 +62,13 @@
     - list:
       - listitem:
         - link "E2E BC Pathway":
-          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
+          - /url: http://127.0.0.1:8889/academics/bc-pathways/e2e-bc-pathway/
     - heading "Focus Areas" [level=3]
     - paragraph: Explore ways you can narrow your learning focus within a pathway.
     - list:
       - listitem:
         - link "E2E Focus Area":
-          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+#e2e-focus-area-tab-open/
+          - /url: http://127.0.0.1:8889/academics/bc-pathways/e2e-bc-pathway/#e2e-focus-area-tab-open
   - heading "Concentrations" [level=2]
   - heading "Option 1" [level=3]
   - paragraph

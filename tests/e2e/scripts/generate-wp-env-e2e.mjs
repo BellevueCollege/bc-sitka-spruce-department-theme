@@ -131,6 +131,7 @@ function buildWpEnvConfig( resolvedPlugins, bellevue2022ThemeHostPath ) {
 		config: {
 			WP_DEBUG: true,
 			WP_DEBUG_LOG: true,
+			WP_DEBUG_DISPLAY: false,
 			SCRIPT_DEBUG: false,
 			DISABLE_WP_CRON: true,
 			WP_HOME: MAIN_SITE_URL,

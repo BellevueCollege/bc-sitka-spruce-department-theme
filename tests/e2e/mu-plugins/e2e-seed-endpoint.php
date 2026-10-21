@@ -14,6 +14,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** Must match tests/e2e/helpers/e2e-env.js E2E_WP_PORT. */
 const BC_SITKA_E2E_WP_PORT = 8889;
 
+/** Matches bellevue-2022-pathway PATH constant for stable program pathway permalinks on subsites. */
+const BC_SITKA_E2E_PATHWAY_REWRITE_SLUG = 'academics/bc-pathways';
+
+/** Footer copyright year pinned so accepted aria snapshots do not fail on January 1. */
+const BC_SITKA_E2E_PINNED_FOOTER_YEAR = 2026;
+
 // wp-env maps this file into wp-content/mu-plugins, so the repo-relative path
 // only resolves when the file is loaded from tests/e2e/mu-plugins on the host.
 $e2e_differentiator_acf_candidates = array(
@@ -72,6 +78,49 @@ function bc_sitka_e2e_normalize_core_program_post_object_load_value( $value, $po
 
 add_filter( 'acf/load_value/name=pathways', 'bc_sitka_e2e_normalize_core_program_post_object_load_value', 20, 3 );
 add_filter( 'acf/load_value/name=focus_areas', 'bc_sitka_e2e_normalize_core_program_post_object_load_value', 20, 3 );
+
+/**
+ * Main-site pathway plugin is not loaded on department subsite requests; register rewrite args only when missing.
+ */
+function bc_sitka_e2e_register_pathway_post_type_when_missing(): void {
+	if ( post_type_exists( 'pathway' ) ) {
+		return;
+	}
+
+	register_post_type(
+		'pathway',
+		array(
+			'public'             => true,
+			'publicly_queryable' => true,
+			'show_ui'            => false,
+			'show_in_menu'       => false,
+			'query_var'          => false,
+			'rewrite'            => array(
+				'slug'       => BC_SITKA_E2E_PATHWAY_REWRITE_SLUG,
+				'with_front' => false,
+				'pages'      => false,
+			),
+			'labels'             => array(
+				'name' => 'Pathways',
+			),
+			'supports'           => array( 'title' ),
+		)
+	);
+}
+
+add_action( 'init', 'bc_sitka_e2e_register_pathway_post_type_when_missing', 5 );
+
+/**
+ * @param array<string, mixed> $context Timber context from the theme.
+ * @return array<string, mixed>
+ */
+function bc_sitka_e2e_pin_footer_year_in_context( array $context ): array {
+	$context['current_year'] = BC_SITKA_E2E_PINNED_FOOTER_YEAR;
+
+	return $context;
+}
+
+add_filter( 'timber/context', 'bc_sitka_e2e_pin_footer_year_in_context', 20 );
 
 /**
  * @param int                $post_id     Post ID.
