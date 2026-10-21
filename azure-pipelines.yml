@@ -83,7 +83,9 @@ extends:
           GITHUB_PAT: $(GITHUB_PAT)
       - template: templates/steps/build-base.yml@templates
         parameters:
-          phpVersion: '8.5'
+          # Hosted agents ship PHP 8.3.x (8.5 is not on update-alternatives yet). Composer runs on the agent;
+          # WordPress e2e uses E2E_WP_ENV_PHP_VERSION in Docker via wp-env (may be newer).
+          phpVersion: '8.3'
           nodeVersion: '26.x'
           runComposer: true
           runNpm: true

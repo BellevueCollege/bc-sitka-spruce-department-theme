@@ -128,7 +128,7 @@ Canonical home for **section background / arch / divider** regressions is [`Sect
 - Chain: `tests/e2e/helpers/e2e-env.js` → `playwright.config.js` (default `WP_BASE_URL`) → `BC_SITKA_E2E_WP_PORT` in the mu-plugin.
 - **Playwright `WP_BASE_URL` defaults to** `http://127.0.0.1:8889/e2e-dept` (Sitka department subsite). WP-CLI seeds use `--url` on the subsite unless seeding the main-site core CPTs.
 - **Changing the port or subsite slug requires updating all of the above.**
-- **PHP** for the WordPress container is **`8.5`** (`E2E_WP_ENV_PHP_VERSION` in [`e2e-env.js`](e2e/helpers/e2e-env.js), written into `.wp-env.e2e.json`). Keep this aligned with Azure DevOps `testSetupSteps` → `build-base` `phpVersion`. After bumping PHP, run `wp-env destroy --config=.wp-env.e2e.json` then `env:e2e:start`.
+- **PHP (wp-env container)** is **`8.5`** (`E2E_WP_ENV_PHP_VERSION` in [`e2e-env.js`](e2e/helpers/e2e-env.js), written into `.wp-env.e2e.json`). **Azure hosted-agent PHP** for Composer in `build-base` is **`8.3`** (agents do not register `php8.5` yet). After changing wp-env PHP, run `wp-env destroy --config=.wp-env.e2e.json` then `env:e2e:start`.
 
 ### Multisite topology (e2e)
 
@@ -382,7 +382,7 @@ E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`), which run
 
 **Test job flow** (see [`.azuredevops/e2e-test-steps.yml`](../.azuredevops/e2e-test-steps.yml)):
 
-1. `npm@12`, git URL rewrite for `GITHUB_PAT`, then `build-base` (PHP **8.5**, Node **26.x**) + `npm run build` + `replacetokens` on `style.css` (Test job rebuilds the theme because wp-env needs a full checkout and `node_modules`, not the pruned Build artifact zip).
+1. `npm@12`, git URL rewrite for `GITHUB_PAT`, then `build-base` (host PHP **8.3**, Node **26.x**) + `npm run build` + `replacetokens` on `style.css` (Test job rebuilds the theme because wp-env needs a full checkout and `node_modules`, not the pruned Build artifact zip). E2e WordPress runs PHP **8.5** inside wp-env Docker.
 2. Playwright Chromium, `env:e2e:start` once.
 3. `test:e2e:functional:external`.
 4. `tunnel:e2e:start` + `test:e2e:visual` with `E2E_LAMBDATEST_TUNNEL_AUTO=0` and `E2E_STRICT_PLUGINS=1`.
