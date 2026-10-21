@@ -203,12 +203,38 @@ export function clearAdminStorageState() {
 }
 
 /**
+ * @return {Record<string, unknown>|null}
+ */
+function tryLoadCachedCoreSiteSeed() {
+	try {
+		const result = runE2eCli(
+			`wp eval-file ${ THEME_PATH }/tests/fixtures/e2e-read-core-seed-map.php`,
+			{ url: getMainSiteBaseUrl() }
+		);
+		const map = JSON.parse( result );
+		if ( map?.coreProgramId ) {
+			return map;
+		}
+	} catch {
+		return null;
+	}
+
+	return null;
+}
+
+/**
  * Seed main-site CPT content for core-site blocks.
  *
  * @return {Record<string, unknown>}
  */
 export function seedCoreSiteData() {
 	if ( cachedCoreSiteSeed ) {
+		return cachedCoreSiteSeed;
+	}
+
+	const cachedMap = tryLoadCachedCoreSiteSeed();
+	if ( cachedMap ) {
+		cachedCoreSiteSeed = cachedMap;
 		return cachedCoreSiteSeed;
 	}
 
@@ -255,6 +281,25 @@ export function seedSiteChromeData() {
 }
 
 /**
+ * @return {Record<string, unknown>|null}
+ */
+function tryLoadCachedIntegrationSeed() {
+	try {
+		const result = runE2eCli(
+			`wp eval-file ${ THEME_PATH }/tests/fixtures/e2e-read-integration-seed.php`
+		);
+		const payload = JSON.parse( result );
+		if ( payload?.programUrl ) {
+			return payload;
+		}
+	} catch {
+		return null;
+	}
+
+	return null;
+}
+
+/**
  * Seed page integration fixtures (homepages, templates, governance).
  *
  * @return {Record<string, unknown>}
@@ -266,11 +311,37 @@ export function seedIntegrationData() {
 
 	seedCoreSiteData();
 
+	const cachedPayload = tryLoadCachedIntegrationSeed();
+	if ( cachedPayload ) {
+		cachedIntegrationSeed = cachedPayload;
+		return cachedIntegrationSeed;
+	}
+
 	const result = runE2eCli(
 		`wp eval-file ${ THEME_PATH }/tests/fixtures/seed-e2e-integration.php`
 	);
 	cachedIntegrationSeed = JSON.parse( result );
 	return cachedIntegrationSeed;
+}
+
+/**
+ * Warm in-process seed caches from the database (after-start or prior CLI seeds).
+ * Safe to call from Playwright global setup when wp-env is already running.
+ */
+export function warmE2eSeedCachesFromDatabase() {
+	if ( ! cachedCoreSiteSeed ) {
+		const coreMap = tryLoadCachedCoreSiteSeed();
+		if ( coreMap ) {
+			cachedCoreSiteSeed = coreMap;
+		}
+	}
+
+	if ( ! cachedIntegrationSeed ) {
+		const integrationPayload = tryLoadCachedIntegrationSeed();
+		if ( integrationPayload ) {
+			cachedIntegrationSeed = integrationPayload;
+		}
+	}
 }
 
 /**
