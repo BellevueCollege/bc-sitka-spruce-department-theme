@@ -3,6 +3,9 @@ import path from 'path';
 /** WordPress wp-env e2e port (must match `.wp-env.e2e.json` and the e2e mu-plugin). */
 export const E2E_WP_PORT = 8889;
 
+/** PHP image for the wp-env WordPress container (keep in sync with Azure `testSetupSteps` / `build-base`). */
+export const E2E_WP_ENV_PHP_VERSION = '8.5';
+
 export const WP_ENV_E2E_CONFIG = '.wp-env.e2e.json';
 
 /** Generated WP-CLI steps for host after-start seeding (see run-wp-env-after-start.mjs). */

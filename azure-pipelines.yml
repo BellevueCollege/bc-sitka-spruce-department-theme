@@ -68,10 +68,23 @@ extends:
           addBOM: true
         displayName: 'Inject Version into style.css'
     testSetupSteps:
+      - script: npm install -g npm@12
+        displayName: 'Use npm 12.x (match local)'
+      - script: |
+          set -euo pipefail
+          if [ -z "${GITHUB_PAT:-}" ]; then
+            echo "GITHUB_PAT is required for npm git dependencies (bc-lightbox-modal, bc-theme-layer-bs5)."
+            exit 1
+          fi
+          git config --global url."https://${GITHUB_PAT}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${GITHUB_PAT}@github.com/".insteadOf "git@github.com:"
+        displayName: 'Configure git auth for GitHub npm dependencies'
+        env:
+          GITHUB_PAT: $(GITHUB_PAT)
       - template: templates/steps/build-base.yml@templates
         parameters:
-          phpVersion: '8.2'
-          nodeVersion: '24.x'
+          phpVersion: '8.5'
+          nodeVersion: '26.x'
           runComposer: true
           runNpm: true
       - task: Npm@1

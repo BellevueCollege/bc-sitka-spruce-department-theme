@@ -13,8 +13,8 @@ This theme requires the following plugins to be installed and activated:
 To build theme assets locally, you will need the following dependencies
 installed on your development environment:
 
-1. [NodeJS](https://nodejs.org) - Version **22+** (matches `@wordpress/scripts` and e2e test utils).
-1. [npm](https://npm.community) - Version 10+.
+1. [NodeJS](https://nodejs.org) - Version **26.x** (see `.nvmrc`; CI uses **26.x**; `package.json` `engines` also allow 22.22+ / 24.15+).
+1. [npm](https://npm.community) - Version **12+** (`npm install -g npm@12`). Project `.npmrc` sets `allow-git=root` (required on npm 12). GitHub-hosted dependencies (`bc-lightbox-modal`, `bc-theme-layer-bs5`) also need `GITHUB_PAT` with `repo` read access when you run `npm install` (Azure DevOps sets this on the Test job).
 1. [Composer](https://getcomposer.org) - Version 2.6+.
 1. [FontAwesome Pro](https://fontawesome.com/) Key. Get the key from your FontAwesome
    account, and add it to your `.bashrc` or `.zshrc` file, in the format `export FONTAWESOME_KEY="MY KEY"`

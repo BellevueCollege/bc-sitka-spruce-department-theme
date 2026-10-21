@@ -2,6 +2,7 @@ import { writeFileSync } from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
+	E2E_WP_ENV_PHP_VERSION,
 	E2E_WP_PORT,
 	WP_ENV_E2E_AFTER_START_PLAN,
 	WP_ENV_E2E_CONFIG,
@@ -125,7 +126,7 @@ function buildWpEnvConfig( resolvedPlugins, bellevue2022ThemeHostPath ) {
 		multisite: true,
 		port: E2E_WP_PORT,
 		core: null,
-		phpVersion: '8.2',
+		phpVersion: E2E_WP_ENV_PHP_VERSION,
 		plugins,
 		config: {
 			WP_DEBUG: true,
