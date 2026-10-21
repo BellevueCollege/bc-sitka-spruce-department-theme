@@ -40,8 +40,47 @@
         - link "Search":
           - /url: "#"
 - main:
+  - navigation "Breadcrumbs":
+    - list:
+      - listitem:
+        - link "E2E Profile Listing":
+          - /url: http://127.0.0.1:8889/e2e-dept/e2e-profile-listing/
+      - listitem: Ada Lovelace
+  - img "E2E profile fixture image"
   - heading "Ada Lovelace" [level=1]
+  - paragraph: she/her
   - paragraph: E2E Faculty
+  - term: Department
+  - definition
+  - term: Email
+  - definition:
+    - link "ada.lovelace@example.com":
+      - /url: mailto:ada.lovelace@example.com
+  - term: Phone
+  - definition:
+    - link /\d+-\d+-\d+/:
+      - /url: tel:425-564-0001
+  - term: Languages Spoken
+  - definition: English, French
+  - term: Office Location
+  - definition:
+    - paragraph: /E2E Office Building, Room \d+/
+  - term: Office Hours
+  - definition:
+    - paragraph: /Monday–Friday, 9:\d+ a[\d,.]+[bkmBKM]+\.–5:\d+ p[\d,.]+[bkmBKM]+\./
+  - term: LinkedIn
+  - definition:
+    - link "LinkedIn Opens in a new window":
+      - /url: https://example.com/e2e-linkedin
+  - term: Additional URL
+  - definition:
+    - link "E2E Faculty Page Opens in a new window":
+      - /url: https://example.com/e2e-faculty
+  - article:
+    - heading "Schedule an Appointment" [level=2]
+    - text: E2E scheduling section description.
+    - link "Book E2E Appointment":
+      - /url: https://example.com/e2e-appointment
   - heading "About Me" [level=2]
   - paragraph: This is a place to enter basic biographical information about this person. You can use the headings below, add something different, or delete them entirely.
   - paragraph:
@@ -64,12 +103,28 @@
   - paragraph
   - heading "In the News" [level=2]
   - text: Link to a news story about this person from the core BC website!
-  - figure
+  - figure:
+    - img "E2E hero fixture image"
   - text: Featured Story
   - heading "E2E Core News Story" [level=3]:
     - link "E2E Core News Story":
-      - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story/
+      - /url: http://127.0.0.1:8889/?p=358
   - text: E2E featured news summary.
+  - article:
+    - heading "E2E Core News Story Two" [level=3]:
+      - link "E2E Core News Story Two":
+        - /url: http://127.0.0.1:8889/?p=361
+    - text: E2E secondary featured news summary.
+  - article:
+    - heading "E2E Core News Story Three" [level=3]:
+      - link "E2E Core News Story Three":
+        - /url: http://127.0.0.1:8889/?p=362
+    - text: E2E third featured news summary.
+  - article:
+    - heading "E2E Core News Story Four" [level=3]:
+      - link "E2E Core News Story Four":
+        - /url: http://127.0.0.1:8889/?p=363
+    - text: E2E fourth featured news summary.
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:

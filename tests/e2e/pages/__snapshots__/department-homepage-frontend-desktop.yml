@@ -57,13 +57,32 @@
     - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
   - region "Stats about BC":
     - heading "Stats about BC" [level=2]
+    - article:
+      - text: /\d+/
+      - superscript: "%"
+      - heading "E2E Stat 1" [level=3]
+      - paragraph
+      - paragraph: E2E differentiator supporting text 1.
+      - paragraph
+    - article:
+      - text: "Icon: Graduation cap"
+      - heading "E2E Stat 2" [level=3]
+      - paragraph
+      - paragraph: E2E differentiator supporting text 2.
+      - paragraph
+    - article:
+      - img "E2E hero fixture image"
+      - heading "E2E Stat 3" [level=3]
+      - paragraph
+      - paragraph: E2E differentiator supporting text 3.
+      - paragraph
   - heading "Degrees and Certificates" [level=2]
   - text: E2E degrees and certificates section intro.
   - heading "Degree Options" [level=3]
   - paragraph: E2E segment supporting copy.
   - heading "E2E Alpha" [level=4]:
     - link "E2E Alpha":
-      - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-alpha/
+      - /url: http://127.0.0.1:8889/e2e-dept/program/e2e-program-alpha/
   - text: E2E core program overview.
   - term: Degree
   - definition: E2E Degree
@@ -71,13 +90,19 @@
   - definition: 2 years
   - term: Pathway(s)
   - definition:
-    - list
+    - list:
+      - listitem:
+        - link "E2E BC Pathway Opens in a new tab":
+          - /url: http://127.0.0.1:8889/?p=370
   - term: Focus Area(s)
   - definition:
-    - list
+    - list:
+      - listitem:
+        - link "E2E Focus Area Opens in a new tab":
+          - /url: http://127.0.0.1:8889/?p=370#e2e-focus-area-tab-open
   - heading "E2E Beta" [level=4]:
     - link "E2E Beta":
-      - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-beta/
+      - /url: http://127.0.0.1:8889/e2e-dept/program/e2e-program-beta/
   - text: E2E secondary core program overview.
   - term: Degree
   - definition: E2E Degree
@@ -85,16 +110,22 @@
   - definition: 1 year
   - term: Pathway(s)
   - definition:
-    - list
+    - list:
+      - listitem:
+        - link "E2E BC Pathway Opens in a new tab":
+          - /url: http://127.0.0.1:8889/?p=370
   - term: Focus Area(s)
   - definition:
-    - list
+    - list:
+      - listitem:
+        - link "E2E Focus Area Opens in a new tab":
+          - /url: http://127.0.0.1:8889/?p=370#e2e-focus-area-tab-open
   - separator
   - heading "Certificate Options" [level=3]
   - paragraph: E2E segment supporting copy.
   - heading "E2E Alpha" [level=4]:
     - link "E2E Alpha":
-      - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-alpha/
+      - /url: http://127.0.0.1:8889/e2e-dept/program/e2e-program-alpha/
   - text: E2E core program overview.
   - term: Degree
   - definition: E2E Degree
@@ -102,13 +133,19 @@
   - definition: 2 years
   - term: Pathway(s)
   - definition:
-    - list
+    - list:
+      - listitem:
+        - link "E2E BC Pathway Opens in a new tab":
+          - /url: http://127.0.0.1:8889/?p=370
   - term: Focus Area(s)
   - definition:
-    - list
+    - list:
+      - listitem:
+        - link "E2E Focus Area Opens in a new tab":
+          - /url: http://127.0.0.1:8889/?p=370#e2e-focus-area-tab-open
   - heading "E2E Beta" [level=4]:
     - link "E2E Beta":
-      - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-beta/
+      - /url: http://127.0.0.1:8889/e2e-dept/program/e2e-program-beta/
   - text: E2E secondary core program overview.
   - term: Degree
   - definition: E2E Degree
@@ -116,10 +153,16 @@
   - definition: 1 year
   - term: Pathway(s)
   - definition:
-    - list
+    - list:
+      - listitem:
+        - link "E2E BC Pathway Opens in a new tab":
+          - /url: http://127.0.0.1:8889/?p=370
   - term: Focus Area(s)
   - definition:
-    - list
+    - list:
+      - listitem:
+        - link "E2E Focus Area Opens in a new tab":
+          - /url: http://127.0.0.1:8889/?p=370#e2e-focus-area-tab-open
   - article:
     - heading "Announcement Banner" [level=2]
     - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
@@ -140,8 +183,16 @@
     - button "E2E Dept FAQ Two"
   - heading "Media Gallery" [level=2]
   - text: E2E media gallery section intro.
+  - button "Go to the previous slide." [disabled]
+  - button "Go to the next slide."
   - img "E2E hero fixture image"
   - paragraph
+  - img "E2E hero fixture image"
+  - link "Play video E2E Gallery Video Slide":
+    - /url: "#bc-lightbox-modal"
+  - heading "E2E Gallery Video Slide" [level=3]
+  - separator
+  - paragraph: E2E gallery video slide description.
   - heading "Profiles Section" [level=2]
   - text: E2E profiles section supporting copy.
   - link "Meet the team":
@@ -199,13 +250,23 @@
   - text: Featured Story
   - heading "E2E Core News Story" [level=3]:
     - link "E2E Core News Story":
-      - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story/
+      - /url: http://127.0.0.1:8889/?p=358
   - text: E2E featured news summary.
   - article:
     - heading "E2E Core News Story Two" [level=3]:
       - link "E2E Core News Story Two":
-        - /url: http://127.0.0.1:8889/news/article/e2e-core-news-story-two/
+        - /url: http://127.0.0.1:8889/?p=361
     - text: E2E secondary featured news summary.
+  - article:
+    - heading "E2E Core News Story Three" [level=3]:
+      - link "E2E Core News Story Three":
+        - /url: http://127.0.0.1:8889/?p=362
+    - text: E2E third featured news summary.
+  - article:
+    - heading "E2E Core News Story Four" [level=3]:
+      - link "E2E Core News Story Four":
+        - /url: http://127.0.0.1:8889/?p=363
+    - text: E2E fourth featured news summary.
 - complementary:
   - heading "Location" [level=2]
   - paragraph: /E2E Location \d+ Test Street/
