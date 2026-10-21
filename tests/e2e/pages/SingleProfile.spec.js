@@ -5,7 +5,11 @@ import {
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
-import { seedIntegrationData, seedSiteChromeData } from '../helpers/wp-cli.js';
+import {
+	applyLocationAndHours,
+	seedIntegrationData,
+	seedSiteChromeData,
+} from '../helpers/wp-cli.js';
 
 let pageUrl;
 let profileNoPhotoUrl;
@@ -14,6 +18,8 @@ test.describe( 'Single profile integration', () => {
 	test.beforeAll( () => {
 		seedSiteChromeData();
 		const seed = seedIntegrationData();
+		// Division homepage specs disable the global location card; profile sock baselines expect it on.
+		applyLocationAndHours( true );
 		pageUrl = seed.profileUrl;
 		profileNoPhotoUrl = seed.profileNoPhotoUrl;
 	} );
@@ -49,6 +55,7 @@ test.describe( 'Single profile integration', () => {
 	} );
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
+		await expect( page.locator( '.sock-location' ) ).toBeVisible();
 		await expectFullPageScreenshot( page, 'single-profile-full.png' );
 	} );
 } );
@@ -57,6 +64,7 @@ test.describe( 'Single profile without photo', () => {
 	test.beforeAll( () => {
 		seedSiteChromeData();
 		const seed = seedIntegrationData();
+		applyLocationAndHours( true );
 		profileNoPhotoUrl = seed.profileNoPhotoUrl;
 	} );
 
@@ -67,6 +75,7 @@ test.describe( 'Single profile without photo', () => {
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
 		await visitIntegrationPage( page, profileNoPhotoUrl );
+		await expect( page.locator( '.sock-location' ) ).toBeVisible();
 		await expectFullPageScreenshot( page, 'single-profile-no-photo-full.png' );
 	} );
 } );
