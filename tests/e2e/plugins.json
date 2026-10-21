@@ -60,7 +60,7 @@
 		"slug": "bellevue-2022-organization",
 		"displayName": "Bellevue 2022 Organization",
 		"required": true,
-		"activateOn": [ "main", "subsite" ],
+		"activateOn": [ "main" ],
 		"envPathVar": "BELLEVUE_2022_ORGANIZATION_PATH",
 		"remote": {
 			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-organization.zip",
@@ -72,7 +72,7 @@
 		"slug": "bellevue-2022-news",
 		"displayName": "Bellevue 2022 News",
 		"required": true,
-		"activateOn": [ "main", "subsite" ],
+		"activateOn": [ "main" ],
 		"envPathVar": "BELLEVUE_2022_NEWS_PATH",
 		"remote": {
 			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-news.zip",
@@ -84,7 +84,7 @@
 		"slug": "bellevue-2022-program",
 		"displayName": "Bellevue 2022 Program",
 		"required": true,
-		"activateOn": [ "main", "subsite" ],
+		"activateOn": [ "main" ],
 		"envPathVar": "BELLEVUE_2022_PROGRAM_PATH",
 		"remote": {
 			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-program.zip",
@@ -92,11 +92,23 @@
 		},
 		"activate": "bellevue-2022-program/bellevue-2022-program.php"
 	},
+	"bellevue2022Pathway": {
+		"slug": "bellevue-2022-pathway",
+		"displayName": "Bellevue 2022 Pathway",
+		"required": true,
+		"activateOn": [ "main" ],
+		"envPathVar": "BELLEVUE_2022_PATHWAY_PATH",
+		"remote": {
+			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-pathway.zip",
+			"directoryName": "bellevue-2022-pathway"
+		},
+		"activate": "bellevue-2022-pathway/bellevue-2022-pathway.php"
+	},
 	"bellevue2022Components": {
 		"slug": "bellevue-2022-components",
 		"displayName": "Bellevue 2022 Components",
 		"required": true,
-		"activateOn": [ "main", "subsite" ],
+		"activateOn": [ "main" ],
 		"envPathVar": "BELLEVUE_2022_COMPONENTS_PATH",
 		"remote": {
 			"url": "https://github.com/BellevueCollege/bellevue-2022-theme-plugins/releases/download/v2.3.2/bellevue-2022-components.zip",

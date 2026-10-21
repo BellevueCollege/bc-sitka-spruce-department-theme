@@ -19,6 +19,10 @@
 		"source": "local",
 		"path": "../bellevue-2022-theme-plugins/bellevue-2022-program"
 	},
+	"bellevue2022Pathway": {
+		"source": "local",
+		"path": "../bellevue-2022-theme-plugins/bellevue-2022-pathway"
+	},
 	"bellevue2022Components": {
 		"source": "local",
 		"path": "../bellevue-2022-theme-plugins/bellevue-2022-components"
