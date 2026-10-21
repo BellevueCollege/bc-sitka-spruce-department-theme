@@ -729,7 +729,7 @@ function build_profile_title_and_slug( string $first_name, string $last_name, st
 		return null;
 	}
 
-	$full_name = trim( "{$first_name} {$last_name}" );
+	$full_name = trim( "{$last_name} {$first_name}" );
 	$title     = $role !== '' ? "{$last_name}, {$first_name} – {$role}" : $full_name;
 
 	return array(
