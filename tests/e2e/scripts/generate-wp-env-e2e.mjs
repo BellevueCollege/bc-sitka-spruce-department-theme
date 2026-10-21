@@ -9,12 +9,17 @@ import {
 	getMainSiteBaseUrl,
 	getSubsiteBaseUrl,
 } from '../helpers/e2e-env.js';
-import { resolveE2ePlugins } from './resolve-plugin.mjs';
+import {
+	resolveE2eBellevue2022Theme,
+	resolveE2ePlugins,
+} from './resolve-plugin.mjs';
 
 const THEME_SLUG = 'bc-sitka-spruce-department-theme';
+const BELLEVUE_2022_THEME_SLUG = 'bellevue-2022';
 
 const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
 const projectRoot = path.resolve( __dirname, '../../..' );
+
 const muPluginPath = path.join(
 	projectRoot,
 	'tests/e2e/mu-plugins/e2e-seed-endpoint.php'
@@ -56,7 +61,7 @@ function buildAfterStartWpCliCommands( resolvedPlugins ) {
 	return [
 		...buildPluginActivationCommands( resolvedPlugins, 'main' ),
 		...buildPluginActivationCommands( resolvedPlugins, 'subsite' ),
-		`wp theme activate ${ THEME_SLUG } --url=${ MAIN_SITE_URL }`,
+		`wp theme activate ${ BELLEVUE_2022_THEME_SLUG } --url=${ MAIN_SITE_URL }`,
 		`wp theme activate ${ THEME_SLUG } --url=${ SUBSITE_URL }`,
 		`wp rewrite structure ${ rewriteStructure } --hard --url=${ MAIN_SITE_URL }`,
 		`wp rewrite structure ${ rewriteStructure } --hard --url=${ SUBSITE_URL }`,
@@ -84,9 +89,10 @@ function buildIdempotentAfterStartWpCliCommands() {
  * Build the wp-env config object from the plugin catalog.
  *
  * @param {import('./resolve-plugin.mjs').ResolvedE2ePlugin[]} resolvedPlugins
+ * @param {string} bellevue2022ThemeHostPath
  * @return {Record<string, unknown>}
  */
-function buildWpEnvConfig( resolvedPlugins ) {
+function buildWpEnvConfig( resolvedPlugins, bellevue2022ThemeHostPath ) {
 	/** @type {string[]} */
 	const plugins = [];
 
@@ -104,6 +110,15 @@ function buildWpEnvConfig( resolvedPlugins ) {
 	const afterStartWpCliCommands =
 		buildAfterStartWpCliCommands( resolvedPlugins );
 
+	/** @type {Record<string, string>} */
+	const mappings = {
+		'wp-content/mu-plugins/e2e-seed-endpoint.php': muPluginPath,
+		[ `wp-content/themes/${ THEME_SLUG }` ]: projectRoot,
+	};
+
+	mappings[ `wp-content/themes/${ BELLEVUE_2022_THEME_SLUG }` ] =
+		bellevue2022ThemeHostPath;
+
 	return {
 		$schema: 'https://schemas.wp.org/trunk/wp-env.json',
 		testsEnvironment: false,
@@ -120,11 +135,7 @@ function buildWpEnvConfig( resolvedPlugins ) {
 			WP_HOME: MAIN_SITE_URL,
 			WP_SITEURL: MAIN_SITE_URL,
 		},
-		mappings: {
-			'wp-content/mu-plugins/e2e-seed-endpoint.php': muPluginPath,
-			// ADO checks out to …/s; map a stable theme slug instead of themes: ['.'].
-			[ `wp-content/themes/${ THEME_SLUG }` ]: projectRoot,
-		},
+		mappings,
 		// Seeding runs from start-wp-env-e2e.mjs after `wp-env start` (not lifecycleScripts).
 		// Lifecycle afterStart nested `wp-env run` inside `wp-env start` and breaks on macOS/Windows.
 		afterStartWpCliCommands,
@@ -138,6 +149,7 @@ function buildWpEnvConfig( resolvedPlugins ) {
  */
 export async function generateWpEnvE2eConfig() {
 	const resolvedPlugins = await resolveE2ePlugins();
+	const bellevue2022ThemeHostPath = await resolveE2eBellevue2022Theme();
 
 	const acfPlugin = resolvedPlugins.find( ( plugin ) => plugin.key === 'acf' );
 	if (
@@ -151,7 +163,10 @@ export async function generateWpEnvE2eConfig() {
 		);
 	}
 
-	const wpEnvConfig = buildWpEnvConfig( resolvedPlugins );
+	const wpEnvConfig = buildWpEnvConfig(
+		resolvedPlugins,
+		bellevue2022ThemeHostPath
+	);
 	const { afterStartWpCliCommands, ...wpEnvConfigForFile } = wpEnvConfig;
 	const idempotentWpCliCommands = buildIdempotentAfterStartWpCliCommands();
 

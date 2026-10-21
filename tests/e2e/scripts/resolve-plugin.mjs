@@ -14,13 +14,16 @@ import { fileURLToPath } from 'url';
 import { pipeline } from 'stream/promises';
 import { isStrictE2ePluginResolution } from '../helpers/e2e-env.js';
 import pluginCatalog from '../plugins.json' with { type: 'json' };
+import themeCatalog from '../themes.json' with { type: 'json' };
 
 const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
 const e2eRoot = path.resolve( __dirname, '..' );
 // scripts → e2e → tests → theme root. One fewer ".." resolves paths inside tests/.
 const projectRoot = path.resolve( __dirname, '../../..' );
 const pluginsCacheRoot = path.join( projectRoot, 'artifacts', 'e2e-plugins' );
+const themesCacheRoot = path.join( projectRoot, 'artifacts', 'e2e-themes' );
 const localPluginsPath = path.join( e2eRoot, 'plugins.local.json' );
+const localThemesPath = path.join( e2eRoot, 'themes.local.json' );
 
 const MAX_REDIRECTS = 5;
 const GITHUB_USER_AGENT = 'bc-sitka-spruce-e2e';
@@ -246,6 +249,118 @@ export async function resolveE2ePlugins() {
 	}
 
 	return resolved;
+}
+
+/**
+ * @return {Record<string, { source?: string, path?: string }>}
+ */
+function loadLocalThemeOverlay() {
+	if ( ! existsSync( localThemesPath ) ) {
+		return {};
+	}
+
+	return JSON.parse( readFileSync( localThemesPath, 'utf8' ) );
+}
+
+/**
+ * @param {{ url: string, directoryName: string }} release
+ * @return {Promise<string>}
+ */
+async function downloadAndExtractTheme( release ) {
+	const extractParent = path.join( themesCacheRoot, release.directoryName );
+	const zipPath = path.join( extractParent, 'theme.zip' );
+
+	mkdirSync( extractParent, { recursive: true } );
+	await downloadFile( release.url, zipPath );
+	assertDownloadedZip( zipPath, release.url );
+	extractZip( zipPath, extractParent );
+	rmSync( zipPath, { force: true } );
+
+	return findPluginRootDirectory( extractParent );
+}
+
+/**
+ * Resolve the Bellevue 2022 theme directory for main-site e2e (mount + activate).
+ *
+ * @return {Promise<string>}
+ */
+export async function resolveE2eBellevue2022Theme() {
+	const themeKey = 'bellevue2022';
+	const catalogEntry = themeCatalog[ themeKey ];
+	if ( ! catalogEntry ) {
+		throw new Error( 'Bellevue 2022 theme is missing from tests/e2e/themes.json.' );
+	}
+
+	const {
+		slug,
+		displayName,
+		required = true,
+		envPathVar,
+		remote,
+	} = catalogEntry;
+
+	const localOverlay = isStrictE2ePluginResolution()
+		? {}
+		: loadLocalThemeOverlay();
+
+	if ( isStrictE2ePluginResolution() ) {
+		console.log(
+			'[e2e] Strict theme resolution: using catalog release zip (ignoring themes.local.json and env path overrides).'
+		);
+	}
+
+	if ( envPathVar && ! isStrictE2ePluginResolution() ) {
+		const envPath = process.env[ envPathVar ];
+		if ( envPath && existsSync( envPath ) ) {
+			const resolvedPath = path.resolve( envPath );
+			console.log( `[e2e] ${ themeKey }: using ${ envPathVar }=${ resolvedPath }` );
+			return resolvedPath;
+		}
+	}
+
+	const localEntry = localOverlay[ themeKey ];
+	if (
+		! isStrictE2ePluginResolution() &&
+		localEntry?.source === 'local' &&
+		localEntry.path
+	) {
+		const localPath = path.resolve( projectRoot, localEntry.path );
+		if ( existsSync( localPath ) ) {
+			console.log( `[e2e] ${ themeKey }: using local ${ localPath }` );
+			return localPath;
+		}
+		if ( required ) {
+			throwMissingLocalPath( themeKey, displayName, localPath );
+		}
+	}
+
+	if ( ! isStrictE2ePluginResolution() ) {
+		const siblingDefault = path.resolve( projectRoot, '../bellevue-2022' );
+		if ( existsSync( siblingDefault ) ) {
+			console.log( `[e2e] ${ themeKey }: using sibling checkout ${ siblingDefault }` );
+			return siblingDefault;
+		}
+	}
+
+	const remoteUrl = remote?.url || '';
+	if ( ! remoteUrl ) {
+		throw new Error(
+			`${ displayName } (${ themeKey }) has no release URL in tests/e2e/themes.json.`
+		);
+	}
+
+	if ( remoteUrl.includes( PLACEHOLDER_RELEASE_FRAGMENT ) ) {
+		throwPlaceholderRelease( remoteUrl, displayName );
+	}
+
+	const directoryName = remote.directoryName || slug;
+	console.log( `[e2e] ${ themeKey }: downloading theme archive (release URL)` );
+	const extractedRoot = await downloadAndExtractTheme( {
+		url: remoteUrl,
+		directoryName,
+	} );
+	console.log( `[e2e] ${ themeKey }: downloaded to ${ extractedRoot }` );
+	return extractedRoot;
 }
 
 /**
