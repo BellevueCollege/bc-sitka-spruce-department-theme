@@ -718,9 +718,6 @@ add_filter( 'register_profile_post_type_args', function ( $args ) {
 
 /** Profile Post Type — title & slug from ACF name fields.*/
 
-/** Slug WordPress assigns to a profile that has never had a title. */
-const PROFILE_AUTO_DRAFT_SLUG_PREFIX = 'auto-draft';
-
 /** Slug used until ACF delivers the name, unique per profile. */
 const PROFILE_PLACEHOLDER_SLUG_PREFIX = 'profile-';
 
@@ -823,7 +820,7 @@ function get_profile_name_fields_from_post_data(): array {
  * @return bool
  */
 function is_generic_profile_slug( string $slug ): bool {
-	return $slug === '' || strpos( $slug, PROFILE_AUTO_DRAFT_SLUG_PREFIX ) === 0;
+	return $slug === '' || strpos( $slug, 'auto-draft' ) === 0;
 }
 
 /**
