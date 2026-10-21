@@ -723,16 +723,19 @@ const PROFILE_PLACEHOLDER_SLUG_PREFIX = 'profile-';
 function build_profile_title_and_slug( string $first_name, string $last_name, string $role = '' ): ?array {
 	$first_name = trim( $first_name );
 	$last_name  = trim( $last_name );
+	$role       = trim( $role );
 
 	if ( $first_name === '' || $last_name === '' ) {
 		return null;
 	}
 
 	$full_name = trim( "{$first_name} {$last_name}" );
+	$title     = $role !== '' ? "{$last_name}, {$first_name} – {$role}" : $full_name;
 
 	return array(
-		'title' => $role !== '' ? "{$last_name}, {$first_name} – {$role}" : $full_name,
-		'slug'  => sanitize_title( $full_name ),
+		'title' => $title,
+		// Existing permalinks were generated from this title, e.g. "Doe, Jane – Dean".
+		'slug'  => sanitize_title( $title ),
 	);
 }
 
