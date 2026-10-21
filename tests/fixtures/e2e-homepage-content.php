@@ -248,6 +248,52 @@ function e2e_homepage_wire_degrees_section( string $content, array $program_ids 
 }
 
 /**
+ * Build a media gallery block with an image slide, a video slide, and a caption slide.
+ *
+ * @param string $title         Section title.
+ * @param int    $attachment_id Image attachment ID used on every slide.
+ * @param string $description   Section intro copy.
+ * @return string
+ */
+function e2e_build_media_gallery_section_markup(
+	string $title,
+	int $attachment_id,
+	string $description = 'E2E media gallery section intro.'
+): string {
+	$image_id   = $attachment_id > 0 ? $attachment_id : '';
+	$attributes = array(
+		'name' => 'bc-sitka-spruce/media-gallery-section',
+		'data' => array(
+			'field_66ec949460565' => $title,
+			'field_66ec94b860566' => $description,
+			'field_66ec94c860567' => array(
+				'row-0' => array(
+					'field_66ec94e515757' => $image_id,
+					'field_66ec952b15758' => '',
+					'field_66ec954815759' => '',
+					'field_66ec955b1575a' => '',
+				),
+				'row-1' => array(
+					'field_66ec94e515757' => $image_id,
+					'field_66ec952b15758' => 'https://www.youtube.com/watch?v=ScMzIvxBSi4',
+					'field_66ec954815759' => 'E2E Gallery Video Slide',
+					'field_66ec955b1575a' => 'E2E gallery video slide description.',
+				),
+				'row-2' => array(
+					'field_66ec94e515757' => $image_id,
+					'field_66ec952b15758' => '',
+					'field_66ec954815759' => 'E2E Gallery Caption Slide',
+					'field_66ec955b1575a' => 'E2E gallery caption slide description.',
+				),
+			),
+		),
+		'mode' => 'auto',
+	);
+
+	return '<!-- wp:bc-sitka-spruce/media-gallery-section ' . wp_json_encode( $attributes ) . ' /-->';
+}
+
+/**
  * @param string $content       Block markup.
  * @param int    $attachment_id Image attachment ID.
  * @return string
@@ -257,17 +303,14 @@ function e2e_homepage_wire_media_gallery( string $content, int $attachment_id ):
 		return $content;
 	}
 
-	$content = str_replace(
-		'"field_66ec94b860566":""',
-		'"field_66ec94b860566":"E2E media gallery section intro."',
-		$content
-	);
+	$markup = e2e_build_media_gallery_section_markup( 'Media Gallery', $attachment_id );
 
-	return str_replace(
-		'"field_66ec94e515757":""',
-		'"field_66ec94e515757":' . $attachment_id,
-		$content
-	);
+	return preg_replace(
+		'#<!-- wp:bc-sitka-spruce/media-gallery-section\s+\{.*?\}\s*/-->#s',
+		$markup,
+		$content,
+		1
+	) ?? $content;
 }
 
 /**

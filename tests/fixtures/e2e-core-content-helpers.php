@@ -111,6 +111,47 @@ function e2e_wire_core_site_blocks_in_content( string $content, array $map ): st
 }
 
 /**
+ * Add one differentiator child so a seeded section can wrap to a second row.
+ *
+ * Call this before e2e_wire_core_site_blocks_in_content() so the new block
+ * receives the next core differentiator ID. Starter patterns stay unchanged.
+ *
+ * @param string $content Block markup.
+ * @return string
+ */
+function e2e_append_differentiator_block( string $content ): string {
+	return preg_replace(
+		'#<!-- /wp:bc-sitka-spruce/differentiator-section -->#',
+		"<!-- wp:bc-sitka-spruce/differentiator /-->\n<!-- /wp:bc-sitka-spruce/differentiator-section -->",
+		$content,
+		1
+	) ?? $content;
+}
+
+/**
+ * Keep the first differentiator blocks and drop the rest.
+ *
+ * Call this before core-site ID wiring. Used so the program template exercises
+ * a single differentiator without editing the starter pattern.
+ *
+ * @param string $content    Block markup.
+ * @param int    $keep_count How many differentiator blocks to retain.
+ * @return string
+ */
+function e2e_limit_differentiator_blocks( string $content, int $keep_count ): string {
+	$seen = 0;
+
+	return preg_replace_callback(
+		'#<!-- wp:bc-sitka-spruce/differentiator(?:\s+\{.*?\})?\s*/-->\s*#',
+		static function ( array $matches ) use ( &$seen, $keep_count ) {
+			$seen++;
+			return $seen <= $keep_count ? $matches[0] : '';
+		},
+		$content
+	) ?? $content;
+}
+
+/**
  * Merge or set a single block attribute in serialized markup.
  *
  * @param string $content    Block markup.

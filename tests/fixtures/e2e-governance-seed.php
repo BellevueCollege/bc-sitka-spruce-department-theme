@@ -10,6 +10,18 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 /**
+ * Paragraph block markup matching a block-editor save.
+ *
+ * @param string $text Visible paragraph text.
+ * @return string
+ */
+function e2e_governance_paragraph_block( string $text ): string {
+	$escaped_text = esc_html( $text );
+
+	return "<!-- wp:paragraph -->\n<p class=\"wp-block-paragraph\">{$escaped_text}</p>\n<!-- /wp:paragraph -->";
+}
+
+/**
  * @return array<string, string>
  */
 function e2e_seed_governance_data(): array {
@@ -29,7 +41,7 @@ function e2e_seed_governance_data(): array {
 		'E2E Board Agenda',
 		'agendas',
 		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E agenda body content.</p><!-- /wp:paragraph -->',
+			'post_content' => e2e_governance_paragraph_block( 'E2E agenda body content.' ),
 		)
 	);
 
@@ -37,7 +49,7 @@ function e2e_seed_governance_data(): array {
 		'E2E Special Board Agenda',
 		'agendas',
 		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E special agenda body.</p><!-- /wp:paragraph -->',
+			'post_content' => e2e_governance_paragraph_block( 'E2E special agenda body.' ),
 		)
 	);
 
@@ -45,7 +57,7 @@ function e2e_seed_governance_data(): array {
 		'E2E Spring Board Agenda',
 		'agendas',
 		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E spring agenda body.</p><!-- /wp:paragraph -->',
+			'post_content' => e2e_governance_paragraph_block( 'E2E spring agenda body.' ),
 		)
 	);
 
@@ -53,7 +65,7 @@ function e2e_seed_governance_data(): array {
 		'E2E Prior Year Agenda',
 		'agendas',
 		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E prior year agenda body.</p><!-- /wp:paragraph -->',
+			'post_content' => e2e_governance_paragraph_block( 'E2E prior year agenda body.' ),
 		)
 	);
 
@@ -61,7 +73,7 @@ function e2e_seed_governance_data(): array {
 		'E2E Action Item',
 		'action-item',
 		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E action item body.</p><!-- /wp:paragraph -->',
+			'post_content' => e2e_governance_paragraph_block( 'E2E action item body.' ),
 		)
 	);
 
@@ -69,7 +81,7 @@ function e2e_seed_governance_data(): array {
 		'E2E Resolution',
 		'resolution',
 		array(
-			'post_content' => '<!-- wp:paragraph --><p>E2E resolution body.</p><!-- /wp:paragraph -->',
+			'post_content' => e2e_governance_paragraph_block( 'E2E resolution body.' ),
 		)
 	);
 

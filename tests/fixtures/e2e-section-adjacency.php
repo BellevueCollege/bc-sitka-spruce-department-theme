@@ -497,12 +497,15 @@ MARKUP;
  * @return string
  */
 function e2e_adjacency_media_gallery_section( string $heading, int $attachment_id ): string {
-	$escaped_heading = esc_html( $heading );
-	$image_field     = $attachment_id > 0 ? (string) $attachment_id : '""';
+	if ( ! function_exists( 'e2e_build_media_gallery_section_markup' ) ) {
+		require_once __DIR__ . '/e2e-homepage-content.php';
+	}
 
-	return <<<MARKUP
-<!-- wp:bc-sitka-spruce/media-gallery-section {"name":"bc-sitka-spruce/media-gallery-section","data":{"field_66ec949460565":"{$escaped_heading}","field_66ec94b860566":"E2E media gallery adjacency intro.","field_66ec94c860567":{"row-0":{"field_66ec94e515757":{$image_field},"field_66ec952b15758":"","field_66ec954815759":"","field_66ec955b1575a":""}}},"mode":"auto"} /-->
-MARKUP;
+	return e2e_build_media_gallery_section_markup(
+		$heading,
+		$attachment_id,
+		'E2E media gallery adjacency intro.'
+	);
 }
 
 /**
