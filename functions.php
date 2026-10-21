@@ -773,7 +773,7 @@ function get_profile_name_fields_from_rest_request( $request ): array {
  * @param WP_REST_Request $request       REST request.
  * @return \stdClass
  */
-function set_profile_title_and_slug_for_rest( $prepared_post, $request ) {
+add_filter( 'rest_pre_insert_profile', function( $prepared_post, $request ) {
 	$name_fields = get_profile_name_fields_from_rest_request( $request );
 	$built       = build_profile_title_and_slug(
 		$name_fields['first_name'],
@@ -787,8 +787,7 @@ function set_profile_title_and_slug_for_rest( $prepared_post, $request ) {
 	}
 
 	return $prepared_post;
-}
-add_filter( 'rest_pre_insert_profile', __NAMESPACE__ . '\set_profile_title_and_slug_for_rest', 10, 2 );
+}, 10, 2 );
 
 /**
  * Read first name, last name, and role from a submitted ACF form.
