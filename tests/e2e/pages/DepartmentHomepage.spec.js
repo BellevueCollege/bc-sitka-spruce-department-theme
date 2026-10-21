@@ -60,9 +60,10 @@ test.describe( 'Department homepage integration', () => {
 		const main = page.locator( 'main, .site-content, #content' ).first();
 		await expect( main.getByRole( 'link', { name: 'E2E Alpha' } ).first() ).toBeVisible();
 		await expect( main.getByRole( 'link', { name: 'E2E Beta' } ).first() ).toBeVisible();
-		await expect( main.getByRole( 'region', { name: 'Stats about BC' } ) ).toContainText(
-			'E2E Stat 1'
-		);
+		const stats = main.getByRole( 'region', { name: 'Stats about BC' } );
+		await expect( stats ).toContainText( 'E2E Stat 1' );
+		await expect( stats.locator( '.fa-graduation-cap' ) ).toBeVisible();
+		await expect( stats.locator( '.diff--hero__photo img' ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'E2E Listing Item One' } ) ).toBeVisible();
 		await expect( main.getByText( 'E2E department accordion panel one.' ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'E2E Checkerboard One' } ) ).toBeVisible();
@@ -70,9 +71,20 @@ test.describe( 'Department homepage integration', () => {
 		await expect( main.getByRole( 'link', { name: /Grace Hopper/i } ).first() ).toBeVisible();
 		await expect( main.getByText( 'No employees found!' ) ).toHaveCount( 0 );
 
+		const gallery = main.locator( '.media-gallery-wrapper' );
+		await expect( gallery.locator( '.swiper-slide' ) ).toHaveCount( 3 );
+		await expect( gallery.locator( '.slider-navigation__next' ) ).toBeVisible();
+		await expect( gallery.locator( 'a.image-overlay[data-fancybox]' ) ).toHaveCount( 1 );
+		await expect( gallery.getByRole( 'heading', { name: 'E2E Gallery Video Slide' } ) ).toBeAttached();
+		await expect( gallery.getByText( 'E2E gallery caption slide description.' ) ).toBeAttached();
+		await gallery.locator( '.slider-navigation__next' ).click();
+		await expect( gallery.getByRole( 'heading', { name: 'E2E Gallery Video Slide' } ) ).toBeVisible();
+
 		if ( testInfo.project.name === 'desktop' ) {
 			await expect( main.getByText( 'E2E featured news summary' ) ).toBeVisible();
 			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Two' } ) ).toBeVisible();
+			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Three' } ) ).toBeVisible();
+			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Four' } ) ).toBeVisible();
 			await expect(
 				main.getByRole( 'tab', { name: 'E2E Core Identity Support', exact: true } )
 			).toBeVisible();

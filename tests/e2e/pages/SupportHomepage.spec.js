@@ -66,6 +66,8 @@ test.describe( 'Support homepage integration', () => {
 			await expect( main.getByRole( 'heading', { name: 'E2E Support Tab' } ) ).toBeVisible();
 			await expect( main.getByText( 'E2E support tab summary content.' ) ).toBeVisible();
 			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Two' } ) ).toBeVisible();
+			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Three' } ) ).toBeVisible();
+			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Four' } ) ).toBeVisible();
 		}
 	} );
 
@@ -80,6 +82,13 @@ test.describe( 'Support homepage integration', () => {
 	test( 'main content passes axe', async ( { page } ) => {
 		const results = await runAxeOnSelector( page, '.testimonial-section-wrapper, .testimonial-section' );
 		expect( results.violations ).toEqual( [] );
+	} );
+
+	test( 'does not scroll horizontally on narrow viewports @viewport', async ( { page } ) => {
+		const overflow = await page.evaluate(
+			() => document.documentElement.scrollWidth - document.documentElement.clientWidth
+		);
+		expect( overflow ).toBeLessThanOrEqual( 1 );
 	} );
 
 	test( 'full page snapshot @visual', async ( { page } ) => {

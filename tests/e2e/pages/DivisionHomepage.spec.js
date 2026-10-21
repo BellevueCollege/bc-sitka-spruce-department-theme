@@ -58,9 +58,9 @@ test.describe( 'Division homepage integration', () => {
 
 	test( 'renders seeded dynamic block content', async ( { page }, testInfo ) => {
 		const main = page.locator( 'main, .site-content, #content' ).first();
-		await expect( main.getByRole( 'region', { name: 'Stats about BC' } ) ).toContainText(
-			'E2E Stat 1'
-		);
+		const stats = main.getByRole( 'region', { name: 'Stats about BC' } );
+		await expect( stats ).toContainText( 'E2E Stat 1' );
+		await expect( stats ).toContainText( 'E2E Stat 4' );
 		await expect( main.getByRole( 'heading', { name: 'E2E Listing Item One' } ) ).toBeVisible();
 		await expect( main.getByRole( 'heading', { name: 'E2E Checkerboard One' } ) ).toBeVisible();
 		await expect( main.getByRole( 'link', { name: /Ada Lovelace/i } ).first() ).toBeVisible();
@@ -69,6 +69,8 @@ test.describe( 'Division homepage integration', () => {
 
 		if ( testInfo.project.name === 'desktop' ) {
 			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Two' } ) ).toBeVisible();
+			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Three' } ) ).toBeVisible();
+			await expect( main.getByRole( 'link', { name: 'E2E Core News Story Four' } ) ).toBeVisible();
 		}
 	} );
 

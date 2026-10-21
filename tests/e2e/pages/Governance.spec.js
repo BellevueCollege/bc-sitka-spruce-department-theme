@@ -83,6 +83,34 @@ test.describe( 'Governance templates integration', () => {
 		expect( results.violations ).toEqual( [] );
 	} );
 
+	test( 'agenda body stays left-aligned in the main column', async ( { page } ) => {
+		test.skip( ! governance.agendaUrl, 'Trustees Agenda plugin not available.' );
+		await visitIntegrationPage( page, governance.agendaUrl );
+
+		const alignment = await page.evaluate( () => {
+			const column = document.querySelector( '.single-agendas-page .col-lg-8' );
+			const paragraph = column?.querySelector( 'p.wp-block-paragraph' );
+			if ( ! column || ! paragraph ) {
+				return null;
+			}
+
+			const columnBox = column.getBoundingClientRect();
+			const paragraphBox = paragraph.getBoundingClientRect();
+			const columnStyle = window.getComputedStyle( column );
+			const columnPaddingLeft = Number.parseFloat( columnStyle.paddingLeft ) || 0;
+
+			return {
+				leftInset: paragraphBox.left - columnBox.left - columnPaddingLeft,
+				paragraphWidth: paragraphBox.width,
+				columnContentWidth: columnBox.width - columnPaddingLeft,
+			};
+		} );
+
+		expect( alignment ).not.toBeNull();
+		expect( alignment.leftInset ).toBeLessThanOrEqual( 8 );
+		expect( alignment.paragraphWidth ).toBeGreaterThan( alignment.columnContentWidth * 0.85 );
+	} );
+
 	test( 'agenda full page snapshot @visual', async ( { page } ) => {
 		test.skip( ! governance.agendaUrl, 'Trustees Agenda plugin not available.' );
 		await visitIntegrationPage( page, governance.agendaUrl );
