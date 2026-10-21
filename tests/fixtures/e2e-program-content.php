@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once __DIR__ . '/e2e-homepage-content.php';
+require_once __DIR__ . '/e2e-core-content-helpers.php';
 
 /**
  * @param array $core_map        Core site seed map.
@@ -19,6 +20,7 @@ require_once __DIR__ . '/e2e-homepage-content.php';
  */
 function e2e_build_program_post_content( array $core_map, int $profile_id, int $attachment_id ): string {
 	$content = e2e_load_pattern_markup( 'program-content-v1.php' );
+	$content = e2e_limit_differentiator_blocks( $content, 1 );
 	$content = e2e_wire_core_site_blocks_in_content( $content, $core_map );
 	$content = e2e_wire_profiles_sections_node_select( $content, $profile_id );
 	$content = e2e_populate_program_template_info( $content );
