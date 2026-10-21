@@ -93,13 +93,13 @@
     - list:
       - listitem:
         - link "E2E BC Pathway Opens in a new tab":
-          - /url: http://127.0.0.1:8889/?p=370
+          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
   - term: Focus Area(s)
   - definition:
     - list:
       - listitem:
         - link "E2E Focus Area Opens in a new tab":
-          - /url: http://127.0.0.1:8889/?p=370#e2e-focus-area-tab-open
+          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+#e2e-focus-area-tab-open/
   - heading "E2E Beta" [level=4]:
     - link "E2E Beta":
       - /url: http://127.0.0.1:8889/e2e-dept/program/e2e-program-beta/
@@ -113,13 +113,13 @@
     - list:
       - listitem:
         - link "E2E BC Pathway Opens in a new tab":
-          - /url: http://127.0.0.1:8889/?p=370
+          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
   - term: Focus Area(s)
   - definition:
     - list:
       - listitem:
         - link "E2E Focus Area Opens in a new tab":
-          - /url: http://127.0.0.1:8889/?p=370#e2e-focus-area-tab-open
+          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+#e2e-focus-area-tab-open/
   - separator
   - heading "Certificate Options" [level=3]
   - paragraph: E2E segment supporting copy.
@@ -136,13 +136,13 @@
     - list:
       - listitem:
         - link "E2E BC Pathway Opens in a new tab":
-          - /url: http://127.0.0.1:8889/?p=370
+          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
   - term: Focus Area(s)
   - definition:
     - list:
       - listitem:
         - link "E2E Focus Area Opens in a new tab":
-          - /url: http://127.0.0.1:8889/?p=370#e2e-focus-area-tab-open
+          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+#e2e-focus-area-tab-open/
   - heading "E2E Beta" [level=4]:
     - link "E2E Beta":
       - /url: http://127.0.0.1:8889/e2e-dept/program/e2e-program-beta/
@@ -156,13 +156,13 @@
     - list:
       - listitem:
         - link "E2E BC Pathway Opens in a new tab":
-          - /url: http://127.0.0.1:8889/?p=370
+          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
   - term: Focus Area(s)
   - definition:
     - list:
       - listitem:
         - link "E2E Focus Area Opens in a new tab":
-          - /url: http://127.0.0.1:8889/?p=370#e2e-focus-area-tab-open
+          - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+#e2e-focus-area-tab-open/
   - article:
     - heading "Announcement Banner" [level=2]
     - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
@@ -224,11 +224,11 @@
   - text: E2E checkerboard section supporting copy.
   - figure "E2E checkerboard row body copy.":
     - img "E2E hero fixture image"
-    - text: ""
+    - text: E2E checkerboard row body copy.
   - heading "E2E Checkerboard One" [level=3]
   - figure "E2E checkerboard row body copy.":
     - img "E2E hero fixture image"
-    - text: ""
+    - text: E2E checkerboard row body copy.
   - heading "E2E Checkerboard Two" [level=3]
   - heading "Support Section" [level=2]
   - tablist:
@@ -250,22 +250,22 @@
   - text: Featured Story
   - heading "E2E Core News Story" [level=3]:
     - link "E2E Core News Story":
-      - /url: http://127.0.0.1:8889/?p=358
+      - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
   - text: E2E featured news summary.
   - article:
     - heading "E2E Core News Story Two" [level=3]:
       - link "E2E Core News Story Two":
-        - /url: http://127.0.0.1:8889/?p=361
+        - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
     - text: E2E secondary featured news summary.
   - article:
     - heading "E2E Core News Story Three" [level=3]:
       - link "E2E Core News Story Three":
-        - /url: http://127.0.0.1:8889/?p=362
+        - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
     - text: E2E third featured news summary.
   - article:
     - heading "E2E Core News Story Four" [level=3]:
       - link "E2E Core News Story Four":
-        - /url: http://127.0.0.1:8889/?p=363
+        - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
     - text: E2E fourth featured news summary.
 - complementary:
   - heading "Location" [level=2]

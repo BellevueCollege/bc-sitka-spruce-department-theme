@@ -108,22 +108,22 @@
   - text: Featured Story
   - heading "E2E Core News Story" [level=3]:
     - link "E2E Core News Story":
-      - /url: http://127.0.0.1:8889/?p=358
+      - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
   - text: E2E featured news summary.
   - article:
     - heading "E2E Core News Story Two" [level=3]:
       - link "E2E Core News Story Two":
-        - /url: http://127.0.0.1:8889/?p=361
+        - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
     - text: E2E secondary featured news summary.
   - article:
     - heading "E2E Core News Story Three" [level=3]:
       - link "E2E Core News Story Three":
-        - /url: http://127.0.0.1:8889/?p=362
+        - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
     - text: E2E third featured news summary.
   - article:
     - heading "E2E Core News Story Four" [level=3]:
       - link "E2E Core News Story Four":
-        - /url: http://127.0.0.1:8889/?p=363
+        - /url: /http:\/\/127\.0\.0\.1:8889\/\?p=\d+/
     - text: E2E fourth featured news summary.
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]

@@ -27,14 +27,21 @@ function e2e_seed_core_news_story(
 	string $title,
 	string $summary,
 	int $news_type_id,
-	int $hero_attachment_id
+	int $hero_attachment_id,
+	string $post_date = ''
 ): int {
+	$post_args = array(
+		'post_content' => '<!-- wp:paragraph --><p>' . esc_html( $title ) . ' body.</p><!-- /wp:paragraph -->',
+	);
+	if ( $post_date !== '' ) {
+		$post_args['post_date']     = $post_date;
+		$post_args['post_date_gmt'] = get_gmt_from_date( $post_date );
+	}
+
 	$news_id = e2e_upsert_post(
 		$title,
 		'news',
-		array(
-			'post_content' => '<!-- wp:paragraph --><p>' . esc_html( $title ) . ' body.</p><!-- /wp:paragraph -->',
-		)
+		$post_args
 	);
 	wp_set_object_terms( $news_id, array( $news_type_id ), 'news_type' );
 
@@ -166,7 +173,9 @@ $news_id = e2e_upsert_post(
 	'E2E Core News Story',
 	'news',
 	array(
-		'post_content' => '<!-- wp:paragraph --><p>E2E core news body.</p><!-- /wp:paragraph -->',
+		'post_content'  => '<!-- wp:paragraph --><p>E2E core news body.</p><!-- /wp:paragraph -->',
+		'post_date'     => '2020-01-01 12:00:00',
+		'post_date_gmt' => get_gmt_from_date( '2020-01-01 12:00:00' ),
 	)
 );
 wp_set_object_terms( $news_id, array( (int) $news_type_id ), 'news_type' );
@@ -223,23 +232,27 @@ if ( function_exists( 'update_field' ) ) {
 	}
 }
 
+// Fixed dates keep news-feature-core list order stable (date DESC → Two, Three, Four).
 $news_two_id = e2e_seed_core_news_story(
 	'E2E Core News Story Two',
 	'E2E secondary featured news summary.',
 	(int) $news_type_id,
-	(int) $hero_attachment_id
+	(int) $hero_attachment_id,
+	'2020-01-14 12:00:00'
 );
 e2e_seed_core_news_story(
 	'E2E Core News Story Three',
 	'E2E third featured news summary.',
 	(int) $news_type_id,
-	(int) $hero_attachment_id
+	(int) $hero_attachment_id,
+	'2020-01-13 12:00:00'
 );
 e2e_seed_core_news_story(
 	'E2E Core News Story Four',
 	'E2E fourth featured news summary.',
 	(int) $news_type_id,
-	(int) $hero_attachment_id
+	(int) $hero_attachment_id,
+	'2020-01-12 12:00:00'
 );
 
 $differentiator_definitions = array(
