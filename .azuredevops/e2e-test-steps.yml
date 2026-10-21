@@ -14,6 +14,11 @@ steps:
       GITHUB_PAT: $(GITHUB_PAT)
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
 
+  - script: npm run env:e2e:verify
+    displayName: Verify e2e multisite stack
+    env:
+      CI: 'true'
+
   - script: npm run test:e2e:functional:external
     displayName: Functional e2e tests (includes 20 desktop @aria snapshots; excludes @visual)
     env:

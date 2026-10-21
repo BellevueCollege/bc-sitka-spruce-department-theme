@@ -286,4 +286,15 @@ if ( ! isE2eIntegrationSeeded() ) {
 	process.exit( 1 );
 }
 
+const verifyScript = path.join( projectRoot, 'tests/e2e/scripts/verify-e2e-stack.mjs' );
+const verifyResult = spawnSync( process.execPath, [ verifyScript ], {
+	cwd: projectRoot,
+	stdio: 'inherit',
+	env: process.env,
+} );
+
+if ( verifyResult.status !== 0 ) {
+	process.exit( verifyResult.status ?? 1 );
+}
+
 console.log( WP_ENV_E2E_READY_LOG );

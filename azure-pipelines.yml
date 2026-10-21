@@ -34,7 +34,6 @@ resources:
       type: github
       name: BellevueCollege/bc-wordpress-devops-templates
       endpoint: github-service-connection
-
 extends:
   template: templates/ci/theme-ci.yml@templates
   parameters:

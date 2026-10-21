@@ -73,7 +73,8 @@ Desktop runs every test. Tablet and mobile run only tests tagged `@viewport` plu
 4. **Point the suite at the plugins.** ACF Pro and several Bellevue plugins are required. Pick one:
    - **Local checkouts (recommended):** copy [`tests/e2e/plugins.local.example.json`](tests/e2e/plugins.local.example.json) to `tests/e2e/plugins.local.json` and adjust each `path` (relative to this theme folder). This file is gitignored.
    - **Downloads:** set `ACF_DOWNLOAD_URL` (your ACF Pro license download link) and `GITHUB_PAT` (a GitHub token that can read the private BellevueCollege plugin repos).
-5. **For visual tests only:** add your LambdaTest credentials to your shell profile:
+5. **Main-site Bellevue 2022 theme:** On first `env:e2e:start`, the suite downloads the theme release zip from [`tests/e2e/themes.json`](tests/e2e/themes.json) using `GITHUB_PAT` (same as Bellevue plugins). For a local checkout instead, copy [`tests/e2e/themes.local.example.json`](tests/e2e/themes.local.example.json) to `themes.local.json`, or set `BELLEVUE_2022_THEME_PATH`. E2e activates Bellevue on the **main** multisite site; the department subsite uses this Sitka theme.
+6. **For visual tests only:** add your LambdaTest credentials to your shell profile:
 
    ```bash
    export LT_USERNAME="your-username"
@@ -209,6 +210,10 @@ When a test fails, open `artifacts/test-results/<test-name>/error-context.md` fo
 
 **WordPress is broken, seeding fails, or errors mention a missing plugin function** (for example `Call to undefined function update_field()`, meaning ACF didn't load). Rebuild WordPress from scratch. This deletes the test database and containers. Everything is re-created and re-seeded on start.
 
+**Pathway or program template fatals after infra changes** (for example Twig errors on `pathway_names`). The main site must run the Bellevue 2022 theme (release zip or local checkout). After changing `tests/e2e/themes.json` or theme overrides, destroy wp-env and start again so after-start runs `wp theme activate bellevue-2022` on the main site and re-seeds core content.
+
+**Sanity-check main + subsite after start:** `npm run env:e2e:verify` (Bellevue theme on main, pathway CPT/ACF, Sitka on `/e2e-dept`, program fixture). This runs automatically at the end of `env:e2e:start` and in Azure DevOps before Playwright.
+
 ```bash
 npm run env:e2e:stop
 npx wp-env destroy --config=.wp-env.e2e.json --force
@@ -263,6 +268,7 @@ If it still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that ter
 | `LT_USERNAME`, `LT_ACCESS_KEY` | LambdaTest credentials (required for LambdaTest visual runs) |
 | `ACF_DOWNLOAD_URL` | ACF Pro license download link, when not using a local ACF folder |
 | `GITHUB_PAT` | GitHub token for private plugin downloads |
+| `BELLEVUE_2022_THEME_PATH` | Local Bellevue 2022 theme folder (ignored when `E2E_STRICT_PLUGINS=1`; otherwise release zip from `themes.json`) |
 | `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, `ACF_PATH` | Use a local folder for that plugin (ignored when `E2E_STRICT_PLUGINS=1`) |
 | `E2E_STRICT_PLUGINS` | Set to `1` to match CI plugin zips (no local path overrides) |
 | `E2E_WPENV_EXTERNAL` | Set to `1` when wp-env is already running (`test:e2e:visual` sets this) |

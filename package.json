@@ -15,6 +15,7 @@
     "wp-env": "wp-env",
     "env:e2e:generate": "node tests/e2e/scripts/generate-wp-env-e2e.mjs",
     "env:e2e:start": "node tests/e2e/scripts/start-wp-env-e2e.mjs",
+    "env:e2e:verify": "node tests/e2e/scripts/verify-e2e-stack.mjs",
     "env:e2e:stop": "wp-env stop --config=.wp-env.e2e.json",
     "tunnel:e2e:start": "node tests/e2e/scripts/lambdatest-tunnel.mjs start",
     "tunnel:e2e:stop": "node tests/e2e/scripts/lambdatest-tunnel.mjs stop",
