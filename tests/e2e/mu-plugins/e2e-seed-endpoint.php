@@ -1,6 +1,8 @@
 <?php
 /**
- * E2e mu-plugin: LambdaTest URL rewriting and theme block allowlist.
+ * E2e mu-plugin: LambdaTest URL rewriting, block allowlist, and test-only ACF shims.
+ *
+ * Inventory and production deltas: tests/AGENTS.md § "E2e vs production".
  *
  * @package BcSitkaSpruce
  */
@@ -12,10 +14,135 @@ if ( ! defined( 'ABSPATH' ) ) {
 /** Must match tests/e2e/helpers/e2e-env.js E2E_WP_PORT. */
 const BC_SITKA_E2E_WP_PORT = 8889;
 
-$e2e_differentiator_acf = dirname( __DIR__, 2 ) . '/fixtures/e2e-differentiator-acf.php';
-if ( is_readable( $e2e_differentiator_acf ) ) {
-	require_once $e2e_differentiator_acf;
+// wp-env maps this file into wp-content/mu-plugins, so the repo-relative path
+// only resolves when the file is loaded from tests/e2e/mu-plugins on the host.
+$e2e_differentiator_acf_candidates = array(
+	dirname( __DIR__, 2 ) . '/fixtures/e2e-differentiator-acf.php',
+	WP_CONTENT_DIR . '/themes/bc-sitka-spruce-department-theme/tests/fixtures/e2e-differentiator-acf.php',
+);
+foreach ( $e2e_differentiator_acf_candidates as $e2e_differentiator_acf ) {
+	if ( is_readable( $e2e_differentiator_acf ) ) {
+		require_once $e2e_differentiator_acf;
+		break;
+	}
 }
+
+/**
+ * Core program pathways load on the main site while department templates run on a subsite.
+ * ACF may return post IDs instead of WP_Post objects; production expects objects in Program.php.
+ *
+ * @param mixed $value   Raw meta value.
+ * @param int   $post_id Post ID.
+ * @param array $field   Field settings.
+ * @return mixed
+ */
+function bc_sitka_e2e_normalize_core_program_post_object_load_value( $value, $post_id, $field ) {
+	$field_name = is_array( $field ) ? (string) ( $field['name'] ?? '' ) : '';
+	if ( ! in_array( $field_name, array( 'pathways', 'focus_areas' ), true ) ) {
+		return $value;
+	}
+
+	if ( ! is_array( $value ) ) {
+		if ( is_numeric( $value ) ) {
+			$post = get_post( (int) $value );
+
+			return $post instanceof WP_Post ? $post : $value;
+		}
+
+		return $value;
+	}
+
+	$posts = array();
+	foreach ( $value as $reference ) {
+		if ( $reference instanceof WP_Post ) {
+			$posts[] = $reference;
+			continue;
+		}
+
+		if ( is_numeric( $reference ) ) {
+			$post = get_post( (int) $reference );
+			if ( $post instanceof WP_Post ) {
+				$posts[] = $post;
+			}
+		}
+	}
+
+	return $posts;
+}
+
+add_filter( 'acf/load_value/name=pathways', 'bc_sitka_e2e_normalize_core_program_post_object_load_value', 20, 3 );
+add_filter( 'acf/load_value/name=focus_areas', 'bc_sitka_e2e_normalize_core_program_post_object_load_value', 20, 3 );
+
+/**
+ * @param int                $post_id     Post ID.
+ * @param string             $field_name  Repeater field name.
+ * @param int                $row_count   Stored row count.
+ * @param array<int, string> $subfields   Subfield names per row.
+ * @return array<int, array<string, mixed>>
+ */
+function bc_sitka_e2e_rebuild_repeater_rows_from_meta(
+	int $post_id,
+	string $field_name,
+	int $row_count,
+	array $subfields
+): array {
+	$rows = array();
+
+	for ( $i = 0; $i < $row_count; $i++ ) {
+		$row = array();
+		foreach ( $subfields as $subfield_name ) {
+			$meta_key = $field_name . '_' . $i . '_' . $subfield_name;
+			$meta     = get_post_meta( $post_id, $meta_key, true );
+			if ( $meta !== '' && $meta !== false ) {
+				$row[ $subfield_name ] = $meta;
+			}
+		}
+
+		if ( $row !== array() ) {
+			$rows[] = $row;
+		}
+	}
+
+	return $rows;
+}
+
+/** @var array<string, array<int, string>> Core CPT repeater fields used in e2e (subfield names per row). */
+const BC_SITKA_E2E_MAIN_SITE_REPEATER_SUBFIELDS = array(
+	'links'                => array( 'link' ),
+	'services_resources'   => array( 'service_resource' ),
+);
+
+/**
+ * Named repeaters on the main site may load as a row-count string when read from a subsite.
+ *
+ * @param mixed $value   Raw meta value.
+ * @param int   $post_id Post ID.
+ * @param array $field   Field settings.
+ * @return mixed
+ */
+function bc_sitka_e2e_normalize_main_site_repeater_load_value( $value, $post_id, $field ) {
+	$field_name = is_array( $field ) ? (string) ( $field['name'] ?? '' ) : '';
+	if ( ! isset( BC_SITKA_E2E_MAIN_SITE_REPEATER_SUBFIELDS[ $field_name ] ) ) {
+		return $value;
+	}
+
+	if ( is_array( $value ) ) {
+		return $value;
+	}
+
+	if ( ! is_numeric( $value ) || (int) $value <= 0 ) {
+		return is_array( $value ) ? $value : array();
+	}
+
+	return bc_sitka_e2e_rebuild_repeater_rows_from_meta(
+		(int) $post_id,
+		$field_name,
+		(int) $value,
+		BC_SITKA_E2E_MAIN_SITE_REPEATER_SUBFIELDS[ $field_name ]
+	);
+}
+
+add_filter( 'acf/load_value', 'bc_sitka_e2e_normalize_main_site_repeater_load_value', 20, 3 );
 
 // Front-end snapshots should match a visitor view; wp-admin still shows the toolbar for editor tests.
 add_filter( 'show_admin_bar', '__return_false' );
