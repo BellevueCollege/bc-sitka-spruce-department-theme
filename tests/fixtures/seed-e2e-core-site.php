@@ -353,9 +353,8 @@ if ( function_exists( 'update_field' ) ) {
 	update_field( 'duration', '1 year', $core_program_beta_id );
 }
 
-$core_extra_program_ids = array();
 foreach ( e2e_extra_program_seed_specs() as $extra_program_spec ) {
-	$core_extra_program_ids[] = e2e_seed_main_site_program(
+	e2e_seed_main_site_program(
 		$extra_program_spec,
 		(int) $program_type_id,
 		(int) $degree_term_id,

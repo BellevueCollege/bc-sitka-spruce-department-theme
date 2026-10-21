@@ -129,7 +129,7 @@
   - heading "Programs in this Department" [level=2]
   - link "Explore our Department":
     - /url: http://127.0.0.1:8889/e2e-dept
-  - button "Go to the previous program."
+  - button "Go to the previous program." [disabled]
   - button "Go to the next program."
   - article:
     - text: Pathways E2E BC Pathway
@@ -143,7 +143,7 @@
     - text: Pathways
     - heading "E2E Delta" [level=3]:
       - link "E2E Delta":
-        - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-delta/
+        - /url: http://127.0.0.1:8889/e2e-dept/program/e2e-program-delta/
     - paragraph:
       - strong: E2E Program Type
     - paragraph: E2E quaternary core program overview.
@@ -151,7 +151,7 @@
     - text: Pathways
     - heading "E2E Epsilon" [level=3]:
       - link "E2E Epsilon":
-        - /url: http://127.0.0.1:8889/e2e-dept/academics/undergraduate-programs/e2e-program-epsilon/
+        - /url: http://127.0.0.1:8889/e2e-dept/program/e2e-program-epsilon/
     - paragraph:
       - strong: E2E Program Type
     - paragraph: E2E fifth core program overview.
