@@ -179,7 +179,7 @@ When bumping release URLs in [`plugins.json`](e2e/plugins.json) or [`themes.json
 
 ### webServer readiness
 
-Playwright runs `start-wp-env-e2e.mjs` and waits for the log line `WP_ENV_E2E_READY_LOG` in [`e2e-env.js`](e2e/helpers/e2e-env.js) (`webServer.wait.stdout`). The start script reuses running containers, then always runs `wp-env reset` and the full after-start seed. `reuseExistingServer: !CI` and `E2E_WPENV_RUNNING=1` attach to an already-running wp-env. `E2E_WPENV_RUNNING` skips Playwright's `webServer` because `npm run env:e2e:start` already booted WordPress. Azure runs `env:e2e:start` before the functional suite and again before the visual suite.
+Playwright runs `start-wp-env-e2e.mjs` and waits for the log line `WP_ENV_E2E_READY_LOG` in [`e2e-env.js`](e2e/helpers/e2e-env.js) (`webServer.wait.stdout`). The start script reuses running containers, then always runs `wp-env reset` and the full after-start seed. `reuseExistingServer: !CI` and `E2E_WPENV_RUNNING=1` attach to an already-running wp-env. `E2E_WPENV_RUNNING` skips Playwright's `webServer` because `npm run env:e2e:start` already booted WordPress. Azure runs `env:e2e:start` before the functional suite and `env:e2e:reseed` (idempotent after-start, no `wp-env reset`) before the visual suite.
 
 ### Host URL: **127.0.0.1**, not `localhost`
 
@@ -255,7 +255,7 @@ One WordPress database; parallel workers race on posts and editor state.
 
 - Local default tunnel / container name is **`e2e-tunnel-dev`**; auto-start in `global-setup.js` unless `E2E_LAMBDATEST_TUNNEL_AUTO=0`.
 - CI sets a unique `E2E_LAMBDATEST_TUNNEL_NAME` (`e2e-tunnel-ado-$(Build.BuildId)`) on start, visual, and stop so parallel jobs and local tunnels do not collide on the shared LambdaTest account.
-- CI starts the tunnel with `npm run tunnel:e2e:start` (with retries) and sets `E2E_LAMBDATEST_TUNNEL_AUTO=0` for the visual run.
+- CI starts the tunnel with `npm run tunnel:e2e:start:detached` before functional tests, waits until the tunnel info API responds before visual tests, and sets `E2E_LAMBDATEST_TUNNEL_AUTO=0` for the visual run. Locally, `npm run tunnel:e2e:start` still starts the tunnel and waits.
 
 ### Visual testing pipeline (LambdaTest)
 
@@ -296,7 +296,7 @@ Do **not** add generic spacing/font/layout overrides or loosen `maxDiffPixelRati
 | Stable **±1px** screenshot **size** (Playwright fails before `maxDiffPixelRatio`) | Local env drift, or fractional image/aspect boxes | First reproduce with CI-matched inputs (below). If it still fails, set `E2E_DEBUG_SCREENSHOT_GEOMETRY=1`, then extend the **allowlisted** capture pins in `screenshot-stability.css` (test-only). Do **not** change production theme CSS for screenshot jitter, and do not chase the last run with PNG updates alone |
 | Stable width, many pixel diffs | Real layout/content change or stale baseline | Re-run once; if UI is correct on LambdaTest, `npm run test:e2e:visual:update` |
 
-**CI-matched local visual verify (no snapshot write):** after `npm ci`, `npm run build`, and `E2E_STRICT_PLUGINS=1 npm run env:e2e:start` (plus tunnel + `LT_*` / `GITHUB_PAT` / `ACF_DOWNLOAD_URL`):
+**CI-matched local visual verify (no snapshot write):** after `npm ci`, `npm run build`, and `npm run env:e2e:start:strict` (plus tunnel + `LT_*` / `GITHUB_PAT` / `ACF_DOWNLOAD_URL`):
 
 ```bash
 npm run test:e2e:visual:match-ci -- tests/e2e/blocks/AnnouncementBanner.spec.js tests/e2e/blocks/PostsFeature.spec.js tests/e2e/layout/HeaderFooter.spec.js
@@ -344,7 +344,7 @@ Bump the pin only when LambdaTest’s default Linux Chrome moves and you are rea
 3. **Regenerate every `@visual` PNG** on LambdaTest with strict plugins:
 
    - **CI:** run a pipeline using `e2e-visual-baseline-update-steps.yml`, download artifact `e2e-visual-baselines`, commit `__snapshots__`.
-   - **Local:** `E2E_STRICT_PLUGINS=1 npm run env:e2e:start`, tunnel up, then `npm run test:e2e:visual:update` (full suite; expect a large diff).
+   - **Local:** `npm run env:e2e:start:strict`, tunnel up, then `npm run test:e2e:visual:update` (full suite; expect a large diff).
 
 4. **Verify stability:** run `npm run test:e2e:visual` twice back-to-back (wp-env already running + tunnel); both runs should pass with no snapshot writes.
 
@@ -386,10 +386,11 @@ E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`), which run
 **Test job flow** (see [`.azuredevops/e2e-test-steps.yml`](../.azuredevops/e2e-test-steps.yml)):
 
 1. `npm@12`, git URL rewrite for `GITHUB_PAT`, then `build-base` (host PHP **8.3**, Node **26.x**) + `npm run build` + `replacetokens` on `style.css` (Test job rebuilds the theme because wp-env needs a full checkout and `node_modules`, not the pruned Build artifact zip). E2e WordPress runs PHP **8.5** inside wp-env Docker.
-2. Playwright Chromium, then `env:e2e:start`.
-3. `test:e2e:functional`.
-4. `env:e2e:start` again, then `tunnel:e2e:start` + `test:e2e:visual` with `E2E_LAMBDATEST_TUNNEL_AUTO=0` and `E2E_STRICT_PLUGINS=1`.
-5. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/junit/*.xml`
+2. Playwright Chromium (cached under `$(Pipeline.Workspace)/.playwright-browsers`), then `env:e2e:start`.
+3. `tunnel:e2e:start:detached`, then `test:e2e:functional` while the tunnel registers.
+4. `env:e2e:reseed`, wait for the tunnel (`lambdatest-tunnel.mjs wait`), then `test:e2e:visual` with `E2E_LAMBDATEST_TUNNEL_AUTO=0` and `E2E_STRICT_PLUGINS=1`.
+5. Rank slowest cases from `artifacts/junit/functional-junit.xml` and `visual-junit.xml`. Do not drop or retune tests from that list until a human reviews it.
+6. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/junit/*.xml`
    (`functional-junit.xml`, `visual-junit.xml`). JUnit is kept outside Playwright's disposable
    `artifacts/test-results/` directory and is written only when `CI` or Azure `TF_BUILD` is set.
 
@@ -427,7 +428,7 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | wp-env generate + start | `tests/e2e/scripts/generate-wp-env-e2e.mjs`, `start-wp-env-e2e.mjs` |
 | Plugin sources | `tests/e2e/scripts/resolve-plugin.mjs`, `plugins.json` |
 | URL filters + blocks | `tests/e2e/mu-plugins/e2e-seed-endpoint.php` |
-| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
+| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:reseed`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
 | ADO e2e steps | `.azuredevops/e2e-test-steps.yml`, `.azuredevops/e2e-visual-baseline-update-steps.yml`, root `azure-pipelines.yml` |
 | Visual baseline guard | `tests/e2e/scripts/guard-visual-baseline-update.mjs` |
 | PR template (e2e checklist) | `.github/pull_request_template.md` (links readme checklist) |

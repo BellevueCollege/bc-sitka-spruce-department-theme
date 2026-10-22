@@ -103,7 +103,7 @@ npm run test:e2e:functional
 | `npm run test:e2e:visual:local` | The same screenshot tests, in your Chrome. See [Screenshot tests in your own Chrome](#screenshot-tests-in-your-own-chrome) |
 | `npm run test:e2e:ui` | Functional tests in Playwright's interactive window |
 | `npm run test:e2e:debug` | Functional tests with the Playwright inspector |
-| `npm run test:e2e` | Starts WordPress, then functional tests, then LambdaTest screenshot tests |
+| `npm run test:e2e` | Starts WordPress, runs functional tests, reseeds, then runs LambdaTest screenshot tests |
 
 To run one file or one name, put Playwright arguments after `--`:
 
@@ -129,7 +129,7 @@ npm run tunnel:e2e:stop
 npm run env:e2e:stop
 ```
 
-`test:e2e:ci` starts WordPress, checks both sites, runs functional tests, starts WordPress again, and runs screenshot tests. It leaves the tunnel to you, because your tunnel name and LambdaTest credentials differ from Azure's. You need `LT_USERNAME`, `LT_ACCESS_KEY`, `GITHUB_PAT`, and `ACF_DOWNLOAD_URL` in that shell. Azure runs the same sequence and stops the tunnel and WordPress for you.
+`test:e2e:ci` starts WordPress, checks both sites, runs functional tests, starts WordPress again, and runs screenshot tests. It leaves the tunnel to you, because your tunnel name and LambdaTest credentials differ from Azure's. You need `LT_USERNAME`, `LT_ACCESS_KEY`, `GITHUB_PAT`, and `ACF_DOWNLOAD_URL` in that shell. Azure runs `npm run tunnel:e2e:start:detached` before functional tests (the container starts, and the job waits until the tunnel is ready just before screenshots), then runs `npm run env:e2e:reseed` instead of a second full start. Reseed puts chrome and editor preferences back without reinstalling WordPress. Azure still stops the tunnel and WordPress for you.
 
 ### Screenshot tests in your own Chrome
 
@@ -153,7 +153,7 @@ Screenshot updates have to happen on LambdaTest, against the same plugin release
 
 ```bash
 npm run env:e2e:stop
-E2E_STRICT_PLUGINS=1 npm run env:e2e:start
+npm run env:e2e:start:strict
 npm run test:e2e:visual:update
 ```
 
@@ -170,7 +170,7 @@ These commands rewrite files that actually changed. To limit an update to one sp
 
 A normal loop is: run the tests, look at the failures, then run `npm run test:e2e:update:last-failed` to accept those failures.
 
-To compare screenshots with Azure's plugins and Chrome **without** writing files, start WordPress the same way (`E2E_STRICT_PLUGINS=1 npm run env:e2e:start`) and run `npm run test:e2e:visual:match-ci`.
+To compare screenshots with Azure's plugins and Chrome without writing files, start WordPress the same way (`npm run env:e2e:start:strict`) and run `npm run test:e2e:visual:match-ci`.
 
 ### Pull request checklist (visual / e2e)
 
@@ -189,7 +189,7 @@ Copy this into the pull request when the change can affect screenshots, sample c
 
 [`tests/e2e/plugins.json`](tests/e2e/plugins.json) lists the plugins and their release zips. `tests/e2e/plugins.local.json` can replace any of those with a folder on your machine. `MAYFLOWER_BLOCKS_PATH`, `OHO_VIEWS_PATH`, and `ACF_PATH` do the same for one plugin, and they win over both JSON files.
 
-`E2E_STRICT_PLUGINS=1` ignores those local folders and uses the release zips. Azure sets it. `npm run test:e2e:visual:update` and `npm run test:e2e:visual:match-ci` set it for the test process only. The running WordPress site keeps whatever plugins it was started with, so set the variable on `npm run env:e2e:start` before you update or compare screenshots.
+`E2E_STRICT_PLUGINS=1` ignores those local folders and uses the release zips. Azure sets it. `npm run test:e2e:visual:update` and `npm run test:e2e:visual:match-ci` set it for the test process only. The running WordPress site keeps whatever plugins it was started with, so set the variable on `npm run env:e2e:start` before you update or compare screenshots. `npm run env:e2e:start:strict` does that on macOS and Windows.
 
 After you edit either JSON file, restart so WordPress remounts the plugins:
 
@@ -222,7 +222,7 @@ Screenshot tests request one Chrome version on LambdaTest. Change it when Lambda
 3. **Replace every screenshot** on LambdaTest, using release zips:
 
    - **Azure:** run a pipeline that uses `e2e-visual-baseline-update-steps.yml`, download the `e2e-visual-baselines` artifact, and commit `__snapshots__/`.
-   - **Your machine:** `npm run env:e2e:stop`, then `E2E_STRICT_PLUGINS=1 npm run env:e2e:start`, with the tunnel up, then `npm run test:e2e:visual:update`. Expect a large diff.
+   - **Your machine:** `npm run env:e2e:stop`, then `npm run env:e2e:start:strict`, with the tunnel up, then `npm run test:e2e:visual:update`. Expect a large diff.
 
 4. **Check that it is stable.** With WordPress and the tunnel still running, run `npm run test:e2e:visual` twice. Both runs should pass, and neither should change a PNG.
 
@@ -268,7 +268,7 @@ Open `artifacts/test-results/<test-name>/error-context.md` for the error, plus t
 
 **Tests fail instantly (0 ms).** The browser never started. The `error-context.md` for that test usually names a LambdaTest or container problem from the list below.
 
-**Sample content is stale after you edit a fixture.** Run `npm run env:e2e:start` again. Containers stay up, the database is reset, and both sites are loaded again. `npm run test:e2e` does that start once, before functional tests. `npm run test:e2e:ci` does it again before screenshot tests, which is what Azure does.
+**Sample content is stale after you edit a fixture.** Run `npm run env:e2e:start` again. Containers stay up, the database is reset, and both sites are loaded again. `npm run test:e2e` does that start once, before functional tests, then `npm run env:e2e:reseed` before screenshot tests. `npm run test:e2e:ci` does a full start again before screenshot tests instead of the lighter reseed.
 
 **A plugin path, `plugins.local.json`, or the e2e mu-plugin changed and the site looks the same.** Stop and start WordPress so the containers pick up the files:
 
@@ -321,7 +321,7 @@ curl http://127.0.0.1:8000/api/v1.0/info
 
 If that still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that terminal, and that HTTPS to `*.lambdatest.com` is allowed.
 
-**The tunnel name is already in use, or Azure times out on the tunnel.** Your machine uses `e2e-tunnel-dev`. Azure uses `e2e-tunnel-ado-<BuildId>` for that build. If a local session still holds `e2e-tunnel-dev`, run `npm run tunnel:e2e:stop`. To keep a personal name, set `E2E_LAMBDATEST_TUNNEL_NAME` to the same value on `npm run tunnel:e2e:start` and on the visual command, for example `e2e-tunnel-$USER`.
+**The tunnel name is already in use, or Azure times out on the tunnel.** Your machine uses `e2e-tunnel-dev`. Azure uses `e2e-tunnel-ado-<BuildId>` for that build. If a local session still holds `e2e-tunnel-dev`, run `npm run tunnel:e2e:stop`. To keep a personal name, set `E2E_LAMBDATEST_TUNNEL_NAME` to the same value on `npm run tunnel:e2e:start` and on the visual command. Bash: `e2e-tunnel-$USER`. PowerShell: `e2e-tunnel-$env:USERNAME` (`$env:E2E_LAMBDATEST_TUNNEL_NAME = "e2e-tunnel-$env:USERNAME"`).
 
 **A screenshot fails on width or on pixels.** Tests pin LambdaTest Chrome (`E2E_LAMBDATEST_CHROME_VERSION`) and apply [`tests/e2e/helpers/screenshot-stability.css`](tests/e2e/helpers/screenshot-stability.css) during the capture so a scrollbar cannot change the width (for example `1280` versus `1265`). If the log shows that width changing inside one test, the stylesheet did not apply. If the width is steady and the pixels differ, run the test once more. When the difference stays and the page looks right on LambdaTest, update with `npm run test:e2e:visual:update`. Leave `maxDiffPixelRatio` as it is when a full-page shot is only short or tall by a small amount.
 

@@ -24,7 +24,7 @@ export function assertVisualBaselineUpdateAllowed() {
 
 	console.error(
 		'[e2e] Refusing to update @visual PNG baselines on LambdaTest outside CI.\n' +
-			'Start wp-env with E2E_STRICT_PLUGINS=1 npm run env:e2e:start, then run ' +
+			'Start wp-env with npm run env:e2e:start:strict, then run ' +
 			'npm run test:e2e:visual:update.'
 	);
 	process.exit( 1 );

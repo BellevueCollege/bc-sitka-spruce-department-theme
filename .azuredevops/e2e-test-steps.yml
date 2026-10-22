@@ -2,8 +2,18 @@
 # Requires pipeline variables in ADO (LT_USERNAME, LT_ACCESS_KEY, GITHUB_PAT, ACF_DOWNLOAD_URL).
 
 steps:
+  - task: Cache@2
+    displayName: Cache Playwright Chromium
+    inputs:
+      key: 'playwright | "$(Agent.OS)" | package.json'
+      restoreKeys: |
+        playwright | "$(Agent.OS)"
+      path: $(Pipeline.Workspace)/.playwright-browsers
+
   - script: npx playwright install --with-deps chromium
     displayName: Install Playwright Chromium
+    env:
+      PLAYWRIGHT_BROWSERS_PATH: $(Pipeline.Workspace)/.playwright-browsers
 
   - script: npm run env:e2e:start
     displayName: Start wp-env e2e WordPress
@@ -14,10 +24,12 @@ steps:
       GITHUB_PAT: $(GITHUB_PAT)
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
 
-  - script: npm run env:e2e:verify
-    displayName: Verify e2e multisite stack
+  - script: npm run tunnel:e2e:start:detached
+    displayName: Start LambdaTest tunnel without waiting
     env:
-      CI: 'true'
+      LT_USERNAME: $(LT_USERNAME)
+      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
+      E2E_LAMBDATEST_TUNNEL_NAME: e2e-tunnel-ado-$(Build.BuildId)
 
   - script: npm run test:e2e:functional
     displayName: Functional e2e tests (includes 20 desktop @aria snapshots; excludes @visual)
@@ -27,9 +39,10 @@ steps:
       GITHUB_PAT: $(GITHUB_PAT)
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
       BUILD_ID: $(Build.BuildId)
+      PLAYWRIGHT_BROWSERS_PATH: $(Pipeline.Workspace)/.playwright-browsers
 
-  - script: npm run env:e2e:start
-    displayName: Reset wp-env before visual e2e
+  - script: npm run env:e2e:reseed
+    displayName: Reseed wp-env before visual e2e
     retryCountOnTaskFailure: 2
     env:
       CI: 'true'
@@ -37,12 +50,10 @@ steps:
       GITHUB_PAT: $(GITHUB_PAT)
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
 
-  - script: npm run tunnel:e2e:start
-    displayName: Start LambdaTest tunnel
+  - script: node tests/e2e/scripts/lambdatest-tunnel.mjs wait
+    displayName: Wait for LambdaTest tunnel
     retryCountOnTaskFailure: 2
     env:
-      LT_USERNAME: $(LT_USERNAME)
-      LT_ACCESS_KEY: $(LT_ACCESS_KEY)
       E2E_LAMBDATEST_TUNNEL_NAME: e2e-tunnel-ado-$(Build.BuildId)
 
   - script: npm run test:e2e:visual
@@ -67,6 +78,10 @@ steps:
 
   - script: npm run env:e2e:stop
     displayName: Stop wp-env e2e WordPress
+    condition: always()
+
+  - script: node tests/e2e/scripts/rank-junit-durations.mjs artifacts/junit/functional-junit.xml artifacts/junit/visual-junit.xml
+    displayName: Rank slowest e2e tests
     condition: always()
 
   - task: PublishTestResults@2

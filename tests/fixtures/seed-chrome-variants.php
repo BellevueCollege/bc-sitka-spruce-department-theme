@@ -10,6 +10,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 require_once __DIR__ . '/e2e-query-helpers.php';
+require_once __DIR__ . '/e2e-seed-shared.php';
 
 /**
  * @param string $variant default|notice|sock|emailFooter.
@@ -52,8 +53,9 @@ function e2e_apply_chrome_variant( string $variant ): void {
 			),
 			'option'
 		);
-		update_field( 'display_location_card', 1, 'option' );
-		update_field( 'location', 'E2E Location<br>123 Test Street', 'option' );
+		// Hours and the location photo are part of the committed sock screenshot.
+		// Set them here so the shot does not depend on an earlier spec leaving them in options.
+		e2e_apply_location_and_hours( true, (int) e2e_import_hero_attachment() );
 	}
 
 	if ( $variant === 'emailFooter' ) {
