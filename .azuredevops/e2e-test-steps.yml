@@ -28,6 +28,15 @@ steps:
       ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
       BUILD_ID: $(Build.BuildId)
 
+  - script: npm run env:e2e:start
+    displayName: Reset wp-env before visual e2e
+    retryCountOnTaskFailure: 2
+    env:
+      CI: 'true'
+      E2E_STRICT_PLUGINS: '1'
+      GITHUB_PAT: $(GITHUB_PAT)
+      ACF_DOWNLOAD_URL: $(ACF_DOWNLOAD_URL)
+
   - script: npm run tunnel:e2e:start
     displayName: Start LambdaTest tunnel
     retryCountOnTaskFailure: 2

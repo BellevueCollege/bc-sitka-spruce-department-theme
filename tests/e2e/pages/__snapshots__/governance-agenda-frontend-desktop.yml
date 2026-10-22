@@ -53,6 +53,12 @@
         - listitem:
           - link "E2E Action Item":
             - /url: http://127.0.0.1:8889/e2e-dept/action-items/e2e-action-item/
+      - listitem:
+        - strong: "Resolutions:"
+        - list:
+          - listitem:
+            - link "E2E Resolution":
+              - /url: http://127.0.0.1:8889/e2e-dept/resolutions/e2e-resolution/
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:

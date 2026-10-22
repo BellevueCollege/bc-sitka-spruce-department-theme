@@ -93,7 +93,7 @@ npm run env:e2e:start
 npm run test:e2e:functional:external
 ```
 
-When you're finished, stop WordPress with `npm run env:e2e:stop`.
+When you're finished, stop WordPress with `npm run env:e2e:stop`. To delete the containers, database, and environment images, run `npm run env:e2e:destroy`, then `npm run env:e2e:start`.
 
 | Command | What it runs |
 |---------|--------------|
@@ -106,6 +106,7 @@ When you're finished, stop WordPress with `npm run env:e2e:stop`.
 | `npm run test:e2e` | Functional, then visual — the full suite |
 | `npm run test:e2e:ui` | Functional tests in Playwright's interactive UI |
 | `npm run test:e2e:debug` | Functional tests with the Playwright inspector |
+| `npm run env:e2e:destroy` | Delete the e2e containers, database, and environment images (`wp-env destroy --force`) |
 
 Narrow a run by appending Playwright arguments after `--`:
 
@@ -157,7 +158,7 @@ Copy into the PR description when the change can affect screenshots, seeds, plug
 - [ ] Partial PNG updates are intentional; if many unrelated snapshots changed, prefer a dedicated baseline-refresh PR or the pipeline template in [`.azuredevops/e2e-visual-baseline-update-steps.yml`](.azuredevops/e2e-visual-baseline-update-steps.yml).
 - [ ] Did **not** loosen `maxDiffPixelRatio`. [`tests/e2e/helpers/screenshot-stability.css`](tests/e2e/helpers/screenshot-stability.css) changes are limited to scrollbar hiding or documented subpixel allowlist pins (not generic layout masks).
 - [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update`).
-- [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know how to re-seed (`env:e2e:stop` + `env:e2e:start`, or destroy when schema requires it—see Troubleshooting).
+- [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know to run `env:e2e:start`, which resets the database and reseeds. Use `npm run env:e2e:destroy` only when the image or plugin install is broken (see Troubleshooting).
 
 ### Bumping the pinned LambdaTest Chrome version
 
@@ -206,22 +207,23 @@ When a test fails, open `artifacts/test-results/<test-name>/error-context.md` fo
 
 **Tests fail instantly (0 ms) without running.** The browser never started. Read the `error-context.md` for that test. It usually points to one of the LambdaTest or container-runtime problems below.
 
-**Changes to plugins, `plugins.local.json`, or the e2e mu-plugin have no effect.** `env:e2e:start` reuses a running WordPress. Stop and start it again (see above).
+**Seed content looks stale after a fixture edit.** Run `npm run env:e2e:start` again. It keeps the containers, runs `wp-env reset`, and reseeds both sites. `npm run test:e2e` also starts the environment again before the visual suite.
+
+**Changes to plugins, `plugins.local.json`, or the e2e mu-plugin have no effect.** `env:e2e:start` reuses running containers. Stop and start it again (see above) so wp-env rebuilds mounted plugins.
 
 **WordPress is broken, seeding fails, or errors mention a missing plugin function** (for example `Call to undefined function update_field()`, meaning ACF didn't load). Rebuild WordPress from scratch. This deletes the test database and containers. Everything is re-created and re-seeded on start.
 
-**Pathway or program template fatals after infra changes** (for example Twig errors on `pathway_names`). The main site must run the Bellevue 2022 theme (release zip or local checkout). After changing `tests/e2e/themes.json` or theme overrides, destroy wp-env and start again so after-start runs `wp theme activate bellevue-2022` on the main site and re-seeds core content.
+**Pathway or program template fatals after infra changes** (for example Twig errors on `pathway_names`). The main site must run the Bellevue 2022 theme (release zip or local checkout). After changing `tests/e2e/themes.json` or theme overrides, run `npm run env:e2e:start` so reset and after-start activate Bellevue on the main site and reseed core content. Destroy wp-env only when the theme image or catalog zip itself must be replaced.
 
 **Sanity-check main + subsite after start:** `npm run env:e2e:verify` (Bellevue theme on main, pathway CPT/ACF, Sitka on `/e2e-dept`, program fixture). This runs automatically at the end of `env:e2e:start` and in Azure DevOps before Playwright.
 
 ```bash
-npm run env:e2e:stop
-npx wp-env destroy --config=.wp-env.e2e.json --force
+npm run env:e2e:destroy
 rm -rf artifacts/e2e-plugins   # optional: force plugin zips to download again
 npm run env:e2e:start
 ```
 
-If the destroy command complains that `.wp-env.e2e.json` is missing, run `npm run env:e2e:generate` first.
+`env:e2e:destroy` writes `.wp-env.e2e.json` if needed, then runs `wp-env destroy --force`. It removes containers, the database volume, and this environment's images. The next start has to download those images again.
 
 On Windows PowerShell, remove the plugin cache with `Remove-Item -Recurse -Force artifacts/e2e-plugins` (not `rm -rf`).
 

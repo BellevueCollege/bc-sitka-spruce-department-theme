@@ -148,7 +148,7 @@ function printDockerRegistryPullHelp() {
 			'  - Restore internet DNS (corporate DNS timeouts break production.cloudfront.docker.com).\n' +
 			'  - Rancher Desktop / Docker Desktop: retry on a stable network; set engine DNS to 1.1.1.1 or 8.8.8.8 if needed.\n' +
 			`  - When online: docker pull ${ WP_ENV_MARIADB_IMAGE }\n` +
-			'  - Avoid `wp-env destroy` unless necessary; it removes images and forces a full re-pull.\n' +
+			'  - Avoid `npm run env:e2e:destroy` unless necessary; it removes images and forces a full re-pull.\n' +
 			'  - Use `npm run env:e2e:stop` + `npm run env:e2e:start` to reuse cached images.'
 	);
 }
@@ -219,6 +219,28 @@ function startWpEnvE2e() {
 }
 
 /**
+ * Drop and reinstall the database without running wp-env lifecycle scripts.
+ * after-start seeding runs only after this process exits, because lifecycle
+ * hooks invoke wp-env run while the parent command is still active.
+ */
+function resetWpEnvDatabase() {
+	console.log( '[e2e] Resetting the WordPress database…' );
+	const resetResult = runWpEnvSync(
+		[ 'reset', `--config=${ WP_ENV_E2E_CONFIG }`, '--scripts=false' ],
+		{ stdio: 'inherit' }
+	);
+
+	if ( resetResult.status !== 0 ) {
+		if ( resetResult.error ) {
+			console.error(
+				`[e2e] Failed to reset wp-env: ${ resetResult.error.message }`
+			);
+		}
+		process.exit( resetResult.status ?? 1 );
+	}
+}
+
+/**
  * @param {string[]} [extraArgs]
  */
 function runAfterStartSeeding( extraArgs = [] ) {
@@ -241,7 +263,6 @@ console.log( '[e2e] Resolving plugins and starting wp-env…' );
 await generateWpEnvE2eConfig();
 
 const cliReachable = isWpEnvCliReachable();
-const integrationSeeded = cliReachable && isE2eIntegrationSeeded();
 
 if ( ! cliReachable ) {
 	if ( ! warmWpEnvDockerImages() ) {
@@ -266,22 +287,15 @@ if ( ! cliReachable ) {
 	console.log( '[e2e] wp-env containers already running.' );
 }
 
-console.log( '[e2e] Running idempotent after-start seeds (editor preferences)…' );
-runAfterStartSeeding( [ '--idempotent-only' ] );
+resetWpEnvDatabase();
 
-if ( ! integrationSeeded ) {
-	console.log( '[e2e] Running integration after-start seeding…' );
-	runAfterStartSeeding( [ '--integration-only' ] );
-} else {
-	console.log(
-		'[e2e] Integration fixtures already present; skipping integration after-start seeding.'
-	);
-}
+console.log( '[e2e] Running after-start bootstrap and seeds…' );
+runAfterStartSeeding();
 
 if ( ! isE2eIntegrationSeeded() ) {
 	console.error(
 		'[e2e] E2E subsite is missing expected fixtures after start. ' +
-			'Try: npx wp-env destroy --config=.wp-env.e2e.json --force && npm run env:e2e:start'
+			'Try: npm run env:e2e:destroy && npm run env:e2e:start'
 	);
 	process.exit( 1 );
 }

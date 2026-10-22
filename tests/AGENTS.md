@@ -120,15 +120,15 @@ Canonical home for **section background / arch / divider** regressions is [`Sect
 
 ### Playwright CLI vs `wp-scripts test-playwright`
 
-- **Use:** `playwright test` via `npm run test:e2e:*`.
-- **Why:** `@wordpress/scripts` re-triggers `playwright install` on every invocation.
+- **Use:** `wp-scripts test-playwright` via `npm run test:e2e:*`.
+- **Why:** This is the wp-scripts test entry. `package.json` sets `PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1` so the wrapper does not install browsers on every run, and sets `WP_BASE_URL` to the department subsite before wp-scripts can default to `http://localhost:8889`.
 
 ### wp-env port **8889** and subsite **`/e2e-dept/`**
 
 - Chain: `tests/e2e/helpers/e2e-env.js` → `playwright.config.js` (default `WP_BASE_URL`) → `BC_SITKA_E2E_WP_PORT` in the mu-plugin.
 - **Playwright `WP_BASE_URL` defaults to** `http://127.0.0.1:8889/e2e-dept` (Sitka department subsite). WP-CLI seeds use `--url` on the subsite unless seeding the main-site core CPTs.
 - **Changing the port or subsite slug requires updating all of the above.**
-- **PHP (wp-env container)** is **`8.5`** (`E2E_WP_ENV_PHP_VERSION` in [`e2e-env.js`](e2e/helpers/e2e-env.js), written into `.wp-env.e2e.json`). **Azure hosted-agent PHP** for Composer in `build-base` is **`8.3`** (agents do not register `php8.5` yet). After changing wp-env PHP, run `wp-env destroy --config=.wp-env.e2e.json` then `env:e2e:start`.
+- **PHP (wp-env container)** is **`8.5`** (`E2E_WP_ENV_PHP_VERSION` in [`e2e-env.js`](e2e/helpers/e2e-env.js), written into `.wp-env.e2e.json`). **Azure hosted-agent PHP** for Composer in `build-base` is **`8.3`** (agents do not register `php8.5` yet). After changing wp-env PHP, run `npm run env:e2e:destroy` then `npm run env:e2e:start`.
 
 ### Multisite topology (e2e)
 
@@ -139,7 +139,7 @@ Canonical home for **section background / arch / divider** regressions is [`Sect
 
 Core CPT plugins (`bellevue-2022-organization`, `news`, `program`, `pathway`, `components`) are **activated on the main site only**. Sitka registers `program` itself and reads the other core types from the main site, so those plugins stay inactive on the department subsite.
 
-After switching from single-site e2e to multisite, or after changing main-site theme mappings / Bellevue checkout, run `npm run env:e2e:stop` then `wp-env destroy --config=.wp-env.e2e.json` before the next `env:e2e:start`. A running wp-env **skips** full after-start seeding when integration fixtures already exist, so theme or core-seed changes need destroy (or manual `wp theme activate` on main + core re-seed).
+After switching from single-site e2e to multisite, or after changing main-site theme mappings / Bellevue checkout, run `npm run env:e2e:start`. Every start runs `wp-env reset` and then the full after-start list, so fixture and theme activation changes replace the previous database. Use `npm run env:e2e:destroy` only when the Docker image or plugin catalog itself must be rebuilt.
 
 **Bellevue 2022 theme for main site:** [`themes.json`](e2e/themes.json) lists the GitHub release zip (same `GITHUB_PAT` download path as [`plugins.json`](e2e/plugins.json)). [`generate-wp-env-e2e.mjs`](e2e/scripts/generate-wp-env-e2e.mjs) resolves and maps `wp-content/themes/bellevue-2022`. Local dev may use `themes.local.json` (see [`themes.local.example.json`](e2e/themes.local.example.json)), `BELLEVUE_2022_THEME_PATH`, or a sibling `../bellevue-2022` checkout. CI sets `E2E_STRICT_PLUGINS=1` and downloads the catalog zip only.
 
@@ -161,6 +161,7 @@ Production department multisite is the target behavior; wp-env intentionally dif
 | Subsite plugins | Sitka readme stack | **E2e-only:** TablePress, Trustees Agenda (governance seeds) | Only if production dept sites adopt the same plugins |
 | Main-site plugins | Full college stack | **Subset:** Bellevue CPT plugins in [`plugins.json`](e2e/plugins.json) only on main | Add plugins when a seed or verify step proves a missing CPT |
 | Pathway permalinks from dept subsite | Main-site `bellevue-2022-pathway` registers `pathway` | Mu-plugin registers `pathway` with slug `academics/bc-pathways` when the CPT is missing on the request | Dept subsite loads the same pathway plugin as production, or core fixes multisite `get_permalink` after `switch_to_blog` |
+| News permalinks from dept subsite | Main-site `bellevue-2022-news` registers `news` (`news/article`) | Mu-plugin registers `news` with slug `news/article` when missing; core seed sets stable `post_name` on four E2E stories | Same as pathway |
 | Footer copyright year | `date( 'Y' )` in theme | Mu-plugin `timber/context` sets `current_year` to **2026** | Never on production; bump constant when refreshing aria snapshots after a year change |
 
 Functional page specs may run with **admin cookies** (Playwright storage state for editor tests). The mu-plugin hides the admin bar on the frontend; `@aria` body trees may still include `logged-in` on `body`—that is expected for this suite.
@@ -170,15 +171,15 @@ Functional page specs may run with **admin cookies** (Playwright storage state f
 When bumping release URLs in [`plugins.json`](e2e/plugins.json) or [`themes.json`](e2e/themes.json):
 
 1. Prefer bumping **Bellevue plugin zip set and theme zip** in the same PR when they ship together.
-2. `npm run env:e2e:generate` then `wp-env destroy --config=.wp-env.e2e.json` (or full destroy) before `env:e2e:start` so after-start re-seeds core content.
+2. `npm run env:e2e:start` so `wp-env reset` reinstalls WordPress and after-start reseeds core content.
 3. Run `npm run env:e2e:verify`.
-4. Run `E2E_WPENV_EXTERNAL=1 npx playwright test tests/e2e/pages/SingleProgram.spec.js tests/e2e/pages/DepartmentHomepage.spec.js --grep-invert @visual`.
+4. Run `npm run test:e2e:functional:external -- tests/e2e/pages/SingleProgram.spec.js tests/e2e/pages/DepartmentHomepage.spec.js`.
 5. Grep `field_` under `tests/fixtures/` for ACF key drift after Bellevue `acf-json` changes.
 6. Note versions in the PR; refresh `@visual` PNGs on LambdaTest only when UI actually changed.
 
 ### webServer readiness
 
-Playwright runs `start-wp-env-e2e.mjs` and waits for the log line `WP_ENV_E2E_READY_LOG` in [`e2e-env.js`](e2e/helpers/e2e-env.js) (`webServer.wait.stdout`). The start script also skips `wp-env start` when WordPress is already up. `reuseExistingServer: !CI` and `E2E_WPENV_EXTERNAL=1` attach to an already-running wp-env (Azure starts wp-env once per job).
+Playwright runs `start-wp-env-e2e.mjs` and waits for the log line `WP_ENV_E2E_READY_LOG` in [`e2e-env.js`](e2e/helpers/e2e-env.js) (`webServer.wait.stdout`). The start script reuses running containers, then always runs `wp-env reset` and the full after-start seed. `reuseExistingServer: !CI` and `E2E_WPENV_EXTERNAL=1` attach to an already-running wp-env. Azure runs `env:e2e:start` before the functional suite and again before the visual suite.
 
 ### Host URL: **127.0.0.1**, not `localhost`
 
@@ -212,7 +213,7 @@ These blocks read main-site CPTs via `switch_to_blog()` / `network_site_url()` R
 
 - `tests/e2e/helpers/wp-cli.js` runs `wp-env run --config=.wp-env.e2e.json cli wp eval-file …`.
 - Seed helpers cache results per process; do not seed in `beforeEach`.
-- When the database already has `bc_sitka_e2e_core_seed` / `bc_sitka_e2e_integration_seed`, Playwright helpers **read cached maps** instead of re-running heavy seed PHP (faster, stable post IDs). After changing seed fixtures, run `wp-env destroy` and `env:e2e:start`, or delete those options and re-seed manually.
+- When the database already has `bc_sitka_e2e_core_seed` / `bc_sitka_e2e_integration_seed`, Playwright helpers **read cached maps** instead of re-running heavy seed PHP inside one test process. `env:e2e:start` resets that database first, so the next run loads the current fixtures.
 - `global-setup.js` calls `warmE2eSeedCachesFromDatabase()` when `E2E_WPENV_EXTERNAL=1` so external wp-env runs avoid redundant CLI work before the first spec file.
 
 ### Plugin resolution
@@ -313,9 +314,9 @@ Human-facing copy lives in [readme.md — Pull request checklist](../readme.md#p
 - [ ] PR describes **why** pixels changed (theme, block, plugin version in `plugins.json`, seed content, editor prefs, etc.).
 - [ ] Partial PNG updates are intentional; if many unrelated snapshots changed, prefer a dedicated baseline-refresh PR or the [visual baseline update ADO template](../.azuredevops/e2e-visual-baseline-update-steps.yml).
 - [ ] Did **not** loosen `maxDiffPixelRatio`. [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css) changes are limited to scrollbar hiding or documented subpixel allowlist pins (not generic layout masks).
-- [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update`).
+- [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update` for diffs only, or `npm run test:e2e:aria:update:all:external` to rewrite every aria YAML—Playwright treats bare `--update-snapshots` as **missing** files only, not a full refresh).
 - [ ] No `@visual` tag on tests that do not call `toHaveScreenshot`.
-- [ ] Plugin catalog / mu-plugin / seed PHP changes: wp-env re-seed path documented for reviewers (`env:e2e:stop` + `env:e2e:start`, or destroy when schema requires it).
+- [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know to run `env:e2e:start` (database reset and reseed). `npm run env:e2e:destroy` is only for image or catalog-install failures.
 
 ### LambdaTest Chrome version bump playbook
 
@@ -385,9 +386,9 @@ E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`), which run
 **Test job flow** (see [`.azuredevops/e2e-test-steps.yml`](../.azuredevops/e2e-test-steps.yml)):
 
 1. `npm@12`, git URL rewrite for `GITHUB_PAT`, then `build-base` (host PHP **8.3**, Node **26.x**) + `npm run build` + `replacetokens` on `style.css` (Test job rebuilds the theme because wp-env needs a full checkout and `node_modules`, not the pruned Build artifact zip). E2e WordPress runs PHP **8.5** inside wp-env Docker.
-2. Playwright Chromium, `env:e2e:start` once.
+2. Playwright Chromium, then `env:e2e:start`.
 3. `test:e2e:functional:external`.
-4. `tunnel:e2e:start` + `test:e2e:visual` with `E2E_LAMBDATEST_TUNNEL_AUTO=0` and `E2E_STRICT_PLUGINS=1`.
+4. `env:e2e:start` again, then `tunnel:e2e:start` + `test:e2e:visual` with `E2E_LAMBDATEST_TUNNEL_AUTO=0` and `E2E_STRICT_PLUGINS=1`.
 5. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/junit/*.xml`
    (`functional-junit.xml`, `visual-junit.xml`). JUnit is kept outside Playwright's disposable
    `artifacts/test-results/` directory and is written only when `CI` or Azure `TF_BUILD` is set.
@@ -426,7 +427,7 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | wp-env generate + start | `tests/e2e/scripts/generate-wp-env-e2e.mjs`, `start-wp-env-e2e.mjs` |
 | Plugin sources | `tests/e2e/scripts/resolve-plugin.mjs`, `plugins.json` |
 | URL filters + blocks | `tests/e2e/mu-plugins/e2e-seed-endpoint.php` |
-| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:*`, `tunnel:e2e:*` |
+| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all:external` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
 | ADO e2e steps | `.azuredevops/e2e-test-steps.yml`, `.azuredevops/e2e-visual-baseline-update-steps.yml`, root `azure-pipelines.yml` |
 | Visual baseline guard | `tests/e2e/scripts/guard-visual-baseline-update.mjs` |
 | PR template (e2e checklist) | `.github/pull_request_template.md` (links readme checklist) |

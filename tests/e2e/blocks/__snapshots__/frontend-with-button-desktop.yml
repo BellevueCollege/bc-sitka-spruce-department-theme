@@ -1,5 +1,6 @@
 - article:
-  - figure
+  - figure:
+    - img "E2E announcement banner test image"
   - heading "Test Announcement" [level=2]
   - paragraph: This is a test announcement description for visual regression.
   - link "Learn More Opens in a new tab":

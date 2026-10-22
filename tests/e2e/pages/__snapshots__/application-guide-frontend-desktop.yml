@@ -41,6 +41,8 @@
           - /url: "#"
 - main:
   - heading "E2E Application Guide" [level=1]
+  - paragraph: E2E application guide intro summary.
+  - img "E2E hero fixture image"
   - heading "General Guidelines" [level=2]
   - paragraph: Maecenas mattis pretium imperdiet. Morbi id lobortis mauris, vitae volutpat dui. Nullam vehicula metus in massa.
   - complementary:
@@ -50,18 +52,32 @@
   - text: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vel semper ridiculus lorem neque. Sem tempus sed odio amet, non a tristique blandit dictum.
   - tablist:
     - tab "Student Type 1" [selected]
+    - tab "Student Type 2"
   - tabpanel "Student Type 1":
     - heading "Student Type 1" [level=3]
     - 'heading "Step 1: Step Title" [level=4]'
-    - paragraph
+    - paragraph: E2E application step one body copy.
+    - complementary:
+      - heading "E2E Step Callout" [level=3]
+      - paragraph: E2E optional callout on step one only.
     - 'heading "Step 2: Step Title" [level=4]'
-    - paragraph
+    - paragraph: E2E application step two body without callout.
   - heading "More Info" [level=2]
-  - heading [level=3]:
-    - button
-  - heading [level=3]:
-    - button
+  - heading "E2E FAQ One" [level=3]:
+    - button "E2E FAQ One" [expanded]
+  - paragraph: E2E FAQ panel one body (open by default).
+  - heading "E2E FAQ Two" [level=3]:
+    - button "E2E FAQ Two"
+  - complementary:
+    - heading "E2E Accordion Callout" [level=3]
+    - paragraph: E2E accordion section callout body.
   - heading "Additional Resources" [level=2]
+  - img "E2E hero fixture image"
+  - heading "E2E Resource Card One" [level=3]
+  - paragraph: E2E additional resource card one body.
+  - img "E2E hero fixture image"
+  - heading "E2E Resource Card Two" [level=3]
+  - paragraph: E2E additional resource card two body.
   - separator
   - article:
     - heading "Upcoming Deadline" [level=2]
@@ -69,12 +85,17 @@
   - heading "Support Available" [level=2]
   - tablist:
     - tab "E2E Core Identity Support" [selected]
+    - tab "E2E Core Identity Support Two"
   - tabpanel "E2E Core Identity Support":
     - heading "E2E Core Identity Support" [level=3]
+    - img "E2E hero fixture image"
     - heading "E2E Support Tab" [level=4]
     - text: E2E support tab summary content.
+    - link "E2E Support Resource":
+      - /url: https://example.com/e2e-support-resource
   - heading "Department Feature" [level=2]
-  - figure
+  - figure:
+    - img "E2E hero fixture image"
   - heading "E2E Core Organization" [level=3]:
     - link "E2E Core Organization":
       - /url: https://example.com/e2e-organization

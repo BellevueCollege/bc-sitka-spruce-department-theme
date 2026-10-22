@@ -44,8 +44,20 @@
   - heading /\d+/ [level=2]
   - list:
     - listitem:
+      - link /June \d+, \d+/:
+        - /url: http://127.0.0.1:8889/e2e-dept/agendas/e2e-special-board-agenda/
+      - text: (Special Meeting)
+    - listitem:
+      - link /March 1, \d+/:
+        - /url: http://127.0.0.1:8889/e2e-dept/agendas/e2e-spring-board-agenda/
+    - listitem:
       - link /January \d+, \d+/:
         - /url: http://127.0.0.1:8889/e2e-dept/agendas/e2e-board-agenda/
+  - heading /\d+/ [level=2]
+  - list:
+    - listitem:
+      - link /November 5, \d+/:
+        - /url: http://127.0.0.1:8889/e2e-dept/agendas/e2e-prior-year-agenda/
 - complementary:
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:

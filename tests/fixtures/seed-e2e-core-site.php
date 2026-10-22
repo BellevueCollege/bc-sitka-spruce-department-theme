@@ -21,6 +21,8 @@ e2e_register_differentiator_acf_field_group();
  * @param string $summary            ACF summary shown in the news feature list.
  * @param int    $news_type_id       news_type term ID.
  * @param int    $hero_attachment_id Featured image attachment ID.
+ * @param string $post_date          Optional post_date for stable list ordering.
+ * @param string $post_name          Stable slug for news-feature-core permalinks in e2e.
  * @return int
  */
 function e2e_seed_core_news_story(
@@ -28,11 +30,15 @@ function e2e_seed_core_news_story(
 	string $summary,
 	int $news_type_id,
 	int $hero_attachment_id,
-	string $post_date = ''
+	string $post_date = '',
+	string $post_name = ''
 ): int {
 	$post_args = array(
 		'post_content' => '<!-- wp:paragraph --><p>' . esc_html( $title ) . ' body.</p><!-- /wp:paragraph -->',
 	);
+	if ( $post_name !== '' ) {
+		$post_args['post_name'] = $post_name;
+	}
 	if ( $post_date !== '' ) {
 		$post_args['post_date']     = $post_date;
 		$post_args['post_date_gmt'] = get_gmt_from_date( $post_date );
@@ -176,6 +182,7 @@ $news_id = e2e_upsert_post(
 		'post_content'  => '<!-- wp:paragraph --><p>E2E core news body.</p><!-- /wp:paragraph -->',
 		'post_date'     => '2020-01-01 12:00:00',
 		'post_date_gmt' => get_gmt_from_date( '2020-01-01 12:00:00' ),
+		'post_name'     => 'e2e-core-news-story',
 	)
 );
 wp_set_object_terms( $news_id, array( (int) $news_type_id ), 'news_type' );
@@ -238,21 +245,24 @@ $news_two_id = e2e_seed_core_news_story(
 	'E2E secondary featured news summary.',
 	(int) $news_type_id,
 	(int) $hero_attachment_id,
-	'2020-01-14 12:00:00'
+	'2020-01-14 12:00:00',
+	'e2e-core-news-story-two'
 );
 e2e_seed_core_news_story(
 	'E2E Core News Story Three',
 	'E2E third featured news summary.',
 	(int) $news_type_id,
 	(int) $hero_attachment_id,
-	'2020-01-13 12:00:00'
+	'2020-01-13 12:00:00',
+	'e2e-core-news-story-three'
 );
 e2e_seed_core_news_story(
 	'E2E Core News Story Four',
 	'E2E fourth featured news summary.',
 	(int) $news_type_id,
 	(int) $hero_attachment_id,
-	'2020-01-12 12:00:00'
+	'2020-01-12 12:00:00',
+	'e2e-core-news-story-four'
 );
 
 $differentiator_definitions = array(

@@ -1,1 +1,4 @@
 - paragraph: E2E Flexible lead paragraph.
+- paragraph: E2E narrow column warning alert.
+- link "E2E Narrow Button":
+  - /url: https://example.com/e2e-narrow-button

@@ -17,6 +17,9 @@ const BC_SITKA_E2E_WP_PORT = 8889;
 /** Matches bellevue-2022-pathway PATH constant for stable program pathway permalinks on subsites. */
 const BC_SITKA_E2E_PATHWAY_REWRITE_SLUG = 'academics/bc-pathways';
 
+/** Matches bellevue-2022-news rewrite slug for stable news-feature-core permalinks on subsites. */
+const BC_SITKA_E2E_NEWS_REWRITE_SLUG = 'news/article';
+
 /** Footer copyright year pinned so accepted aria snapshots do not fail on January 1. */
 const BC_SITKA_E2E_PINNED_FOOTER_YEAR = 2026;
 
@@ -80,15 +83,23 @@ add_filter( 'acf/load_value/name=pathways', 'bc_sitka_e2e_normalize_core_program
 add_filter( 'acf/load_value/name=focus_areas', 'bc_sitka_e2e_normalize_core_program_post_object_load_value', 20, 3 );
 
 /**
- * Main-site pathway plugin is not loaded on department subsite requests; register rewrite args only when missing.
+ * Main-site Bellevue CPT plugins are not loaded on department subsite requests; register rewrite args when missing.
+ *
+ * @param string $post_type    Post type slug.
+ * @param string $rewrite_slug Rewrite slug (with_front false in Bellevue plugins).
+ * @param string $label_name   Admin label for the stub post type.
  */
-function bc_sitka_e2e_register_pathway_post_type_when_missing(): void {
-	if ( post_type_exists( 'pathway' ) ) {
+function bc_sitka_e2e_register_main_site_cpt_rewrite_stub(
+	string $post_type,
+	string $rewrite_slug,
+	string $label_name
+): void {
+	if ( post_type_exists( $post_type ) ) {
 		return;
 	}
 
 	register_post_type(
-		'pathway',
+		$post_type,
 		array(
 			'public'             => true,
 			'publicly_queryable' => true,
@@ -96,19 +107,35 @@ function bc_sitka_e2e_register_pathway_post_type_when_missing(): void {
 			'show_in_menu'       => false,
 			'query_var'          => false,
 			'rewrite'            => array(
-				'slug'       => BC_SITKA_E2E_PATHWAY_REWRITE_SLUG,
+				'slug'       => $rewrite_slug,
 				'with_front' => false,
 				'pages'      => false,
 			),
 			'labels'             => array(
-				'name' => 'Pathways',
+				'name' => $label_name,
 			),
 			'supports'           => array( 'title' ),
 		)
 	);
 }
 
-add_action( 'init', 'bc_sitka_e2e_register_pathway_post_type_when_missing', 5 );
+/**
+ * Registers pathway and news rewrite stubs for get_permalink() after switch_to_blog().
+ */
+function bc_sitka_e2e_register_main_site_cpt_rewrite_stubs(): void {
+	bc_sitka_e2e_register_main_site_cpt_rewrite_stub(
+		'pathway',
+		BC_SITKA_E2E_PATHWAY_REWRITE_SLUG,
+		'Pathways'
+	);
+	bc_sitka_e2e_register_main_site_cpt_rewrite_stub(
+		'news',
+		BC_SITKA_E2E_NEWS_REWRITE_SLUG,
+		'News'
+	);
+}
+
+add_action( 'init', 'bc_sitka_e2e_register_main_site_cpt_rewrite_stubs', 5 );
 
 /**
  * @param array<string, mixed> $context Timber context from the theme.
