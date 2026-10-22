@@ -19,7 +19,7 @@ steps:
     env:
       CI: 'true'
 
-  - script: npm run test:e2e:functional:external
+  - script: npm run test:e2e:functional
     displayName: Functional e2e tests (includes 20 desktop @aria snapshots; excludes @visual)
     env:
       CI: 'true'

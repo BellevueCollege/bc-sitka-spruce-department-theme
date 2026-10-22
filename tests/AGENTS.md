@@ -173,13 +173,13 @@ When bumping release URLs in [`plugins.json`](e2e/plugins.json) or [`themes.json
 1. Prefer bumping **Bellevue plugin zip set and theme zip** in the same PR when they ship together.
 2. `npm run env:e2e:start` so `wp-env reset` reinstalls WordPress and after-start reseeds core content.
 3. Run `npm run env:e2e:verify`.
-4. Run `npm run test:e2e:functional:external -- tests/e2e/pages/SingleProgram.spec.js tests/e2e/pages/DepartmentHomepage.spec.js`.
+4. Run `npm run test:e2e:functional -- tests/e2e/pages/SingleProgram.spec.js tests/e2e/pages/DepartmentHomepage.spec.js`.
 5. Grep `field_` under `tests/fixtures/` for ACF key drift after Bellevue `acf-json` changes.
 6. Note versions in the PR; refresh `@visual` PNGs on LambdaTest only when UI actually changed.
 
 ### webServer readiness
 
-Playwright runs `start-wp-env-e2e.mjs` and waits for the log line `WP_ENV_E2E_READY_LOG` in [`e2e-env.js`](e2e/helpers/e2e-env.js) (`webServer.wait.stdout`). The start script reuses running containers, then always runs `wp-env reset` and the full after-start seed. `reuseExistingServer: !CI` and `E2E_WPENV_EXTERNAL=1` attach to an already-running wp-env. Azure runs `env:e2e:start` before the functional suite and again before the visual suite.
+Playwright runs `start-wp-env-e2e.mjs` and waits for the log line `WP_ENV_E2E_READY_LOG` in [`e2e-env.js`](e2e/helpers/e2e-env.js) (`webServer.wait.stdout`). The start script reuses running containers, then always runs `wp-env reset` and the full after-start seed. `reuseExistingServer: !CI` and `E2E_WPENV_RUNNING=1` attach to an already-running wp-env. `E2E_WPENV_RUNNING` skips Playwright's `webServer` because `npm run env:e2e:start` already booted WordPress. Azure runs `env:e2e:start` before the functional suite and again before the visual suite.
 
 ### Host URL: **127.0.0.1**, not `localhost`
 
@@ -214,7 +214,7 @@ These blocks read main-site CPTs via `switch_to_blog()` / `network_site_url()` R
 - `tests/e2e/helpers/wp-cli.js` runs `wp-env run --config=.wp-env.e2e.json cli wp eval-file …`.
 - Seed helpers cache results per process; do not seed in `beforeEach`.
 - When the database already has `bc_sitka_e2e_core_seed` / `bc_sitka_e2e_integration_seed`, Playwright helpers **read cached maps** instead of re-running heavy seed PHP inside one test process. `env:e2e:start` resets that database first, so the next run loads the current fixtures.
-- `global-setup.js` calls `warmE2eSeedCachesFromDatabase()` when `E2E_WPENV_EXTERNAL=1` so external wp-env runs avoid redundant CLI work before the first spec file.
+- `global-setup.js` calls `warmE2eSeedCachesFromDatabase()` when `E2E_WPENV_RUNNING=1` so runs against an already-started wp-env avoid redundant CLI work before the first spec file.
 
 ### Plugin resolution
 
@@ -272,7 +272,7 @@ Each workaround lives in exactly one layer. Fix WordPress-side behavior (URLs, r
 
 The LambdaTest plan is **Web Automation on Desktop — Linux**. Keep capabilities in [`lambdatest.js`](e2e/helpers/lambdatest.js) on Linux + Chrome; Windows/macOS or `pw-chromium` use a different minute pool and fail with `422 Lifetime Minutes Exhausted for desktop-automation`.
 
-Committed **PNG** baselines must be produced on LambdaTest (`npm run test:e2e:visual:update` in CI, or `npm run test:e2e:visual:update:ci-match` locally with tunnel + credentials). Playwright refuses `--update-snapshots` on LambdaTest outside CI unless `E2E_ALLOW_VISUAL_BASELINE_UPDATE=1` (see [`guard-visual-baseline-update.mjs`](e2e/scripts/guard-visual-baseline-update.mjs)). Refresh all snapshot types with `npm run test:e2e:update`; after a failing run, `npm run test:e2e:update:last-failed` re-runs only failed snapshot tests.
+Committed **PNG** baselines must be produced on LambdaTest with `npm run test:e2e:visual:update` (locally or in CI, with the tunnel and credentials). That script sets `E2E_ALLOW_VISUAL_BASELINE_UPDATE=1` and `E2E_STRICT_PLUGINS=1`. Start WordPress with `E2E_STRICT_PLUGINS=1` first; the update script does not rebuild a running wp-env. Playwright still refuses a raw `--update-snapshots` on LambdaTest outside CI (see [`guard-visual-baseline-update.mjs`](e2e/scripts/guard-visual-baseline-update.mjs)). Refresh all snapshot types with `npm run test:e2e:update`; after a failing run, `npm run test:e2e:update:last-failed` re-runs only failed snapshot tests.
 
 **Optional ADO baseline refresh:** [`.azuredevops/e2e-visual-baseline-update-steps.yml`](../.azuredevops/e2e-visual-baseline-update-steps.yml) runs `test:e2e:visual:update` and publishes `tests/e2e` as artifact `e2e-visual-baselines` for a follow-up commit.
 
@@ -294,12 +294,12 @@ Do **not** add generic spacing/font/layout overrides or loosen `maxDiffPixelRati
 | Width oscillating within one assertion | Scrollbar `stylePath` missing/broken | Fix scrollbar rules in [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css); do not loosen ratios |
 | Large height drop / washed-out region on element shot | Missing settle; below-fold `<img>` not loaded | Add `settleLocatorForScreenshot`; do not re-baseline a broken capture |
 | Stable **±1px** screenshot **size** (Playwright fails before `maxDiffPixelRatio`) | Local env drift, or fractional image/aspect boxes | First reproduce with CI-matched inputs (below). If it still fails, set `E2E_DEBUG_SCREENSHOT_GEOMETRY=1`, then extend the **allowlisted** capture pins in `screenshot-stability.css` (test-only). Do **not** change production theme CSS for screenshot jitter, and do not chase the last run with PNG updates alone |
-| Stable width, many pixel diffs | Real layout/content change or stale baseline | Re-run once; if UI is correct on LambdaTest, `npm run test:e2e:visual:update` (CI) or `test:e2e:visual:update:ci-match` |
+| Stable width, many pixel diffs | Real layout/content change or stale baseline | Re-run once; if UI is correct on LambdaTest, `npm run test:e2e:visual:update` |
 
 **CI-matched local visual verify (no snapshot write):** after `npm ci`, `npm run build`, and `E2E_STRICT_PLUGINS=1 npm run env:e2e:start` (plus tunnel + `LT_*` / `GITHUB_PAT` / `ACF_DOWNLOAD_URL`):
 
 ```bash
-npm run test:e2e:visual:ci-match -- tests/e2e/blocks/AnnouncementBanner.spec.js tests/e2e/blocks/PostsFeature.spec.js tests/e2e/layout/HeaderFooter.spec.js
+npm run test:e2e:visual:match-ci -- tests/e2e/blocks/AnnouncementBanner.spec.js tests/e2e/blocks/PostsFeature.spec.js tests/e2e/layout/HeaderFooter.spec.js
 ```
 
 Plain `npm run test:e2e:visual` reuses whatever wp-env and `assets/dist/` are already present and can falsely report ±1px dimension mismatches against CI baselines.
@@ -308,13 +308,13 @@ Plain `npm run test:e2e:visual` reuses whatever wp-env and `assets/dist/` are al
 
 Human-facing copy lives in [readme.md — Pull request checklist](../readme.md#pull-request-checklist-visual--e2e). Agents: use the checklist below when authoring PR text.
 
-- [ ] **Azure Test stage** (or local `npm run test:e2e:ci` with tunnel + secrets) is green, or the failure is explained and unrelated.
-- [ ] Any new or changed `tests/e2e/**/__snapshots__/*.png` were produced on **LambdaTest Linux Chrome** (`test:e2e:visual:update` in CI, or `test:e2e:visual:update:ci-match` locally)—not `test:e2e:visual:local`.
-- [ ] Baseline updates used **catalog plugin zips** (`E2E_STRICT_PLUGINS=1` in CI; same for `test:e2e:visual:update:ci-match`). No accidental commits from `plugins.local.json` or `MAYFLOWER_BLOCKS_PATH`-style mounts.
+- [ ] **Azure Test stage** (or local `npm run test:e2e:ci` with the tunnel started separately via `tunnel:e2e:start` / `tunnel:e2e:stop`, plus secrets) is green, or the failure is explained and unrelated. Azure also stops wp-env when the job finishes.
+- [ ] Any new or changed `tests/e2e/**/__snapshots__/*.png` were produced on **LambdaTest Linux Chrome** (`npm run test:e2e:visual:update`)—not `test:e2e:visual:local`.
+- [ ] Baseline updates used **catalog plugin zips** (`E2E_STRICT_PLUGINS=1` when starting wp-env; `test:e2e:visual:update` sets the same flag for the test run). No accidental commits from `plugins.local.json` or `MAYFLOWER_BLOCKS_PATH`-style mounts.
 - [ ] PR describes **why** pixels changed (theme, block, plugin version in `plugins.json`, seed content, editor prefs, etc.).
 - [ ] Partial PNG updates are intentional; if many unrelated snapshots changed, prefer a dedicated baseline-refresh PR or the [visual baseline update ADO template](../.azuredevops/e2e-visual-baseline-update-steps.yml).
 - [ ] Did **not** loosen `maxDiffPixelRatio`. [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css) changes are limited to scrollbar hiding or documented subpixel allowlist pins (not generic layout masks).
-- [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update` for diffs only, or `npm run test:e2e:aria:update:all:external` to rewrite every aria YAML—Playwright treats bare `--update-snapshots` as **missing** files only, not a full refresh).
+- [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update` for diffs only, or `npm run test:e2e:aria:update:all` to rewrite every aria YAML—Playwright treats bare `--update-snapshots` as **missing** files only, not a full refresh).
 - [ ] No `@visual` tag on tests that do not call `toHaveScreenshot`.
 - [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know to run `env:e2e:start` (database reset and reseed). `npm run env:e2e:destroy` is only for image or catalog-install failures.
 
@@ -344,9 +344,9 @@ Bump the pin only when LambdaTest’s default Linux Chrome moves and you are rea
 3. **Regenerate every `@visual` PNG** on LambdaTest with strict plugins:
 
    - **CI:** run a pipeline using `e2e-visual-baseline-update-steps.yml`, download artifact `e2e-visual-baselines`, commit `__snapshots__`.
-   - **Local:** `npm run env:e2e:start` with `E2E_STRICT_PLUGINS=1`, tunnel up, then `npm run test:e2e:visual:update:ci-match` (full suite; expect a large diff).
+   - **Local:** `E2E_STRICT_PLUGINS=1 npm run env:e2e:start`, tunnel up, then `npm run test:e2e:visual:update` (full suite; expect a large diff).
 
-4. **Verify stability:** run `npm run test:e2e:visual` twice back-to-back (external wp-env + tunnel); both runs should pass with no snapshot writes.
+4. **Verify stability:** run `npm run test:e2e:visual` twice back-to-back (wp-env already running + tunnel); both runs should pass with no snapshot writes.
 
 5. **PR:** use the checklist above; call out Chrome bump + baseline refresh in the summary. Do not merge a pin change without the matching PNG commit.
 
@@ -361,10 +361,10 @@ Bump the pin only when LambdaTest’s default Linux Chrome moves and you are rea
 | Variable | Typical value | Meaning |
 |----------|----------------|---------|
 | `WP_BASE_URL` | `http://127.0.0.1:8889/e2e-dept/` | Override Playwright default (department subsite) |
-| `E2E_WPENV_EXTERNAL` | `1` | Skip Playwright `webServer`; use existing wp-env (`test:e2e:visual` sets this by default) |
+| `E2E_WPENV_RUNNING` | `1` | Skip Playwright `webServer` because wp-env is already running (`test:e2e:functional` and `test:e2e:visual` set this) |
 | `BELLEVUE_2022_THEME_PATH` | optional local checkout | Override Bellevue 2022 theme path (ignored when `E2E_STRICT_PLUGINS=1`) |
 | `E2E_STRICT_PLUGINS` | `1` | Ignore `plugins.local.json` and catalog `envPathVar` mounts (CI sets this) |
-| `E2E_ALLOW_VISUAL_BASELINE_UPDATE` | `1` | Allow local LambdaTest `--update-snapshots` when not in CI |
+| `E2E_ALLOW_VISUAL_BASELINE_UPDATE` | `1` | Allow local LambdaTest `--update-snapshots` when not in CI (`test:e2e:visual:update` sets this) |
 | `E2E_LAMBDATEST` | `1` | LambdaTest browser + tunnel base URL |
 | `E2E_LAMBDATEST_TUNNEL_AUTO` | `0` / unset | `0` = do not auto-start tunnel |
 | `E2E_LAMBDATEST_TUNNEL_NAME` | optional / CI `e2e-tunnel-ado-<BuildId>` | Docker + LambdaTest tunnel name (default `e2e-tunnel-dev`) |
@@ -387,7 +387,7 @@ E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`), which run
 
 1. `npm@12`, git URL rewrite for `GITHUB_PAT`, then `build-base` (host PHP **8.3**, Node **26.x**) + `npm run build` + `replacetokens` on `style.css` (Test job rebuilds the theme because wp-env needs a full checkout and `node_modules`, not the pruned Build artifact zip). E2e WordPress runs PHP **8.5** inside wp-env Docker.
 2. Playwright Chromium, then `env:e2e:start`.
-3. `test:e2e:functional:external`.
+3. `test:e2e:functional`.
 4. `env:e2e:start` again, then `tunnel:e2e:start` + `test:e2e:visual` with `E2E_LAMBDATEST_TUNNEL_AUTO=0` and `E2E_STRICT_PLUGINS=1`.
 5. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/junit/*.xml`
    (`functional-junit.xml`, `visual-junit.xml`). JUnit is kept outside Playwright's disposable
@@ -427,7 +427,7 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | wp-env generate + start | `tests/e2e/scripts/generate-wp-env-e2e.mjs`, `start-wp-env-e2e.mjs` |
 | Plugin sources | `tests/e2e/scripts/resolve-plugin.mjs`, `plugins.json` |
 | URL filters + blocks | `tests/e2e/mu-plugins/e2e-seed-endpoint.php` |
-| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all:external` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
+| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
 | ADO e2e steps | `.azuredevops/e2e-test-steps.yml`, `.azuredevops/e2e-visual-baseline-update-steps.yml`, root `azure-pipelines.yml` |
 | Visual baseline guard | `tests/e2e/scripts/guard-visual-baseline-update.mjs` |
 | PR template (e2e checklist) | `.github/pull_request_template.md` (links readme checklist) |

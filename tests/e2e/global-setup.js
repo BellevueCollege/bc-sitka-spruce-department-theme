@@ -106,7 +106,7 @@ export default async function globalSetup( config ) {
 		startedTunnelInThisRun = tunnelResult.startedTunnelInThisRun;
 	}
 
-	if ( process.env.E2E_WPENV_EXTERNAL === '1' ) {
+	if ( process.env.E2E_WPENV_RUNNING === '1' ) {
 		console.log( '[e2e] Warming seed URL caches from database…' );
 		warmE2eSeedCachesFromDatabase();
 	}

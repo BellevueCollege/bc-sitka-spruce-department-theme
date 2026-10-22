@@ -27,7 +27,8 @@ if ( ! process.env.WP_BASE_URL ) {
 }
 
 const E2E_BASE_URL = getPlaywrightBaseUrl();
-const useExternalWpEnv = process.env.E2E_WPENV_EXTERNAL === '1';
+// Skip Playwright's webServer when wp-env is already running (`npm run env:e2e:start`).
+const useRunningWpEnv = process.env.E2E_WPENV_RUNNING === '1';
 const isCi = isCiEnvironment();
 
 const artifactsPath =
@@ -65,7 +66,7 @@ const config = {
 				[ 'junit', { outputFile: junitOutputFile } ],
 		  ]
 		: baseConfig.reporter,
-	webServer: useExternalWpEnv
+	webServer: useRunningWpEnv
 		? undefined
 		: {
 				command: 'node tests/e2e/scripts/start-wp-env-e2e.mjs',

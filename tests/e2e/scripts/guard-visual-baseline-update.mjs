@@ -24,8 +24,8 @@ export function assertVisualBaselineUpdateAllowed() {
 
 	console.error(
 		'[e2e] Refusing to update @visual PNG baselines on LambdaTest outside CI.\n' +
-			'Use npm run test:e2e:visual:update in Azure (or set E2E_ALLOW_VISUAL_BASELINE_UPDATE=1 ' +
-			'after starting wp-env with E2E_STRICT_PLUGINS=1 and E2E_WPENV_EXTERNAL=1).'
+			'Start wp-env with E2E_STRICT_PLUGINS=1 npm run env:e2e:start, then run ' +
+			'npm run test:e2e:visual:update.'
 	);
 	process.exit( 1 );
 }
