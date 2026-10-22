@@ -95,6 +95,27 @@ npm run test:e2e:functional
 
 `npm run env:e2e:start` resets the database, loads sample content, and checks both sites. Run `npm run env:e2e:verify` when you want that check again without another reset. When you are finished, stop WordPress with `npm run env:e2e:stop`. Wiping the containers is covered under [Troubleshooting](#troubleshooting).
 
+### Windows and WSL (optional faster wp-env mounts)
+
+If the repo lives on the Windows drive (`C:\…`, seen in WSL as `/mnt/c/…`), Docker bind-mounts that path into WordPress and functional tests can be much slower than on macOS. The default `npm run env:e2e:start` is unchanged.
+
+**Optional fast path (WSL shell only, not PowerShell):**
+
+| Command | What you get |
+|---------|--------------|
+| `npm run env:e2e:start:wsl` | Copies mount sources onto the WSL Linux disk (`~/.cache/bc-sitka-e2e-mounts/`, omitting `.git`, keeping `node_modules`), then runs the usual start |
+| `npm run env:e2e:sync:wsl` | Refreshes those copies after PHP or `npm run build` changes while wp-env stays up (only when WordPress was started with `start:wsl`) |
+
+Run **npm, Docker, and Playwright in the same WSL distro**. After switching between `env:e2e:start` and `env:e2e:start:wsl`, run `npm run env:e2e:destroy` once, then start again with the script you want.
+
+Check whether WordPress itself is slow:
+
+```bash
+curl -w 'time_total=%{time_total}\n' -o /dev/null -s http://127.0.0.1:8889/e2e-dept/
+```
+
+Cloning under the WSL home directory (`~/…`, not `/mnt/c/…`) is the best long-term fix; staging is for keeping a `C:\` working copy.
+
 | Command | What you get |
 |---------|--------------|
 | `npm run test:e2e:functional` | Functional and accessibility tests, in your Chrome |

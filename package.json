@@ -15,6 +15,8 @@
     "wp-env": "wp-env",
     "env:e2e:generate": "node tests/e2e/scripts/generate-wp-env-e2e.mjs",
     "env:e2e:start": "node tests/e2e/scripts/start-wp-env-e2e.mjs",
+    "env:e2e:start:wsl": "cross-env E2E_STAGE_WSL_MOUNTS=1 node tests/e2e/scripts/start-wp-env-e2e.mjs",
+    "env:e2e:sync:wsl": "cross-env E2E_STAGE_WSL_MOUNTS=1 node tests/e2e/scripts/sync-wsl-e2e-mounts.mjs",
     "env:e2e:start:strict": "cross-env E2E_STRICT_PLUGINS=1 npm run env:e2e:start",
     "env:e2e:reseed": "node tests/e2e/scripts/reseed-wp-env-e2e.mjs",
     "env:e2e:verify": "node tests/e2e/scripts/verify-e2e-stack.mjs",

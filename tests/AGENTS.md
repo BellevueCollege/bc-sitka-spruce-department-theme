@@ -237,6 +237,7 @@ One WordPress database; parallel workers race on posts and editor state.
 - Generated `.wp-env.e2e.json` sets `SCRIPT_DEBUG: false` and `DISABLE_WP_CRON: true` (debug logging stays on). After changing these constants, restart wp-env; refresh committed PNG baselines on LambdaTest if frontend assets shift (`npm run test:e2e:visual:update`).
 - First `wp-env start` after plugin/config changes can take several minutes; host after-start seeding (`run-wp-env-after-start.mjs` from `start-wp-env-e2e.mjs`) runs multisite + fixture setup after containers are up (not wp-env `lifecycleScripts`, which nested `wp-env run` and broke on macOS/Windows).
 - On CI, `start-wp-env-e2e.mjs` pre-pulls `mariadb:lts` and retries `wp-env start` when Docker Hub is slow; Azure also sets `retryCountOnTaskFailure` on the start step.
+- **WSL `/mnt/c` opt-in:** Default `env:e2e:start` bind-mounts the checkout as today. `env:e2e:start:wsl` sets `E2E_STAGE_WSL_MOUNTS=1` so [`stage-wsl-mounts.mjs`](e2e/scripts/stage-wsl-mounts.mjs) copies drvfs paths to `~/.cache/bc-sitka-e2e-mounts/` before writing `.wp-env.e2e.json`. Do not fold staging into default generate; macOS/Azure never set the flag.
 
 ### Block frontend fixtures (no editor boot)
 
@@ -370,6 +371,7 @@ Bump the pin only when LambdaTest’s default Linux Chrome moves and you are rea
 | `E2E_LAMBDATEST_TUNNEL_NAME` | optional / CI `e2e-tunnel-ado-<BuildId>` | Docker + LambdaTest tunnel name (default `e2e-tunnel-dev`) |
 | `E2E_LAMBDATEST_PLAYGROUND_URL` | optional | Default `http://host.docker.internal:8889/e2e-dept` |
 | `E2E_LAMBDATEST_CHROME_VERSION` | optional | Override pinned LambdaTest Linux Chrome (see `DEFAULT_LAMBDATEST_CHROME_VERSION` in `lambdatest.js`) |
+| `E2E_STAGE_WSL_MOUNTS` | `1` | Opt-in only (`env:e2e:start:wsl`, `env:e2e:sync:wsl`). Copy `/mnt/<drive>/` wp-env mount sources to WSL ext4 before generating config |
 | `E2E_DEBUG` | `1` / unset | Verbose plugin-resolution logs in `resolve-plugin.mjs` |
 | `E2E_DEBUG_SCREENSHOT_GEOMETRY` | `1` / unset | Log locator/image boxes before Announcement Banner and Posts Feature frontend `@visual` shots |
 | `LT_USERNAME`, `LT_ACCESS_KEY` | secrets | Required for `@visual` |
@@ -425,10 +427,10 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | Port / host URL | `tests/e2e/helpers/e2e-env.js` |
 | Publish / editor flows | `tests/e2e/helpers/editor.js` |
 | Seed WP-CLI | `tests/e2e/helpers/wp-cli.js` |
-| wp-env generate + start | `tests/e2e/scripts/generate-wp-env-e2e.mjs`, `start-wp-env-e2e.mjs` |
+| wp-env generate + start | `tests/e2e/scripts/generate-wp-env-e2e.mjs`, `start-wp-env-e2e.mjs`, opt-in WSL copies `stage-wsl-mounts.mjs`, `sync-wsl-e2e-mounts.mjs` |
 | Plugin sources | `tests/e2e/scripts/resolve-plugin.mjs`, `plugins.json` |
 | URL filters + blocks | `tests/e2e/mu-plugins/e2e-seed-endpoint.php` |
-| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:reseed`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
+| npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:start:wsl`, `env:e2e:sync:wsl`, `env:e2e:reseed`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
 | ADO e2e steps | `.azuredevops/e2e-test-steps.yml`, `.azuredevops/e2e-visual-baseline-update-steps.yml`, root `azure-pipelines.yml` |
 | Visual baseline guard | `tests/e2e/scripts/guard-visual-baseline-update.mjs` |
 | PR template (e2e checklist) | `.github/pull_request_template.md` (links readme checklist) |

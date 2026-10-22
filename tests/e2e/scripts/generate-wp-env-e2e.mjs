@@ -14,6 +14,7 @@ import {
 	resolveE2eBellevue2022Theme,
 	resolveE2ePlugins,
 } from './resolve-plugin.mjs';
+import { applyWslStagingToWpEnvConfig } from './stage-wsl-mounts.mjs';
 
 const THEME_SLUG = 'bc-sitka-spruce-department-theme';
 const BELLEVUE_2022_THEME_SLUG = 'bellevue-2022';
@@ -165,10 +166,11 @@ export async function generateWpEnvE2eConfig() {
 		);
 	}
 
-	const wpEnvConfig = buildWpEnvConfig(
+	let wpEnvConfig = buildWpEnvConfig(
 		resolvedPlugins,
 		bellevue2022ThemeHostPath
 	);
+	wpEnvConfig = applyWslStagingToWpEnvConfig( wpEnvConfig );
 	const { afterStartWpCliCommands, ...wpEnvConfigForFile } = wpEnvConfig;
 	const idempotentWpCliCommands = buildIdempotentAfterStartWpCliCommands();
 
