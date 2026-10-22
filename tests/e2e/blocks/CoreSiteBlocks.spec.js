@@ -11,7 +11,7 @@ const CORE_SITE_BLOCKS = [
 	'bc-sitka-spruce/template-program-info',
 ];
 
-test.describe( 'Core-site blocks (editor load only)', () => {
+test.describe( 'Core-site blocks (editor load only) @desktop-only', () => {
 	test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
 		skipDuplicateBlockViewport( testInfo );
 		await prepareEditorPage( { admin, editor, page } );

@@ -323,6 +323,8 @@ Human-facing copy lives in [readme.md — Pull request checklist](../readme.md#p
 - [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update` for diffs only, or `npm run test:e2e:aria:update:all` to rewrite every aria YAML—Playwright treats bare `--update-snapshots` as **missing** files only, not a full refresh).
 - [ ] No `@visual` tag on tests that do not call `toHaveScreenshot`.
 - [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know to run `env:e2e:start` (database reset and reseed). `npm run env:e2e:destroy` is only for image or catalog-install failures.
+- [ ] **Viewport tags** on new or changed Playwright tests: breakpoint-only behavior → `@viewport` (add `@narrow-only` when desktop must not collect the test); desktop-only PNG or editor work → `@desktop-only` (include in the `test.describe` title for editor suites); avoid `testInfo.skip` for viewport gating—use tags so Azure JUnit does not report false skips.
+- [ ] After e2e changes, `npm run test:e2e:verify-viewport-tags` passes. After a functional and visual run with `CI=true`, `npm run test:e2e:verify-junit-skips` passes (Governance skips when Trustees Agenda did not seed are allowed).
 
 ### LambdaTest Chrome version bump playbook
 
@@ -442,5 +444,6 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:reseed`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
 | ADO e2e steps | `.azuredevops/e2e-test-steps.yml`, `.azuredevops/e2e-visual-baseline-update-steps.yml`, root `azure-pipelines.yml` |
 | Visual baseline guard | `tests/e2e/scripts/guard-visual-baseline-update.mjs` |
+| Viewport tags and JUnit skip checks | `tests/e2e/scripts/verify-e2e-viewport-tags.mjs`, `verify-e2e-junit-skips.mjs` (`npm run test:e2e:verify-viewport-tags`, `test:e2e:verify-junit-skips`) |
 | PR template (e2e checklist) | `.github/pull_request_template.md` (links readme checklist) |
 | Chrome version probe | `tests/e2e/scripts/print-lambdatest-chrome-version.mjs` |

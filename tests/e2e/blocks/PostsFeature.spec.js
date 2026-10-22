@@ -68,7 +68,7 @@ test.describe( 'Posts Feature Block', () => {
 		} );
 	} );
 
-	test.describe( 'Editor', () => {
+	test.describe( 'Editor @desktop-only', () => {
 		test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
 			skipDuplicateBlockViewport( testInfo );
 			await prepareEditorPage( { admin, editor, page } );
