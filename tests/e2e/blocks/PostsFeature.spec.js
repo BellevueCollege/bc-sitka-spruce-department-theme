@@ -154,7 +154,7 @@ test.describe( 'Posts Feature Block', () => {
 			);
 		} );
 
-		test( 'editor — full configuration @aria', async ( { editor } ) => {
+		test( 'editor — full configuration @aria', async ( { editor, page } ) => {
 			await editor.insertBlock( {
 				name: BLOCK_NAME,
 				attributes: FIXTURE.full( seed ),
@@ -166,6 +166,7 @@ test.describe( 'Posts Feature Block', () => {
 			await waitForFeaturedPostInEditor( editor, seed.featuredPostTitle );
 			await waitForListPostsInEditor( editor, seed.listPostTitles );
 			await expect( block ).toBeVisible();
+			await deselectBlockForAriaSnapshot( page, block );
 			await expect( block ).toMatchAriaSnapshot( {
 				name: 'posts-feature-editor-full.yml',
 			} );
@@ -289,6 +290,22 @@ test.describe( 'Posts Feature Block', () => {
 		} );
 	} );
 } );
+
+/**
+ * Blur block selection so Link's "Edit Link" control is not in the a11y tree.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @param {import('@playwright/test').Locator} block
+ */
+async function deselectBlockForAriaSnapshot( page, block ) {
+	await page.evaluate( () => {
+		window.wp.data.dispatch( 'core/block-editor' ).clearSelectedBlock();
+	} );
+
+	await expect( block.getByRole( 'button', { name: 'Edit Link' } ) ).toHaveCount(
+		0
+	);
+}
 
 async function waitForFeaturedPostInEditor( editor, postTitle ) {
 	await editor.canvas

@@ -97,6 +97,7 @@ Otherwise rely on **tier 0** (page integration + seeds) and/or **tier 1** (`Core
 - `prepareEditorPage` + `skipDuplicateBlockViewport` in `beforeEach`.
 - Functional tests per variant that matter—**no snapshot required per variant**.
 - **At most** one canonical variant for `@visual` and `@aria` (editor + frontend each).
+- Editor `@aria` for blocks using [`Link`](../src/blocks/shared-elements/link.js): deselect the block before `toMatchAriaSnapshot` so selection-only **Edit Link** / **Add Link** controls are not in the tree (see [`PostsFeature.spec.js`](e2e/blocks/PostsFeature.spec.js)).
 - Committed PNG baselines **only** via LambdaTest (`npm run test:e2e:visual:update`).
 
 ### Relationship to page tests
