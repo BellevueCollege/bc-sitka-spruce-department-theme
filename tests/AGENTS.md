@@ -217,6 +217,7 @@ These blocks read main-site CPTs via `switch_to_blog()` / `network_site_url()` R
 - Seed helpers cache results per process; do not seed in `beforeEach`.
 - When the database already has `bc_sitka_e2e_core_seed` / `bc_sitka_e2e_integration_seed`, Playwright helpers **read cached maps** instead of re-running heavy seed PHP inside one test process. `env:e2e:start` resets that database first, so the next run loads the current fixtures.
 - `global-setup.js` calls `warmE2eSeedCachesFromDatabase()` when `E2E_WPENV_RUNNING=1` so runs against an already-started wp-env avoid redundant CLI work before the first spec file.
+- Do **not** delete shared integration CPTs during Playwright runs to force edge cases; use separate seeds or drop redundant e2e cases instead.
 
 ### Plugin resolution
 

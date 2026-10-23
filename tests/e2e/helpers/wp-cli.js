@@ -345,18 +345,6 @@ export function warmE2eSeedCachesFromDatabase() {
 }
 
 /**
- * Remove extra subsite programs so only Alpha and Beta remain (single-related slider case).
- *
- * @return {{ programBetaUrl: string }}
- */
-export function seedProgramPairDepartment() {
-	const result = runE2eCli(
-		`wp eval-file ${ THEME_PATH }/tests/fixtures/e2e-program-pair-slider.php`
-	);
-	return JSON.parse( result );
-}
-
-/**
  * Set which homepage is the static front page for integration tests.
  *
  * @param {'dept'|'div'|'suppt'} variant

@@ -5,11 +5,7 @@ import {
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
-import {
-	seedIntegrationData,
-	seedProgramPairDepartment,
-	seedSiteChromeData,
-} from '../helpers/wp-cli.js';
+import { seedIntegrationData, seedSiteChromeData } from '../helpers/wp-cli.js';
 
 let programUrl;
 
@@ -81,17 +77,5 @@ test.describe( 'Single program integration', () => {
 	test( 'main content passes axe', async ( { page } ) => {
 		const results = await runAxeOnSelector( page, '.flexible-page, main' );
 		expect( results.violations ).toEqual( [] );
-	} );
-
-	test( 'hides related programs slider navigation when only one related program exists', async ( {
-		page,
-	} ) => {
-		const pairSeed = seedProgramPairDepartment();
-		await visitIntegrationPage( page, pairSeed.programBetaUrl );
-		const main = page.locator( 'main, .site-content, #content' ).first();
-		const relatedProgramsSection = main.locator( '.related-programs-wrapper' );
-		await expect( relatedProgramsSection.locator( '.slider-navigation' ) ).toBeHidden();
-		await expect( main.getByRole( 'link', { name: 'E2E Alpha' } ) ).toBeVisible();
-		await expect( relatedProgramsSection.locator( '.swiper-slide' ) ).toHaveCount( 1 );
 	} );
 } );
