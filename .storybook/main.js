@@ -1,5 +1,5 @@
 // .storybook/main.js
-import twig from 'vite-plugin-twig-drupal';
+import twig from 'vite-plugin-twig-wp';
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { mergeConfig } from 'vite';
