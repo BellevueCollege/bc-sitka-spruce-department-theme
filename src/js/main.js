@@ -1,8 +1,12 @@
-import { bootstrap, initTooltips, setWindowBootstrap } from 'bc-theme-layer-bs5/js';
-import AccessibleMenu from './modules/accessible-menu';
-import ButtonToggle from './modules/button-toggle';
-import HeaderState from './modules/header-state';
-import Slider from './modules/slider';
+import {
+	bootstrap,
+	initTooltips,
+	setWindowBootstrap,
+	AccessibleMenu,
+	ButtonToggle,
+	HeaderState,
+	Slider,
+} from 'bc-theme-layer-bs5/js';
 import BCLightboxModal from 'bc-lightbox-modal';
 
 (() => {
