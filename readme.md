@@ -327,6 +327,15 @@ If that still fails, confirm `LT_USERNAME` and `LT_ACCESS_KEY` are set in that t
 
 **`page.goto` times out on `host.docker.internal:8889` (often on Windows).** LambdaTest reaches WordPress through the tunnel container. On the host, `curl http://127.0.0.1:8889/e2e-dept/` should answer, and `curl http://127.0.0.1:8000/api/v1.0/info` should answer for the tunnel. If wp-env is on Windows, run the tunnel in Docker Desktop, including when the rest of your tools are in WSL. Navigation retries a short timeout once. Run the spec again if it was a blip.
 
+**`@aria` tests fail on Windows and the YAML diff looks identical (line endings).** Playwright compares `tests/e2e/**/__snapshots__/*.yml` byte-for-byte to the browser tree. Git on Windows can check those files out with CRLF even when the repo stores LF, which fails the match with almost no visible diff. [`.gitattributes`](.gitattributes) forces LF for aria baselines. After you pull that file, re-normalize your worktree, then run `npm run test:e2e:aria` again (with wp-env already up):
+
+```bash
+git add --renormalize "tests/e2e/**/__snapshots__/*.yml"
+git checkout -- tests/e2e
+```
+
+Do not refresh baselines from a CRLF worktree. If the accessibility tree really changed, run `npm run test:e2e:aria:update` only after the snapshots on disk are LF again.
+
 **A private plugin download returns 404.** `GITHUB_PAT` cannot read that repository. Confirm the token's access and that it is authorized for BellevueCollege SSO. `E2E_DEBUG=1` prints which token was used.
 
 ## Documentation

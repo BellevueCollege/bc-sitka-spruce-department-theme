@@ -251,6 +251,8 @@ One WordPress database; parallel workers race on posts and editor state.
 | `@aria` | Host (desktop project) | `*.yml` (`toMatchAriaSnapshot`) |
 | `@visual` | LambdaTest | `*.png` (`toHaveScreenshot`) |
 
+`@aria` YAML baselines are normalized to **LF** in Git ([`.gitattributes`](../.gitattributes)). Playwright compares file bytes, not just tree semantics—CRLF on Windows checkouts causes opaque failures. See [readme Troubleshooting — `@aria` line endings](../readme.md).
+
 ### LambdaTest tunnel
 
 - Local default tunnel / container name is **`e2e-tunnel-dev`**; auto-start in `global-setup.js` unless `E2E_LAMBDATEST_TUNNEL_AUTO=0`.
@@ -411,6 +413,7 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 - **Do not** widen block allowlist beyond blocks under active test.
 - **Do not** commit `plugins.local.json`, `.wp-env.e2e.json`, or secrets.
 - **Do not** tag non-screenshot tests with `@visual`.
+- **Do not** commit `@aria` `*.yml` updates from a Windows worktree until snapshot files are LF (see readme Troubleshooting).
 - Prefer **one fix in a shared helper** over duplicating URL/tunnel logic in each spec.
 
 ---
