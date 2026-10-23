@@ -4,17 +4,8 @@
 // Import theme variables first (needed for Bootstrap customizations)
 @import 'variables';
 
-// Import Bootstrap customizations (must come before Bootstrap imports)
-@import 'variables/bootstrap';
+// Import shared Bootstrap configuration (includes root, helpers, utilities/api)
+@import 'bc-theme-layer-bs5/scss/bootstrap/_config';
 
-// Import Bootstrap configuration (functions, variables, maps, mixins, utilities)
-@import 'lib/bootstrap/config';
-
-// Import Bootstrap CSS variables
-@import '~bootstrap/scss/root';
-
-// Import Bootstrap components
-@import 'lib/bootstrap/components';
-
-// Import Bootstrap helpers and utilities
-@import 'lib/bootstrap/helpers';
+// Import Bootstrap minimal preset
+@import 'bc-theme-layer-bs5/scss/presets/_minimal';
