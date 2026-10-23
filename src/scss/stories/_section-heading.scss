@@ -41,6 +41,8 @@
 	&__heading {
 		font-size: 2.75rem;
 		margin-bottom: 0;
+		overflow-wrap: break-word;
+		word-break: break-word;
 	}
 
 	&__subheading {

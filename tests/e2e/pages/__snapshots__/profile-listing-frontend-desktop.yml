@@ -1,0 +1,318 @@
+- link "Skip to content":
+  - /url: "#main-content"
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://127.0.0.1:8889/e2e-dept
+  - navigation "Main Menu":
+    - list:
+      - listitem:
+        - link "Programs":
+          - /url: https://example.com/programs
+        - button "Toggle the Programs menu": 
+      - listitem:
+        - link "About":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact":
+          - /url: https://example.com/contact
+    - list:
+      - listitem:
+        - link "Apply Now":
+          - /url: https://example.com/apply
+      - listitem:
+        - link "Request Info":
+          - /url: https://example.com/request-info
+  - navigation:
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+      - listitem:
+        - link "Search":
+          - /url: "#"
+- main:
+  - heading "E2E Profile Listing" [level=1]
+  - heading "Search and Filter Directory" [level=2]
+  - text: Search by Name
+  - textbox "Search by Name":
+    - /placeholder: Search All...
+  - text: Office or Department
+  - combobox "Office or Department":
+    - option "All Offices and Departments" [selected]
+    - option "E2E Advising Office"
+    - option "E2E Department"
+  - group "Profile Type":
+    - text: ""
+    - list:
+      - listitem:
+        - checkbox "Administration"
+        - text: Administration
+      - listitem:
+        - checkbox "Faculty"
+        - text: Faculty
+      - listitem:
+        - checkbox "Staff"
+        - text: Staff
+  - button "Submit Search"
+  - link "Clear All Filters":
+    - /url: http://127.0.0.1:8889/e2e-dept/e2e-profile-listing/
+  - paragraph: /Showing \d+ of \d+ profiles/
+  - link "E2E profile fixture image":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+    - img "E2E profile fixture image"
+  - heading "Ada Lovelace" [level=3]:
+    - link "Ada Lovelace":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-ada-lovelace/
+  - paragraph: she/her
+  - list:
+    - listitem: E2E Faculty
+    - listitem:
+      - text: Faculty /
+      - strong: E2E Department
+  - list:
+    - listitem:
+      - text: "Email:"
+      - link "ada.lovelace@example.com":
+        - /url: mailto:ada.lovelace@example.com
+    - listitem:
+      - text: "Phone:"
+      - link /\d+-\d+-\d+/:
+        - /url: tel:425-564-0001
+    - listitem:
+      - link "Book E2E Appointment":
+        - /url: https://example.com/e2e-appointment
+  - heading "A" [level=2]
+  - separator
+  - link "E2E profile fixture image":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-pat-alvarez/
+    - img "E2E profile fixture image"
+  - heading "Pat Alvarez" [level=3]:
+    - link "Pat Alvarez":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-pat-alvarez/
+  - paragraph: they/them
+  - list:
+    - listitem: E2E Administrator
+    - listitem:
+      - text: Administration /
+      - strong: E2E Department
+  - list:
+    - listitem:
+      - text: "Email:"
+      - link "pat.alvarez@example.com":
+        - /url: mailto:pat.alvarez@example.com
+    - listitem:
+      - text: "Phone:"
+      - link /\d+-\d+-\d+/:
+        - /url: tel:425-564-0102
+    - listitem:
+      - link "Book with Pat":
+        - /url: https://example.com/e2e-pat-appointment
+  - heading "C" [level=2]
+  - separator
+  - link "Marie Curie's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-marie-curie/
+    - img "Marie Curie's Profile"
+  - heading "Marie Curie" [level=3]:
+    - link "Marie Curie":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-marie-curie/
+  - list:
+    - listitem: E2E Faculty
+    - listitem:
+      - text: Faculty /
+      - strong: E2E Advising Office
+  - list
+  - heading "D" [level=2]
+  - separator
+  - link "Riley Diaz's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-riley-diaz/
+    - img "Riley Diaz's Profile"
+  - heading "Riley Diaz" [level=3]:
+    - link "Riley Diaz":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-riley-diaz/
+  - list:
+    - listitem: E2E Staff
+    - listitem:
+      - text: Staff /
+      - strong: E2E Department
+  - list
+  - heading "E" [level=2]
+  - separator
+  - link "Casey Evans's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-casey-evans/
+    - img "Casey Evans's Profile"
+  - heading "Casey Evans" [level=3]:
+    - link "Casey Evans":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-casey-evans/
+  - list:
+    - listitem: E2E Administrator
+    - listitem:
+      - text: Administration /
+      - strong: E2E Advising Office
+  - list
+  - heading "F" [level=2]
+  - separator
+  - link "Quinn Foster's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-quinn-foster/
+    - img "Quinn Foster's Profile"
+  - heading "Quinn Foster" [level=3]:
+    - link "Quinn Foster":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-quinn-foster/
+  - list:
+    - listitem: E2E Staff
+    - listitem:
+      - text: Staff /
+      - strong: E2E Department
+  - list
+  - heading "G" [level=2]
+  - separator
+  - link "E2E profile fixture image":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-avery-garcia/
+    - img "E2E profile fixture image"
+  - heading "Avery Garcia" [level=3]:
+    - link "Avery Garcia":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-avery-garcia/
+  - list:
+    - listitem: E2E Faculty
+    - listitem:
+      - text: Faculty /
+      - strong: E2E Advising Office
+  - list
+  - heading "H" [level=2]
+  - separator
+  - link "Grace Hopper's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-grace-hopper/
+    - img "Grace Hopper's Profile"
+  - heading "Grace Hopper" [level=3]:
+    - link "Grace Hopper":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-grace-hopper/
+  - list:
+    - listitem: E2E Faculty
+    - listitem:
+      - text: Faculty /
+      - strong: E2E Department
+  - list
+  - heading "L" [level=2]
+  - separator
+  - link "Sam Larson's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-sam-larson/
+    - img "Sam Larson's Profile"
+  - heading "Sam Larson" [level=3]:
+    - link "Sam Larson":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-sam-larson/
+  - list:
+    - listitem: E2E Staff
+    - listitem:
+      - text: Staff /
+      - strong: E2E Advising Office
+  - list
+  - separator
+  - link "Mei Liu's Profile":
+    - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-mei-liu/
+    - img "Mei Liu's Profile"
+  - heading "Mei Liu" [level=3]:
+    - link "Mei Liu":
+      - /url: http://127.0.0.1:8889/e2e-dept/profile/e2e-profile-mei-liu/
+  - list:
+    - listitem: E2E Administrator
+    - listitem:
+      - text: Administration /
+      - strong: E2E Department
+  - list
+  - navigation "Pagination":
+    - list:
+      - listitem: "1"
+      - listitem:
+        - link "Go to results page 2 of 2":
+          - /url: http://127.0.0.1:8889/e2e-dept/e2e-profile-listing/?offset=2
+          - text: ""
+      - listitem:
+        - link "Next page of results":
+          - /url: http://127.0.0.1:8889/e2e-dept/e2e-profile-listing/?offset=2
+          - text: Next 
+      - listitem:
+        - link "Last page of results":
+          - /url: http://127.0.0.1:8889/e2e-dept/e2e-profile-listing/?offset=2
+          - text: Last 
+  - separator
+  - paragraph: E2E profile listing intro paragraph.
+- complementary:
+  - heading "For questions about this site, contact our site manager" [level=2]
+  - paragraph:
+    - strong: E2E Manager
+    - text: Web Coordinator
+    - link "e2e-manager@example.com":
+      - /url: mailto:e2e-manager@example.com
+- contentinfo:
+  - link "Bellevue College (links to college homepage)":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College (links to college homepage)"
+  - heading "E2E Department Site" [level=2]
+  - separator
+  - text: Phone Number
+  - paragraph:
+    - link /\+1 \d+-\d+-\d+/:
+      - /url: tel:+14255641000
+  - text: Address
+  - paragraph: /Bellevue College \d+ Landerholm Circle SE Bellevue, WA \d+-\d+/
+  - list:
+    - listitem:
+      - link "Facebook":
+        - /url: https://www.facebook.com/bellevuecollege
+    - listitem:
+      - link "LinkedIn":
+        - /url: https://www.linkedin.com/school/bellevue-college
+    - listitem:
+      - link "YouTube":
+        - /url: https://www.youtube.com/bellevuecollege
+  - navigation "Major Site Sections":
+    - list:
+      - listitem:
+        - link "Programs ":
+          - /url: https://example.com/programs
+      - listitem:
+        - link "About ":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact ":
+          - /url: https://example.com/contact
+  - navigation "Footer Utility Links":
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+  - navigation "Global Links":
+    - list:
+      - listitem:
+        - link "Accessibility ":
+          - /url: https://www.bellevuecollege.edu/accessibility/
+      - listitem:
+        - link "Emergency Alerts ":
+          - /url: https://www.bellevuecollege.edu/emergency-alerts/
+      - listitem:
+        - link "Equal Opportunity ":
+          - /url: https://www.bellevuecollege.edu/equal-opportunity/
+      - listitem:
+        - link "Public Disclosure ":
+          - /url: https://www.bellevuecollege.edu/legal-information/public-disclosure/
+      - listitem:
+        - link "Website Info ":
+          - /url: https://www.bellevuecollege.edu/website-information/
+  - paragraph:
+    - text: /© \d+ Bellevue College\. All Rights Reserved\./
+    - link "Privacy Notice":
+      - /url: https://www.bellevuecollege.edu/accessibility/

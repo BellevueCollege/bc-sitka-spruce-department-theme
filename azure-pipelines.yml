@@ -1,6 +1,10 @@
 # ============================================================
 # azure-pipelines.yml — CI Pipeline
 # Extends shared templates from bc-wordpress-devops-templates.
+#
+# E2e secrets: set on this pipeline in ADO (Edit → Variables), not in YAML — LT_USERNAME,
+# LT_ACCESS_KEY, GITHUB_PAT, ACF_DOWNLOAD_URL (optional). Same pattern as other BC projects.
+# Do not add a root-level variables: block here — theme-ci.yml already defines cache variables.
 # ============================================================
 
 trigger:
@@ -30,11 +34,12 @@ resources:
       type: github
       name: BellevueCollege/bc-wordpress-devops-templates
       endpoint: github-service-connection
-
 extends:
   template: templates/ci/theme-ci.yml@templates
   parameters:
     themeName: 'bc-sitka-spruce-department-theme'
+    runTests: true
+    # testJobTimeoutInMinutes: 120
     testEnvironments:
       - name: KinstaCstage
         displayName: 'Kinsta: CStage'
@@ -62,3 +67,37 @@ extends:
           sources: 'style.css'
           addBOM: true
         displayName: 'Inject Version into style.css'
+    testSetupSteps:
+      - script: npm install -g npm@12
+        displayName: 'Use npm 12.x (match local)'
+      - script: |
+          set -euo pipefail
+          if [ -z "${GITHUB_PAT:-}" ]; then
+            echo "GITHUB_PAT is required for npm git dependencies (bc-lightbox-modal, bc-theme-layer-bs5)."
+            exit 1
+          fi
+          git config --global url."https://${GITHUB_PAT}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://${GITHUB_PAT}@github.com/".insteadOf "git@github.com:"
+        displayName: 'Configure git auth for GitHub npm dependencies'
+        env:
+          GITHUB_PAT: $(GITHUB_PAT)
+      - template: templates/steps/build-base.yml@templates
+        parameters:
+          # Hosted agents ship PHP 8.3.x (8.5 is not on update-alternatives yet). Composer runs on the agent;
+          # WordPress e2e uses E2E_WP_ENV_PHP_VERSION in Docker via wp-env (may be newer).
+          phpVersion: '8.3'
+          nodeVersion: '26.x'
+          runComposer: true
+          runNpm: true
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          customCommand: 'run build'
+        displayName: 'NPM Build (test job)'
+      - task: replacetokens@6
+        inputs:
+          sources: 'style.css'
+          addBOM: true
+        displayName: 'Inject Version into style.css (test job)'
+    testSteps:
+      - template: .azuredevops/e2e-test-steps.yml@self
