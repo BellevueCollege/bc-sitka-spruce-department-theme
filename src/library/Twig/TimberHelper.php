@@ -100,7 +100,7 @@ class TimberHelper implements TimberHelperInterface {
   /**
    * @inheritDoc
    */
-  public function addFilter(string $name, $callable = null, array $options = []): void {
+  public function addFilter(string $name, ?callable $callable = null, array $options = []): void {
     $this->filters[$name] = [
       'callback' => $callable,
       'options' => $options,
@@ -110,7 +110,7 @@ class TimberHelper implements TimberHelperInterface {
   /**
    * @inheritDoc
    */
-  public function addFunction(string $name, $callable = null, array $options = []): void {
+  public function addFunction(string $name, ?callable $callable = null, array $options = []): void {
     $this->functions[$name] = [
       'callback' => $callable,
       'options' => $options,
