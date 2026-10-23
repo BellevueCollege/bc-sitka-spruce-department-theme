@@ -1055,3 +1055,20 @@ add_filter( 'ed11y_default_options', function ( $options ) {
 
 	return $options;
 } );
+
+/**
+ * Disable per-block Custom CSS (WordPress 7.0+) for all registered block types.
+ */
+add_filter( 'register_block_type_args', function( $args, $block_type ) {
+	$args['supports'] ??= [];
+	$args['supports']['customCSS'] = false;
+	return $args;
+}, 10, 2 );
+
+/**
+ * Disable responsive styling (WordPress 7.1+)
+ */
+add_filter( 'block_editor_settings_all', function( $settings ) {
+	$settings['responsiveEditingEnabled'] = false;
+	return $settings;
+}, 10, 1 );
