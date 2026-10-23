@@ -41,7 +41,9 @@
     "test:e2e:update": "npm run test:e2e:aria:update && npm run test:e2e:visual:update",
     "test:e2e:update:last-failed": "npm run test:e2e:aria:update:last-failed && npm run test:e2e:visual:update:last-failed",
     "test:e2e:ui": "cross-env E2E_WPENV_RUNNING=1 npm run test:e2e:functional:start-env -- --ui",
-    "test:e2e:debug": "cross-env E2E_WPENV_RUNNING=1 npm run test:e2e:functional:start-env -- --debug"
+    "test:e2e:debug": "cross-env E2E_WPENV_RUNNING=1 npm run test:e2e:functional:start-env -- --debug",
+    "test:e2e:verify-viewport-tags": "node tests/e2e/scripts/verify-e2e-viewport-tags.mjs",
+    "test:e2e:verify-junit-skips": "node tests/e2e/scripts/verify-e2e-junit-skips.mjs"
   },
   "repository": {
     "type": "git",

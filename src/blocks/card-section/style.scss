@@ -6,8 +6,6 @@
 		grid-column-gap: 2.5rem;
 		grid-row-gap: 2.5rem;
 
-		padding-bottom: var( --sitka-container-spacing );
-
 		@include media-breakpoint-up(sm) {
 			grid-template-columns: 1fr 1fr;
 		}

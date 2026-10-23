@@ -20,6 +20,11 @@
 		.container-xl:has(+ hr) {
 			margin-bottom: var( --sitka-container-spacing );
 		}
+
+		// Prevent Arch Shape from Adding Extra Spacing
+		&:has(+ .arch-shape) .container-xl:has(+ hr) {
+			margin-bottom: 0;
+		}
 	}
 
 	&.section-xlight {
@@ -38,10 +43,6 @@
 		background-color: var(--bc-rainy-night-blue);
 	}
 
-	.section-heading > .container-xl {
-		padding-bottom: calc( var( --sitka-container-spacing ) * 0.5);
-	}
-
 	&:has(+ .section) {
 		margin-bottom: 0;
 	}
@@ -53,17 +54,27 @@
 	margin-top: var( --sitka-container-spacing );
 }
 
-// Hide arch shape if next section is dark
+// Classic tabs tabcordion: `.tab-wrapper.container-xl` is the section sibling (wp-block nested inside; not `.block-wrapper`).
+.section + .tab-wrapper.container-xl:has( > .wp-block-bc-sitka-spruce-tabcordion.tabcordion-tabs ) {
+	margin-top: var( --sitka-container-spacing );
+}
+
+// A following `.section` supplies top padding for the gap; inner `.tabcordion-tabs` keeps `margin-bottom: 0` so spacing is not doubled.
+.tab-wrapper.container-xl:has( > .wp-block-bc-sitka-spruce-tabcordion.tabcordion-tabs ):has( + .section ) > .wp-block-bc-sitka-spruce-tabcordion.tabcordion-tabs {
+	margin-bottom: 0;
+}
+
+// Hide arch shape if next section is dark.
+// When the arch is hidden before a curved-top rainy section, restore section
+// padding-top so headings are not flush against the predecessor (child-only
+// padding missed .section-heading and double-padded content stubs).
 .section.section-rainy-night-blue {
 	& + .arch-shape {
 		display: none;
 	}
 	& + .arch-shape + .section.section-rainy-night-blue.curved-top {
-
-		.diffs--container,
-		& > .container-xl {
-			padding-top: var( --sitka-container-spacing );
-		}
+		--arch-shape-offset: 0;
+		padding-top: var( --sitka-container-spacing );
 	}
 }
 
@@ -71,16 +82,29 @@
 .section.section-accent-blue-extralight + .arch-shape,
 .section.section-brutus-blue + .arch-shape,
 .section.section-xlight + .arch-shape {
-	margin-top: -10vw;
+	margin-top: -10vw; // arch shape is 10vw tall
 }
 .section.section-accent-blue-extralight:has(+ .arch-shape),
 .section.section-brutus-blue:has(+ .arch-shape),
 .section.section-xlight:has(+ .arch-shape) {
-	padding-bottom: calc( var( --sitka-container-spacing ) + 10vw );
+	padding-bottom: 10vw; // match the above rule to avoid double spacing
 }
 
 .section.section-xlight + .section.section-xlight {
 	border-top: 2px solid var(--white);
+}
+
+.section.section-accent-blue-extralight + .section.section-accent-blue-extralight {
+	border-top: 2px solid var(--white);
+}
+
+.section.section-brutus-blue + .section.section-brutus-blue {
+	border-top: 2px solid var(--bc-fountain-blue);
+}
+
+.section.section-rainy-night-blue.diffs:has(+ .arch-shape),
+.section.section-rainy-night-blue.diffs:has(+ .section.section-rainy-night-blue) {
+	padding-bottom: 0;
 }
 
 .section.section-rainy-night-blue + .section.section-rainy-night-blue,
@@ -88,23 +112,52 @@
 	border-top: 2px solid var(--bc-fountain-blue);
 }
 
-
-.section.section-rainy-night-blue.diffs:has(+ .section.section-rainy-night-blue),
-.section.section-rainy-night-blue.diffs:has(+ .arch-shape) {
-	padding-bottom: 0;
-}
-
 // Avoid extra spacing between last section and sock
 .section:last-child {
 	margin-bottom: 0;
 }
 
-// Hide divider if next section has a colored background, arch shape, or is the last section
+// Colored section before an announcement: keep content inset on .container-xl; the
+// white gap before the banner comes from the announcement’s own margin-top.
+.section:not(.section-white):has(+ .announcement) {
+	padding-bottom: 0;
+
+	> .container-xl {
+		padding-bottom: var( --sitka-container-spacing );
+	}
+}
+
+// Collapse padding-top on `section-white` when it follows a `flexible-page-intro-wrapper`
+.flexible-page-intro-wrapper + .section.section-white {
+	padding-top: 0;
+}
+
+// Collapse margins around announcement when it abuts a white section.
+.section.section-white + .announcement {
+	margin-top: 0;
+}
+
+.announcement:has(+ .section.section-white),
+.announcement:has(+ .arch-shape) {
+	margin-bottom: 0;
+}
+
+// Homepage intro: zero bottom margin when the follower supplies top spacing (same as section pairs).
+.homepage-intro:has(+ .section) .content-and-location,
+.homepage-intro:has(+ .arch-shape) .content-and-location,
+.homepage-intro:has(+ .announcement) .content-and-location {
+	margin-bottom: 0;
+}
+
+// Hide divider if next section has a colored background, arch shape, or is the last section.
+// Keep the container margin because it owns the white section's bottom spacing
+// (arch zeros that margin in `.section-white` above).
 .section.section-white:has(+ .section.section-rainy-night-blue),
 .section.section-white:has(+ .section.section-brutus-blue),
 .section.section-white:has(+ .section.section-xlight),
 .section.section-white:has(+ .section.section-accent-blue-extralight),
 .section.section-white:has(+ .arch-shape),
+.section.section-white:has(+ .announcement),
 .section.section-white:last-child {
 	.section-divider {
 		display: none;

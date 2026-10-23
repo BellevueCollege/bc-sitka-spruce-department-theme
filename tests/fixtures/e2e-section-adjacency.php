@@ -78,9 +78,25 @@ function e2e_section_adjacency_page_markup(
 		e2e_build_adjacency_brutus_announcement_listing( $context ),
 	);
 
-	$markup = implode( "\n", $scenarios );
+	$markup = implode(
+		"\n" . e2e_adjacency_scenario_separator() . "\n",
+		$scenarios
+	);
 
 	return e2e_wire_core_site_blocks_in_content( $markup, $core_map );
+}
+
+/**
+ * Core separator between scenario groups so stacked cases do not share section adjacency.
+ *
+ * @return string
+ */
+function e2e_adjacency_scenario_separator(): string {
+	return <<<'MARKUP'
+<!-- wp:separator -->
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<!-- /wp:separator -->
+MARKUP;
 }
 
 /**

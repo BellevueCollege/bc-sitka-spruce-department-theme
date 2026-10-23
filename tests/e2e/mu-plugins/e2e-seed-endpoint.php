@@ -361,6 +361,20 @@ function bc_sitka_e2e_core_image_field_as_array( $value, $post_id ) {
 add_filter( 'acf/format_value/name=image', 'bc_sitka_e2e_core_image_field_as_array', 20, 2 );
 
 /**
+ * Same reshape as format_value; subsite renders that switch_to_blog() and read main-site
+ * meta may skip acf/format_value so load_value must normalize attachment IDs too.
+ *
+ * @param mixed $value   Raw meta value.
+ * @param int   $post_id Post ID.
+ * @return mixed
+ */
+function bc_sitka_e2e_core_image_field_load_value( $value, $post_id ) {
+	return bc_sitka_e2e_core_image_field_as_array( $value, $post_id );
+}
+
+add_filter( 'acf/load_value/name=image', 'bc_sitka_e2e_core_image_field_load_value', 20, 2 );
+
+/**
  * Skip host canonicalization when the LambdaTest proxy keeps HTTP_HOST on loopback.
  *
  * Without this, WordPress 301s to host.docker.internal while the upstream request

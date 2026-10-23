@@ -112,8 +112,9 @@ Canonical home for **section background / arch / divider** regressions is [`Sect
 - One **representative block per section signature** (body, listing, contact, degrees, tabs, media gallery, differentiator, support-feature, announcement-banner). Blocks that share a signature are covered on homepage/program templates instead of duplicating here.
 - Keep [`FlexiblePage.spec.js`](e2e/pages/FlexiblePage.spec.js) focused on template composition (intro, sidebar, WYSIWYG); do not append adjacency stacks to that page.
 - **Scenario Group wrappers** (`#e2e-adj-scenario-*`) are an e2e harness for focused locators/screenshots. Use **`align: full`** (theme `block-wrapper.alignfull` — no `make-container()` gutters) and **`layout: { type: default }`** (WP flow layout). Do not omit either attribute.
+- **Separators between scenario groups** (`e2e_adjacency_scenario_separator()`) intentionally break cross-scenario adjacency on the megapage so full-page visuals do not mix neighboring cases. Do not remove them when tweaking seeds.
 - **Sticky-header screenshot pitfall:** `#header-wrapper` is `position: sticky`. Playwright stitches tall element screenshots by scrolling, which re-paints the header mid-capture. Use [`prepareAdjacencyScreenshot()`](e2e/helpers/page-integration.js) and screenshot **per-scenario** wrappers (`#e2e-adj-scenario-*`), never one megapage locator for element shots.
-- **Viewport budget:** Per-scenario `@visual` PNGs are **desktop-only**. Full-page `section-adjacency-full.png` runs on **desktop, tablet, and mobile** via [`expectFullPageScreenshot()`](e2e/helpers/page-integration.js) (lazy-load scroll + image settle + 60s stability timeout) so breakpoint overview is covered without 12×3 scenario baselines. LambdaTest remote captures often exceed Playwright’s default 5s “two consecutive stable screenshots” window on long pages.
+- **Viewport budget:** Per-scenario `@visual` PNGs are **desktop-only** (`@desktop-only`, so tablet/mobile projects never schedule them). Full-page `section-adjacency-full.png` runs on **desktop, tablet, and mobile** via [`expectFullPageScreenshot()`](e2e/helpers/page-integration.js) (lazy-load scroll + image settle + 60s stability timeout) so breakpoint overview is covered without 12×3 scenario baselines. LambdaTest remote captures often exceed Playwright’s default 5s “two consecutive stable screenshots” window on long pages.
 
 ---
 
@@ -216,6 +217,7 @@ These blocks read main-site CPTs via `switch_to_blog()` / `network_site_url()` R
 - Seed helpers cache results per process; do not seed in `beforeEach`.
 - When the database already has `bc_sitka_e2e_core_seed` / `bc_sitka_e2e_integration_seed`, Playwright helpers **read cached maps** instead of re-running heavy seed PHP inside one test process. `env:e2e:start` resets that database first, so the next run loads the current fixtures.
 - `global-setup.js` calls `warmE2eSeedCachesFromDatabase()` when `E2E_WPENV_RUNNING=1` so runs against an already-started wp-env avoid redundant CLI work before the first spec file.
+- Do **not** delete shared integration CPTs during Playwright runs to force edge cases; use separate seeds or drop redundant e2e cases instead.
 
 ### Plugin resolution
 
@@ -228,9 +230,9 @@ One WordPress database; parallel workers race on posts and editor state.
 
 ### Viewport projects and `@visual` budget
 
-- `desktop` runs the full functional suite; **tablet** and **mobile** projects use Playwright `grep: /@viewport|@visual/` so narrow viewports only run breakpoint-specific functional tests plus all `@visual` screenshots.
-- Tag breakpoint-only functional tests with **`@viewport`** (tabcordion accordion, application-guide accordion step, header offcanvas/submenu/CTA). Do not tag desktop-only tab tests, axe, `@aria`, or generic layout assertions.
-- `skipDuplicateBlockViewport` limits block-editor `@visual` to **desktop** (tablet/mobile still schedule those tests and skip in the hook). `@aria` stays desktop-only via the narrow project grep.
+- `desktop` runs the functional suite except `@narrow-only`; **tablet** and **mobile** projects use Playwright `grep: /@viewport|@visual/` and `grepInvert: /@desktop-only/` so narrow viewports run breakpoint-specific functional tests plus `@visual` screenshots that are not desktop-only.
+- Tag breakpoint-only functional tests with **`@viewport`** (application-guide accordion step, header offcanvas/submenu/CTA). Add **`@narrow-only`** when the test must not run on desktop (tabcordion accordion). Do not tag desktop-only tab tests, axe, `@aria`, or generic layout assertions.
+- Tag snapshots that must not run on tablet/mobile with **`@desktop-only`** (section-adjacency scenarios, block-editor `@visual`). `skipDuplicateBlockViewport` still skips block-editor `@aria` on narrow viewports when those tests are scheduled. `@aria` stays desktop-only via the narrow project grep.
 - **`@visual` is only for tests that call `toHaveScreenshot`.** Attribute or DOM assertions belong in functional tests (host), not LambdaTest.
 
 ### wp-env runtime (speed)
@@ -248,9 +250,11 @@ One WordPress database; parallel workers race on posts and editor state.
 | Tag | Runner | Snapshots |
 |-----|--------|-----------|
 | (none) | Functional on host (desktop: all; tablet/mobile: none unless combined with `@viewport`) | — |
-| `@viewport` | Functional on tablet/mobile (and desktop) | — |
+| `@viewport` | Functional on tablet/mobile (and desktop, unless also `@narrow-only`) | — |
+| `@narrow-only` | Excluded from the desktop project (`grepInvert`); still needs `@viewport` to run on tablet/mobile | — |
 | `@aria` | Host (desktop project) | `*.yml` (`toMatchAriaSnapshot`) |
 | `@visual` | LambdaTest | `*.png` (`toHaveScreenshot`) |
+| `@desktop-only` | Excluded from tablet/mobile projects (`grepInvert`) | Desktop `@visual` only |
 
 `@aria` YAML baselines are normalized to **LF** in Git ([`.gitattributes`](../.gitattributes)). Playwright compares file bytes, not just tree semantics—CRLF on Windows checkouts causes opaque failures. See [readme Troubleshooting — `@aria` line endings](../readme.md).
 
@@ -320,6 +324,8 @@ Human-facing copy lives in [readme.md — Pull request checklist](../readme.md#p
 - [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update` for diffs only, or `npm run test:e2e:aria:update:all` to rewrite every aria YAML—Playwright treats bare `--update-snapshots` as **missing** files only, not a full refresh).
 - [ ] No `@visual` tag on tests that do not call `toHaveScreenshot`.
 - [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know to run `env:e2e:start` (database reset and reseed). `npm run env:e2e:destroy` is only for image or catalog-install failures.
+- [ ] **Viewport tags** on new or changed Playwright tests: breakpoint-only behavior → `@viewport` (add `@narrow-only` when desktop must not collect the test); desktop-only PNG or editor work → `@desktop-only` (include in the `test.describe` title for editor suites); avoid `testInfo.skip` for viewport gating—use tags so Azure JUnit does not report false skips.
+- [ ] After e2e changes, `npm run test:e2e:verify-viewport-tags` passes. After a functional and visual run with `CI=true`, `npm run test:e2e:verify-junit-skips` passes (Governance skips when Trustees Agenda did not seed are allowed).
 
 ### LambdaTest Chrome version bump playbook
 
@@ -394,8 +400,12 @@ E2e runs in the shared **theme-ci** **Test** stage (`runTests: true`), which run
 4. `env:e2e:reseed`, wait for the tunnel (`lambdatest-tunnel.mjs wait`), then `test:e2e:visual` with `E2E_LAMBDATEST_TUNNEL_AUTO=0` and `E2E_STRICT_PLUGINS=1`.
 5. Rank slowest cases from `artifacts/junit/functional-junit.xml` and `visual-junit.xml`. Do not drop or retune tests from that list until a human reviews it.
 6. Stop tunnel and `env:e2e:stop` (always); publish JUnit from `artifacts/junit/*.xml`
-   (`functional-junit.xml`, `visual-junit.xml`). JUnit is kept outside Playwright's disposable
-   `artifacts/test-results/` directory and is written only when `CI` or Azure `TF_BUILD` is set.
+   (`functional-junit.xml`, `visual-junit.xml`). Viewport tests that do not apply to a project
+   are excluded with Playwright `grep` / `grepInvert` (`@desktop-only`, `@narrow-only`), so they
+   are not collected and do not lower the Azure pass percentage. Governance `test.skip()` still
+   reports a skip when the Trustees Agenda plugin did not seed URLs. JUnit is kept outside
+   Playwright's disposable `artifacts/test-results/` directory and is written only when `CI` or
+   Azure `TF_BUILD` is set.
 
 **Re-run e2e only:** Queue the CI pipeline manually and run the **Test** stage only.
 
@@ -435,5 +445,6 @@ Follow workspace **human-readable code** rules. Match neighboring files before a
 | npm scripts | `package.json` — run: `test:e2e`, `test:e2e:functional`, `test:e2e:aria`, `test:e2e:visual`; update: `test:e2e:update`, `test:e2e:aria:update`, `test:e2e:aria:update:all` (`--update-snapshots=all`), `test:e2e:visual:update`, `test:e2e:update:last-failed`; `env:e2e:start`, `env:e2e:reseed`, `env:e2e:stop`, `env:e2e:destroy`, `tunnel:e2e:*` |
 | ADO e2e steps | `.azuredevops/e2e-test-steps.yml`, `.azuredevops/e2e-visual-baseline-update-steps.yml`, root `azure-pipelines.yml` |
 | Visual baseline guard | `tests/e2e/scripts/guard-visual-baseline-update.mjs` |
+| Viewport tags and JUnit skip checks | `tests/e2e/scripts/verify-e2e-viewport-tags.mjs`, `verify-e2e-junit-skips.mjs` (`npm run test:e2e:verify-viewport-tags`, `test:e2e:verify-junit-skips`) |
 | PR template (e2e checklist) | `.github/pull_request_template.md` (links readme checklist) |
 | Chrome version probe | `tests/e2e/scripts/print-lambdatest-chrome-version.mjs` |

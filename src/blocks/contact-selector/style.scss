@@ -15,75 +15,88 @@
 
 .contact-item-r {
 
-    //styling for left-hand side/ column of contact item(s)
-    h3 {
-        color: var(--black);
-    }
-    // description/paragraph styling
-    .position-text {
-        color: var(--black);
-    }
+	//styling for left-hand side/ column of contact item(s)
+	h3 {
+		color: var(--black);
+	}
+	// description/paragraph styling
+	.position-text {
+		color: var(--black);
+	}
 
-    //styling for all of the contact item(s)
-    color: var(--bc-brutus-blue);
-    background-color: var(--contact-item-bg);
-    margin: 1.5rem;
-    margin-right: 1.5rem;
-    border-radius: 0.5rem;
-    border: none;
-    padding:1.5rem 2.5rem;
+	//styling for all of the contact item(s)
+	color: var(--bc-brutus-blue);
+	background-color: var(--contact-item-bg);
+	border-radius: 0.5rem;
+	border: none;
+	padding: calc( var(--bs-gutter-x) * 0.5) 0; // half the gutter for horizontal padding since columns have padding already
+	margin-top: calc( var(--bs-gutter-x) * 0.5);
+	margin-bottom: calc( var(--bs-gutter-x) * 0.5);
 
-    &:last-child {
-        margin-top: 0;
-    }
+	&:last-child {
+		margin-top: 0;
+	}
+
+	@include media-breakpoint-up(md) {
+		margin-right: 0; // there is negative margin by default - setting it to 0 keeps left and right even.
+	}
+
+	@include media-breakpoint-up(lg) {
+		padding: var(--bs-gutter-x) calc(var(--bs-gutter-x) * 0.5); // half the gutter for horizontal padding since columns have padding already
+	}
 }
 
 .contact-item-wrapper:last-child .contact-item-r {
 	margin-bottom: 0;
 }
 
+.contact-name, .contact-info {
+	p:last-child {
+		margin-bottom: 0;
+	}
+}
 //Styling Specific to button(s)
 .contact-info {
-    .contact-info-email {
-        // Ensure long email addresses don't break layout
-        // For some reason, hiding overflow doesn't work on smaller breakpoints
-        word-break: break-all;
-        @include media-breakpoint-up(md) {
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-    }
-    .btn {
-        color: var(--white);
-    }
+	.contact-info-email {
+		// Ensure long email addresses don't break layout
+		// For some reason, hiding overflow doesn't work on smaller breakpoints
+		word-break: break-all;
+		@include media-breakpoint-up(md) {
+			white-space: nowrap;
+			overflow: hidden;
+			text-overflow: ellipsis;
+		}
+	}
+	.btn {
+		color: var(--white);
+	}
 
-    //Styling for icon in button
-    .fa-external-link-square {
-        padding-inline: 0.5rem;
-    }
-.contact-buttons-wrapper {
-    // MOBILE FIRST
-    .contact-button-item {
-        width: 100%; // Buttons are full-width for easy tapping on mobile
+	//Styling for icon in button
+	.fa-external-link-square {
+		padding-inline: 0.5rem;
+	}
+	.contact-buttons-wrapper {
+		// MOBILE FIRST
+		.contact-button-item {
+			width: 100%; // Buttons are full-width for easy tapping on mobile
 
-        .btn {
-            width: 100%;
-            display: block;
-            text-align: center;
-        }
-    }
+			.btn {
+				width: 100%;
+				display: block;
+				text-align: center;
+			}
+		}
 
-    // DESKTOP: Switch to side-by-side at the Large breakpoint
-    @include media-breakpoint-up(lg) {
-        .contact-button-item {
-            width: auto; // Let buttons shrink to the size of their text
+		// DESKTOP: Switch to side-by-side at the Large breakpoint
+		@include media-breakpoint-up(lg) {
+			.contact-button-item {
+				width: auto; // Let buttons shrink to the size of their text
 
-            .btn {
-                width: auto;
-                display: inline-block;
-            }
-        }
-    }
-}
+				.btn {
+					width: auto;
+					display: inline-block;
+				}
+			}
+		}
+	}
 }

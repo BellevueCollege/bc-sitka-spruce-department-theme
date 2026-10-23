@@ -5,10 +5,11 @@
 		<div class="row">
 			<div class="col intro-text-content">
 				<h1>{{ title }}</h1>
-				{% if intro_text %}
-					<p class="lead">{{ intro_text }}</p>
-					{% elseif subtitle %}
-                    <p class="lead mb-0">{{ subtitle }}</p>
+				{% if intro_text or subtitle %}
+					<p class="lead my-0">
+						{{ intro_text }}
+						{{ subtitle }}
+					</p>
 				{% endif %}
 			</div>
 			{% if header_image %}

@@ -105,6 +105,7 @@
 	opacity: 0;
 }
 
-.slider-navigation:has(.swiper-button-disabled + .swiper-button-disabled) {
+.slider-navigation:has(.swiper-button-disabled + .swiper-button-disabled),
+.slider-navigation:has(.swiper-button-lock + .swiper-button-lock) {
 	visibility: hidden;
 }

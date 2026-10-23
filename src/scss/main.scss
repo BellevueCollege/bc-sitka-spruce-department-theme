@@ -36,6 +36,7 @@ $header-desktop-breakpoint: lg;
 @import "stories/breadcrumbs";
 @import "stories/related-programs";
 @import "stories/sitewide-notice";
+@import "stories/program-info";
 
 // Front-end only components
 @import "menus";
@@ -46,7 +47,7 @@ $header-desktop-breakpoint: lg;
 .container,
 .container-xl {
 	@include media-breakpoint-up("lg") {
-		--bs-gutter-x: calc(var(--sitka-container-spacing) * 2);
+		--bs-gutter-x: calc( var( --sitka-container-spacing-lg ) * 2);
 	}
 }
 
@@ -55,7 +56,7 @@ $header-desktop-breakpoint: lg;
 		@include make-container();
 
 		@include media-breakpoint-up("lg") {
-			--bs-gutter-x: calc(var(--sitka-container-spacing) * 2);
+			--bs-gutter-x: calc( var( --sitka-container-spacing-lg ) * 2);
 		}
 
 		max-width: var(--wp--style--global--wide-size);

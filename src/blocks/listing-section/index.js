@@ -22,7 +22,7 @@ registerBlockType("bc-sitka-spruce/listing-section", {
 
 		return (
 			<div {...blockProps}>
-				<div className="container-xl listing-section">
+				<div className="section-heading container-xl">
 					<RichText
 						tagName="h2"
 						className="section-heading__heading"
@@ -42,12 +42,11 @@ registerBlockType("bc-sitka-spruce/listing-section", {
 						identifier="description"
 						allowedFormats={[]}
 					/>
-					<div className="listing-section container-xl">
-						<InnerBlocks
-							renderAppender={ InnerBlocks.ButtonBlockAppender }
-						/>
-					</div>
-
+				</div>
+				<div className="listing-section container-xl">
+					<InnerBlocks
+						renderAppender={ InnerBlocks.ButtonBlockAppender }
+					/>
 				</div>
 			</div>
 		);

@@ -78,7 +78,7 @@
       - /url: https://example.com/e2e-faculty
   - article:
     - heading "Schedule an Appointment" [level=2]
-    - text: E2E scheduling section description.
+    - paragraph: E2E scheduling section description.
     - link "Book E2E Appointment":
       - /url: https://example.com/e2e-appointment
   - heading "About Me" [level=2]

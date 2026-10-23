@@ -105,6 +105,13 @@ npm run test:e2e:functional
 | `npm run test:e2e:debug` | Functional tests with the Playwright inspector |
 | `npm run test:e2e` | Starts WordPress, runs functional tests, reseeds, then runs LambdaTest screenshot tests |
 
+These two checks do not start WordPress or run the browser. They catch viewport tags that would make Azure count a passing suite as incomplete.
+
+| Command | What you get |
+|---------|--------------|
+| `npm run test:e2e:verify-viewport-tags` | Lists which tests each viewport would run. Fails if tablet or mobile would run editor or accessibility tests, if those viewports would run a desktop-only screenshot, or if desktop would run a narrow-only test |
+| `npm run test:e2e:verify-junit-skips` | Reads `artifacts/junit` after a run with `CI=true`. Fails on skipped tests other than Governance when the Trustees Agenda plugin did not seed |
+
 To run one file or one name, put Playwright arguments after `--`:
 
 ```bash
@@ -184,6 +191,7 @@ Copy this into the pull request when the change can affect screenshots, sample c
 - [ ] `maxDiffPixelRatio` is unchanged. Edits to [`tests/e2e/helpers/screenshot-stability.css`](tests/e2e/helpers/screenshot-stability.css) only hide scrollbars or pin a documented one-pixel case.
 - [ ] Accessibility `.yml` files were updated with `npm run test:e2e:aria:update` when the accessibility tree changed.
 - [ ] Plugin list, mu-plugin, or sample-content PHP changes tell reviewers to run `npm run env:e2e:start` (it resets and reloads sample content). `npm run env:e2e:destroy` is for a broken container or a broken plugin install. See [Troubleshooting](#troubleshooting).
+- [ ] New Playwright tests use `@viewport`, `@narrow-only`, and `@desktop-only` as in [tests/AGENTS.md](tests/AGENTS.md); `npm run test:e2e:verify-viewport-tags` passes.
 
 ### Changing which plugins are used
 

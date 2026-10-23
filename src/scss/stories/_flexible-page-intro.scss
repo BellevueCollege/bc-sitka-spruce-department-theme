@@ -9,6 +9,10 @@
 	--bs-heading-color: var(--white);
 	--bs-body-color: var(--white);
 
+	&.no-header-image {
+		margin-bottom: var(--sitka-container-spacing);
+	}
+
 	.flexible-page-intro {
 		.intro-text-content {
 			padding-bottom: calc(var(--sitka-container-spacing) * 1);
@@ -26,4 +30,4 @@
 
 .page-template-template--no-sidebar .flexible-page-intro-wrapper.no-header-image {
 	margin-bottom: 0;
-}  
+}
