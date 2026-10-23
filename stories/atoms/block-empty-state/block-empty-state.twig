@@ -1,0 +1,36 @@
+{#
+/**
+ * @file
+ * Editor-only empty state for ACF blocks that have no content yet.
+ *
+ * Variants map to Bootstrap utility classes so no custom CSS is required.
+ */
+#}
+{% set variant = variant|default('unconfigured') %}
+{% set classes = classes|default(['my-3']) %}
+
+{% if variant == 'disabled' %}
+	{% set variant_card_classes = 'border-0 bg-light' %}
+	{% set variant_body_classes = 'text-muted fst-italic' %}
+{% elseif variant == 'optional' %}
+	{% set variant_card_classes = 'border-0 bg-light' %}
+	{% set variant_body_classes = 'text-muted' %}
+{% else %}
+	{% set variant_card_classes = 'border-secondary bg-light' %}
+	{% set variant_body_classes = '' %}
+{% endif %}
+
+<div class="card {{ variant_card_classes }} {{ classes|join(' ') }}">
+	{% if title %}
+		<div class="card-header">
+			<h3 class="h5 mb-0">{{ title }}</h3>
+		</div>
+	{% elseif block_name %}
+		<div class="card-header">
+			<h3 class="h5 mb-0">{{ block_name }} {{ __('is not configured.', 'bc-sitka-spruce') }}</h3>
+		</div>
+	{% endif %}
+	<div class="card-body">
+		<p class="{{ variant_body_classes }} mb-0">{{ instructions }}</p>
+	</div>
+</div>

@@ -36,14 +36,13 @@ if ( ! empty( $block['align'] ) ) {
 $classes = array_map( 'sanitize_html_class', $classes );
 $context['classes'] = implode( ' ', $classes );
 
-if ( $context['title'] ) {
-	Timber::render( '/stories/media-gallery/media-gallery.twig', $context );
-} else {
-	echo '';
-}
+$hasContent = (bool) $context['title'];
 
-if ( $is_preview && ! $context['title'] ) {
-	echo '<div class="announcement-wrapper-preview col"><p>';
-	_e( 'The  \'Media Gallery Section\' is not configured. <br />Select this element, then use the Settings sidebar to configure it!', 'bc-sitka-spruce' );
-	echo '</p></div>';
+if ( $hasContent ) {
+	Timber::render( '/stories/media-gallery/media-gallery.twig', $context );
+} elseif ( $is_preview ) {
+	Timber::render( '/stories/atoms/block-empty-state/block-empty-state.twig', array(
+		'block_name'   => __( 'Media Gallery Section', 'bc-sitka-spruce' ),
+		'instructions' => __( 'Select this element, then use the Settings sidebar to configure it!', 'bc-sitka-spruce' ),
+	) );
 }

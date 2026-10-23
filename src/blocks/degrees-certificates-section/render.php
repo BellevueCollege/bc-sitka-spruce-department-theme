@@ -19,17 +19,16 @@ $context['segments']     = get_field( 'segments' ) ? array_map( function ( $segm
 	return $segment;
 }, get_field( 'segments' ) ) : array();
 
-$context['anchor'] = (isset($block['anchor']) && $block['anchor']) 
+$context['anchor'] = (isset($block['anchor']) && $block['anchor'])
 	? sanitize_title($block['anchor']) : '';
 
-if ( $context['title'] ) {
-	Timber::render( '/stories/degrees-certificates-section/degrees-certificates-section.twig', $context );
-} else {
-	echo '';
-}
+$hasContent = (bool) $context['title'];
 
-if ( $is_preview && ! $context['title'] ) {
-	echo '<div class="card"><p>';
-	_e( 'Select this element, then use the Settings sidebar to add content to this element so that it can display!', 'bc-sitka-spruce' );
-	echo '</p></div>';
+if ( $hasContent ) {
+	Timber::render( '/stories/degrees-certificates-section/degrees-certificates-section.twig', $context );
+} elseif ( $is_preview ) {
+	Timber::render( '/stories/atoms/block-empty-state/block-empty-state.twig', array(
+		'block_name'   => __( 'Degrees Certificates Section', 'bc-sitka-spruce' ),
+		'instructions' => __( 'Select this element, then use the Settings sidebar to add content to this element so that it can display!', 'bc-sitka-spruce' ),
+	) );
 }

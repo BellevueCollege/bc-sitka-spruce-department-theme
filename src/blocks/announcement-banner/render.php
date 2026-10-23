@@ -18,10 +18,13 @@ $context['links']       = get_field( 'links' ) ? array_map(
 	},
 	get_field( 'links' )
 ) : null;
-Timber::render( '/stories/announcement-banner/announcement-banner.twig', $context );
+$hasContent = (bool) $context['title'];
 
-if ( $is_preview && ! $context['title'] ) {
-	echo '<div class="announcement-wrapper-preview col"><p>';
-	_e( 'The  \'Announcement Banner Component\' is not configured. <br />Edit this element to configure it!', 'bc-sitka-spruce' );
-	echo '</p></div>';
+if ( $hasContent ) {
+	Timber::render( '/stories/announcement-banner/announcement-banner.twig', $context );
+} elseif ( $is_preview ) {
+	Timber::render( '/stories/atoms/block-empty-state/block-empty-state.twig', array(
+		'block_name'   => __( 'Announcement Banner Component', 'bc-sitka-spruce' ),
+		'instructions' => __( 'Select this element, then use the Settings sidebar to add content to this element so that it can display!', 'bc-sitka-spruce' ),
+	) );
 }

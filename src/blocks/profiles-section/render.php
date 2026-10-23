@@ -109,14 +109,13 @@ $context['sections'] = get_field( 'sections' ) ? array_map(
 $explicit_anchor = isset( $block['anchor'] ) ? trim( (string) $block['anchor'] ) : '';
 $context['anchor_id'] = $explicit_anchor !== '' ? sanitize_title( $explicit_anchor ) : null;
 
-if ( $context['title'] ) {
-	Timber::render( '/stories/profiles-section/profiles-section.twig', $context );
-} else {
-	echo '';
-}
+$hasContent = (bool) $context['title'];
 
-if ( $is_preview && ! $context['title'] ) {
-	echo '<div class="card"><p>';
-	_e( 'Select this element, then use the Settings sidebar to add content to this element so that it can display!', 'bc-sitka-spruce' );
-	echo '</p></div>';
+if ( $hasContent ) {
+	Timber::render( '/stories/profiles-section/profiles-section.twig', $context );
+} elseif ( $is_preview ) {
+	Timber::render( '/stories/atoms/block-empty-state/block-empty-state.twig', array(
+		'block_name'   => __( 'Profiles Section', 'bc-sitka-spruce' ),
+		'instructions' => __( 'Select this element, then use the Settings sidebar to add content to this element so that it can display!', 'bc-sitka-spruce' ),
+	) );
 }
