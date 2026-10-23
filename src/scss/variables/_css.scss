@@ -1,43 +1,13 @@
-@use "sass:map";
-
-:root {
-    @each $name, $value in $brand-colors {
-        --#{$name}: #{$value};
-    }
-    @each $name, $value in $sitka-colors {
-        --#{$name}: #{$value};
-    }
-
-	--sitka-container-spacing: 0.75rem;
-
-	@each $tag, $sizes in $heading-sizes {
-
-		// Set heading size CSS variables
-		@each $breakpoint, $size in $sizes {
-			--sitka-#{$tag}-font-size-#{$breakpoint}: #{map.get($size, 'font-size')};
-		}
-
-		// Default to xs
-		--sitka-#{$tag}-font-size: var(--sitka-#{$tag}-font-size-xs);
-	}
-}
-
-@media screen and (min-width: map.get($grid-breakpoints, 'md ')) { // Bootstrap helpers not available - using vanilla media query
-	:root {
-		// Use lg heading sizes at this breakpoint
-		@each $tag, $sizes in $heading-sizes {
-			--sitka-#{$tag}-font-size: var(--sitka-#{$tag}-font-size-md);
-		}
-	}
-}
-
-@media screen and (min-width: map.get($grid-breakpoints, 'lg')) { // Bootstrap helpers not available - using vanilla media query
-	:root {
-		--sitka-container-spacing: 3.75rem;
-
-		// Use lg heading sizes at this breakpoint
-		@each $tag, $sizes in $heading-sizes {
-			--sitka-#{$tag}-font-size: var(--sitka-#{$tag}-font-size-lg);
-		}
-	}
-}
+// CSS Variable Generation using shared package
+@use 'bc-theme-layer-bs5/scss/css-variables/_css-variables' with (
+  $css-var-prefix: 'sitka-',
+  $prefixed-utility-colors: false,
+  $prefixed-container-spacing: true,
+  $prefixed-heading-sizes: true,
+  $generate-heading-size-vars: true,
+  $generate-container-spacing: true,
+  $heading-sizes: $heading-sizes,
+  $brand-colors: $brand-colors,
+  $utility-colors: $utility-colors,
+  $grid-breakpoints: $grid-breakpoints
+);

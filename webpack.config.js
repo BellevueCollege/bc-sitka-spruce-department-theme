@@ -102,6 +102,9 @@ module.exports = {
 									implementation: sass,
 									sassOptions: {
 										silenceDeprecations: SASS_DEPRECATION_SILENCE_LIST,
+										includePaths: [
+											path.resolve( process.cwd(), 'node_modules' ),
+										],
 									},
 								},
 							};
@@ -114,6 +117,9 @@ module.exports = {
 								implementation: sass,
 								sassOptions: {
 									...( loader.options?.sassOptions || {} ),
+									includePaths: [
+										path.resolve( process.cwd(), 'node_modules' ),
+									],
 									silenceDeprecations: SASS_DEPRECATION_SILENCE_LIST,
 								},
 							},
