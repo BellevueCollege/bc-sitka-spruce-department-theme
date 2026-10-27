@@ -24,7 +24,7 @@
 				{% set profile_img_obj = get_image(profile_image_id) %}
 
 				{# if there alt text in media library? if not, use this as default!#}
-				{% set image_alt = profile_img_obj.alt ? profile_img_obj.alt : first_name ~ ' ' ~ last_name ~ '\'s Profile' %}
+				{% set image_alt = profile_img_obj.alt ? profile_img_obj.alt : first_name ~ ' ' ~ last_name ~ "'s Profile" %}
 				<img src="{{ profile_img_obj.src('thumbnail') }}"
 					alt="{{ image_alt|esc_attr }}" 
 					class="img-fluid rounded"

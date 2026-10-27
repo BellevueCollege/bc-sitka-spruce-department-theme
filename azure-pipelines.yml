@@ -52,6 +52,17 @@ extends:
         sshServiceConnection: bcqaelizabeth
         variableGroup: kinsta-bcqaelizabeth
     buildSteps:
+      - script: composer install --no-interaction --no-progress
+        displayName: 'Composer install (with PHP_CodeSniffer)'
+
+      - script: composer run phpcs
+        displayName: 'PHP Compatibility (8.2–8.5)'
+        continueOnError: true
+
+      - script: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
+        displayName: 'Restore production Composer dependencies'
+        condition: eq(variables['Agent.JobStatus'], 'Succeeded')
+
       - task: Npm@1
         inputs:
           command: 'custom'
