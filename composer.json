@@ -11,5 +11,10 @@
             "BcSitkaSpruce\\Library\\": "src/library",
             "BcSitkaSpruce\\Controllers\\": "src/controllers"
         }
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
+        }
     }
 }
