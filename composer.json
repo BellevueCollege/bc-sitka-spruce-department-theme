@@ -3,13 +3,28 @@
     "description": "Bellevue College Theme for Level 3 Department Sites",
     "type": "project",
     "require": {
+        "php": ">=8.2 <8.6",
         "psr/container": "^2.0",
         "timber/timber": "^2.0.0"
+    },
+    "require-dev": {
+        "dealerdirect/phpcodesniffer-composer-installer": "^1.0",
+        "phpcompatibility/phpcompatibility-wp": "*",
+        "squizlabs/php_codesniffer": "*",
+        "wp-coding-standards/wpcs": "^2.2"
     },
     "autoload": {
         "psr-4": {
             "BcSitkaSpruce\\Library\\": "src/library",
             "BcSitkaSpruce\\Controllers\\": "src/controllers"
+        }
+    },
+    "scripts": {
+        "phpcs": "phpcs --runtime-set ignore_warnings_on_exit 1"
+    },
+    "config": {
+        "allow-plugins": {
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     }
 }
