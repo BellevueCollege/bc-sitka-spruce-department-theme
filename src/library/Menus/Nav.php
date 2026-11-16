@@ -14,7 +14,7 @@ class Nav implements NavInterface {
 
   protected ?Post $root;
 
-  public function __construct(Menu $menu, Post $root = null) {
+  public function __construct(Menu $menu, ?Post $root = null) {
     $this->menu = $menu;
     $this->root = $root;
   }

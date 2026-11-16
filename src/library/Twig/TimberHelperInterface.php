@@ -27,7 +27,7 @@ interface TimberHelperInterface {
    */
   public function addFilter(
     string $name,
-    callable $callable = null,
+    ?callable $callable = null,
     array $options = []
   ): void;
 
@@ -43,7 +43,7 @@ interface TimberHelperInterface {
    */
   public function addFunction(
     string $name,
-    callable $callable = null,
+    ?callable $callable = null,
     array $options = []
   ): void;
 
