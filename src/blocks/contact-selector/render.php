@@ -30,7 +30,7 @@ if (is_array(get_field('profiles'))) {
 
         // Get the repeater data from the profile post
         $schedule_data = get_field('scheduling_section', $profile->ID);
-        
+
         // (Hard coded on purpose!) Check the first row of two specific fields
         if (is_array($schedule_data) && !empty($schedule_data)) {
             $section = $schedule_data[0]; // Get the first row
@@ -39,13 +39,13 @@ if (is_array(get_field('profiles'))) {
             if (!empty($section['schedule_appointment_link'])) {
                 $profile_data['scheduling_links'][] = $section['schedule_appointment_link'];
             }
-            
+
             // Check for the second link field
             if (!empty($section['sched_appt_link'])) {
                 $profile_data['scheduling_links'][] = $section['sched_appt_link'];
             }
         }
-        // Keep this for backward compatibility 
+        // Keep this for backward compatibility
         $profile_data['scheduling_link'] = $profile_data['scheduling_links'][0] ?? null;
 
         //add processed profile data to list
@@ -56,20 +56,13 @@ if (is_array(get_field('profiles'))) {
 // copying data from profiles to context
 $context['profiles'] = $profiles_data;
 
-// Showing message if use does not input any contacts (in preview, on editor side)
-if ( $is_preview && ! $context['profiles'] ) {
-	//echo '<div class="callout-wrapper callout-disabled"></div>';
-    echo '<div class="contact-selector-wrapper-preview col card"><p><strong>';
-	_e( 'The  \'Contact Selector Section\' is not configured.', 'bc-sitka-spruce' );
-	echo '</strong></p><p>';
-	_e( 'Select this element, then use the Settings sidebar to add a title, description, and choose contacts to display.', 'bc-sitka-spruce' );
-	echo '</p></div>';
-}
+$hasContent = ! empty( $context['profiles'] );
 
-
-// Render Twig Template, and if it's empty, return nothing
-if ( $context['profiles'] ) {
+if ( $hasContent ) {
 	Timber::render( '/stories/contact-item/contact-loop.twig', $context );
-} else {
-	echo '';
+} elseif ( $is_preview ) {
+	Timber::render( '/stories/atoms/block-empty-state/block-empty-state.twig', array(
+		'block_name'   => __( 'Contact Selector Section', 'bc-sitka-spruce' ),
+		'instructions' => __( 'Select this element, then use the Settings sidebar to add a title, description, and choose contacts to display.', 'bc-sitka-spruce' ),
+	) );
 }

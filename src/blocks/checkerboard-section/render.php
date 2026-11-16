@@ -47,14 +47,13 @@ if ( ! empty( $block['align'] ) ) {
 $classes = array_map( 'sanitize_html_class', $classes );
 $context['classes'] = implode( ' ', $classes );
 
-if ( $context['title'] && $context['checkerboards'] ) {
-	Timber::render( '/stories/checkerboard-section/checkerboards.twig', $context );
-} else {
-	echo '';
-}
+$hasContent = $context['title'] && $context['checkerboards'];
 
-if ( $is_preview && ( ! $context['checkerboards'] || ! $context['title'] ) ) {
-	echo '<div class="card"><p>';
-	_e( 'Add title and checkerboards to this element so that it can display!', 'bc-sitka-spruce' );
-	echo '</p></div>';
+if ( $hasContent ) {
+	Timber::render( '/stories/checkerboard-section/checkerboards.twig', $context );
+} elseif ( $is_preview ) {
+	Timber::render( '/stories/atoms/block-empty-state/block-empty-state.twig', array(
+		'block_name'   => __( 'Checkerboard Section', 'bc-sitka-spruce' ),
+		'instructions' => __( 'Add title and checkerboards to this element so that it can display!', 'bc-sitka-spruce' ),
+	) );
 }

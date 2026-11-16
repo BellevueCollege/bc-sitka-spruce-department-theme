@@ -23,14 +23,13 @@ $context['heading_tag'] = 'h3';
 // 		'class' => 'card-body tab-content',
 // 	)
 // );
-if ( $context['enabled'] ) {
-	Timber::render( '/stories/callout/callout.twig', $context );
-} else {
-	echo '';
-}
+$hasContent = (bool) $context['enabled'];
 
-if ( $is_preview && ! $context['enabled'] ) {
-	echo '<div class="callout-wrapper callout-disabled col"><p>';
-	_e( 'The optional \'Callout\' sidebar is disabled. <br />Edit this element to enable it!', 'bc-sitka-spruce' );
-	echo '</p></div>';
+if ( $hasContent ) {
+	Timber::render( '/stories/callout/callout.twig', $context );
+} elseif ( $is_preview ) {
+	Timber::render( '/stories/atoms/block-empty-state/block-empty-state.twig', array(
+		'title'        => __( "The optional 'Callout' sidebar is disabled.", 'bc-sitka-spruce' ),
+		'instructions' => __( 'Edit this element to enable it!', 'bc-sitka-spruce' ),
+	) );
 }

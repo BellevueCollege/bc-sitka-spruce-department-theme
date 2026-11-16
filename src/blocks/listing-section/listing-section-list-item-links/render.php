@@ -13,14 +13,13 @@ $context['is_preview'] = $is_preview;
 
 $context['button'] = get_field( 'button' );
 
-if ( $context['links'] || $context['button'] ) {
-	Timber::render( '/stories/listing-section/list-item-links.twig', $context );
-} else {
-	echo '';
-}
+$hasContent = $context['links'] || $context['button'];
 
-if ( $is_preview && ! $context['links'] && ! $context['button'] ) {
-	echo '<div class="card"><p><i>';
-	_e( 'Select this element and use the Settings sidebar to add optional links or button', 'bc-sitka-spruce' );
-	echo '</i></p></div>';
+if ( $hasContent ) {
+	Timber::render( '/stories/listing-section/list-item-links.twig', $context );
+} elseif ( $is_preview ) {
+	Timber::render( '/stories/atoms/block-empty-state/block-empty-state.twig', array(
+		'instructions' => __( 'Select this element and use the Settings sidebar to add optional links or button', 'bc-sitka-spruce' ),
+		'variant' => 'optional',
+	) );
 }
