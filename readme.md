@@ -1,5 +1,12 @@
 # BC "Sitka Spruce" Department Theme
 
+## Requirements
+
+- **WordPress:** 7.0 or newer
+- **PHP:** 8.2 through 8.5 (inclusive)
+
+CI runs [PHPCompatibilityWP](https://github.com/PHPCompatibilityWP/PHPCompatibilityWP) against that PHP range. After changing PHP sources, run `composer install` and `composer run phpcs` locally.
+
 ## Required Plugins
 This theme requires the following plugins to be installed and activated:
 - [Advanced Custom Fields Pro](https://www.advancedcustomfields.com)
