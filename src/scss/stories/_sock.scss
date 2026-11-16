@@ -32,12 +32,17 @@
 	.sock-location p {
 		font-weight: 600;
 	}
+	.sock-hours {
+		& > p:last-child {
+			margin-bottom: 0;
+		}
+	}
 
 	.sock-manager {
 
 		@include media-breakpoint-down(lg) {
-			padding-top: 2rem;
 			border-top: 2px solid var(--bc-fountain-blue);
+			padding-top: 2rem;
 		}
 
 		@include media-breakpoint-up(lg) {

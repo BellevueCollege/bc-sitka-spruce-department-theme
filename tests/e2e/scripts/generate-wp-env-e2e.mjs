@@ -21,10 +21,9 @@ const BELLEVUE_2022_THEME_SLUG = 'bellevue-2022';
 const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
 const projectRoot = path.resolve( __dirname, '../../..' );
 
-const muPluginPath = path.join(
-	projectRoot,
-	'tests/e2e/mu-plugins/e2e-seed-endpoint.php'
-);
+// Map the whole mu-plugins directory (not a single file). Single-file bind mounts
+// on Podman/macOS can list in `ls` but fail PHP fopen/include (breaks REST auth setup).
+const muPluginsDirectoryPath = path.join( projectRoot, 'tests/e2e/mu-plugins' );
 
 const MAIN_SITE_URL = getMainSiteBaseUrl();
 const SUBSITE_URL = getSubsiteBaseUrl();
@@ -113,7 +112,7 @@ function buildWpEnvConfig( resolvedPlugins, bellevue2022ThemeHostPath ) {
 
 	/** @type {Record<string, string>} */
 	const mappings = {
-		'wp-content/mu-plugins/e2e-seed-endpoint.php': muPluginPath,
+		'wp-content/mu-plugins': muPluginsDirectoryPath,
 		[ `wp-content/themes/${ THEME_SLUG }` ]: projectRoot,
 	};
 
@@ -131,6 +130,7 @@ function buildWpEnvConfig( resolvedPlugins, bellevue2022ThemeHostPath ) {
 		config: {
 			WP_DEBUG: true,
 			WP_DEBUG_LOG: true,
+			// PHP 8.5 emits deprecations into HTML when display is on; Playwright admin utils treat that as fatal.
 			WP_DEBUG_DISPLAY: false,
 			SCRIPT_DEBUG: false,
 			DISABLE_WP_CRON: true,

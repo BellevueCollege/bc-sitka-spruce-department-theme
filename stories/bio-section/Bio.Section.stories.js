@@ -61,7 +61,7 @@ Default.args = {
 			wrapper_classes: 'col-md-4',
 			heading_tag: 'h3',
 			title: 'Callout Heading',
-			text: '<p>Callout Text</p>',
+			text: 'Callout Text',
             button: {
                 url: '#',
                 title: 'Learn More'

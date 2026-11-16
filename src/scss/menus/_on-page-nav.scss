@@ -11,7 +11,8 @@
     margin-left: auto;
     background-color: css_color('gray--xlight');
 
-    @include global-spacing(7x, padding-top padding-bottom);
+    padding-top: var(--sitka-container-spacing);
+    padding-bottom: var(--sitka-container-spacing);
   }
 
   // Only on Section pages- replaced with Bootstrap defaults on default pages
@@ -37,7 +38,7 @@
       list-style: none;
 
       & > li {
-        @include global-spacing(4x, margin-top);
+        margin-top: var(--sitka-container-spacing);
 
         &::marker {
           display: none;

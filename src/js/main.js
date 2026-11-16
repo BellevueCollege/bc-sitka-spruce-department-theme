@@ -114,8 +114,7 @@ import BCLightboxModal from 'bc-lightbox-modal';
 			watchSlidesProgress: true,
 			spaceBetween: 40,
 			centeredSlides: false,
-			loop: true,
-			loopAddBlankSlides: true,
+			loop: false,
 			navigation: {
 				nextEl: '.slider-navigation__next',
 				prevEl: '.slider-navigation__prev',

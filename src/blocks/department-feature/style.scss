@@ -3,3 +3,9 @@
 .organization-feature__container {
 	margin-bottom: var(--sitka-container-spacing);
 }
+
+// Card-internal spacing, so it uses the component scale rather than the section scale.
+.organization-feature__summary,
+.organization-feature__resource {
+	@include global-spacing(3x, margin-top);
+}

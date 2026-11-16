@@ -165,16 +165,9 @@ test.describe( 'Section adjacency integration', () => {
 	} );
 
 	for ( const scenarioId of VISUAL_SCENARIOS ) {
-		test( `scenario ${ scenarioId } snapshot @visual`, async ( {
+		test( `scenario ${ scenarioId } snapshot @visual @desktop-only`, async ( {
 			page,
-		}, testInfo ) => {
-			if ( testInfo.project.name !== 'desktop' ) {
-				testInfo.skip(
-					true,
-					'Per-scenario adjacency visuals are desktop-only; full-page covers tablet/mobile.'
-				);
-			}
-
+		} ) => {
 			await prepareAdjacencyScreenshot( page );
 			const scenario = page.locator( `#e2e-adj-scenario-${ scenarioId }` );
 			await expect( scenario ).toBeAttached();

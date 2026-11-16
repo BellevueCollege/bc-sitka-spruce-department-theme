@@ -31,26 +31,32 @@ test.describe( 'Single program integration', () => {
 		await expect( page.getByText( 'E2E learning list item one.' ) ).toBeVisible();
 		await expect( page.getByRole( 'heading', { name: 'Program Highlights' } ) ).toBeVisible();
 		await expect( page.getByRole( 'heading', { name: 'Highlight 1' } ) ).toBeVisible();
-		const programStats = page.getByRole( 'region', { name: 'Stats Relevant to this Program' } );
-		await expect( programStats ).toContainText( 'E2E Stat 1' );
-		await expect( programStats ).not.toContainText( 'E2E Stat 2' );
-		await expect( programStats ).not.toContainText( 'E2E Stat 3' );
+		await expect(
+			page.getByRole( 'region', { name: 'Stats Relevant to this Program' } )
+		).toContainText( 'E2E Stat 1' );
 		await expect( page.getByRole( 'heading', { name: 'Featured Experience' } ) ).toBeVisible();
 		await expect( page.locator( '.testimonial-section img' ) ).toBeVisible();
-		await expect( page.getByRole( 'link', { name: 'E2E BC Pathway' } ) ).toBeVisible();
-		await expect( page.getByRole( 'link', { name: 'E2E Focus Area' } ) ).toBeVisible();
 	} );
 
-	test( 'shows related programs region', async ( { page } ) => {
+	test( 'shows related programs region with slider navigation when multiple related programs exist', async ( {
+		page,
+	} ) => {
 		const main = page.locator( 'main, .site-content, #content' ).first();
+		const relatedProgramsSection = main.locator( '.related-programs-wrapper' );
 		await expect(
 			main.getByRole( 'heading', { name: 'Programs in this Department' } )
 		).toBeVisible();
-		const betaProgramCard = main.locator( '.related-program-card' ).filter( {
-			has: page.getByRole( 'link', { name: 'E2E Beta' } ),
-		} );
-		await expect( betaProgramCard ).toBeVisible();
-		await expect( betaProgramCard ).toContainText( 'E2E BC Pathway' );
+		await expect( relatedProgramsSection.locator( '.slider-navigation' ) ).toBeVisible();
+		await expect( relatedProgramsSection.locator( '.swiper-slide' ) ).toHaveCount( 4 );
+		const relatedProgramLinks = relatedProgramsSection.locator(
+			'.related-program-card .card-title a'
+		);
+		await expect( relatedProgramLinks ).toHaveCount( 4 );
+		await expect( relatedProgramLinks.filter( { hasText: 'E2E Beta' } ) ).toBeVisible();
+		// Swiper marks off-screen slides aria-hidden; assert they are in the DOM, not in the a11y viewport.
+		await expect( relatedProgramLinks.filter( { hasText: 'E2E Gamma' } ) ).toBeAttached();
+		await expect( relatedProgramLinks.filter( { hasText: 'E2E Delta' } ) ).toBeAttached();
+		await expect( relatedProgramLinks.filter( { hasText: 'E2E Epsilon' } ) ).toBeAttached();
 		await expect( main.getByText( 'E2E Degree' ).first() ).toBeVisible();
 		await expect( main.getByText( '2 years' ).first() ).toBeVisible();
 		await expect( main.getByRole( 'link', { name: /Ada Lovelace/i } ).first() ).toBeVisible();

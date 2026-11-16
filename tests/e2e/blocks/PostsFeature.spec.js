@@ -68,7 +68,7 @@ test.describe( 'Posts Feature Block', () => {
 		} );
 	} );
 
-	test.describe( 'Editor', () => {
+	test.describe( 'Editor @desktop-only', () => {
 		test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
 			skipDuplicateBlockViewport( testInfo );
 			await prepareEditorPage( { admin, editor, page } );
@@ -131,7 +131,7 @@ test.describe( 'Posts Feature Block', () => {
 			await waitForListPostsInEditor( editor, seed.listPostTitles );
 		} );
 
-		test( 'editor snapshot — full configuration @visual', async ( {
+		test( 'editor snapshot — full configuration @visual @desktop-only', async ( {
 			editor,
 			page,
 		}, testInfo ) => {

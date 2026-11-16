@@ -205,11 +205,16 @@
 	& > .block-editor-inner-blocks > .block-editor-block-list__layout {
 		display: grid;
 		grid-template-columns: 1fr 2fr;
+
+		> .wp-block {
+			margin-top: 0;
+			margin-bottom: 0;
+		}
 	}
 
 	.wp-block-bc-sitka-spruce-tabcordion-list {
-		margin-top: 3.5rem;
-		margin-bottom: 3.5rem;
+		margin-top: var(--sitka-container-spacing);
+		margin-bottom: var(--sitka-container-spacing);
 		flex-direction: column;
 		border: none;
 		border-right: 2px solid var(--bc-fountain-blue);
@@ -245,7 +250,7 @@
 		a:hover, a:focus {
 			color: var(--gray--light);
 		}
-		margin: 3.5rem 2rem;
+		margin: var(--sitka-container-spacing) 2rem;
 
 		div.tabcordion-pane {
 			display: none;

@@ -96,7 +96,7 @@ test.describe( 'Announcement Banner Block', () => {
 		} );
 	} );
 
-	test.describe( 'Editor', () => {
+	test.describe( 'Editor @desktop-only', () => {
 		test.beforeEach( async ( { admin, editor, page }, testInfo ) => {
 			skipDuplicateBlockViewport( testInfo );
 			await prepareEditorPage( { admin, editor, page } );
@@ -110,7 +110,7 @@ test.describe( 'Announcement Banner Block', () => {
 			).toBeVisible();
 		} );
 
-		test( 'editor snapshot — with button and image @visual', async ( {
+		test( 'editor snapshot — with button and image @visual @desktop-only', async ( {
 			editor,
 			page,
 		}, testInfo ) => {

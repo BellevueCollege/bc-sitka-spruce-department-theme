@@ -9,6 +9,7 @@ $context['post'] = Timber::get_post();
 $context ['pin']             = get_field( 'pin_profile_in_listing' ) ? true : false; //note, while this is not used on overview, there is direct connection from overview to list (vice versa)
 $context ['first_name']      = esc_html( get_field( 'first_name' ) ?? '' );
 $context ['last_name']       = esc_html( get_field( 'last_name' ) ?? '' );
+$context ['gender_pronouns'] = esc_html( get_field( 'gender_pronouns' ) ?? '' );
 $context ['position']        = esc_html( get_field( 'position_role' ) ?? '' );
 $context ['department']      = get_field( 'dept-office' ) ?? array(); //get field matches the ACF field name (field)!
 $context ['email']           = esc_html( get_field( 'email' ) ?? '' );
@@ -24,11 +25,11 @@ $schedule_data = get_field('scheduling_section');
 
 if ( is_array($schedule_data) && !empty($schedule_data) ) {
     $first_row = $schedule_data[0];
-    
+
     //map title & description
     $context['title']       = esc_html($first_row['scheduling_section_title'] ?? '');
     $context['description'] = wp_kses_post($first_row['scheduling_section_description'] ?? '');
-    
+
     // Check first appointment link
     if (!empty($first_row['schedule_appointment_link'])) {
         $buttons[] = $first_row['schedule_appointment_link'];
@@ -37,7 +38,7 @@ if ( is_array($schedule_data) && !empty($schedule_data) ) {
     if (!empty($first_row['sched_appt_link'])) {
         $buttons[] = $first_row['sched_appt_link'];
     }
-    
+
     $context['buttons'] = $buttons; //matching 'buttons' in twig
 }
 //bread crumb trail stuff

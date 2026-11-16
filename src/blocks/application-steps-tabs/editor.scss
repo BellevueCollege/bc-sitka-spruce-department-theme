@@ -3,8 +3,8 @@
 .wp-block-bc-sitka-spruce-application-steps-tabs {
 	padding: 2rem 2rem;
 
-	.application-steps-header {
-		padding: 1rem 3rem 0rem;
+	.section-heading + .block-editor-inner-blocks {
+		margin-top: var(--sitka-container-spacing);
 	}
 
 
@@ -22,6 +22,11 @@
 
 		& > .block-editor-inner-blocks > .block-editor-block-list__layout {
 			@include make-row();
+
+			> .wp-block {
+				margin-top: 0;
+				margin-bottom: 0;
+			}
 		}
 		.wp-block-bc-sitka-spruce-callout {
 			@include make-col();

@@ -11,6 +11,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 require_once __DIR__ . '/e2e-seed-shared.php';
 require_once __DIR__ . '/e2e-core-content-helpers.php';
+require_once __DIR__ . '/e2e-program-seed-helpers.php';
 require_once __DIR__ . '/e2e-differentiator-acf.php';
 e2e_register_differentiator_acf_field_group();
 
@@ -350,6 +351,16 @@ if ( function_exists( 'update_field' ) ) {
 		update_field( 'degree', $degree_term, $core_program_beta_id );
 	}
 	update_field( 'duration', '1 year', $core_program_beta_id );
+}
+
+foreach ( e2e_extra_program_seed_specs() as $extra_program_spec ) {
+	e2e_seed_main_site_program(
+		$extra_program_spec,
+		(int) $program_type_id,
+		(int) $degree_term_id,
+		$program_type_term,
+		$degree_term
+	);
 }
 
 $pathway_id    = 0;

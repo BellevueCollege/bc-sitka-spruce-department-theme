@@ -12,7 +12,7 @@
 			.contact-item-r.row {
 				margin-left: 0;
 				margin-right: 0;
-				padding: 1.5rem 0;
+				padding: var(--sitka-container-spacing) 0;
 			}
 			.contact-name,
 			.contact-info {
@@ -22,7 +22,7 @@
 				margin-bottom: 0;
 			}
 		}
-		
+
 	}
 
 	.post-additional-title {
@@ -85,8 +85,8 @@
 		margin-bottom: var( --sitka-container-spacing );
 
 		@include media-breakpoint-down('md') {
-			margin-top: 1.5rem;
-			margin-bottom: 1.5rem;
+			margin-top: var(--sitka-container-spacing);
+			margin-bottom: var(--sitka-container-spacing);
 			@include make-container();
 		}
 		@include media-breakpoint-up('md') {
@@ -111,7 +111,7 @@
 		inline-size: fit-content;
 
 		figcaption {
-			contain: inline-size; 
+			contain: inline-size;
 		}
 		@include media-breakpoint-down('md') {
 			width: auto;

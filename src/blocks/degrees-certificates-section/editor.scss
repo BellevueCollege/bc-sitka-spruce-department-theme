@@ -2,4 +2,8 @@
 
 .wp-block-bc-sitka-spruce-degrees-certificates-section {
 	max-width: var(--wp--style--global--wide-size) !important;
+
+	.section-heading {
+		--text-color: var(--white);
+	}
 }

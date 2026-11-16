@@ -32,11 +32,7 @@ test.describe( 'Application guide integration', () => {
 		await expect( page.getByRole( 'heading', { name: 'Department Feature' } ) ).toBeVisible();
 	} );
 
-	test( 'shows application steps as tabs on desktop', async ( { page }, testInfo ) => {
-		if ( testInfo.project.name !== 'desktop' ) {
-			testInfo.skip( true, 'Tab list is hidden below the theme md breakpoint (769px).' );
-		}
-
+	test( 'shows application steps as tabs on desktop', async ( { page } ) => {
 		await expect( page.getByRole( 'tab', { name: 'Student Type 1' } ) ).toBeVisible();
 		await expect( page.getByRole( 'tab', { name: 'Student Type 2' } ) ).toBeVisible();
 	} );
@@ -75,11 +71,7 @@ test.describe( 'Application guide integration', () => {
 		await expect( page.getByText( 'E2E additional resource card one body.' ) ).toBeVisible();
 	} );
 
-	test( 'wires dual identity-support tabs and primary support link', async ( { page }, testInfo ) => {
-		if ( testInfo.project.name !== 'desktop' ) {
-			testInfo.skip( true, 'Support feature tabs are desktop-only in this assertion set.' );
-		}
-
+	test( 'wires dual identity-support tabs and primary support link', async ( { page } ) => {
 		await expect(
 			page.getByRole( 'tab', { name: 'E2E Core Identity Support', exact: true } )
 		).toBeVisible();

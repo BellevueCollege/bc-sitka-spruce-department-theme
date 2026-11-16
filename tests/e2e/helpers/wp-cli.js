@@ -203,13 +203,6 @@ export function clearAdminStorageState() {
 }
 
 /**
- * Seed main-site CPT content for core-site blocks.
- *
- * @return {Record<string, unknown>}
- */
-/**
- * Load cached core seed map from the database when after-start or a prior seed already ran.
- *
  * @return {Record<string, unknown>|null}
  */
 function tryLoadCachedCoreSiteSeed() {
@@ -229,6 +222,11 @@ function tryLoadCachedCoreSiteSeed() {
 	return null;
 }
 
+/**
+ * Seed main-site CPT content for core-site blocks.
+ *
+ * @return {Record<string, unknown>}
+ */
 export function seedCoreSiteData() {
 	if ( cachedCoreSiteSeed ) {
 		return cachedCoreSiteSeed;
@@ -283,11 +281,6 @@ export function seedSiteChromeData() {
 }
 
 /**
- * Seed page integration fixtures (homepages, templates, governance).
- *
- * @return {Record<string, unknown>}
- */
-/**
  * @return {Record<string, unknown>|null}
  */
 function tryLoadCachedIntegrationSeed() {
@@ -306,6 +299,11 @@ function tryLoadCachedIntegrationSeed() {
 	return null;
 }
 
+/**
+ * Seed page integration fixtures (homepages, templates, governance).
+ *
+ * @return {Record<string, unknown>}
+ */
 export function seedIntegrationData() {
 	if ( cachedIntegrationSeed ) {
 		return cachedIntegrationSeed;

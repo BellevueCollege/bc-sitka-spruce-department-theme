@@ -26,6 +26,7 @@ require_once __DIR__ . '/e2e-core-content-helpers.php';
 require_once __DIR__ . '/e2e-governance-seed.php';
 require_once __DIR__ . '/e2e-profiles-integration.php';
 require_once __DIR__ . '/e2e-program-content.php';
+require_once __DIR__ . '/e2e-program-seed-helpers.php';
 require_once __DIR__ . '/e2e-full-width-content.php';
 require_once __DIR__ . '/e2e-section-adjacency.php';
 
@@ -87,6 +88,11 @@ $program_beta_id = e2e_upsert_post(
 		'post_content' => $program_pattern_content,
 	)
 );
+
+$extra_program_ids = array();
+foreach ( e2e_extra_program_seed_specs() as $extra_program_spec ) {
+	$extra_program_ids[] = e2e_seed_subsite_program( $extra_program_spec, $program_pattern_content );
+}
 
 if ( function_exists( 'update_field' ) ) {
 	update_field( 'intro_text', 'E2E program page intro lead.', $program_alpha_id );
