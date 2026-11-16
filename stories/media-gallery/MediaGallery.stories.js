@@ -1,7 +1,7 @@
 import twigMediaGallery from "./media-gallery.twig";
 import '/assets/dist/blocks/media-gallery-section/style-index.css';
 
-import Slider from '/src/js/modules/slider';
+import { Slider } from 'bc-theme-layer-bs5/js';
 import BCLightboxModal from 'bc-lightbox-modal';
 
 
