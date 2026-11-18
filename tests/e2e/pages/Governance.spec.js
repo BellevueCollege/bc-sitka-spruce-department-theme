@@ -1,7 +1,8 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	expectFullPageScreenshot,
-	runAxeOnSelector,
+	expectNoAxeViolations,
+	runAxeOnPage,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
@@ -54,12 +55,13 @@ test.describe( 'Governance templates integration', () => {
 		} );
 	} );
 
-	test( 'agenda archive passes axe', async ( { page } ) => {
+	test( 'agenda archive page passes axe', async ( { page } ) => {
 		test.skip( ! governance.agendaArchiveUrl, 'Trustees Agenda plugin not available.' );
 		await visitIntegrationPage( page, governance.agendaArchiveUrl );
-		const results = await runAxeOnSelector( page, 'main, .site-content, #content' );
-		expect( results.violations ).toEqual( [] );
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
+
 
 	test( 'agenda archive full page snapshot @visual', async ( { page } ) => {
 		test.skip( ! governance.agendaArchiveUrl, 'Trustees Agenda plugin not available.' );
@@ -76,12 +78,13 @@ test.describe( 'Governance templates integration', () => {
 		} );
 	} );
 
-	test( 'agenda passes axe', async ( { page } ) => {
+	test( 'agenda page passes axe', async ( { page } ) => {
 		test.skip( ! governance.agendaUrl, 'Trustees Agenda plugin not available.' );
 		await visitIntegrationPage( page, governance.agendaUrl );
-		const results = await runAxeOnSelector( page, '.single-agendas-page .col-lg-8' );
-		expect( results.violations ).toEqual( [] );
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
+
 
 	test( 'agenda body stays left-aligned in the main column', async ( { page } ) => {
 		test.skip( ! governance.agendaUrl, 'Trustees Agenda plugin not available.' );

@@ -32,6 +32,77 @@ export const WCAG_TAGS = [
 ];
 
 /**
+ * axe-core ships WCAG 2.2 rules (including target-size / 2.5.8) disabled.
+ * Enable them explicitly whenever we audit with WCAG_TAGS.
+ */
+export const AXE_RULE_OPTIONS = {
+	rules: {
+		'target-size': { enabled: true },
+	},
+};
+
+/**
+ * Build a tagged AxeBuilder with WCAG 2.2 target-size enabled.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {import('@axe-core/playwright').default}
+ */
+export function createAxeBuilder( page ) {
+	return new AxeBuilder( { page } )
+		.withTags( WCAG_TAGS )
+		.options( AXE_RULE_OPTIONS );
+}
+
+/**
+ * Summarize axe nodes for readable Playwright failure output.
+ *
+ * @param {import('axe-core').Result[]} rules
+ * @return {string}
+ */
+export function formatAxeRuleFindings( rules ) {
+	if ( ! rules.length ) {
+		return '(none)';
+	}
+
+	return rules
+		.map( ( rule ) => {
+			const nodes = rule.nodes
+				.map( ( node ) => {
+					const target = node.target.join( ' ' );
+					const summary = node.failureSummary || node.message || '';
+					return `  - ${ target }${ summary ? `: ${ summary }` : '' }`;
+				} )
+				.join( '\n' );
+
+			return `${ rule.id } (${ rule.impact || 'unknown' }): ${ rule.help }\n${ nodes }`;
+		} )
+		.join( '\n' );
+}
+
+/**
+ * Fail when axe reports violations, or target-size incompletes that need review.
+ *
+ * @param {import('axe-core').AxeResults} results
+ */
+export function expectNoAxeViolations( results ) {
+	const targetSizeIncomplete = results.incomplete.filter(
+		( rule ) => rule.id === 'target-size'
+	);
+
+	expect(
+		results.violations,
+		`axe violations:\n${ formatAxeRuleFindings( results.violations ) }`
+	).toEqual( [] );
+
+	expect(
+		targetSizeIncomplete,
+		`axe target-size incomplete (needs review):\n${ formatAxeRuleFindings(
+			targetSizeIncomplete
+		) }`
+	).toEqual( [] );
+}
+
+/**
  * Page screenshot options for long templates.
  *
  * `toHaveScreenshot` on a page captures only the viewport unless `fullPage` is set.
@@ -177,16 +248,27 @@ export async function clickTabcordionControl( locator ) {
 }
 
 /**
+ * Run a scoped axe audit with WCAG tags and target-size enabled.
+ *
  * @param {import('@playwright/test').Page} page
  * @param {string} selector
+ * @return {Promise<import('axe-core').AxeResults>}
  */
 export async function runAxeOnSelector( page, selector ) {
-	const results = await new AxeBuilder( { page } )
-		.include( selector )
-		.withTags( WCAG_TAGS )
-		.analyze();
+	return createAxeBuilder( page ).include( selector ).analyze();
+}
 
-	return results;
+/**
+ * Run a document-wide axe audit with WCAG tags and target-size enabled.
+ *
+ * Prefer this when the situation should cover header, main, footer, and
+ * unexpected chrome — not a single content region.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<import('axe-core').AxeResults>}
+ */
+export async function runAxeOnPage( page ) {
+	return createAxeBuilder( page ).analyze();
 }
 
 /**

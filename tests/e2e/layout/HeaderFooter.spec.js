@@ -7,18 +7,19 @@
  * container-mobile when run via test:e2e:visual).
  */
 import { test, expect } from '../fixtures/test.js';
-import AxeBuilder from '@axe-core/playwright';
 import {
 	expandMainNavSubmenu,
+	expectMainNavExpandButtonsVisibleForTouch,
 	openHeaderMenuIfCollapsed,
 } from '../helpers/header.js';
 import { settleLocatorForScreenshot } from '../helpers/editor.js';
 import { normalizeE2eUrlForPlaywright } from '../helpers/e2e-navigation.js';
+import {
+	expectNoAxeViolations,
+	runAxeOnPage,
+} from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedChromeVariant, seedSiteChromeData } from '../helpers/wp-cli.js';
-
-/** WCAG 2.x tags passed to axe-core scoped audits. */
-const WCAG_TAGS = [ 'wcag2a', 'wcag2aa', 'wcag22a', 'wcag22aa', 'best-practice' ];
 
 /** Allow minor cross-environment rendering variance in visual snapshots. */
 const SCREENSHOT_OPTIONS = { maxDiffPixelRatio: 0.02 };
@@ -234,28 +235,68 @@ test.describe( 'Header and Footer', () => {
 			await visitDefaultChromePage( page, seed.pageUrl );
 		} );
 
-		test( 'passes axe audit — header', async ( { page } ) => {
-			const header = page.locator( '#header-wrapper' );
-			await expect( header ).toBeVisible();
-
-			const results = await new AxeBuilder( { page } )
-				.include( '#header-wrapper' )
-				.withTags( WCAG_TAGS )
-				.analyze();
-
-			expect( results.violations ).toEqual( [] );
+		// Default pointer: Sitka keeps desktop expand chevrons at opacity:0
+		// (see _accessible-menus.scss) until focus / (hover: none).
+		test( 'passes axe audit — full page (mouse)', async ( { page } ) => {
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
 		} );
 
-		test( 'passes axe audit — footer', async ( { page } ) => {
+		// Sitka shows expand buttons under CSS (hover: none). Playwright enables
+		// that media feature when the context has hasTouch: true.
+		test.describe( 'header touch pointer', () => {
+			test.use( { hasTouch: true } );
+
+			test( 'passes axe audit — full page (touch)', async ( { page } ) => {
+				await expectMainNavExpandButtonsVisibleForTouch( page );
+
+				const results = await runAxeOnPage( page );
+				expectNoAxeViolations( results );
+			} );
+		} );
+
+		test( 'passes axe audit — full page with menu open @viewport', async ( {
+			page,
+		} ) => {
+			await openHeaderMenuIfCollapsed( page );
+			await expect( page.locator( '#site-header--main-nav' ) ).toBeVisible();
+
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
+		} );
+
+		test( 'passes axe audit — full page with search expanded', async ( {
+			page,
+		} ) => {
+			await page.locator( '#site-header--search-toggle-btn' ).click();
+			await expect( page.locator( '#site-header--search' ) ).toBeVisible();
+
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
+		} );
+
+		test( 'passes axe audit — full page with hamburger visible @viewport', async ( {
+			page,
+		}, testInfo ) => {
+			if ( testInfo.project.name === 'desktop' ) {
+				testInfo.skip( true, 'Hamburger is hidden at lg+ (d-lg-none).' );
+			}
+
+			await expect(
+				page.locator( '#site-header--site-title .menu-toggle' )
+			).toBeVisible();
+
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
+		} );
+
+		test( 'passes axe audit — footer social links in page', async ( { page } ) => {
 			const footer = page.locator( 'footer.footer' );
 			await expect( footer ).toBeVisible();
+			await expect( footer.locator( '.social-links a' ) ).toHaveCount( 3 );
 
-			const results = await new AxeBuilder( { page } )
-				.include( 'footer.footer' )
-				.withTags( WCAG_TAGS )
-				.analyze();
-
-			expect( results.violations ).toEqual( [] );
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
 		} );
 	} );
 } );

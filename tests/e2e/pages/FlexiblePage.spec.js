@@ -2,7 +2,8 @@ import { test, expect } from '../fixtures/test.js';
 import {
 	clickTabcordionControl,
 	expectFullPageScreenshot,
-	runAxeOnSelector,
+	expectNoAxeViolations,
+	runAxeOnPage,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { settleLocatorForScreenshot } from '../helpers/editor.js';
@@ -110,10 +111,11 @@ test.describe( 'Flexible page integration', () => {
 		} );
 	} );
 
-	test( 'main content passes axe', async ( { page } ) => {
-		const results = await runAxeOnSelector( page, '.narrow-content' );
-		expect( results.violations ).toEqual( [] );
+	test( 'page passes axe', async ( { page } ) => {
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
+
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
 		await expectFullPageScreenshot( page, 'flexible-page-full.png' );

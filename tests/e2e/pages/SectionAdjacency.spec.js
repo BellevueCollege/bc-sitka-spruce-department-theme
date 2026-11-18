@@ -1,7 +1,9 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	expectFullPageScreenshot,
+	expectNoAxeViolations,
 	prepareAdjacencyScreenshot,
+	runAxeOnPage,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { settleLocatorForScreenshot } from '../helpers/editor.js';
@@ -44,6 +46,11 @@ test.describe( 'Section adjacency integration', () => {
 		await expect(
 			page.getByRole( 'heading', { name: 'E2E Section Adjacency' } )
 		).toBeVisible();
+	} );
+
+	test( 'page passes axe', async ( { page } ) => {
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
 
 	test( 'white section hides divider before colored or arch siblings', async ( {

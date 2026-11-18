@@ -1,6 +1,5 @@
 // tests/e2e/blocks/AnnouncementBanner.spec.js
 import { test, expect } from '../fixtures/test.js';
-import AxeBuilder from '@axe-core/playwright';
 import {
 	logScreenshotGeometry,
 	prepareEditorCanvasForScreenshot,
@@ -8,6 +7,10 @@ import {
 	settleLocatorForScreenshot,
 	visitPublishedFrontend,
 } from '../helpers/editor.js';
+import {
+	expectNoAxeViolations,
+	runAxeOnPage,
+} from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedBlockFrontendPages, uploadTestImage } from '../helpers/wp-cli.js';
 
@@ -249,12 +252,8 @@ test.describe( 'Announcement Banner Block', () => {
 				getBannerLocator( page, 'Test Announcement' )
 			).toBeVisible();
 
-			const results = await new AxeBuilder( { page: page } )
-				.include( 'article' )
-				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
-				.analyze();
-
-			expect( results.violations ).toEqual( [] );
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
 		} );
 
 		test( 'passes axe audit — with links and image', async ( { page } ) => {
@@ -263,12 +262,8 @@ test.describe( 'Announcement Banner Block', () => {
 				getBannerLocator( page, 'Test Announcement' )
 			).toBeVisible();
 
-			const results = await new AxeBuilder( { page: page } )
-				.include( 'article' )
-				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
-				.analyze();
-
-			expect( results.violations ).toEqual( [] );
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
 		} );
 
 		test( 'passes axe audit — no image', async ( { page } ) => {
@@ -277,13 +272,10 @@ test.describe( 'Announcement Banner Block', () => {
 				getBannerLocator( page, 'Test Announcement No Image' )
 			).toBeVisible();
 
-			const results = await new AxeBuilder( { page: page } )
-				.include( 'article' )
-				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
-				.analyze();
-
-			expect( results.violations ).toEqual( [] );
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
 		} );
+
 	} );
 } );
 

@@ -1,7 +1,8 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	expectFullPageScreenshot,
-	runAxeOnSelector,
+	expectNoAxeViolations,
+	runAxeOnPage,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
@@ -68,8 +69,9 @@ test.describe( 'Single program integration', () => {
 		} );
 	} );
 
-	test( 'main content passes axe', async ( { page } ) => {
-		const results = await runAxeOnSelector( page, '.flexible-page, main' );
-		expect( results.violations ).toEqual( [] );
+	test( 'page passes axe', async ( { page } ) => {
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
+
 } );

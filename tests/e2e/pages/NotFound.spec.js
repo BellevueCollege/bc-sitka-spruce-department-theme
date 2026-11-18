@@ -1,7 +1,8 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	expectFullPageScreenshot,
-	runAxeOnSelector,
+	expectNoAxeViolations,
+	runAxeOnPage,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import { seedSiteChromeData } from '../helpers/wp-cli.js';
@@ -30,10 +31,11 @@ test.describe( '404 page integration', () => {
 		} );
 	} );
 
-	test( 'main content passes axe', async ( { page } ) => {
-		const results = await runAxeOnSelector( page, '.flexible-page .container-xl' );
-		expect( results.violations ).toEqual( [] );
+	test( 'page passes axe', async ( { page } ) => {
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
+
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
 		await expectFullPageScreenshot( page, 'not-found-full.png' );
