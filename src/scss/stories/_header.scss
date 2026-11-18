@@ -1,3 +1,8 @@
+// WCAG 2.2 2.4.11: keep focused targets clear of the sticky header
+html {
+	scroll-padding-top: 6rem;
+}
+
 #header-wrapper {
 	background: css_color("white");
 	background: linear-gradient(
@@ -25,7 +30,7 @@
 		}
 		&.search-expanded #site-header--search {
 			display: block;
-			
+
 			@include media-breakpoint-down($header-desktop-breakpoint) {
 				display: none;
 			}
