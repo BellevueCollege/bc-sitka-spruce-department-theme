@@ -5,108 +5,135 @@
 /// Styles for the accessible menu JavaScript.
 ////
 
-.accessible-menu {
+// WCAG 2.5.8 — minimum 24×24px pointer target (1.5rem at 16px root).
+$min-pointer-target: 1.5rem;
 
-  li {
-    position: relative;
-  }
+/// Desktop expand chrome for coarse pointer and keyboard-in-nav.
+/// One place for visibility, hit area, alignment, and clickability.
+@mixin accessible-menu-desktop-pointer-targets {
+	.menu-item-has-children > a {
+		padding-right: 30px !important;
+	}
 
-  .menu-item {
+	.menu-item--expanded > a,
+	.menu-item--expanded > span {
+		padding-right: 1.56rem;
+	}
 
-    &__button {
-      position: absolute;
-      border: none;
-      background-color: transparent;
+	// Include the main-nav child path so this beats
+	// `.main-menu > ul.menu > li > .menu-item__button` without a second mixin.
+	> ul.menu > li > .menu-item__button,
+	.menu-item__button {
+		top: 0;
+		right: 6px;
+		bottom: 0;
+		left: auto;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: $min-pointer-target;
+		min-width: $min-pointer-target;
+		min-height: $min-pointer-target;
+		height: auto;
+		padding: 0;
+		transform: none;
+		opacity: 1;
+		pointer-events: auto;
 
-      @include media-breakpoint-down(lg) {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 2em;
-        height: 2em;
-        margin: 0;
-        padding: .375em;
-        color: transparent;
-        font-size: 1.5rem;
-
-        &::before {
-          display: inline-block;
-          width: 100%;
-          content: fa.fa-content(fa.$var-plus);
-          color: css_color('white');
-          font-family: $font-awesome;
-        }
-      }
-
-      @include media-breakpoint-up(lg) {
-        position: absolute;
-        bottom: 0;
-        left: 50%;
-        width: 1.5rem;
-        height: 1rem;
-        transition: opacity $primary-transition;
-        transform: translateX(-50%);
-        opacity: 0;
-        font-size: 0;
-
-        &::before {
-          width: 100%;
-          content: fa.fa-content(fa.$var-chevron-circle-down);
-          color: css_color('white');
-          font-family: $font-awesome;
-          font-size: 16px;
-        }
-
-        &:focus {
-          opacity: 1;
-          padding-right: 1.5rem;
-        }
-      }
-    }
-
-    &--open {
-
-      > ul {
-        display: block;
-      }
-
-      @include media-breakpoint-down(lg) {
-
-        > .menu-item__button::before {
-          content: fa.fa-content(fa.$var-minus);
-        }
-      }
-
-      @include media-breakpoint-up(lg) {
-
-        > .menu-item__button::before {
-          content: fa.fa-content(fa.$var-chevron-circle-up);
-        }
-      }
-    }
-  }
+		&::before {
+			top: 0;
+			position: relative;
+		}
+	}
 }
 
-// Touchevents based navigation
-@media (hover: none) {
+.accessible-menu {
 
-  .accessible-menu {
-    @include media-breakpoint-up($header-desktop-breakpoint) {
+	li {
+		position: relative;
+	}
 
+	.menu-item {
 
-      .menu-item-has-children > a {
-        padding-right: 30px !important;
-      }
+		&__button {
+			position: absolute;
+			border: none;
+			background-color: transparent;
 
-      .menu-item__button {
-        width: calc( 1rem + 2px ) !important;
-        opacity: 1;
-      }
+			@include media-breakpoint-down(lg) {
+				position: absolute;
+				top: 0;
+				right: 0;
+				width: 2em;
+				height: 2em;
+				margin: 0;
+				padding: .375em;
+				color: transparent;
+				font-size: 1.5rem;
 
-      .menu-item--expanded > a,
-      .menu-item--expanded > span {
-        padding-right: 1.56rem;
-      }
-    }
-  }
+				&::before {
+					display: inline-block;
+					width: 100%;
+					content: fa.fa-content(fa.$var-plus);
+					color: css_color('white');
+					font-family: $font-awesome;
+				}
+			}
+
+			@include media-breakpoint-up(lg) {
+				position: absolute;
+				bottom: 0;
+				left: 50%;
+				width: 1.5rem;
+				height: 1rem;
+				transition: opacity $primary-transition;
+				transform: translateX(-50%);
+				opacity: 0;
+				font-size: 0;
+
+				&::before {
+					width: 100%;
+					content: fa.fa-content(fa.$var-chevron-circle-down);
+					color: css_color('white');
+					font-family: $font-awesome;
+					font-size: 16px;
+				}
+			}
+		}
+
+		&--open {
+
+			> ul {
+				display: block;
+			}
+
+			@include media-breakpoint-down(lg) {
+
+				> .menu-item__button::before {
+					content: fa.fa-content(fa.$var-minus);
+				}
+			}
+
+			@include media-breakpoint-up(lg) {
+
+				> .menu-item__button::before {
+					content: fa.fa-content(fa.$var-chevron-circle-up);
+				}
+			}
+		}
+	}
+}
+
+// Show pointer-target chrome once: touch desktop, or keyboard focus in main nav.
+@include media-breakpoint-up($header-desktop-breakpoint) {
+
+	@media (hover: none) {
+		.accessible-menu {
+			@include accessible-menu-desktop-pointer-targets;
+		}
+	}
+
+	#site-header--main-nav.accessible-menu:has(:focus-visible) {
+		@include accessible-menu-desktop-pointer-targets;
+	}
 }

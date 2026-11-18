@@ -9,6 +9,7 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	expandMainNavSubmenu,
+	expectMainNavExpandButtonsVisibleForKeyboard,
 	expectMainNavExpandButtonsVisibleForTouch,
 	openHeaderMenuIfCollapsed,
 } from '../helpers/header.js';
@@ -235,9 +236,17 @@ test.describe( 'Header and Footer', () => {
 			await visitDefaultChromePage( page, seed.pageUrl );
 		} );
 
-		// Default pointer: Sitka keeps desktop expand chevrons at opacity:0
-		// (see _accessible-menus.scss) until focus / (hover: none).
+		// Default pointer: chevrons hidden until (hover: none) or keyboard in main nav.
 		test( 'passes axe audit — full page (mouse)', async ( { page } ) => {
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
+		} );
+
+		test( 'passes axe audit — full page with keyboard in main nav', async ( {
+			page,
+		} ) => {
+			await expectMainNavExpandButtonsVisibleForKeyboard( page );
+
 			const results = await runAxeOnPage( page );
 			expectNoAxeViolations( results );
 		} );
