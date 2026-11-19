@@ -43,23 +43,23 @@
   - heading "E2E Board Agenda" [level=1]
   - paragraph: /January \d+, \d+/
   - paragraph: E2E agenda body content.
-  - complementary:
+  - complementary "Related Content":
     - heading "Related Content" [level=2]
     - paragraph
     - list:
       - listitem:
         - strong: "Action Items:"
-      - list:
-        - listitem:
-          - link "E2E Action Item":
-            - /url: http://127.0.0.1:8889/e2e-dept/action-items/e2e-action-item/
+        - list:
+          - listitem:
+            - link "E2E Action Item":
+              - /url: http://127.0.0.1:8889/e2e-dept/action-items/e2e-action-item/
       - listitem:
         - strong: "Resolutions:"
         - list:
           - listitem:
             - link "E2E Resolution":
               - /url: http://127.0.0.1:8889/e2e-dept/resolutions/e2e-resolution/
-- complementary:
+- complementary "Unit Information":
   - heading "For questions about this site, contact our site manager" [level=2]
   - paragraph:
     - strong: E2E Manager
