@@ -254,6 +254,8 @@ One WordPress database; parallel workers race on posts and editor state.
 
 `@aria` YAML baselines are normalized to **LF** in Git ([`.gitattributes`](../.gitattributes)). Playwright compares file bytes, not just tree semantics—CRLF on Windows checkouts causes opaque failures. See [readme Troubleshooting — `@aria` line endings](../readme.md).
 
+**Never hand-edit** `tests/e2e/**/__snapshots__/*.yml`. Refresh `@aria` baselines only from Playwright’s rendered accessibility tree via `npm run test:e2e:aria:update` (changed diffs), `npm run test:e2e:aria:update:all`, or `npm run test:e2e:aria:update:last-failed`. Manual YAML edits drift from real content and are not an allowed fix path.
+
 ### LambdaTest tunnel
 
 - Local default tunnel / container name is **`e2e-tunnel-dev`**; auto-start in `global-setup.js` unless `E2E_LAMBDATEST_TUNNEL_AUTO=0`.
@@ -317,7 +319,7 @@ Human-facing copy lives in [readme.md — Pull request checklist](../readme.md#p
 - [ ] PR describes **why** pixels changed (theme, block, plugin version in `plugins.json`, seed content, editor prefs, etc.).
 - [ ] Partial PNG updates are intentional; if many unrelated snapshots changed, prefer a dedicated baseline-refresh PR or the [visual baseline update ADO template](../.azuredevops/e2e-visual-baseline-update-steps.yml).
 - [ ] Did **not** loosen `maxDiffPixelRatio`. [`screenshot-stability.css`](e2e/helpers/screenshot-stability.css) changes are limited to scrollbar hiding or documented subpixel allowlist pins (not generic layout masks).
-- [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed (`npm run test:e2e:aria:update` for diffs only, or `npm run test:e2e:aria:update:all` to rewrite every aria YAML—Playwright treats bare `--update-snapshots` as **missing** files only, not a full refresh).
+- [ ] `@aria` `*.yml` snapshots updated when accessibility tree output changed — **via Playwright only** (`npm run test:e2e:aria:update` for diffs only, or `npm run test:e2e:aria:update:all` to rewrite every aria YAML—Playwright treats bare `--update-snapshots` as **missing** files only, not a full refresh). **Do not hand-edit** snapshot YAML.
 - [ ] No `@visual` tag on tests that do not call `toHaveScreenshot`.
 - [ ] Plugin catalog / mu-plugin / seed PHP changes: reviewers know to run `env:e2e:start` (database reset and reseed). `npm run env:e2e:destroy` is only for image or catalog-install failures.
 
