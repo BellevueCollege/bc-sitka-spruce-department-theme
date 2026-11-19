@@ -1,6 +1,5 @@
 // tests/e2e/blocks/PostsFeature.spec.js
 import { test, expect } from '../fixtures/test.js';
-import AxeBuilder from '@axe-core/playwright';
 import {
 	logScreenshotGeometry,
 	prepareEditorCanvasForScreenshot,
@@ -8,6 +7,10 @@ import {
 	settleLocatorForScreenshot,
 	visitPublishedFrontend,
 } from '../helpers/editor.js';
+import {
+	expectNoAxeViolations,
+	runAxeOnPage,
+} from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
 import {
 	seedBlockFrontendPages,
@@ -267,12 +270,8 @@ test.describe( 'Posts Feature Block', () => {
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
 
-			const results = await new AxeBuilder( { page } )
-				.include( 'section.news-feature' )
-				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
-				.analyze();
-
-			expect( results.violations ).toEqual( [] );
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
 		} );
 
 		test( 'passes axe audit — full configuration', async ( { page } ) => {
@@ -281,13 +280,10 @@ test.describe( 'Posts Feature Block', () => {
 			const section = getPostsFeatureLocator( page );
 			await expect( section ).toBeVisible();
 
-			const results = await new AxeBuilder( { page } )
-				.include( 'section.news-feature' )
-				.withTags( [ 'wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa' ] )
-				.analyze();
-
-			expect( results.violations ).toEqual( [] );
+			const results = await runAxeOnPage( page );
+			expectNoAxeViolations( results );
 		} );
+
 	} );
 } );
 

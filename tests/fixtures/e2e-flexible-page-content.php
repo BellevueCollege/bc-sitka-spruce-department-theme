@@ -14,8 +14,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string
  */
 function e2e_flexible_page_block_markup( string $tablepress_id ): string {
-	$embed_url = 'https://www.youtube.com/watch?v=dQw4w9WgXcQ';
-
 	return <<<MARKUP
 <!-- wp:bc-sitka-spruce/narrow-content -->
 <div class="wp-block-bc-sitka-spruce-narrow-content narrow-content"><!-- wp:mayflower-blocks/lead -->
@@ -85,8 +83,8 @@ function e2e_flexible_page_block_markup( string $tablepress_id ): string {
 <figure class="wp-block-image"><img alt="E2E gallery fixture image" src="/wp-content/themes/bc-sitka-spruce-department-theme/tests/fixtures/test-image-260x174.png"/></figure>
 <!-- /wp:image --></figure>
 <!-- /wp:gallery -->
-<!-- wp:cover {"overlayColor":"black","dimRatio":50,"isUserOverlayColor":true} -->
-<div class="wp-block-cover"><span aria-hidden="true" class="wp-block-cover__background has-black-background-color has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center"} -->
+<!-- wp:cover {"overlayColor":"black","dimRatio":80,"isUserOverlayColor":true} -->
+<div class="wp-block-cover"><span aria-hidden="true" class="wp-block-cover__background has-black-background-color has-background-dim-80 has-background-dim"></span><div class="wp-block-cover__inner-container"><!-- wp:paragraph {"align":"center"} -->
 <p class="has-text-align-center">E2E cover inner</p>
 <!-- /wp:paragraph --></div></div>
 <!-- /wp:cover -->
@@ -98,11 +96,6 @@ function e2e_flexible_page_block_markup( string $tablepress_id ): string {
 <p>E2E media-text content.</p>
 <!-- /wp:paragraph --></div><figure class="wp-block-media-text__media"><img alt="E2E media-text fixture image" src="/wp-content/themes/bc-sitka-spruce-department-theme/tests/fixtures/test-image-260x174.png"/></figure></div>
 <!-- /wp:media-text -->
-<!-- wp:embed {"url":"{$embed_url}","type":"video","providerNameSlug":"youtube"} -->
-<figure class="wp-block-embed is-type-video is-provider-youtube wp-block-embed-youtube"><div class="wp-block-embed__wrapper">
-{$embed_url}
-</div></figure>
-<!-- /wp:embed -->
 <!-- wp:separator -->
 <hr class="wp-block-separator has-alpha-channel-opacity"/>
 <!-- /wp:separator -->

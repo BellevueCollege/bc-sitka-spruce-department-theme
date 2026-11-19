@@ -31,7 +31,7 @@
                 {# Ensure they are arrays #}
                 {% if action_items and action_items is not iterable %}{% set action_items = [action_items] %}{% endif %}
                 {% if resolutions and resolutions is not iterable %}{% set resolutions = [resolutions] %}{% endif %}
-                
+
                 {# Only show call out if one or more options exist #}
                 {% if action_items or resolutions %}
                     <div class="col-lg-4">
@@ -39,7 +39,7 @@
                             <ul class="list-unstyled mb-0">
 
                                 {% if action_items %}
-                                    <li><strong> Action Items: </strong></li>
+                                    <li><strong> Action Items: </strong>
                                         <ul class='ms-3'>
                                             {# Pulling in Bi-Directional Action Items #}
                                             {% for item in action_items %}
@@ -70,7 +70,7 @@
                                 {% endif %}
                             </ul>
                         {% endset %}
-                            
+
                         {% include '@stories/callout/callout.twig' with {
                             title: 'Related Content',
                             links: related_html ? related_html ~ '' : '',

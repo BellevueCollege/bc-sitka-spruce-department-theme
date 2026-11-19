@@ -13,6 +13,23 @@ const preview = {
         date: /Date$/i,
       },
     },
+    // Local review only (no test-storybook CI). Matches e2e WCAG_TAGS + target-size.
+    a11y: {
+      config: {
+        rules: [
+          {
+            id: 'target-size',
+            enabled: true,
+          },
+        ],
+      },
+      options: {
+        runOnly: {
+          type: 'tag',
+          values: [ 'wcag2a', 'wcag2aa', 'wcag22a', 'wcag22aa', 'best-practice' ],
+        },
+      },
+    },
   },
 };
 

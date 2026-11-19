@@ -1,5 +1,7 @@
 /*
- * Applied only while Playwright takes a screenshot (stylePath).
+ * Screenshot capture stability. Applied by Playwright `stylePath` during
+ * `toHaveScreenshot`, and also earlier via ensureScreenshotStabilityStyles()
+ * before element snaps so layout-affecting rules are measured correctly.
  * Not shipped to site visitors.
  *
  * 1) Scrollbars — Linux Chrome can show/hide a classic scrollbar during
@@ -27,11 +29,12 @@ body,
 }
 
 /*
- * Announcement Banner — remove inline-image descender gap only.
- * Do not pin width/height: columns are often < 260px wide; a fixed 174px
- * height then inflates the element box vs fluid baselines.
+ * Announcement Banner images — kill the inline-img descender gap only.
+ * Do NOT pin article height/width here: absolute size pins hide real design
+ * changes and force silent baseline drift. Size stability uses
+ * snapLocatorToIntegerCssPixel() in the spec when needed.
  */
-.announcement__image img {
+.announcement--item .announcement__image img {
 	display: block !important;
 }
 

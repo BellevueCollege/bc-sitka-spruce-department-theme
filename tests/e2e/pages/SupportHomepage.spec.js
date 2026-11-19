@@ -1,7 +1,8 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	expectFullPageScreenshot,
-	runAxeOnSelector,
+	expectNoAxeViolations,
+	runAxeOnPage,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
@@ -79,10 +80,11 @@ test.describe( 'Support homepage integration', () => {
 		} );
 	} );
 
-	test( 'main content passes axe', async ( { page } ) => {
-		const results = await runAxeOnSelector( page, '.testimonial-section-wrapper, .testimonial-section' );
-		expect( results.violations ).toEqual( [] );
+	test( 'page passes axe', async ( { page } ) => {
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
+
 
 	test( 'does not scroll horizontally on narrow viewports @viewport', async ( { page } ) => {
 		const overflow = await page.evaluate(

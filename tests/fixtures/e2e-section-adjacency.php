@@ -407,8 +407,8 @@ function e2e_adjacency_body_section( string $anchor, string $heading ): string {
 	return <<<MARKUP
 <!-- wp:bc-sitka-spruce/body-section {"anchor":"{$escaped_anchor}"} -->
 <!-- wp:bc-sitka-spruce/body-section-content -->
-<!-- wp:heading {"level":3} -->
-<h3 class="wp-block-heading">{$escaped_heading}</h3>
+<!-- wp:heading {"level":2} -->
+<h2 class="wp-block-heading">{$escaped_heading}</h2>
 <!-- /wp:heading -->
 <!-- /wp:bc-sitka-spruce/body-section-content -->
 <!-- /wp:bc-sitka-spruce/body-section -->

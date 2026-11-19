@@ -1,6 +1,7 @@
 import { setTimeout as delay } from 'node:timers/promises';
 import { expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { settlePageImagesForScreenshot } from './editor.js';
 import { normalizeE2eUrlForPlaywright } from './e2e-navigation.js';
 
 const VISIT_INTEGRATION_MAX_ATTEMPTS = 6;
@@ -32,6 +33,77 @@ export const WCAG_TAGS = [
 ];
 
 /**
+ * axe-core ships WCAG 2.2 rules (including target-size / 2.5.8) disabled.
+ * Enable them explicitly whenever we audit with WCAG_TAGS.
+ */
+export const AXE_RULE_OPTIONS = {
+	rules: {
+		'target-size': { enabled: true },
+	},
+};
+
+/**
+ * Build a tagged AxeBuilder with WCAG 2.2 target-size enabled.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {import('@axe-core/playwright').default}
+ */
+export function createAxeBuilder( page ) {
+	return new AxeBuilder( { page } )
+		.withTags( WCAG_TAGS )
+		.options( AXE_RULE_OPTIONS );
+}
+
+/**
+ * Summarize axe nodes for readable Playwright failure output.
+ *
+ * @param {import('axe-core').Result[]} rules
+ * @return {string}
+ */
+export function formatAxeRuleFindings( rules ) {
+	if ( ! rules.length ) {
+		return '(none)';
+	}
+
+	return rules
+		.map( ( rule ) => {
+			const nodes = rule.nodes
+				.map( ( node ) => {
+					const target = node.target.join( ' ' );
+					const summary = node.failureSummary || node.message || '';
+					return `  - ${ target }${ summary ? `: ${ summary }` : '' }`;
+				} )
+				.join( '\n' );
+
+			return `${ rule.id } (${ rule.impact || 'unknown' }): ${ rule.help }\n${ nodes }`;
+		} )
+		.join( '\n' );
+}
+
+/**
+ * Fail when axe reports violations, or target-size incompletes that need review.
+ *
+ * @param {import('axe-core').AxeResults} results
+ */
+export function expectNoAxeViolations( results ) {
+	const targetSizeIncomplete = results.incomplete.filter(
+		( rule ) => rule.id === 'target-size'
+	);
+
+	expect(
+		results.violations,
+		`axe violations:\n${ formatAxeRuleFindings( results.violations ) }`
+	).toEqual( [] );
+
+	expect(
+		targetSizeIncomplete,
+		`axe target-size incomplete (needs review):\n${ formatAxeRuleFindings(
+			targetSizeIncomplete
+		) }`
+	).toEqual( [] );
+}
+
+/**
  * Page screenshot options for long templates.
  *
  * `toHaveScreenshot` on a page captures only the viewport unless `fullPage` is set.
@@ -46,66 +118,38 @@ export const FULL_PAGE_SCREENSHOT_OPTIONS = {
 };
 
 /**
- * Wait for load, images, and non-sticky header before full-page visual baselines.
+ * Disable sticky site header so full-page / tall element stitches do not repaint it mid-capture.
+ *
+ * Shared by [`prepareFullPageScreenshot`] and [`prepareAdjacencyScreenshot`]. Image settle
+ * lives in `editor.js` (see tests/AGENTS.md). This is not a `screenshot-stability.css` pin.
  *
  * @param {import('@playwright/test').Page} page
  * @return {Promise<void>}
  */
-const FULL_PAGE_IMAGE_SETTLE_TIMEOUT_MS = 3_000;
-const FULL_PAGE_LAZY_LOAD_SCROLL_STEP_PX = 800;
-
-/**
- * Scroll the page and wait for images (including lazy-loaded) before full-page capture.
- *
- * @param {import('@playwright/test').Page} page
- * @return {Promise<void>}
- */
-async function settleFullPageImages( page ) {
-	await page.evaluate(
-		async ( { scrollStepPx, perImageTimeoutMs } ) => {
-			const delay = ( ms ) =>
-				new Promise( ( resolve ) => {
-					window.setTimeout( resolve, ms );
-				} );
-
-			const maxScroll = Math.max(
-				document.body.scrollHeight,
-				document.documentElement.scrollHeight
-			);
-			for ( let y = 0; y <= maxScroll; y += scrollStepPx ) {
-				window.scrollTo( 0, y );
-				await delay( 50 );
+async function disableStickySiteHeaderForScreenshot( page ) {
+	await page.addStyleTag( {
+		content: `
+			#header-wrapper {
+				position: relative !important;
+				top: auto !important;
 			}
-
-			const images = [ ...document.querySelectorAll( 'img' ) ];
-			await Promise.all(
-				images.map(
-					( image ) =>
-						new Promise( ( resolve ) => {
-							if ( image.complete ) {
-								resolve( undefined );
-								return;
-							}
-
-							const done = () => resolve( undefined );
-							image.addEventListener( 'load', done, { once: true } );
-							image.addEventListener( 'error', done, { once: true } );
-							window.setTimeout( done, perImageTimeoutMs );
-						} )
-				)
-			);
-
-			window.scrollTo( 0, 0 );
-		},
-		{
-			scrollStepPx: FULL_PAGE_LAZY_LOAD_SCROLL_STEP_PX,
-			perImageTimeoutMs: FULL_PAGE_IMAGE_SETTLE_TIMEOUT_MS,
-		}
-	);
+		`,
+	} );
+	await page.evaluate( () => window.scrollTo( 0, 0 ) );
 }
 
+/**
+ * Prepare the page for a full-page visual baseline (image settle + fonts).
+ *
+ * Does not pin layout metrics (footer rem, image box sizes). Sticky-off stays
+ * on [`prepareAdjacencyScreenshot`] for tall element stitches only.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<void>}
+ */
 export async function prepareFullPageScreenshot( page ) {
-	await settleFullPageImages( page );
+	await settlePageImagesForScreenshot( page );
+	await page.evaluate( () => document.fonts.ready );
 }
 
 /**
@@ -177,16 +221,27 @@ export async function clickTabcordionControl( locator ) {
 }
 
 /**
+ * Run a scoped axe audit with WCAG tags and target-size enabled.
+ *
  * @param {import('@playwright/test').Page} page
  * @param {string} selector
+ * @return {Promise<import('axe-core').AxeResults>}
  */
 export async function runAxeOnSelector( page, selector ) {
-	const results = await new AxeBuilder( { page } )
-		.include( selector )
-		.withTags( WCAG_TAGS )
-		.analyze();
+	return createAxeBuilder( page ).include( selector ).analyze();
+}
 
-	return results;
+/**
+ * Run a document-wide axe audit with WCAG tags and target-size enabled.
+ *
+ * Prefer this when the situation should cover header, main, footer, and
+ * unexpected chrome — not a single content region.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<import('axe-core').AxeResults>}
+ */
+export async function runAxeOnPage( page ) {
+	return createAxeBuilder( page ).analyze();
 }
 
 /**
@@ -199,15 +254,7 @@ export async function runAxeOnSelector( page, selector ) {
  * @return {Promise<void>}
  */
 export async function prepareAdjacencyScreenshot( page ) {
-	await page.addStyleTag( {
-		content: `
-			#header-wrapper {
-				position: relative !important;
-				top: auto !important;
-			}
-		`,
-	} );
-	await page.evaluate( () => window.scrollTo( 0, 0 ) );
+	await disableStickySiteHeaderForScreenshot( page );
 }
 
 /**

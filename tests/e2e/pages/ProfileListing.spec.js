@@ -1,7 +1,8 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	expectFullPageScreenshot,
-	runAxeOnSelector,
+	expectNoAxeViolations,
+	runAxeOnPage,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
@@ -133,13 +134,11 @@ test.describe( 'Profile listing integration', () => {
 		} );
 	} );
 
-	test( 'listing region passes axe', async ( { page } ) => {
-		const results = await runAxeOnSelector(
-			page,
-			'.profile-listing-page .profile-results, #oho-views-results-profile-listing'
-		);
-		expect( results.violations ).toEqual( [] );
+	test( 'page passes axe', async ( { page } ) => {
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
+
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
 		await expectFullPageScreenshot( page, 'profile-listing-full.png' );

@@ -1,7 +1,8 @@
 import { test, expect } from '../fixtures/test.js';
 import {
 	expectFullPageScreenshot,
-	runAxeOnSelector,
+	expectNoAxeViolations,
+	runAxeOnPage,
 	visitIntegrationPage,
 } from '../helpers/page-integration.js';
 import { skipDuplicateBlockViewport } from '../helpers/viewports.js';
@@ -105,11 +106,12 @@ test.describe( 'Blog templates integration', () => {
 		} );
 	} );
 
-	test( 'main content passes axe on index', async ( { page } ) => {
+	test( 'page passes axe on index', async ( { page } ) => {
 		await visitIntegrationPage( page, blogIndexUrl );
-		const results = await runAxeOnSelector( page, '.post-list, .posts-list, .flexible-page' );
-		expect( results.violations ).toEqual( [] );
+		const results = await runAxeOnPage( page );
+		expectNoAxeViolations( results );
 	} );
+
 
 	test( 'full page snapshot @visual', async ( { page } ) => {
 		await visitIntegrationPage( page, blogIndexUrl );

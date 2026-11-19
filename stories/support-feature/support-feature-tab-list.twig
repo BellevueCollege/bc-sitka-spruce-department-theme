@@ -9,7 +9,7 @@
 	{% for tab in tabs %}
 		{% include '@stories/tabcordion/components/tab-list-tab.twig' with {
 			active: loop.first ? 'active show' : '',
-			aria_selected: 'true',
+			aria_selected: loop.first ? 'true' : 'false',
 			title: tab.title,
 		} %}
 	{% endfor %}
