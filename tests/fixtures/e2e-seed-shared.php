@@ -60,6 +60,31 @@ function e2e_acf_image_value( int $attachment_id ): array {
 }
 
 /**
+ * Seed ACF website_manager option for sock chrome on all e2e pages.
+ *
+ * Block Accessibility suites run before HeaderFooter alphabetically; seeding
+ * here (and from integration after-start) keeps full-page axe independent of
+ * test order.
+ */
+function e2e_seed_website_manager(): void {
+	if ( ! function_exists( 'update_field' ) ) {
+		return;
+	}
+
+	update_field(
+		'website_manager',
+		array(
+			'message'    => 'For questions about this site, contact our site manager',
+			'first_name' => 'E2E',
+			'last_name'  => 'Manager',
+			'position'   => 'Web Coordinator',
+			'email'      => 'e2e-manager@example.com',
+		),
+		'option'
+	);
+}
+
+/**
  * Seed degree sock site options for single-program template tests.
  *
  * @param int $hero_attachment_id Hero image attachment ID.

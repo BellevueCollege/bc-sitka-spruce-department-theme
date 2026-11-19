@@ -31,6 +31,8 @@ require_once __DIR__ . '/e2e-section-adjacency.php';
 
 $core_map = e2e_get_core_seed_map();
 
+e2e_seed_website_manager();
+
 $hero_attachment_id    = e2e_import_hero_attachment();
 $tablepress_id         = e2e_seed_tablepress_table();
 $profile_seed           = array();

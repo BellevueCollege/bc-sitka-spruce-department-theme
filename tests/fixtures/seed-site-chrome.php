@@ -155,17 +155,7 @@ update_field(
 // Hide location card so sock snapshots stay stable without a location image.
 update_field( 'display_location_card', 0, 'option' );
 e2e_seed_degree_sock_site_options( $hero_attachment_id );
-update_field(
-	'website_manager',
-	array(
-		'message'    => 'For questions about this site, contact our site manager',
-		'first_name' => 'E2E',
-		'last_name'  => 'Manager',
-		'position'   => 'Web Coordinator',
-		'email'      => 'e2e-manager@example.com',
-	),
-	'option'
-);
+e2e_seed_website_manager();
 // Keep sitewide notice off for consistent header visuals.
 update_field( 'display_notice', 0, 'option' );
 update_field( 'sitewide_notice_text', '', 'option' );
