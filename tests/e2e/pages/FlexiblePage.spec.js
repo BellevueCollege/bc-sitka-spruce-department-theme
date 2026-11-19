@@ -1,5 +1,6 @@
 import { test, expect } from '../fixtures/test.js';
 import {
+	clickTabcordionControl,
 	expectFullPageScreenshot,
 	runAxeOnSelector,
 	visitIntegrationPage,
@@ -57,7 +58,9 @@ test.describe( 'Flexible page integration', () => {
 
 		// Below 769px the first panel stays collapsed until its accordion button is opened.
 		if ( testInfo.project.name !== 'desktop' ) {
-			await page.getByRole( 'button', { name: 'E2E Tab One' } ).click();
+			await clickTabcordionControl(
+				page.getByRole( 'button', { name: 'E2E Tab One' } )
+			);
 		}
 
 		await expect( page.getByText( 'E2E tab panel one content.' ) ).toBeVisible();
@@ -76,8 +79,15 @@ test.describe( 'Flexible page integration', () => {
 			testInfo.skip( true, 'Tab list is hidden below the theme md breakpoint (769px).' );
 		}
 
-		await page.getByRole( 'tab', { name: 'E2E Tab Two' } ).click();
-		await expect( page.getByText( 'E2E tab panel two content.' ) ).toBeVisible();
+		const tabsSection = page.locator( '#e2e-flex-tabs-section' );
+		const tabTwo = tabsSection.getByRole( 'tab', { name: 'E2E Tab Two' } );
+
+		await clickTabcordionControl( tabTwo );
+
+		await expect( tabTwo ).toHaveAttribute( 'aria-selected', 'true' );
+		await expect(
+			tabsSection.getByText( 'E2E tab panel two content.' )
+		).toBeVisible();
 	} );
 
 	test( 'opens tabcordion section below the tab breakpoint @viewport', async ( { page }, testInfo ) => {
@@ -85,7 +95,11 @@ test.describe( 'Flexible page integration', () => {
 			testInfo.skip( true, 'Accordion behavior is validated on tablet and mobile.' );
 		}
 
-		await page.getByRole( 'button', { name: 'E2E Tab Two' } ).click();
+		const accordionButton = page.locator( '#e2e-tab-two-acc-header button' );
+
+		await clickTabcordionControl( accordionButton );
+
+		await expect( accordionButton ).toHaveAttribute( 'aria-expanded', 'true' );
 		await expect( page.getByText( 'E2E tab panel two content.' ) ).toBeVisible();
 	} );
 
@@ -109,7 +123,9 @@ test.describe( 'Flexible page integration', () => {
 		skipDuplicateBlockViewport( testInfo );
 
 		if ( testInfo.project.name !== 'desktop' ) {
-			await page.getByRole( 'button', { name: 'E2E Tab One' } ).click();
+			await clickTabcordionControl(
+				page.getByRole( 'button', { name: 'E2E Tab One' } )
+			);
 		}
 
 		const tabsSection = page.locator(

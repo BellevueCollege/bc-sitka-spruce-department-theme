@@ -162,6 +162,21 @@ export async function visitIntegrationPage( page, url ) {
 }
 
 /**
+ * Click a tabcordion tab or accordion control after scrolling it clear of the
+ * sticky `#header-wrapper`. Playwright's built-in scroll-into-view can leave the
+ * control under the sticky header, so Bootstrap never receives the click.
+ *
+ * @param {import('@playwright/test').Locator} locator
+ * @return {Promise<void>}
+ */
+export async function clickTabcordionControl( locator ) {
+	await locator.evaluate( ( element ) => {
+		element.scrollIntoView( { block: 'center', inline: 'nearest' } );
+	} );
+	await locator.click();
+}
+
+/**
  * @param {import('@playwright/test').Page} page
  * @param {string} selector
  */
