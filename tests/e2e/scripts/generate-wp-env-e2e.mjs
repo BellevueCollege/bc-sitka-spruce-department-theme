@@ -21,11 +21,6 @@ const BELLEVUE_2022_THEME_SLUG = 'bellevue-2022';
 const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
 const projectRoot = path.resolve( __dirname, '../../..' );
 
-const muPluginPath = path.join(
-	projectRoot,
-	'tests/e2e/mu-plugins/e2e-seed-endpoint.php'
-);
-
 const MAIN_SITE_URL = getMainSiteBaseUrl();
 const SUBSITE_URL = getSubsiteBaseUrl();
 
@@ -111,9 +106,11 @@ function buildWpEnvConfig( resolvedPlugins, bellevue2022ThemeHostPath ) {
 	const afterStartWpCliCommands =
 		buildAfterStartWpCliCommands( resolvedPlugins );
 
+	// Do not bind-mount mu-plugins. Docker Desktop single-file (and sticky)
+	// binds go stale (Links:0 / include ENOENT). run-wp-env-after-start.mjs
+	// copies the mu-plugin from the theme mount into the WordPress volume.
 	/** @type {Record<string, string>} */
 	const mappings = {
-		'wp-content/mu-plugins/e2e-seed-endpoint.php': muPluginPath,
 		[ `wp-content/themes/${ THEME_SLUG }` ]: projectRoot,
 	};
 

@@ -1,19 +1,75 @@
 import { readFileSync } from 'fs';
+import { spawnSync } from 'child_process';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import {
 	E2E_SUBSITE_SLUG,
 	getMainSiteBaseUrl,
 	getSubsiteBaseUrl,
+	resolveWpEnvNodeEntryPath,
 	WP_ENV_E2E_AFTER_START_PLAN,
+	WP_ENV_E2E_CONFIG,
 } from '../helpers/e2e-env.js';
-import { runE2eCli } from '../helpers/wp-cli.js';
+import { runE2eCli, THEME_PATH } from '../helpers/wp-cli.js';
 
 const __dirname = path.dirname( fileURLToPath( import.meta.url ) );
 const projectRoot = path.resolve( __dirname, '../../..' );
 
 const MAIN_SITE_URL = getMainSiteBaseUrl();
 const SUBSITE_URL = getSubsiteBaseUrl();
+
+const MU_PLUGIN_INSTALLER_IN_CONTAINER = `${ THEME_PATH }/tests/e2e/scripts/install-e2e-mu-plugin.php`;
+
+/**
+ * Copy the e2e mu-plugin from the theme bind mount into the WordPress volume.
+ * Avoids Docker Desktop stale file binds (Links:0 / include ENOENT).
+ *
+ * Host OS may be Windows or macOS; the installer runs as PHP inside the Linux
+ * CLI container via spawnSync argv (no host shell, no POSIX sh).
+ */
+function installE2eMuPlugin() {
+	const wpEnvNodeEntry = resolveWpEnvNodeEntryPath( projectRoot );
+
+	console.log( '[e2e] Installing e2e mu-plugin into WordPress volume…' );
+
+	const result = spawnSync(
+		process.execPath,
+		[
+			wpEnvNodeEntry,
+			'run',
+			`--config=${ WP_ENV_E2E_CONFIG }`,
+			'cli',
+			'--env-cwd=/',
+			'php',
+			MU_PLUGIN_INSTALLER_IN_CONTAINER,
+		],
+		{
+			cwd: projectRoot,
+			encoding: 'utf8',
+			stdio: [ 'ignore', 'pipe', 'pipe' ],
+		}
+	);
+
+	const output = `${ result.stdout || '' }\n${ result.stderr || '' }`;
+
+	if ( result.status !== 0 ) {
+		throw new Error(
+			`[e2e] Failed to copy e2e mu-plugin (exit ${ result.status }).`
+		);
+	}
+
+	const sourceReadable = /source_readable=1/.test( output );
+	const destReadable = /dest_readable=1/.test( output );
+	const destBytesMatch = output.match( /dest_bytes=(\d+)/ );
+	const destBytes = destBytesMatch ? Number( destBytesMatch[ 1 ] ) : 0;
+
+	if ( ! sourceReadable || ! destReadable || destBytes < 100 ) {
+		throw new Error(
+			'[e2e] Failed to install readable e2e mu-plugin. ' +
+				'If include_once warnings persist, run: npm run env:e2e:destroy && npm run env:e2e:start'
+		);
+	}
+}
 
 /**
  * Create the e2e department subsite when missing (idempotent).
@@ -88,6 +144,7 @@ const runMode = process.argv.includes( '--idempotent-only' )
 	? 'integration'
 	: 'all';
 
+installE2eMuPlugin();
 ensureE2eSubsiteExists();
 
 const { wpCliCommands, idempotentWpCliCommands } = loadAfterStartPlan();

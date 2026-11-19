@@ -1,6 +1,7 @@
 import { setTimeout as delay } from 'node:timers/promises';
 import { expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { settlePageImagesForScreenshot } from './editor.js';
 import { normalizeE2eUrlForPlaywright } from './e2e-navigation.js';
 
 const VISIT_INTEGRATION_MAX_ATTEMPTS = 6;
@@ -117,66 +118,38 @@ export const FULL_PAGE_SCREENSHOT_OPTIONS = {
 };
 
 /**
- * Wait for load, images, and non-sticky header before full-page visual baselines.
+ * Disable sticky site header so full-page / tall element stitches do not repaint it mid-capture.
+ *
+ * Shared by [`prepareFullPageScreenshot`] and [`prepareAdjacencyScreenshot`]. Image settle
+ * lives in `editor.js` (see tests/AGENTS.md). This is not a `screenshot-stability.css` pin.
  *
  * @param {import('@playwright/test').Page} page
  * @return {Promise<void>}
  */
-const FULL_PAGE_IMAGE_SETTLE_TIMEOUT_MS = 3_000;
-const FULL_PAGE_LAZY_LOAD_SCROLL_STEP_PX = 800;
-
-/**
- * Scroll the page and wait for images (including lazy-loaded) before full-page capture.
- *
- * @param {import('@playwright/test').Page} page
- * @return {Promise<void>}
- */
-async function settleFullPageImages( page ) {
-	await page.evaluate(
-		async ( { scrollStepPx, perImageTimeoutMs } ) => {
-			const delay = ( ms ) =>
-				new Promise( ( resolve ) => {
-					window.setTimeout( resolve, ms );
-				} );
-
-			const maxScroll = Math.max(
-				document.body.scrollHeight,
-				document.documentElement.scrollHeight
-			);
-			for ( let y = 0; y <= maxScroll; y += scrollStepPx ) {
-				window.scrollTo( 0, y );
-				await delay( 50 );
+async function disableStickySiteHeaderForScreenshot( page ) {
+	await page.addStyleTag( {
+		content: `
+			#header-wrapper {
+				position: relative !important;
+				top: auto !important;
 			}
-
-			const images = [ ...document.querySelectorAll( 'img' ) ];
-			await Promise.all(
-				images.map(
-					( image ) =>
-						new Promise( ( resolve ) => {
-							if ( image.complete ) {
-								resolve( undefined );
-								return;
-							}
-
-							const done = () => resolve( undefined );
-							image.addEventListener( 'load', done, { once: true } );
-							image.addEventListener( 'error', done, { once: true } );
-							window.setTimeout( done, perImageTimeoutMs );
-						} )
-				)
-			);
-
-			window.scrollTo( 0, 0 );
-		},
-		{
-			scrollStepPx: FULL_PAGE_LAZY_LOAD_SCROLL_STEP_PX,
-			perImageTimeoutMs: FULL_PAGE_IMAGE_SETTLE_TIMEOUT_MS,
-		}
-	);
+		`,
+	} );
+	await page.evaluate( () => window.scrollTo( 0, 0 ) );
 }
 
+/**
+ * Prepare the page for a full-page visual baseline (image settle + fonts).
+ *
+ * Does not pin layout metrics (footer rem, image box sizes). Sticky-off stays
+ * on [`prepareAdjacencyScreenshot`] for tall element stitches only.
+ *
+ * @param {import('@playwright/test').Page} page
+ * @return {Promise<void>}
+ */
 export async function prepareFullPageScreenshot( page ) {
-	await settleFullPageImages( page );
+	await settlePageImagesForScreenshot( page );
+	await page.evaluate( () => document.fonts.ready );
 }
 
 /**
@@ -281,15 +254,7 @@ export async function runAxeOnPage( page ) {
  * @return {Promise<void>}
  */
 export async function prepareAdjacencyScreenshot( page ) {
-	await page.addStyleTag( {
-		content: `
-			#header-wrapper {
-				position: relative !important;
-				top: auto !important;
-			}
-		`,
-	} );
-	await page.evaluate( () => window.scrollTo( 0, 0 ) );
+	await disableStickySiteHeaderForScreenshot( page );
 }
 
 /**

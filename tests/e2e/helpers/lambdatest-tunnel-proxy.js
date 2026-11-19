@@ -32,9 +32,14 @@ function shouldProxyE2eRequest( url ) {
 	try {
 		const parsed = new URL( url );
 		const port = String( getE2ePort() );
+		// Include literal IPv6 loopback — LT Chrome/tunnel sometimes requests
+		// `http://[::1]:8889/...`, which bypasses the proxy and surfaces as
+		// `dial tcp [::1]:8889: connect: connection refused`.
 		const hostMatches =
 			parsed.hostname === '127.0.0.1' ||
 			parsed.hostname === 'localhost' ||
+			parsed.hostname === '[::1]' ||
+			parsed.hostname === '::1' ||
 			parsed.hostname === LAMBDATEST_TUNNEL_HOST_ALIAS;
 
 		return hostMatches && parsed.port === port;
@@ -149,8 +154,11 @@ function rewriteLoopbackHostsInText( value ) {
 	return value
 		.replaceAll( `http://127.0.0.1:${ port }`, tunnelRoot )
 		.replaceAll( `http://localhost:${ port }`, tunnelRoot )
+		.replaceAll( `http://[::1]:${ port }`, tunnelRoot )
+		.replaceAll( `http://::1:${ port }`, tunnelRoot )
 		.replaceAll( `127.0.0.1%3A${ port }`, `${ LAMBDATEST_TUNNEL_HOST_ALIAS }%3A${ port }` )
-		.replaceAll( `localhost%3A${ port }`, `${ LAMBDATEST_TUNNEL_HOST_ALIAS }%3A${ port }` );
+		.replaceAll( `localhost%3A${ port }`, `${ LAMBDATEST_TUNNEL_HOST_ALIAS }%3A${ port }` )
+		.replaceAll( `%5B%3A%3A1%5D%3A${ port }`, `${ LAMBDATEST_TUNNEL_HOST_ALIAS }%3A${ port }` );
 }
 
 /**

@@ -5,6 +5,7 @@ import {
 	prepareEditorCanvasForScreenshot,
 	prepareEditorPage,
 	settleLocatorForScreenshot,
+	snapLocatorToIntegerCssPixel,
 	visitPublishedFrontend,
 } from '../helpers/editor.js';
 import {
@@ -165,6 +166,9 @@ test.describe( 'Announcement Banner Block', () => {
 			await expect( banner ).toBeVisible();
 			await settleLocatorForScreenshot( banner );
 			await logScreenshotGeometry( banner, 'announcement-frontend-with-button' );
+			// Applies screenshot-stability.css then integer box snap (no magic heights).
+			await snapLocatorToIntegerCssPixel( banner );
+
 			await expect( banner ).toHaveScreenshot(
 				'frontend-with-button.png',
 				{
