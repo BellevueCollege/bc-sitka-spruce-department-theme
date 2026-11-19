@@ -42,12 +42,25 @@
 						} %}
 					</div>
 				{% endif %}
-				<div class="col sock-manager">
-					<h2 class="h4">{{ website_manager.message|esc_html }}</h2>
-					<p><strong>{{ website_manager.first_name|esc_html }} {{ website_manager.last_name|esc_html }}</strong><br>
-					{{ website_manager.position|esc_html }} <br>
-					<i class="email-icon fa-solid fa-envelope" aria-hidden="true"></i> <a href="mailto:{{ website_manager.email|esc_html }}">{{ website_manager.email|esc_html }}</a></p>
-				</div>
+				{# Skip empty ACF manager fields so we never emit empty headings or mailto: links. #}
+				{% if website_manager.message or website_manager.first_name or website_manager.last_name or website_manager.email %}
+					<div class="col sock-manager">
+						{% if website_manager.message %}
+							<h2 class="h4">{{ website_manager.message|esc_html }}</h2>
+						{% endif %}
+						<p>
+							{% if website_manager.first_name or website_manager.last_name %}
+								<strong>{{ website_manager.first_name|esc_html }} {{ website_manager.last_name|esc_html }}</strong><br>
+							{% endif %}
+							{% if website_manager.position %}
+								{{ website_manager.position|esc_html }} <br>
+							{% endif %}
+							{% if website_manager.email %}
+								<i class="email-icon fa-solid fa-envelope" aria-hidden="true"></i> <a href="mailto:{{ website_manager.email|esc_html }}">{{ website_manager.email|esc_html }}</a>
+							{% endif %}
+						</p>
+					</div>
+				{% endif %}
 			</div>
 		</div>
 	</div>
