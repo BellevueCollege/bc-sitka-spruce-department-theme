@@ -60,8 +60,11 @@ $header-desktop-breakpoint: lg;
 
 		max-width: var(--wp--style--global--wide-size);
 
+		// Full-bleed: drop container gutters so backgrounds match root theme sections.
 		&.alignfull {
 			max-width: 100%;
+			padding-right: 0;
+			padding-left: 0;
 		}
 
 		&.alignstandard>*,

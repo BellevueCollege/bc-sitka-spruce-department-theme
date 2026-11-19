@@ -1,0 +1,175 @@
+- link "Skip to content":
+  - /url: "#main-content"
+- banner:
+  - link "Bellevue College - Link to college homepage":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College - Link to college homepage"
+  - link "E2E Department Site":
+    - /url: http://127.0.0.1:8889/e2e-dept
+  - navigation "Main Menu":
+    - list:
+      - listitem:
+        - link "Programs":
+          - /url: https://example.com/programs
+        - button "Toggle the Programs menu": 
+      - listitem:
+        - link "About":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact":
+          - /url: https://example.com/contact
+    - list:
+      - listitem:
+        - link "Apply Now":
+          - /url: https://example.com/apply
+      - listitem:
+        - link "Request Info":
+          - /url: https://example.com/request-info
+  - navigation:
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+      - listitem:
+        - link "Search":
+          - /url: "#"
+- main:
+  - heading "E2E Blog Index" [level=1]
+  - paragraph: E2E blog index intro summary.
+  - img "E2E hero fixture image"
+  - heading "Filter Posts" [level=2]
+  - text: Date
+  - combobox "Date":
+    - option "Select Month" [selected]
+    - option /October \d+ \(5\)/
+    - option /January \d+ \(1\)/
+  - button "Filter by Date"
+  - text: Category
+  - combobox "Category":
+    - option "Select Category" [selected]
+    - option "E2E Blog Secondary"
+    - option "E2E Posts Feature"
+    - option "Uncategorized"
+  - button "Filter by Category"
+  - heading "All Posts" [level=2]
+  - separator
+  - heading "E2E List Post 3" [level=3]:
+    - link "E2E List Post 3":
+      - /url: http://127.0.0.1:8889/e2e-dept/e2e-list-post-3/
+  - paragraph: Summary for E2E List Post 3.
+  - separator
+  - paragraph:
+    - strong: /Posted October 7, \d+/
+  - img "E2E Posts Feature fixture image"
+  - separator
+  - heading "E2E List Post 1" [level=3]:
+    - link "E2E List Post 1":
+      - /url: http://127.0.0.1:8889/e2e-dept/e2e-list-post-1/
+  - paragraph: Summary for E2E List Post 1.
+  - separator
+  - paragraph:
+    - strong: /Posted October 7, \d+/
+  - img "E2E Posts Feature fixture image"
+  - separator
+  - heading "E2E List Post 2" [level=3]:
+    - link "E2E List Post 2":
+      - /url: http://127.0.0.1:8889/e2e-dept/e2e-list-post-2/
+  - paragraph: Summary for E2E List Post 2.
+  - separator
+  - paragraph:
+    - strong: /Posted October 7, \d+/
+  - img "E2E Posts Feature vertical fixture image"
+  - separator
+  - navigation "Pagination":
+    - list:
+      - listitem: "1"
+      - listitem:
+        - link "Go to results page 2 of 2":
+          - /url: http://127.0.0.1:8889/e2e-dept/e2e-blog-index/page/2/
+          - text: ""
+      - listitem:
+        - link "Next page of results":
+          - /url: http://127.0.0.1:8889/e2e-dept/e2e-blog-index/page/2/
+          - text: Next 
+      - listitem:
+        - link "Last page of results":
+          - /url: http://127.0.0.1:8889/e2e-dept/e2e-blog-index/page/2/
+          - text: Last 
+- complementary:
+  - heading "For questions about this site, contact our site manager" [level=2]
+  - paragraph:
+    - strong: E2E Manager
+    - text: Web Coordinator
+    - link "e2e-manager@example.com":
+      - /url: mailto:e2e-manager@example.com
+- contentinfo:
+  - link "Bellevue College (links to college homepage)":
+    - /url: https://www.bellevuecollege.edu
+    - img "Bellevue College (links to college homepage)"
+  - heading "E2E Department Site" [level=2]
+  - separator
+  - text: Phone Number
+  - paragraph:
+    - link /\+1 \d+-\d+-\d+/:
+      - /url: tel:+14255641000
+  - text: Address
+  - paragraph: /Bellevue College \d+ Landerholm Circle SE Bellevue, WA \d+-\d+/
+  - list:
+    - listitem:
+      - link "Facebook":
+        - /url: https://www.facebook.com/bellevuecollege
+    - listitem:
+      - link "LinkedIn":
+        - /url: https://www.linkedin.com/school/bellevue-college
+    - listitem:
+      - link "YouTube":
+        - /url: https://www.youtube.com/bellevuecollege
+  - navigation "Major Site Sections":
+    - list:
+      - listitem:
+        - link "Programs ":
+          - /url: https://example.com/programs
+      - listitem:
+        - link "About ":
+          - /url: https://example.com/about
+      - listitem:
+        - link "Contact ":
+          - /url: https://example.com/contact
+  - navigation "Footer Utility Links":
+    - list:
+      - listitem:
+        - link "Future Students":
+          - /url: https://www.bellevuecollege.edu/future-students/
+      - listitem:
+        - link "Current Students":
+          - /url: https://www.bellevuecollege.edu/current-students/
+      - listitem:
+        - link "Online Services":
+          - /url: https://www.bellevuecollege.edu/services/
+  - navigation "Global Links":
+    - list:
+      - listitem:
+        - link "Accessibility ":
+          - /url: https://www.bellevuecollege.edu/accessibility/
+      - listitem:
+        - link "Emergency Alerts ":
+          - /url: https://www.bellevuecollege.edu/emergency-alerts/
+      - listitem:
+        - link "Equal Opportunity ":
+          - /url: https://www.bellevuecollege.edu/equal-opportunity/
+      - listitem:
+        - link "Public Disclosure ":
+          - /url: https://www.bellevuecollege.edu/legal-information/public-disclosure/
+      - listitem:
+        - link "Website Info ":
+          - /url: https://www.bellevuecollege.edu/website-information/
+  - paragraph:
+    - text: /© \d+ Bellevue College\. All Rights Reserved\./
+    - link "Privacy Notice":
+      - /url: https://www.bellevuecollege.edu/accessibility/

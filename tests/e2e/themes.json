@@ -1,0 +1,12 @@
+{
+	"bellevue2022": {
+		"slug": "bellevue-2022",
+		"displayName": "Bellevue 2022",
+		"required": true,
+		"envPathVar": "BELLEVUE_2022_THEME_PATH",
+		"remote": {
+			"url": "https://github.com/BellevueCollege/bellevue-2022/releases/download/v2.13.5/bellevue-2022.zip",
+			"directoryName": "bellevue-2022"
+		}
+	}
+}

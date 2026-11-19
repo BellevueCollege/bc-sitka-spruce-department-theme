@@ -53,9 +53,7 @@ module.exports = {
 		ignored: [
 			'**/node_modules',
 			'**/logs',
-			'**/reports',
 			'**/.git',
-			'**/vrt',
 		],
 		aggregateTimeout: 100, // Delay before rebuilding to batch changes (lowered for single file changes)
 	},
