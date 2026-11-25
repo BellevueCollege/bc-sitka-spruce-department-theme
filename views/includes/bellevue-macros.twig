@@ -4,7 +4,6 @@
  * Macros for Bellevue.
  *
  * Available macros:
- * - render_flexible_content: Render a flexible content field.
  * - image: Display a responsive image.
  * - link: Display a link from an Advanced Custom Field link field.
  * - links: Print an Advanced Custom Field repeater containing a link field.
@@ -14,32 +13,11 @@
  * - link_list: Print an Advanced Custom Field repeater containing a link field as a list.
  * - term_list: Print an array of \WP_Term objects as a list.
  * - text_list: Print an Advanced Custom Field repeater containing a text field as a list.
- * - item_list: Print an Advanced Custom Field repeater containing a subcomponent as a list.
  * - wrap_items: Wrap an array of items in a tag.
  * - wrap_item: Wrap an item in a tag.
  * - social_links: Print an Advanced Custom Field repeater containing a social links as a list.
  */
 #}
-
-{#
-/**
- * Render a flexible content field.
- *
- * @param string namespace
- *   The namespace string.
- * @param array fcfield
- *   The flexible content field array.
- */
-#}
-{% macro render_flexible_content(namespace, fcfield) %}
-  {%- if fcfield -%}
-    {% for component in fcfield %}
-      {% include '@views/components/' ~ component.acf_fc_layout ~ '.twig' with {
-        acf: component|apply_filters(namespace ~ '/component/' ~ component.acf_fc_layout, component),
-      } %}
-    {% endfor %}
-  {%- endif -%}
-{% endmacro %}
 
 {#
 /**
@@ -291,38 +269,6 @@
     <{{ type }}{% if list_class %} class="{{ list_class }}"{% endif %}>
     {% for item in items %}
       {{ macros.wrap_item(item[field_name], 'li', class) }}
-    {% endfor %}
-    </{{ type }}>
-  {% endif %}
-{% endmacro %}
-
-{#
-/**
- * Print an Advanced Custom Field repeater containing a subcomponent as a list.
- *
- * @param array items
- *   The repeater field containing the list.
- * @param string layout
- *   The layout template name.
- * @param string list_class
- *   Optional classes to add to the <ul> or <ol> element.
- * @param string li_class
- *   Optional classes to add to the <li> elements.
- * @param string type
- *   The type of list to print, either 'ul' or 'ol'.
- */
-#}
-{% macro item_list(items, layout, list_class = '', li_class = '', type = 'ul') %}
-  {% import _self as macros %}
-  {% if items %}
-    <{{ type }}{% if list_class %} class="{{ list_class }}"{% endif %}>
-    {% for item in items %}
-      {% set item_output %}
-        {% include '@views/layouts/' ~ layout ~ '.twig' with {
-          acf: item,
-        } %}
-      {% endset %}
-      {{ macros.wrap_item(item_output, 'li', class) }}
     {% endfor %}
     </{{ type }}>
   {% endif %}
