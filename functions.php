@@ -339,6 +339,24 @@ add_filter( 'acf/prepare_field/name=hide_from_side_nav', function( $field ) {
 } );
 
 /**
+ * Reject forged hide_from_side_nav saves from users without manage_network.
+ *
+ * UI hiding alone is not enough — a crafted ACF update could still persist the meta.
+ */
+add_filter(
+	'acf/update_value/key=field_687ebbeb3a1d1',
+	function ( $value, $post_id ) {
+		if ( current_user_can( 'manage_network' ) ) {
+			return $value;
+		}
+
+		return get_post_meta( $post_id, 'hide_from_side_nav', true );
+	},
+	10,
+	2
+);
+
+/**
  * Set Page Title Format
  */
 /**
