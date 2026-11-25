@@ -740,6 +740,25 @@ add_filter( 'register_profile_post_type_args', function ( $args ) {
 const PROFILE_PLACEHOLDER_SLUG_PREFIX = 'profile-';
 
 /**
+ * Sanitize a profile name field value.
+ *
+ * @param mixed $value     Raw field value.
+ * @param bool  $from_post Whether the value came from $_POST (needs wp_unslash).
+ * @return string
+ */
+function profile_text( $value, bool $from_post = false ): string {
+	if ( ! is_string( $value ) ) {
+		return '';
+	}
+
+	if ( $from_post ) {
+		$value = wp_unslash( $value );
+	}
+
+	return sanitize_text_field( $value );
+}
+
+/**
  * Build profile title and slug from name fields.
  *
  * @param string $first_name First name.
@@ -773,7 +792,8 @@ function build_profile_title_and_slug( string $first_name, string $last_name, st
  * @return array{first_name: string, last_name: string, role: string}
  */
 function get_profile_name_fields_from_rest_request( $request ): array {
-	$acf = $request->get_param( 'acf' );
+	$from_post = false;
+	$acf       = $request->get_param( 'acf' );
 
 	if ( empty( $acf ) || ! is_array( $acf ) ) {
 		$params = $request->get_json_params();
@@ -783,13 +803,14 @@ function get_profile_name_fields_from_rest_request( $request ): array {
 	}
 
 	if ( empty( $acf ) && isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) {
-		$acf = $_POST['acf'];
+		$acf       = $_POST['acf'];
+		$from_post = true;
 	}
 
 	return array(
-		'first_name' => (string) ( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '' ),
-		'last_name'  => (string) ( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '' ),
-		'role'       => (string) ( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '' ),
+		'first_name' => profile_text( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '', $from_post ),
+		'last_name'  => profile_text( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '', $from_post ),
+		'role'       => profile_text( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '', $from_post ),
 	);
 }
 
@@ -825,9 +846,9 @@ function get_profile_name_fields_from_post_data(): array {
 	$acf = ( isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) ? $_POST['acf'] : array();
 
 	return array(
-		'first_name' => (string) ( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '' ),
-		'last_name'  => (string) ( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '' ),
-		'role'       => (string) ( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '' ),
+		'first_name' => profile_text( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '', true ),
+		'last_name'  => profile_text( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '', true ),
+		'role'       => profile_text( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '', true ),
 	);
 }
 
@@ -876,7 +897,8 @@ function filter_profile_insert_post_data( array $data, array $postarr ): array {
 	}
 
 	if ( null !== $built ) {
-		$data['post_title'] = $built['title'];
+		// wp_insert_post_data expects slashed title values (apostrophes in names).
+		$data['post_title'] = wp_slash( $built['title'] );
 		$data['post_name']  = wp_unique_post_slug(
 			$built['slug'],
 			$post_id,
