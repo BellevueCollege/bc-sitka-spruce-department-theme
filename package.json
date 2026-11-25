@@ -79,8 +79,8 @@
     "@wordpress/e2e-test-utils-playwright": "^2.1.0",
     "@wordpress/env": "^11.7.0",
     "@wordpress/scripts": "^37.0.0",
-    "bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#v1.3.1",
-    "bc-theme-layer-bs5": "github:BellevueCollege/bc-theme-layer-bs5#v1.2",
+    "bc-lightbox-modal": "github:BellevueCollege/bc-lightbox-modal#8d762a7e7bcb61ac114cf8d7ad3a79af5a3ded4d",
+    "bc-theme-layer-bs5": "github:BellevueCollege/bc-theme-layer-bs5#97d89cc9d119a7818c44d2be830a821b17e0f467",
     "chromatic": "^18.3.0",
     "concurrently": "^10.0.0",
     "cross-env": "^7.0.3",
@@ -93,7 +93,7 @@
     "storybook": "^10.1.8",
     "swiper": "^14.2.0",
     "twig": "^3.0.0",
-    "vite-plugin-twig-wp": "github:BellevueCollege/vite-plugin-twig-wp#release-v2.0.0",
+    "vite-plugin-twig-wp": "github:BellevueCollege/vite-plugin-twig-wp#c4e4210b655ae9da9c8a3b694ae4c0d3f1ec9f98",
     "webpack-remove-empty-scripts": "^1.0.4"
   },
   "sideEffects": [

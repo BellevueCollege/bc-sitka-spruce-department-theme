@@ -36,18 +36,21 @@ class Program extends PostData {
 		$pathways = get_field( 'pathways', $post->ID ) ? array_map( function ( $pathway ) {
 			return array(
 				'id'    => $pathway->ID,
-				'title' => $pathway->post_title,
-				'url'   => get_permalink( $pathway->ID ),
+				'title' => esc_html( $pathway->post_title ),
+				'url'   => esc_url( get_permalink( $pathway->ID ) ),
 			);
 		}, get_field( 'pathways', $post->ID )) : array();
 
+		$type   = get_field( 'type', $post->ID );
+		$degree = get_field( 'degree', $post->ID );
+
 		return array(
-			'short_name'    => get_field( 'short_name', $post->ID ),
-			'overview'      => get_field( 'overview', $post->ID ),
-			'type'          => get_field( 'type', $post->ID )->name,
-			'degree'        => get_field( 'degree', $post->ID )->name,
-			'duration'      => get_field( 'duration', $post->ID ),
-			'prerequisite'  => get_field( 'prerequisite', $post->ID ),
+			'short_name'    => esc_html( (string) ( get_field( 'short_name', $post->ID ) ?? '' ) ),
+			'overview'      => wp_kses_post( (string) ( get_field( 'overview', $post->ID ) ?? '' ) ),
+			'type'          => ( $type && isset( $type->name ) ) ? esc_html( $type->name ) : '',
+			'degree'        => ( $degree && isset( $degree->name ) ) ? esc_html( $degree->name ) : '',
+			'duration'      => esc_html( (string) ( get_field( 'duration', $post->ID ) ?? '' ) ),
+			'prerequisite'  => wp_kses_post( (string) ( get_field( 'prerequisite', $post->ID ) ?? '' ) ),
 			'pathway_names' => array_map( function ( $pathway ) {
 				return $pathway['title'];
 			}, $pathways ),
@@ -55,8 +58,8 @@ class Program extends PostData {
 			'focus_areas'   => get_field( 'focus_areas', $post->ID ) ? array_map( function ( $focus_area ) use ( $pathways ) {
 				return array(
 					'id'    => $focus_area->ID,
-					'title' => $focus_area->post_title,
-					'url'   => 1 === count( $pathways ) ? esc_url( $pathways[0]['url'] . '#' . $focus_area->post_name . '-tab-open' ) :  false,
+					'title' => esc_html( $focus_area->post_title ),
+					'url'   => 1 === count( $pathways ) ? esc_url( $pathways[0]['url'] . '#' . $focus_area->post_name . '-tab-open' ) : false,
 				);
 			}, get_field( 'focus_areas', $post->ID )) : array(),
 		);

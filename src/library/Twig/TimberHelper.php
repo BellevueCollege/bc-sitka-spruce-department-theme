@@ -70,7 +70,6 @@ class TimberHelper implements TimberHelperInterface {
 
     $this->addFunction('date_block', ['\BcSitkaSpruce\Library\Twig\TwigExtensions', 'dateBlock']);
     $this->addFunction('datetime_range', ['\BcSitkaSpruce\Library\Twig\TwigExtensions', 'datetimeRange']);
-    $this->addFunction('flexible_content', ['\BcSitkaSpruce\Library\Twig\TwigExtensions', 'flexibleContent']);
     $this->addFunction('image_attr', ['\BcSitkaSpruce\Library\Twig\TwigExtensions', 'imageAttributes']);
     $this->addFunction('filtered_url', ['BcSitkaSpruce\Library\Twig\TwigExtensions', 'filteredUrl']);
   }
@@ -127,19 +126,32 @@ class TimberHelper implements TimberHelperInterface {
     int $post_id,
     ?WP_Block $wp_block
   ): void {
-    $name = str_replace('acf/', '', $block['name']);
-    $name_undercore = str_replace('-', '_', $name);
-    $context = Timber::context();
-    $context['block'] = $block;
-    $context['acf'] = get_fields();
-    $context['is_preview'] = $is_preview;
-    $context = apply_filters("bellevue/block/$name_undercore/context", $context);
-    $use_controller = apply_filters("bellevue/block/$name_undercore/controller", false);
-    if ($use_controller) {
-      include get_template_directory() . "/controllers/components/$layout_sanitized_dashes.php";
-    } else {
-      Timber::render("components/$name.twig", $context);
+    $name = str_replace( 'acf/', '', $block['name'] );
+
+    // Block slugs must be safe path segments before any include or template render.
+    if ( ! preg_match( '/^[a-z0-9-]+$/', $name ) ) {
+      return;
     }
+
+    $name_underscore = str_replace( '-', '_', $name );
+    $context         = Timber::context();
+    $context['block']      = $block;
+    $context['acf']        = get_fields();
+    $context['is_preview'] = $is_preview;
+    $context               = apply_filters( "bellevue/block/{$name_underscore}/context", $context );
+    $use_controller        = apply_filters( "bellevue/block/{$name_underscore}/controller", false );
+
+    if ( $use_controller ) {
+      $controller_file = get_template_directory() . "/controllers/components/{$name}.php";
+
+      if ( is_readable( $controller_file ) ) {
+        include $controller_file;
+      }
+
+      return;
+    }
+
+    Timber::render( "components/{$name}.twig", $context );
   }
 
   /**

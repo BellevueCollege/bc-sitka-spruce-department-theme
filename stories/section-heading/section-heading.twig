@@ -2,6 +2,9 @@
 /**
  * @file
  * Bellevue include to display a section lead in.
+ *
+ * Callers must escape heading (esc_html) and pass subheading already kses-filtered
+ * when it may contain markup. Eyebrow is escaped here.
  */
 #}
 
@@ -28,11 +31,11 @@
   {% endset %}
 {% endif %}
 
-<div class="{{ section_heading_classes|join(' ') }}" {% if css_vars %} style="{{ css_vars|join(' ') }}" {% endif %}>
+<div class="{{ section_heading_classes|join(' ')|esc_attr }}" {% if css_vars %} style="{{ css_vars|join(' ')|esc_attr }}" {% endif %}>
   <div class="container-xl">
     <div class="row">
          {% if eyebrow %}
-          <div class="eyebrow">{{ eyebrow }}</div>
+          <div class="eyebrow">{{ eyebrow|esc_html }}</div>
         {% endif %}
       <div class="col-sm-12 col-md-9 small-order-1 medium-order-1">
          <h2 {% if anchor %} id="{{ anchor|esc_attr }}" {% endif %} class="section-heading__heading oho-animate oho-animate-single">

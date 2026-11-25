@@ -10,11 +10,11 @@
 			{% if menu_expanded %}menu-expanded{% endif %}
 	">
 		<div id="site-header--logo" class="">
-			<a href="{{ core_homepage_url }}"><img class="img-fluid" src="{{ logo_url }}" alt="{{ __('Bellevue College - Link to college homepage', 'bc-sitka-spruce') }}"></a>
+			<a href="{{ core_homepage_url|esc_url }}"><img class="img-fluid" src="{{ logo_url|esc_url }}" alt="{{ __('Bellevue College - Link to college homepage', 'bc-sitka-spruce') }}"></a>
 		</div>
 		<div id="site-header--site-navbar" class="row">
 			<div id="site-header--site-title" class="col col-lg-auto d-flex">
-				<div class="site-title h4 flex-grow-1 mt-2"><a href="{{ site_homepage_url }}">{{ site_title }}</a></div>
+				<div class="site-title h4 flex-grow-1 mt-2"><a href="{{ site_homepage_url|esc_url }}">{{ site_title|esc_html }}</a></div>
 				<button
 					class="btn btn-link menu-toggle d-lg-none"
 					data-bs-toggle="offcanvas"

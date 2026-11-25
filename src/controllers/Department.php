@@ -11,12 +11,7 @@ class Department extends PostData {
 	 * @return array - An array of department data
 	 */
 	public static function get_single( $id ) {
-		if ( ! $id ) {
-			return;
-		}
-
-		$post = get_post( $id );
-		if ( ! $post ) {
+		if ( ! static::isDisplayable( $id, 'organization' ) ) {
 			return;
 		}
 
@@ -34,7 +29,7 @@ class Department extends PostData {
 			) : null,
 			'dept_services' => get_field( 'services_resources', $id ) ? array_map(
 				function ( $service ) {
-					return $service['service_resource'];
+					return esc_html( (string) ( $service['service_resource'] ?? '' ) );
 				},
 				get_field( 'services_resources', $id )
 			) : array(),

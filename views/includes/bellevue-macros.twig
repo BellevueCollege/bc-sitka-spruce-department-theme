@@ -4,7 +4,6 @@
  * Macros for Bellevue.
  *
  * Available macros:
- * - render_flexible_content: Render a flexible content field.
  * - image: Display a responsive image.
  * - link: Display a link from an Advanced Custom Field link field.
  * - links: Print an Advanced Custom Field repeater containing a link field.
@@ -14,32 +13,11 @@
  * - link_list: Print an Advanced Custom Field repeater containing a link field as a list.
  * - term_list: Print an array of \WP_Term objects as a list.
  * - text_list: Print an Advanced Custom Field repeater containing a text field as a list.
- * - item_list: Print an Advanced Custom Field repeater containing a subcomponent as a list.
  * - wrap_items: Wrap an array of items in a tag.
  * - wrap_item: Wrap an item in a tag.
  * - social_links: Print an Advanced Custom Field repeater containing a social links as a list.
  */
 #}
-
-{#
-/**
- * Render a flexible content field.
- *
- * @param string namespace
- *   The namespace string.
- * @param array fcfield
- *   The flexible content field array.
- */
-#}
-{% macro render_flexible_content(namespace, fcfield) %}
-  {%- if fcfield -%}
-    {% for component in fcfield %}
-      {% include '@views/components/' ~ component.acf_fc_layout ~ '.twig' with {
-        acf: component|apply_filters(namespace ~ '/component/' ~ component.acf_fc_layout, component),
-      } %}
-    {% endfor %}
-  {%- endif -%}
-{% endmacro %}
 
 {#
 /**
@@ -78,14 +56,16 @@
  */
 #}
 {% macro link(link, class = '') %}
-  {% if link %}
+  {% set safe_url = link.url|default('')|esc_url %}
+  {% set is_new_tab = link.target is defined and link.target == '_blank' %}
+  {% if link and safe_url %}
     <a
-      href="{{ link.url }}"
-      {% if link.target %}target="{{ link.target }}"{% endif %}
-      {% if link.target == '_blank' %}aria-label="{{ __('%s (opens in a new window)', 'bc-sitka-spruce')|format(link.title) }}"
-        {% elseif link.label %}aria-label="{{ link.label }}"{% endif %}
-      {% if class %} class="{{ class }}"{% endif %}
-    >{% if link.content %}{{ link.content }}{% else %}{{ link.title }}{% endif %}</a>
+      href="{{ safe_url }}"
+      {% if is_new_tab %}target="_blank" rel="noopener"{% endif %}
+      {% if is_new_tab %}aria-label="{{ __('%s (opens in a new window)', 'bc-sitka-spruce')|format(link.title)|esc_attr }}"
+        {% elseif link.label %}aria-label="{{ link.label|esc_attr }}"{% endif %}
+      {% if class %} class="{{ class|esc_attr }}"{% endif %}
+    >{% if link.content %}{{ link.content|esc_html }}{% else %}{{ link.title|esc_html }}{% endif %}</a>
   {% endif %}
 {% endmacro %}
 
@@ -147,11 +127,12 @@
  */
 #}
 {% macro email(address, text = '', class = '') %}
-  {% if address %}
+  {% set safe_mailto = ('mailto:' ~ address)|esc_url %}
+  {% if address and safe_mailto %}
     <a
-      href="mailto:{{ address }}"
-      {% if class %} class="{{ class }}"{% endif %}
-    >{{ text ?: address }}</a>
+      href="{{ safe_mailto }}"
+      {% if class %} class="{{ class|esc_attr }}"{% endif %}
+    >{{ (text ?: address)|esc_html }}</a>
   {% endif %}
 {% endmacro %}
 
@@ -176,10 +157,13 @@
       '.': '',
       ' ':'',
     }) %}
-    <a
-      href="tel:{{ number }}"
-      {% if class %} class="{{ class }}"{% endif %}
-    >{{ text ?: phone_number }}</a>
+    {% set safe_tel = ('tel:' ~ number)|esc_url %}
+    {% if safe_tel %}
+      <a
+        href="{{ safe_tel }}"
+        {% if class %} class="{{ class|esc_attr }}"{% endif %}
+      >{{ (text ?: phone_number)|esc_html }}</a>
+    {% endif %}
   {% endif %}
 {% endmacro %}
 
@@ -257,7 +241,10 @@
  */
 #}
 {% macro term_link(term, link_path, link_class = '') %}
-  <a href="{{ link_path }}?{{ term.taxonomy }}={{ term.term_id }}"{% if link_class %} class="{{ link_class }}"{% endif %}>{{ term.name }}</a>
+  {% set safe_term_url = (link_path ~ '?' ~ term.taxonomy ~ '=' ~ term.term_id)|esc_url %}
+  {% if safe_term_url %}
+    <a href="{{ safe_term_url }}"{% if link_class %} class="{{ link_class|esc_attr }}"{% endif %}>{{ term.name|esc_html }}</a>
+  {% endif %}
 {% endmacro %}
 
 {#
@@ -282,38 +269,6 @@
     <{{ type }}{% if list_class %} class="{{ list_class }}"{% endif %}>
     {% for item in items %}
       {{ macros.wrap_item(item[field_name], 'li', class) }}
-    {% endfor %}
-    </{{ type }}>
-  {% endif %}
-{% endmacro %}
-
-{#
-/**
- * Print an Advanced Custom Field repeater containing a subcomponent as a list.
- *
- * @param array items
- *   The repeater field containing the list.
- * @param string layout
- *   The layout template name.
- * @param string list_class
- *   Optional classes to add to the <ul> or <ol> element.
- * @param string li_class
- *   Optional classes to add to the <li> elements.
- * @param string type
- *   The type of list to print, either 'ul' or 'ol'.
- */
-#}
-{% macro item_list(items, layout, list_class = '', li_class = '', type = 'ul') %}
-  {% import _self as macros %}
-  {% if items %}
-    <{{ type }}{% if list_class %} class="{{ list_class }}"{% endif %}>
-    {% for item in items %}
-      {% set item_output %}
-        {% include '@views/layouts/' ~ layout ~ '.twig' with {
-          acf: item,
-        } %}
-      {% endset %}
-      {{ macros.wrap_item(item_output, 'li', class) }}
     {% endfor %}
     </{{ type }}>
   {% endif %}

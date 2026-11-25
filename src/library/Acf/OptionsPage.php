@@ -49,7 +49,33 @@ class OptionsPage implements OptionsPageInterface {
    * @inheritDoc
    */
   public function setupTwig(array $context): array {
-    $context['acf_options'] = get_fields('option');
+    $acf_options = get_fields( 'option' );
+    if ( ! is_array( $acf_options ) ) {
+      $acf_options = [];
+    }
+
+    // Match content-and-location/render.php: filter WYSIWYG options before Twig.
+    foreach ( [ 'location', 'hours', 'sitewide_notice_text' ] as $rich_text_key ) {
+      if ( isset( $acf_options[ $rich_text_key ] ) ) {
+        $acf_options[ $rich_text_key ] = wp_kses_post( (string) $acf_options[ $rich_text_key ] );
+      }
+    }
+
+    $context['acf_options'] = $acf_options;
+
+    $location_image = $acf_options['location_image'] ?? null;
+    $attachment_id = is_array( $location_image )
+      ? (int) ( $location_image['ID'] ?? $location_image['id'] ?? 0 )
+      : 0;
+    $context['sock_location_image_html'] = $attachment_id
+      ? wp_get_attachment_image(
+        $attachment_id,
+        'sock-location',
+        false,
+        [ 'class' => 'img-fluid rounded' ]
+      )
+      : '';
+
     return $context;
   }
 

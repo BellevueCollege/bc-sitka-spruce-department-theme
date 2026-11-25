@@ -3,13 +3,15 @@
 {% set newPageIcon = newPageIcon|default( 'fa-solid fa-square-arrow-up-right' ) %}
 {% set linkClass = linkClass|default( 'btn btn-primary' ) %}
 {% set iconClass = iconClass|default( 'text-white' ) %}
+{% set safe_url = link.url|default('')|esc_url %}
+{% set is_new_tab = link.target is defined and link.target == '_blank' %}
 
-{% if link.title and link.url %}
-	<a href="{{ link.url }}" {% if link.target %} target="{{ link.target|esc_attr }}" {% endif %} class="{{ linkClass }}">
+{% if link.title and safe_url %}
+	<a href="{{ safe_url }}"{% if is_new_tab %} target="_blank" rel="noopener"{% endif %} class="{{ linkClass|esc_attr }}">
 		{{ link.title|esc_html }}
-		{% if link.target %}
+		{% if is_new_tab %}
 			<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
-			<i class="{{ newPageIcon }} {{ iconClass }}" aria-hidden="true"></i>
+			<i class="{{ newPageIcon|esc_attr }} {{ iconClass|esc_attr }}" aria-hidden="true"></i>
 		{% endif %}
 	</a>
 {% endif %}

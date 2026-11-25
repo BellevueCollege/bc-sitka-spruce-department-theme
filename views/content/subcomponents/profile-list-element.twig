@@ -26,12 +26,12 @@
 				{# if there alt text in media library? if not, use this as default!#}
 				{% set image_alt = profile_img_obj.alt ? profile_img_obj.alt : first_name ~ ' ' ~ last_name ~ "'s Profile" %}
 				<img src="{{ profile_img_obj.src('thumbnail') }}"
-					alt="{{ image_alt|esc_attr }}" 
+					alt="{{ image_alt|esc_attr }}"
 					class="img-fluid rounded"
 					width="150" height="150">
 			{% else %}
 			{# Fallback to Default Image #}
-				<img src="{{ theme.link }}/assets/img/basic-img.svg" 
+				<img src="{{ theme.link }}/assets/img/basic-img.svg"
 					alt="{{ first_name|esc_attr }} {{ last_name|esc_attr }}'s Profile"
 					class="img-fluid rounded"
 					width="150" height="150">
@@ -63,20 +63,20 @@
 				<ul class="list-unstyled contact-info-list">
 					{% if email %}
 						<li>
-							<i class="fa-solid fa-envelope me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Email:', 'bc-sitka-spruce') }}</span> <a href="mailto:{{ email|esc_html }}">{{ email|esc_html }}</a>
+							<i class="fa-solid fa-envelope me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Email:', 'bc-sitka-spruce') }}</span> <a href="{{ ('mailto:' ~ email)|esc_url }}">{{ email|esc_html }}</a>
 						</li>
 					{% endif %}
 					{% if phone_number %}
 						<li>
-							<i class="fa-solid fa-phone-flip me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Phone:', 'bc-sitka-spruce') }}</span> <a href="tel:{{ phone_number|esc_html }}">{{ phone_number|esc_html }}</a>
+							<i class="fa-solid fa-phone-flip me-2" aria-hidden="true"></i><span class="visually-hidden">{{ __('Phone:', 'bc-sitka-spruce') }}</span> <a href="{{ ('tel:' ~ phone_number)|esc_url }}">{{ phone_number|esc_html }}</a>
 						</li>
 					{% endif %}
 					{# Scheduling Button 1 #}
-					{% if scheduling_link %}
+					{% if scheduling_link.url|default('')|esc_url %}
 						<li>
-							<a class="btn btn-primary btn-small mt-1" {% if scheduling_link.target %} target="{{ scheduling_link.target }}" {% endif %} href="{{ scheduling_link.url|esc_url }}">
+							<a class="btn btn-primary btn-small mt-1"{% if scheduling_link.target == '_blank' %} target="_blank" rel="noopener"{% endif %} href="{{ scheduling_link.url|esc_url }}">
 								{{ scheduling_link.title|default(__('Schedule with %s', 'bc-sitka-spruce')|format(first_name))|esc_html }}
-								{% if scheduling_link.target %}
+								{% if scheduling_link.target == '_blank' %}
 									<span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
 									<i class="fa fa-external-link-square text-white" aria-hidden="true"></i>
 								{% endif %}
@@ -84,11 +84,11 @@
 						</li>
 					{% endif %}
 					{# Scheduling button 2 #}
-					{% if scheduling_link_2 %}
+					{% if scheduling_link_2.url|default('')|esc_url %}
                         <li>
-                            <a class="btn btn-primary btn-small mt-1" {% if scheduling_link_2.target %} target="{{ scheduling_link_2.target }}" {% endif %} href="{{ scheduling_link_2.url|esc_url }}">
+                            <a class="btn btn-primary btn-small mt-1"{% if scheduling_link_2.target == '_blank' %} target="_blank" rel="noopener"{% endif %} href="{{ scheduling_link_2.url|esc_url }}">
                                 {{ scheduling_link_2.title|default(__('Schedule with %s', 'bc-sitka-spruce')|format(first_name))|esc_html }}
-                                {% if scheduling_link_2.target %}
+                                {% if scheduling_link_2.target == '_blank' %}
                                     <span class="visually-hidden">{{ __('Opens in a new tab', 'bc-sitka-spruce') }}</span>
                                     <i class="fa fa-external-link-square text-white" aria-hidden="true"></i>
                                 {% endif %}

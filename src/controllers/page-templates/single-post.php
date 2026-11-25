@@ -39,13 +39,13 @@ if ( $raw_contact ) {
     }
 	$context['contact']['scheduling_links'] = $links;
     $context['contact'] = array(
-        'first_name'       => get_field('first_name', $raw_contact->ID),
-        'last_name'        => get_field('last_name', $raw_contact->ID),
-        'position'         => get_field('position_role', $raw_contact->ID),
-        'phone'            => get_field('phone_number', $raw_contact->ID),
-        'email'            => get_field('email', $raw_contact->ID),
-        'url'              => get_permalink( $raw_contact->ID ),
-        'scheduling_links' => $links, 
+        'first_name'       => esc_html( get_field( 'first_name', $raw_contact->ID ) ?? '' ),
+        'last_name'        => esc_html( get_field( 'last_name', $raw_contact->ID ) ?? '' ),
+        'position'         => esc_html( get_field( 'position_role', $raw_contact->ID ) ?? '' ),
+        'phone'            => esc_html( get_field( 'phone_number', $raw_contact->ID ) ?? '' ),
+        'email'            => esc_html( get_field( 'email', $raw_contact->ID ) ?? '' ),
+        'url'              => esc_url( get_permalink( $raw_contact->ID ) ),
+        'scheduling_links' => $links,
     );
 }
 

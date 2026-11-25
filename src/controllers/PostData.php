@@ -4,6 +4,22 @@ namespace BcSitkaSpruce\Controllers;
 class PostData {
 
 	/**
+	 * Whether a post ID is safe to show in front-end feature blocks.
+	 *
+	 * Requires the expected post type, publish status, and no password.
+	 *
+	 * @param mixed  $id        Post ID.
+	 * @param string $post_type Expected post type slug.
+	 */
+	protected static function isDisplayable( mixed $id, string $post_type ): bool {
+		$post = get_post( (int) $id );
+		return $post
+			&& $post->post_type === $post_type
+			&& 'publish' === get_post_status( $post )
+			&& empty( $post->post_password );
+	}
+
+	/**
 	 * Get Single Post's data
 	 *
 	 * Get the data for a single post

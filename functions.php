@@ -339,6 +339,24 @@ add_filter( 'acf/prepare_field/name=hide_from_side_nav', function( $field ) {
 } );
 
 /**
+ * Reject forged hide_from_side_nav saves from users without manage_network.
+ *
+ * UI hiding alone is not enough — a crafted ACF update could still persist the meta.
+ */
+add_filter(
+	'acf/update_value/key=field_687ebbeb3a1d1',
+	function ( $value, $post_id ) {
+		if ( current_user_can( 'manage_network' ) ) {
+			return $value;
+		}
+
+		return get_post_meta( $post_id, 'hide_from_side_nav', true );
+	},
+	10,
+	2
+);
+
+/**
  * Set Page Title Format
  */
 /**
@@ -722,6 +740,25 @@ add_filter( 'register_profile_post_type_args', function ( $args ) {
 const PROFILE_PLACEHOLDER_SLUG_PREFIX = 'profile-';
 
 /**
+ * Sanitize a profile name field value.
+ *
+ * @param mixed $value     Raw field value.
+ * @param bool  $from_post Whether the value came from $_POST (needs wp_unslash).
+ * @return string
+ */
+function profile_text( $value, bool $from_post = false ): string {
+	if ( ! is_string( $value ) ) {
+		return '';
+	}
+
+	if ( $from_post ) {
+		$value = wp_unslash( $value );
+	}
+
+	return sanitize_text_field( $value );
+}
+
+/**
  * Build profile title and slug from name fields.
  *
  * @param string $first_name First name.
@@ -755,7 +792,8 @@ function build_profile_title_and_slug( string $first_name, string $last_name, st
  * @return array{first_name: string, last_name: string, role: string}
  */
 function get_profile_name_fields_from_rest_request( $request ): array {
-	$acf = $request->get_param( 'acf' );
+	$from_post = false;
+	$acf       = $request->get_param( 'acf' );
 
 	if ( empty( $acf ) || ! is_array( $acf ) ) {
 		$params = $request->get_json_params();
@@ -764,14 +802,18 @@ function get_profile_name_fields_from_rest_request( $request ): array {
 			: array();
 	}
 
+	// Nonce verified by REST/ACF before this reader runs; values sanitized via profile_text().
+	// phpcs:disable WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	if ( empty( $acf ) && isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) {
-		$acf = $_POST['acf'];
+		$acf       = $_POST['acf'];
+		$from_post = true;
 	}
+	// phpcs:enable
 
 	return array(
-		'first_name' => (string) ( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '' ),
-		'last_name'  => (string) ( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '' ),
-		'role'       => (string) ( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '' ),
+		'first_name' => profile_text( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '', $from_post ),
+		'last_name'  => profile_text( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '', $from_post ),
+		'role'       => profile_text( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '', $from_post ),
 	);
 }
 
@@ -804,12 +846,15 @@ add_filter( 'rest_pre_insert_profile', function( $prepared_post, $request ) {
  * @return array{first_name: string, last_name: string, role: string}
  */
 function get_profile_name_fields_from_post_data(): array {
+	// Nonce verified by ACF/admin save before wp_insert_post_data; values sanitized via profile_text().
+	// phpcs:disable WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	$acf = ( isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) ? $_POST['acf'] : array();
+	// phpcs:enable
 
 	return array(
-		'first_name' => (string) ( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '' ),
-		'last_name'  => (string) ( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '' ),
-		'role'       => (string) ( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '' ),
+		'first_name' => profile_text( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '', true ),
+		'last_name'  => profile_text( $acf['field_6691a59bcddf8'] ?? $acf['last_name'] ?? '', true ),
+		'role'       => profile_text( $acf['field_6691a5abcddf9'] ?? $acf['position_role'] ?? '', true ),
 	);
 }
 
@@ -858,7 +903,8 @@ function filter_profile_insert_post_data( array $data, array $postarr ): array {
 	}
 
 	if ( null !== $built ) {
-		$data['post_title'] = $built['title'];
+		// wp_insert_post_data expects slashed title values (apostrophes in names).
+		$data['post_title'] = wp_slash( $built['title'] );
 		$data['post_name']  = wp_unique_post_slug(
 			$built['slug'],
 			$post_id,
@@ -1018,29 +1064,26 @@ if ( ! get_option( 'options_enable_posts')  ) {
 	include_once( get_template_directory() . '/src/library/BundledPlugins/oho-disable-posts.php' );
 }
 
-// Disable OHO Disable Posts plugin if active. This can be removed in the future.
-add_action( 'admin_init', function () {
-	if ( is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
-		deactivate_plugins( 'oho-disable-posts/oho-disable-posts.php', true, false );
-	}
-});
-
 // Add Custom Google Analytics Tag Per-Site (GA4 Only)
-$sitka_ga_id = get_option( 'options_ga_id' ) ?? null;
-if ( $sitka_ga_id ) {
-	add_action( 'wp_head', function() {
-		global $sitka_ga_id;
-		?><!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $sitka_ga_id ); ?>"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-
-			gtag('config', '<?php echo esc_attr( $sitka_ga_id ); ?>');
-		</script>
-		<?php
-	} );
+$ga_id_option = get_option( 'options_ga_id' );
+$ga_id        = is_string( $ga_id_option ) ? trim( $ga_id_option ) : '';
+if ( $ga_id && preg_match( '/\AG-[A-Z0-9]{1,18}\z/', $ga_id ) ) {
+	add_action(
+		'wp_head',
+		function () use ( $ga_id ) {
+			$gtag_src = add_query_arg( 'id', $ga_id, 'https://www.googletagmanager.com/gtag/js' );
+			?>
+			<!-- Global site tag (gtag.js) - Google Analytics -->
+			<script async src="<?php echo esc_url( $gtag_src ); ?>"></script>
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				gtag('config', <?php echo wp_json_encode( $ga_id ); ?>);
+			</script>
+			<?php
+		}
+	);
 }
 
 /**

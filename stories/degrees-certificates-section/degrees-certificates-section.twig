@@ -16,23 +16,24 @@
 						<div class="program-card text-dark mb-3 mx-3 mx-xs-3">
 							<div class="row">
 								<div class="col-md-6 p-3">
-									<h4><a href="{{ program.url|esc_url }}">{{ program.title|esc_html }}</a></h4>
-									{% if program.overview %}{{ program.overview|wp_kses_post }}{% endif %}
+									{# Program fields escaped in Program::get_single_by_title(). #}
+									<h4><a href="{{ program.url }}">{{ program.title }}</a></h4>
+									{% if program.overview %}{{ program.overview }}{% endif %}
 								</div>
 								<div class="col-md-6 p-3">
 									<dl>
 										<dt>{{ __( 'Degree', 'bc-sitka-spruce' ) }}</dt>
-										<dd>{{ program.degree|esc_html }}</dd>
+										<dd>{{ program.degree }}</dd>
 
 										<dt>{{ __( 'Duration', 'bc-sitka-spruce' ) }}</dt>
-										<dd>{{ program.duration|esc_html }}</dd>
+										<dd>{{ program.duration }}</dd>
 
 										<dt>{{ __( 'Pathway(s)', 'bc-sitka-spruce' ) }}</dt>
 										<dd><ul class="list-unstyled">
 											{% for pathway in program.pathways %}
 												<li>
-													<a href="{{ pathway.url|esc_url }}" target="_blank">
-														{{ pathway.title|esc_html }}<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
+													<a href="{{ pathway.url }}" target="_blank" rel="noopener">
+														{{ pathway.title }}<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
 														<span class="visually-hidden">{{ __( 'Opens in a new tab', 'bc-sitka-spruce' ) }}</span>
 													</a>
 												</li>
@@ -44,12 +45,12 @@
 											{% for focus_area in program.focus_areas %}
 												<li>
 													{% if focus_area.url %}
-														<a href="{{ focus_area.url|esc_url }}" target="_blank">
-															{{ focus_area.title|esc_html }}<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
+														<a href="{{ focus_area.url }}" target="_blank" rel="noopener">
+															{{ focus_area.title }}<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
 															<span class="visually-hidden">{{ __( 'Opens in a new tab', 'bc-sitka-spruce' ) }}</span>
 														</a>
 													{% else %}
-														{{ focus_area.title|esc_html }}
+														{{ focus_area.title }}
 													{% endif %}
 												</li>
 											{% endfor %}

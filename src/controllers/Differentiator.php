@@ -4,13 +4,7 @@ namespace BcSitkaSpruce\Controllers;
 class Differentiator extends PostData {
 
 	public static function get_single( $id ) {
-		if ( ! $id ) {
-			return;
-		}
-
-		$post = get_post( $id );
-
-		if ( ! $post ) {
+		if ( ! static::isDisplayable( $id, 'differentiator' ) ) {
 			return;
 		}
 
