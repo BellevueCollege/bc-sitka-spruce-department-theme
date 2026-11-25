@@ -11,7 +11,8 @@ $context['segments']     = get_field( 'segments' ) ? array_map( function ( $segm
 	$segment['programs'] = $segment['programs'] ? array_map( function ( $program ) {
 		$local_program_title        = get_the_title( $program );
 		$core_program_data          = Program::get_single_from_core_by_title( $local_program_title );
-		$core_program_data['title'] = esc_html( $core_program_data['short_name'] ?? '' );
+		// short_name already escaped in Program::get_single_by_title().
+		$core_program_data['title'] = $core_program_data['short_name'] ?? '';
 		$core_program_data['url']   = esc_url( get_permalink( $program ) ?? '' );
 		return $core_program_data;
 	}, $segment['programs'] ) : array();
@@ -19,7 +20,7 @@ $context['segments']     = get_field( 'segments' ) ? array_map( function ( $segm
 	return $segment;
 }, get_field( 'segments' ) ) : array();
 
-$context['anchor'] = (isset($block['anchor']) && $block['anchor']) 
+$context['anchor'] = (isset($block['anchor']) && $block['anchor'])
 	? sanitize_title($block['anchor']) : '';
 
 if ( $context['title'] ) {
