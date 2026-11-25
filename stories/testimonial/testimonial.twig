@@ -5,7 +5,8 @@
  */
 #}
 
-<section class="section section-xlight testimonial-section-wrapper {{ classes }}">
+{# image/quote/attribution are escaped or kses-filtered by the block render.php. #}
+<section class="section section-xlight testimonial-section-wrapper {{ classes|esc_attr }}">
 	{% include '@stories/section-heading/section-heading.twig' with {
 		heading: title,
 		subheading: description,
