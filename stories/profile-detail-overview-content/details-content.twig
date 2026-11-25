@@ -7,12 +7,12 @@
 				<div class="profile__image text-center">
 				{% if profile_image %}
 					{# Targets WP's empty alt attribute and replaces it with the fallback #}
-					{{ profile_image | replace({'alt=""': 'alt="'~ first_name ~ ' ' ~ last_name ~ '"'}) | raw }}				
+					{{ profile_image | replace({'alt=""': 'alt="'~ first_name ~ ' ' ~ last_name ~ '"'}) | raw }}
 				{% else %}
 					{# Fallback to Default Image using theme.link #}
-					<img class="img-fluid rounded a11y-decorative" 
+					<img class="img-fluid rounded a11y-decorative"
 						width="460" height="460"
-						src="{{ theme.link }}/assets/img/basic-img.svg" 
+						src="{{ theme.link }}/assets/img/basic-img.svg"
 						alt="{{ __('', 'bc-sitka-spruce')}}">
         		{% endif %}
 				</div>
@@ -40,14 +40,14 @@
 					{% if email %}
 						<dt>Email</dt>
 						<dd>
-							<a href="mailto:{{ email }}">{{ email }}</a>
+							<a href="{{ ('mailto:' ~ email)|esc_url }}">{{ email }}</a>
 						</dd>
 					{% endif %}
 
 					{% if phone %}
 						<dt>Phone</dt>
 						<dd>
-							<a href="tel:{{ phone }}">{{ phone }}</a>
+							<a href="{{ ('tel:' ~ phone)|esc_url }}">{{ phone }}</a>
 						</dd>
 					{% endif %}
 
@@ -66,18 +66,20 @@
 						<dd>{{ office_hours }}</dd>
 					{% endif %}
 
-					{% if linkedin %}
+					{% set linkedin_url = linkedin.url|default('')|esc_url %}
+					{% if linkedin and linkedin_url %}
 						<dt>LinkedIn</dt>
 						<dd>
-							<a href="{{ linkedin.url }}" target="_blank">{{ linkedin.title }}<span class="visually-hidden"> {{ __(' Opens in a new window', 'bc-sitka-spruce') }}</span></a>
+							<a href="{{ linkedin_url }}" target="_blank" rel="noopener">{{ linkedin.title|esc_html }}<span class="visually-hidden"> {{ __(' Opens in a new window', 'bc-sitka-spruce') }}</span></a>
 							<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
 						</dd>
 					{% endif %}
 
-					{% if additional_url %}
+					{% set additional_safe_url = additional_url.url|default('')|esc_url %}
+					{% if additional_url and additional_safe_url %}
 						<dt>Additional URL</dt>
 						<dd>
-							<a href="{{ additional_url.url }}" target="_blank">{{additional_url.title|default('Additional URL')}} <span class="visually-hidden"> {{ __(' Opens in a new window', 'bc-sitka-spruce') }}</span></a>
+							<a href="{{ additional_safe_url }}" target="_blank" rel="noopener">{{ additional_url.title|default('Additional URL')|esc_html }} <span class="visually-hidden"> {{ __(' Opens in a new window', 'bc-sitka-spruce') }}</span></a>
 							<i class="fa-regular fa-square-arrow-up-right" aria-hidden="true"></i>
 						</dd>
 					{% endif %}

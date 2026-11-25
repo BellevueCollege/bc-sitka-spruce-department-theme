@@ -1,6 +1,5 @@
 <?php
 use Timber\Timber;
-use function Symfony\Component\VarDumper\Dumper\esc;
 
 $context = Timber::context();
 
@@ -30,7 +29,7 @@ if (is_array(get_field('profiles'))) {
 
         // Get the repeater data from the profile post
         $schedule_data = get_field('scheduling_section', $profile->ID);
-        
+
         // (Hard coded on purpose!) Check the first row of two specific fields
         if (is_array($schedule_data) && !empty($schedule_data)) {
             $section = $schedule_data[0]; // Get the first row
@@ -39,13 +38,13 @@ if (is_array(get_field('profiles'))) {
             if (!empty($section['schedule_appointment_link'])) {
                 $profile_data['scheduling_links'][] = $section['schedule_appointment_link'];
             }
-            
+
             // Check for the second link field
             if (!empty($section['sched_appt_link'])) {
                 $profile_data['scheduling_links'][] = $section['sched_appt_link'];
             }
         }
-        // Keep this for backward compatibility 
+        // Keep this for backward compatibility
         $profile_data['scheduling_link'] = $profile_data['scheduling_links'][0] ?? null;
 
         //add processed profile data to list
