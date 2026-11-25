@@ -42,7 +42,8 @@ class Posts extends PostData {
 		$output = array(
 			'title'   => esc_html( get_the_title( $id ) ),
 			'url'     => esc_url( get_the_permalink( $id ) ),
-			'summary' => $summary,
+			// title/url/summary escaped here; news-feature templates print as trusted.
+			'summary' => wp_kses_post( (string) $summary ),
 			'image'   => $featured_image_output,
 			'image_orientation' => $featured_image_orientation ?? null,
 		);

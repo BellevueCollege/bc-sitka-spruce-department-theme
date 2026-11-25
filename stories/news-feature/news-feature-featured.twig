@@ -28,7 +28,7 @@
       <h3>
         <a href="{{ url }}">{{ title }}</a>
       </h3>
-      {{ summary|striptags }}
+      {{ summary|striptags|esc_html }}
     </div>
   </div>
 </div>
