@@ -1018,13 +1018,6 @@ if ( ! get_option( 'options_enable_posts')  ) {
 	include_once( get_template_directory() . '/src/library/BundledPlugins/oho-disable-posts.php' );
 }
 
-// Disable OHO Disable Posts plugin if active. This can be removed in the future.
-add_action( 'admin_init', function () {
-	if ( is_plugin_active( 'oho-disable-posts/oho-disable-posts.php' ) ) {
-		deactivate_plugins( 'oho-disable-posts/oho-disable-posts.php', true, false );
-	}
-});
-
 // Add Custom Google Analytics Tag Per-Site (GA4 Only)
 $ga_id_option = get_option( 'options_ga_id' );
 $ga_id        = is_string( $ga_id_option ) ? trim( $ga_id_option ) : '';
