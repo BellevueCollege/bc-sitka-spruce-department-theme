@@ -54,6 +54,9 @@ extends:
         displayName: 'PHP Compatibility (8.2–8.5)'
         continueOnError: true
 
+      - script: composer run phpcs:security
+        displayName: 'PHPCS WordPress.Security (src + functions.php)'
+
       - script: composer install --no-interaction --prefer-dist --optimize-autoloader --no-dev
         displayName: 'Restore production Composer dependencies'
         condition: eq(variables['Agent.JobStatus'], 'Succeeded')

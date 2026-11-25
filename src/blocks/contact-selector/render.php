@@ -59,9 +59,9 @@ $context['profiles'] = $profiles_data;
 if ( $is_preview && ! $context['profiles'] ) {
 	//echo '<div class="callout-wrapper callout-disabled"></div>';
     echo '<div class="contact-selector-wrapper-preview col card"><p><strong>';
-	_e( 'The  \'Contact Selector Section\' is not configured.', 'bc-sitka-spruce' );
+	esc_html_e( 'The  \'Contact Selector Section\' is not configured.', 'bc-sitka-spruce' );
 	echo '</strong></p><p>';
-	_e( 'Select this element, then use the Settings sidebar to add a title, description, and choose contacts to display.', 'bc-sitka-spruce' );
+	esc_html_e( 'Select this element, then use the Settings sidebar to add a title, description, and choose contacts to display.', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }
 

@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<ruleset name="BC Sitka Spruce Security">
+	<description>Blocking WordPress.Security sniffs for theme PHP sources.</description>
+
+	<file>functions.php</file>
+	<file>src/</file>
+
+	<arg name="extensions" value="php"/>
+	<arg value="p"/>
+
+	<exclude-pattern>*/vendor/*</exclude-pattern>
+	<exclude-pattern>*/node_modules/*</exclude-pattern>
+
+	<config name="minimum_supported_wp_version" value="6.0"/>
+
+	<rule ref="WordPress.Security"/>
+</ruleset>

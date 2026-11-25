@@ -31,6 +31,9 @@ if ( $context['enabled'] ) {
 
 if ( $is_preview && ! $context['enabled'] ) {
 	echo '<div class="callout-wrapper callout-disabled col"><p>';
-	_e( 'The optional \'Callout\' sidebar is disabled. <br />Edit this element to enable it!', 'bc-sitka-spruce' );
+	echo wp_kses(
+		__( 'The optional \'Callout\' sidebar is disabled. <br />Edit this element to enable it!', 'bc-sitka-spruce' ),
+		array( 'br' => array() )
+	);
 	echo '</p></div>';
 }

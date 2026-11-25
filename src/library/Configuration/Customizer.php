@@ -47,7 +47,8 @@ class Customizer implements CustomizerInterface {
     if (!$this->useCustomizer) {
       global $pagenow;
       if ($pagenow === 'customize.php') {
-        wp_redirect(admin_url(), '301');
+        wp_safe_redirect( admin_url(), 301 );
+        exit;
       }
     }
   }

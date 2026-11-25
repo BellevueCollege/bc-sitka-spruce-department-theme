@@ -55,6 +55,6 @@ if ( $context['title'] && $context['checkerboards'] ) {
 
 if ( $is_preview && ( ! $context['checkerboards'] || ! $context['title'] ) ) {
 	echo '<div class="card"><p>';
-	_e( 'Add title and checkerboards to this element so that it can display!', 'bc-sitka-spruce' );
+	esc_html_e( 'Add title and checkerboards to this element so that it can display!', 'bc-sitka-spruce' );
 	echo '</p></div>';
 }

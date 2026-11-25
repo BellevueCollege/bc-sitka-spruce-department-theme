@@ -44,6 +44,9 @@ if ( $context['title'] ) {
 
 if ( $is_preview && ! $context['title'] ) {
 	echo '<div class="announcement-wrapper-preview col"><p>';
-	_e( 'The  \'Media Gallery Section\' is not configured. <br />Select this element, then use the Settings sidebar to configure it!', 'bc-sitka-spruce' );
+	echo wp_kses(
+		__( 'The  \'Media Gallery Section\' is not configured. <br />Select this element, then use the Settings sidebar to configure it!', 'bc-sitka-spruce' ),
+		array( 'br' => array() )
+	);
 	echo '</p></div>';
 }

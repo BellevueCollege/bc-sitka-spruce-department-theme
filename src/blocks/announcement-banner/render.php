@@ -28,6 +28,9 @@ Timber::render( '/stories/announcement-banner/announcement-banner.twig', $contex
 
 if ( $is_preview && ! $context['title'] ) {
 	echo '<div class="announcement-wrapper-preview col"><p>';
-	_e( 'The  \'Announcement Banner Component\' is not configured. <br />Edit this element to configure it!', 'bc-sitka-spruce' );
+	echo wp_kses(
+		__( 'The  \'Announcement Banner Component\' is not configured. <br />Edit this element to configure it!', 'bc-sitka-spruce' ),
+		array( 'br' => array() )
+	);
 	echo '</p></div>';
 }

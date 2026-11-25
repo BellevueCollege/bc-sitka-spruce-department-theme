@@ -20,7 +20,8 @@
         }
     },
     "scripts": {
-        "phpcs": "phpcs --runtime-set ignore_warnings_on_exit 1"
+        "phpcs": "phpcs --runtime-set ignore_warnings_on_exit 1",
+        "phpcs:security": "php -d error_reporting=24575 vendor/bin/phpcs --standard=phpcs.security.xml.dist"
     },
     "config": {
         "allow-plugins": {

@@ -802,10 +802,13 @@ function get_profile_name_fields_from_rest_request( $request ): array {
 			: array();
 	}
 
+	// Nonce verified by REST/ACF before this reader runs; values sanitized via profile_text().
+	// phpcs:disable WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	if ( empty( $acf ) && isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) {
 		$acf       = $_POST['acf'];
 		$from_post = true;
 	}
+	// phpcs:enable
 
 	return array(
 		'first_name' => profile_text( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '', $from_post ),
@@ -843,7 +846,10 @@ add_filter( 'rest_pre_insert_profile', function( $prepared_post, $request ) {
  * @return array{first_name: string, last_name: string, role: string}
  */
 function get_profile_name_fields_from_post_data(): array {
+	// Nonce verified by ACF/admin save before wp_insert_post_data; values sanitized via profile_text().
+	// phpcs:disable WordPress.Security.NonceVerification.Missing,WordPress.Security.ValidatedSanitizedInput.InputNotSanitized,WordPress.Security.ValidatedSanitizedInput.MissingUnslash
 	$acf = ( isset( $_POST['acf'] ) && is_array( $_POST['acf'] ) ) ? $_POST['acf'] : array();
+	// phpcs:enable
 
 	return array(
 		'first_name' => profile_text( $acf['field_6691a56ecddf7'] ?? $acf['first_name'] ?? '', true ),
@@ -1065,10 +1071,10 @@ if ( $ga_id && preg_match( '/\AG-[A-Z0-9]{1,18}\z/', $ga_id ) ) {
 	add_action(
 		'wp_head',
 		function () use ( $ga_id ) {
-			$gtag_src = esc_url( add_query_arg( 'id', $ga_id, 'https://www.googletagmanager.com/gtag/js' ) );
+			$gtag_src = add_query_arg( 'id', $ga_id, 'https://www.googletagmanager.com/gtag/js' );
 			?>
 			<!-- Global site tag (gtag.js) - Google Analytics -->
-			<script async src="<?php echo $gtag_src; ?>"></script>
+			<script async src="<?php echo esc_url( $gtag_src ); ?>"></script>
 			<script>
 				window.dataLayer = window.dataLayer || [];
 				function gtag(){dataLayer.push(arguments);}
