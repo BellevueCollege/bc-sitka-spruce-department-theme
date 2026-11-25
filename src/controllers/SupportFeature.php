@@ -1,15 +1,19 @@
 <?php
 namespace BcSitkaSpruce\Controllers;
 
-class SupportFeature {
+class SupportFeature extends PostData {
 
 	public static function get_posts( array $ids ) {
 		if ( ! $ids || ! is_array( $ids ) || count( $ids ) < 1 ) {
 			return;
 		}
 
-		return array_map( function( $post_id ) {
-			return array(
+		$posts = array();
+		foreach ( $ids as $post_id ) {
+			if ( ! static::isDisplayable( $post_id, 'identity-support' ) ) {
+				continue;
+			}
+			$posts[] = array(
 				'title' => esc_html( get_the_title( $post_id ) ),
 				'image' => get_field( 'image', $post_id ) ? wp_get_attachment_image(
 					get_field( 'image', $post_id )['id'],
@@ -27,8 +31,9 @@ class SupportFeature {
 					);
 				}, get_field( 'links', $post_id ) ) : null,
 			);
-		}, $ids );
+		}
 
+		return $posts ?: null;
 	}
 
 

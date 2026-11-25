@@ -11,12 +11,7 @@ class Department extends PostData {
 	 * @return array - An array of department data
 	 */
 	public static function get_single( $id ) {
-		if ( ! $id ) {
-			return;
-		}
-
-		$post = get_post( $id );
-		if ( ! $post ) {
+		if ( ! static::isDisplayable( $id, 'organization' ) ) {
 			return;
 		}
 

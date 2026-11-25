@@ -4,11 +4,7 @@ namespace BcSitkaSpruce\Controllers;
 class Posts extends PostData {
 
 	public static function get_single( $id ) {
-		if ( ! $id ) {
-			return;
-		}
-
-		if ( false === get_post_status( $id ) ) {
+		if ( ! static::isDisplayable( $id, 'post' ) ) {
 			return;
 		}
 
