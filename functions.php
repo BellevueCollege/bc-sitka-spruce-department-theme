@@ -1026,21 +1026,25 @@ add_action( 'admin_init', function () {
 });
 
 // Add Custom Google Analytics Tag Per-Site (GA4 Only)
-$sitka_ga_id = get_option( 'options_ga_id' ) ?? null;
-if ( $sitka_ga_id ) {
-	add_action( 'wp_head', function() {
-		global $sitka_ga_id;
-		?><!-- Global site tag (gtag.js) - Google Analytics -->
-		<script async src="https://www.googletagmanager.com/gtag/js?id=<?php echo esc_attr( $sitka_ga_id ); ?>"></script>
-		<script>
-			window.dataLayer = window.dataLayer || [];
-			function gtag(){dataLayer.push(arguments);}
-			gtag('js', new Date());
-
-			gtag('config', '<?php echo esc_attr( $sitka_ga_id ); ?>');
-		</script>
-		<?php
-	} );
+$ga_id_option = get_option( 'options_ga_id' );
+$ga_id        = is_string( $ga_id_option ) ? trim( $ga_id_option ) : '';
+if ( $ga_id && preg_match( '/\AG-[A-Z0-9]{1,18}\z/', $ga_id ) ) {
+	add_action(
+		'wp_head',
+		function () use ( $ga_id ) {
+			$gtag_src = esc_url( add_query_arg( 'id', $ga_id, 'https://www.googletagmanager.com/gtag/js' ) );
+			?>
+			<!-- Global site tag (gtag.js) - Google Analytics -->
+			<script async src="<?php echo $gtag_src; ?>"></script>
+			<script>
+				window.dataLayer = window.dataLayer || [];
+				function gtag(){dataLayer.push(arguments);}
+				gtag('js', new Date());
+				gtag('config', <?php echo wp_json_encode( $ga_id ); ?>);
+			</script>
+			<?php
+		}
+	);
 }
 
 /**
