@@ -50,6 +50,20 @@ class OptionsPage implements OptionsPageInterface {
    */
   public function setupTwig(array $context): array {
     $context['acf_options'] = get_fields('option');
+
+    $location_image = $context['acf_options']['location_image'] ?? null;
+    $attachment_id = is_array( $location_image )
+      ? (int) ( $location_image['ID'] ?? $location_image['id'] ?? 0 )
+      : 0;
+    $context['sock_location_image_html'] = $attachment_id
+      ? wp_get_attachment_image(
+        $attachment_id,
+        'sock-location',
+        false,
+        [ 'class' => 'img-fluid rounded' ]
+      )
+      : '';
+
     return $context;
   }
 

@@ -69,32 +69,45 @@ class TwigExtensions {
   /**
    * Render an ACF link field as HTML.
    *
+   * Escapes URL, title, and attributes here; templates that print this string
+   * must not escape again (treat as trusted HTML from this helper).
+   *
    * @param array|bool|null $link
    *   The link field array.
    * @param array $attributes
    *   Link attribute values, keyed by attribute name.
    */
   public static function acfLink($link, array $attributes = []): string {
-    if (!$link) {
+    if ( ! is_array( $link ) || empty( $link['url'] ) || empty( $link['title'] ) ) {
       return '';
     }
 
-    $attributes = array_merge([
-      'target' => (isset($link['target']) && $link['target']) ? $link['target'] : '_self',
-    ], $attributes);
+    $url = esc_url( $link['url'] );
+    if ( ! $url ) {
+      return '';
+    }
 
-    if ($attributes['target'] === '_blank') {
-      $attributes['aria-label'] = __(sprintf(
-        '%1$s (opens in a new window)',
+    $target = ( ( $link['target'] ?? '' ) === '_blank' ) ? '_blank' : '';
+    $attributes = array_merge( [
+      'target' => $target,
+    ], $attributes );
+
+    if ( $attributes['target'] === '_blank' ) {
+      $attributes['rel'] = 'noopener';
+      $attributes['aria-label'] = sprintf(
+        /* translators: %s: link title */
+        __( '%s (opens in a new window)', 'bc-sitka-spruce' ),
         $link['title']
-      ), 'bc-sitka-spruce');
+      );
+    } else {
+      unset( $attributes['target'] );
     }
 
     return sprintf(
       '<a href="%1$s"%2$s>%3$s</a>',
-      $link['url'],
-      self::parseAttributes($attributes),
-      $link['title'],
+      $url,
+      self::parseAttributes( $attributes ),
+      esc_html( $link['title'] ),
     );
   }
 
@@ -158,7 +171,7 @@ class TwigExtensions {
     // Allow URL to be filtered. Used by BC Acalog WordPress Blocks plugin to inject an accurate link.
     $url = apply_filters( 'bellevue2022_acalog_url', 'https://catalog.bellevuecollege.edu/', $program_name );
 
-    
+
     return static::acfLink([
       'title' => $title ?: $program_name,
       'url' => $url,
@@ -226,33 +239,48 @@ class TwigExtensions {
     array $attributes = []
   ): string {
     if (!$image instanceof Image) {
+      if (!is_array($image) || empty($image['id'])) {
+        return '';
+      }
       $image = Timber::get_image($image['id']);
+    }
+
+    if (!$image instanceof Image) {
+      return '';
     }
 
     // Define our default attributes.
     $image_attributes = [
-      'src' => $image->src($src_size),
+      'src' => esc_url($image->src($src_size)),
       // Default width and height to those from the original image.
-      'width' => $image->width(),
-      'height' => $image->height(),
+      'width' => (int) $image->width(),
+      'height' => (int) $image->height(),
       'alt' => $image->alt(),
       'srcset' => '',
     ] + $attributes;
 
+    if (!$image_attributes['src']) {
+      return '';
+    }
+
     // Update width / height width values from src_size if the size exists.
     if (!empty($src_size) && isset($image->sizes[$src_size])) {
-      $image_attributes['width'] = $image->sizes[$src_size]['width'];
-      $image_attributes['height'] = $image->sizes[$src_size]['height'];
+      $image_attributes['width'] = (int) $image->sizes[$src_size]['width'];
+      $image_attributes['height'] = (int) $image->sizes[$src_size]['height'];
     }
 
     // Build srcset with available sizes.
     foreach ($srcset_sizes as $s) {
       if (!empty($s) && isset($image->sizes[$s])) {
         $size_string = empty($image_attributes['srcset']) ? '' : ', ';
-        $size_string .= $image->src($s) . ' ' . $image->sizes[$s]['width'] . 'w, ';
+        $size_string .= esc_url($image->src($s)) . ' ' . (int) $image->sizes[$s]['width'] . 'w';
         $image_attributes['srcset'] .= $size_string;
       } elseif (!empty($s)) {
-        $image_attributes['srcset'] .= $image->src() . ' ' . $image->width() . 'w, ';
+        $fallback = esc_url($image->src());
+        if ($fallback) {
+          $size_string = empty($image_attributes['srcset']) ? '' : ', ';
+          $image_attributes['srcset'] .= $size_string . $fallback . ' ' . (int) $image->width() . 'w';
+        }
       }
     }
 
@@ -264,9 +292,19 @@ class TwigExtensions {
     // Convert the attributes array to an attributes string.
     $attributes_string = '';
     foreach ($image_attributes as $attr => $val) {
-      if (!empty($val)) {
-        $attributes_string .= $attr . '="' . $val . '" ';
+      // Keep empty alt="" for decorative images.
+      if ($attr === 'alt') {
+        $attributes_string .= 'alt="' . esc_attr((string) $val) . '" ';
+        continue;
       }
+      if ($val === '' || $val === null) {
+        continue;
+      }
+      if ($attr === 'width' || $attr === 'height') {
+        $attributes_string .= $attr . '="' . (int) $val . '" ';
+        continue;
+      }
+      $attributes_string .= $attr . '="' . esc_attr((string) $val) . '" ';
     }
 
     return trim($attributes_string);
@@ -623,22 +661,45 @@ class TwigExtensions {
   /**
    * Parse an attributes array into an attributes string.
    *
+   * Skips invalid attribute names and event-handler names (on*). Values are
+   * escaped with esc_attr().
+   *
    * @param array[]|string[] $attributes
    *   Attribute values, keyed by attribute name. Values can be an array or
    *   string.
    */
   protected static function parseAttributes(array $attributes): string {
-    foreach ($attributes as $attribute => &$value) {
-      $value = sprintf(
+    $parsed = [];
+
+    foreach ( $attributes as $attribute => $value ) {
+      if ( ! is_string( $attribute ) ) {
+        continue;
+      }
+
+      if ( ! preg_match( '/^[a-zA-Z_:][a-zA-Z0-9_.:-]*$/', $attribute ) ) {
+        continue;
+      }
+
+      if ( 0 === stripos( $attribute, 'on' ) ) {
+        continue;
+      }
+
+      if ( is_array( $value ) ) {
+        $value = implode( ' ', $value );
+      }
+
+      $parsed[] = sprintf(
         '%1$s="%2$s"',
         $attribute,
-        is_array($value) ?
-          implode(' ', $value) :
-          (string) $value
+        esc_attr( (string) $value )
       );
     }
 
-    return ' ' . implode(' ', $attributes);
+    if ( ! $parsed ) {
+      return '';
+    }
+
+    return ' ' . implode( ' ', $parsed );
   }
 
   /**

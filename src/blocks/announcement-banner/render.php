@@ -5,15 +5,21 @@ $context = Timber::context();
 
 $context['title']       = esc_html( get_field( 'title' ) ?? '' );
 $context['description'] = wp_kses_post( get_field( 'description' ) ?? '' );
-$context['button']      = get_field( 'button' ) ?? '';
 $context['image']       = get_field( 'image' ) ? wp_get_attachment_image( get_field( 'image' ), 'announcement-banner', false, array( 'class' => 'img-fluid rounded' ) ) : null;
-$context['button']      = get_field( 'button' ) ?? array();
-$context['links']       = get_field( 'links' ) ? array_map(
+
+$button = get_field( 'button' ) ?: array();
+$context['button'] = array(
+	'title'  => $button['title'] ?? '',
+	'url'    => esc_url( $button['url'] ?? '' ),
+	'target' => ( ( $button['target'] ?? '' ) === '_blank' ) ? '_blank' : '',
+);
+
+$context['links'] = get_field( 'links' ) ? array_map(
 	function ( $link ) {
 		return array(
-			'title' => $link['link']['title'] ?? '',
-			'url'   => $link['link']['url'] ?? '',
-			'target' => $link['link']['target'] ?? '',
+			'title'  => $link['link']['title'] ?? '',
+			'url'    => esc_url( $link['link']['url'] ?? '' ),
+			'target' => ( ( $link['link']['target'] ?? '' ) === '_blank' ) ? '_blank' : '',
 		);
 	},
 	get_field( 'links' )
